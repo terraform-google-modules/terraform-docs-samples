@@ -9,6 +9,8 @@ resource "google_compute_firewall" "rules" {
     protocol  = "tcp"
     ports     = ["80", "8080", "1000-2000"]
   }
+
+  source_tags = ["foo"]
   target_tags = ["web"]
 }
 # [END vpc_firewall_create]
