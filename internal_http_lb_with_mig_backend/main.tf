@@ -1,7 +1,7 @@
 # Internal HTTP load balancer with a managed instance group backend
 
 # [START cloudloadbalancing_int_http_gce]
-# VPC
+# VPC network
 resource "google_compute_network" "ilb_network" {
   name                    = "l7-ilb-network"
   provider                = google-beta
@@ -19,7 +19,7 @@ resource "google_compute_subnetwork" "proxy_subnet" {
   network       = google_compute_network.ilb_network.id
 }
 
-# backed subnet
+# backend subnet
 resource "google_compute_subnetwork" "ilb_subnet" {
   name          = "l7-ilb-subnet"
   provider      = google-beta
@@ -43,7 +43,7 @@ resource "google_compute_forwarding_rule" "google_compute_forwarding_rule" {
   network_tier          = "PREMIUM"
 }
 
-# http proxy
+# HTTP target proxy
 resource "google_compute_region_target_http_proxy" "default" {
   name     = "l7-ilb-target-http-proxy"
   provider = google-beta
@@ -51,7 +51,7 @@ resource "google_compute_region_target_http_proxy" "default" {
   url_map  = google_compute_region_url_map.default.id
 }
 
-# url map
+# URL map
 resource "google_compute_region_url_map" "default" {
   name            = "l7-ilb-regional-url-map"
   provider        = google-beta
