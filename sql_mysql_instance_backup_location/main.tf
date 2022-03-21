@@ -1,6 +1,6 @@
 # [START cloud_sql_mysql_instance_backup_location]
 resource "google_sql_database_instance" "default" {
-  name             = ""
+  name             = "mysql-instance-with-backup-location"
   region           = "asia-northeast1"
   database_version = "MYSQL_5_7"
   settings {
