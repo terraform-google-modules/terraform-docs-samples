@@ -1,6 +1,6 @@
 # [START cloud_sql_sqlserver_instance_backup_location]
 resource "google_sql_database_instance" "default" {
-  name             = ""
+  name             = "sqlserver-instance-with-backup-location"
   region           = "us-central1"
   database_version = "SQLSERVER_2017_STANDARD"
   root_password = "INSERT-PASSWORD-HERE"
