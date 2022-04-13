@@ -1,6 +1,6 @@
 # [START cloud_sql_sqlserver_instance_authorized_network]
 resource "google_sql_database_instance" "default" {
-  name             = "myinstance"
+  name = "sqlserver-instance-with-authorized-network"
   region           = "us-central1"
   database_version = "SQLSERVER_2017_STANDARD"
   root_password = "INSERT-PASSWORD-HERE"
@@ -14,6 +14,6 @@ resource "google_sql_database_instance" "default" {
       }
     }
   }
-  deletion_protection = false
+  deletion_protection = "true"
 }
 # [END cloud_sql_sqlserver_instance_authorized_network]
