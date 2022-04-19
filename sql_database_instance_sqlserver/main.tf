@@ -2,7 +2,7 @@
 resource "google_sql_database_instance" "instance" {
   name             = "sqlserver-instance"
   region           = "us-central1"
-  database_version = "SQLSERVER_2017_STANDARD"
+  database_version = "SQLSERVER_2019_STANDARD"
   root_password = "INSERT-PASSWORD-HERE"
   settings {
     tier = "db-custom-2-7680"
