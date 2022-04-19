@@ -2,7 +2,7 @@
 resource "google_sql_database_instance" "instance" {
   name             = "postgres-instance"
   region           = "us-central1"
-  database_version = "POSTGRES_12"
+  database_version = "POSTGRES_14"
   settings {
     tier = "db-custom-2-7680"
   }
