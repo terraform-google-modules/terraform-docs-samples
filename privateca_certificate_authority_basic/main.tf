@@ -5,6 +5,7 @@ resource "google_privateca_certificate_authority" "default" {
   pool = "ca-pool"
   certificate_authority_id = "my-certificate-authority"
   location = "us-central1"
+  deletion_protection = "true"
   config {
     subject_config {
       subject {
