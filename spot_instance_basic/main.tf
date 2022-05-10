@@ -1,8 +1,9 @@
-# [START compute_spot_instace_create]
+# [START compute_spot_instance_create]
 
 resource "google_compute_instance" "spot_vm_instance" {
   name         = "spot-instance-name"
   machine_type = "f1-micro"
+  zone         = "us-central1-c"
 
   boot_disk {
     initialize_params {
@@ -24,4 +25,4 @@ resource "google_compute_instance" "spot_vm_instance" {
   }
 }
 
-# [END compute_spot_instace_create]
+# [END compute_spot_instance_create]
