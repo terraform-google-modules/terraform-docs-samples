@@ -1,11 +1,13 @@
 # VPC network
 resource "google_compute_network" "default" {
+  provider                = google-beta
   name                    = "vpc-network"
   auto_create_subnetworks = false
 }
 
 # Subnet
 resource "google_compute_subnetwork" "default" {
+  provider      = google-beta
   name          = "vpc-subnet"
   ip_cidr_range = "10.0.1.0/24"
   region        = "europe-west1"
@@ -14,7 +16,8 @@ resource "google_compute_subnetwork" "default" {
 
 # [START cloud_sql_sqlserver_vm_instance]
 resource "google_compute_instance" "sqlserver_vm" {
-  name = "sqlserver-vm"
+  provider = google-beta
+  name     = "sqlserver-vm"
   boot_disk {
     auto_delete = true
     device_name = "persistent-disk-0"
@@ -40,6 +43,7 @@ resource "google_compute_instance" "sqlserver_vm" {
 
 # [START cloud_sql_sqlserver_vm_firewall_rule]
 resource "google_compute_firewall" "sql_server_1433" {
+  provider      = google-beta
   name          = "sql-server-1433-3"
   allow {
     ports    = ["1433"]
