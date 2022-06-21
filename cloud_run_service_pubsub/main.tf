@@ -28,14 +28,14 @@ resource "google_cloud_run_service_iam_binding" "binding" {
   location = google_cloud_run_service.default.location
   service = google_cloud_run_service.default.name
   role = "roles/run.invoker"
-  members = ["serviceAccount:"]
+  members = ["serviceAccount:${google_service_account.sa.email}"]
 }
 # [END cloud_run_service_pubsub_run_invoke_permissions]
 
 # [START cloud_run_service_pubsub_token_permissions]
 resource "google_project_iam_binding" "project" {
   role    = "roles/iam.serviceAccountTokenCreator"
-  members = ["serviceAccount:"]
+  members = ["serviceAccount:${google_service_account.sa.email}"]
 }
 # [END cloud_run_service_pubsub_token_permissions]
 
@@ -50,9 +50,9 @@ resource "google_pubsub_subscription" "subscription" {
   name  = "pubsub_subscription"
   topic = google_pubsub_topic.topic.name
   push_config {
-    push_endpoint = ""
+    push_endpoint = google_cloud_run_service.default.status[0].url
     oidc_token {
-      service_account_email = ""
+      service_account_email = google_service_account.sa.email
     }
     attributes = {
       x-goog-version = "v1"
