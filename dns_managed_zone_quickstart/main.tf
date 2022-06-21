@@ -1,6 +1,7 @@
 # [START dns_domain_tutorial]
 # to setup a web-server
 resource "google_compute_instance" "default" {
+  provider     = google-beta
   name         = "dns-compute-instance"
   machine_type = "g1-small"
   zone         = "us-central1-b"
@@ -26,8 +27,9 @@ resource "google_compute_instance" "default" {
 
 # to allow http traffic
 resource "google_compute_firewall" "default" {
-  name    = "allow-http-traffic"
-  network = "default"
+  provider = google-beta
+  name     = "allow-http-traffic"
+  network  = "default"
   allow {
     ports    = ["80"]
     protocol = "tcp"
@@ -37,6 +39,7 @@ resource "google_compute_firewall" "default" {
 
 # to create a DNS zone
 resource "google_dns_managed_zone" "default" {
+  provider      = google-beta
   name          = "example-zone-googlecloudexample"
   dns_name      = "googlecloudexample.com."
   description   = "Example DNS zone"
@@ -45,6 +48,7 @@ resource "google_dns_managed_zone" "default" {
 
 # to register web-server's ip address in DNS
 resource "google_dns_record_set" "default" {
+  provider     = google-beta
   name         = google_dns_managed_zone.default.dns_name
   managed_zone = google_dns_managed_zone.default.name
   type         = "A"
