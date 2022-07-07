@@ -1,6 +1,7 @@
 # [START cloudrun_service_ingress]
 resource "google_cloud_run_service" "default" {
-    name     = "ingress-service"
+  provider = google-beta
+  name     = "ingress-service"
     location = "us-central1"
 
     template {
