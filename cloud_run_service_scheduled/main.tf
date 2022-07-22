@@ -1,5 +1,4 @@
 resource "google_project_service" "run_api" {
-  provider = google-beta
   project                    = "my-project-name"
   service                    = "run.googleapis.com"
   disable_dependent_services = true
@@ -7,21 +6,18 @@ resource "google_project_service" "run_api" {
 }
 
 resource "google_project_service" "iam_api" {
-  provider = google-beta
   project                    = "my-project-name"
   service                    = "iam.googleapis.com"
   disable_on_destroy         = false
 }
 
 resource "google_project_service" "resource_manager_api" {
-  provider = google-beta
   project                    = "my-project-name"
   service                    = "cloudresourcemanager.googleapis.com"
   disable_on_destroy         = false
 }
 
 resource "google_project_service" "scheduler_api" {
-  provider = google-beta
   project                    = "my-project-name"
   service                    = "cloudscheduler.googleapis.com"
   disable_on_destroy         = false
@@ -29,7 +25,6 @@ resource "google_project_service" "scheduler_api" {
 
 # [START cloudrun_service_scheduled_service]
 resource "google_cloud_run_service" "default" {
-  provider = google-beta
   project  = "my-project-name"
   name     = "my-scheduled-service"
   location = "us-central1"
@@ -56,7 +51,6 @@ resource "google_cloud_run_service" "default" {
 
 # [START cloudrun_service_scheduled_sa]
 resource "google_service_account" "default" {
-  provider = google-beta
   project      = "my-project-name"
   account_id   = "scheduler-sa"
   description  = "Cloud Scheduler service account; used to trigger scheduled Cloud Run jobs."
@@ -71,7 +65,6 @@ resource "google_service_account" "default" {
 
 # [START cloudrun_service_scheduled_job]
 resource "google_cloud_scheduler_job" "default" {
-  provider = google-beta
   name             = "scheduled-cloud-run-job"
   description      = "Invoke a Cloud Run container on a schedule."
   schedule         = "*/8 * * * *"
