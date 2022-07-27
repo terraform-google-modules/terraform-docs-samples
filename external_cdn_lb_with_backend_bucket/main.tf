@@ -1,85 +1,12 @@
 # CDN load balancer with Cloud bucket as backend
 
-# [START cloudloadbalancing_cdn_with_backend_bucket]
-
-
-# [START cloudloadbalancing_cdn_with_backend_bucket_vpc]
-# VPC
-resource "google_compute_network" "default" {
-  name                    = "cdn-network"
-  auto_create_subnetworks = false
-}
-# [END cloudloadbalancing_cdn_with_backend_bucket_vpc]
-
-# [START cloudloadbalancing_cdn_with_backend_bucket_subnet]
-# backend subnet
-resource "google_compute_subnetwork" "default" {
-  name          = "cdn-subnet"
-  ip_cidr_range = "10.0.1.0/24"
-  region        = "us-central1"
-  network       = google_compute_network.default.id
-}
-# [END cloudloadbalancing_cdn_with_backend_bucket_subnet]
-
-# [START cloudloadbalancing_cdn_with_backend_bucket_ip_address]
-# reserve IP address
-resource "google_compute_global_address" "default" {
-  name     = "cdn-static-ip"
-}
-# [END cloudloadbalancing_cdn_with_backend_bucket_ip_address]
-
-# [START cloudloadbalancing_cdn_with_backend_bucket_forwarding_rule]
-# forwarding rule
-resource "google_compute_global_forwarding_rule" "default" {
-  name                  = "cdn-forwarding-rule"
-  ip_protocol           = "TCP"
-  load_balancing_scheme = "EXTERNAL"
-  port_range            = "80"
-  target                = google_compute_target_http_proxy.default.id
-  ip_address            = google_compute_global_address.default.id
-}
-# [END cloudloadbalancing_cdn_with_backend_bucket_forwarding_rule]
-
-# [START cloudloadbalancing_cdn_with_backend_bucket_http_proxy]
-# http proxy
-resource "google_compute_target_http_proxy" "default" {
-  name     = "cdn-target-http-proxy"
-  url_map  = google_compute_url_map.default.id
-}
-# [END cloudloadbalancing_cdn_with_backend_bucket_http_proxy]
-
-# [START cloudloadbalancing_cdn_with_backend_bucket_url_map]
-# url map
-resource "google_compute_url_map" "default" {
-  name            = "cdn-url-map"
-  default_service = google_compute_backend_bucket.default.id
-}
-# [END cloudloadbalancing_cdn_with_backend_bucket_url_map]
-
-# [START cloudloadbalancing_cdn_with_backend_bucket_backend_bucket]
-# backend bucket with CDN policy with default ttl settings
-resource "google_compute_backend_bucket" "default" {
-  name        = "image-backend-bucket"
-  description = "Contains beautiful images"
-  bucket_name = google_storage_bucket.default.name
-  enable_cdn  = true
-  cdn_policy {
-    cache_mode        = "CACHE_ALL_STATIC"
-    client_ttl        = 3600
-    default_ttl       = 3600
-    max_ttl           = 86400
-    negative_caching  = true
-    serve_while_stale = 86400
-  }
-}
-# [END cloudloadbalancing_cdn_with_backend_bucket_backend_bucket]
-
 # [START cloudloadbalancing_cdn_with_backend_bucket_cloud_storage_bucket]
 # Cloud Storage bucket
 resource "google_storage_bucket" "default" {
-  name                        = "cdn-backend-storage-bucket"
-  location                    = "US"
+  name                        = "my-bucket"
+  location                    = "us-east1"
   uniform_bucket_level_access = true
+  storage_class               = "STANDARD"
   // delete bucket and contents on destroy.
   force_destroy = true
   // Assign specialty files
@@ -88,6 +15,7 @@ resource "google_storage_bucket" "default" {
     not_found_page   = "404.html"
   }
 }
+
 # [END cloudloadbalancing_cdn_with_backend_bucket_cloud_storage_bucket]
 
 # [START cloudloadbalancing_cdn_with_backend_bucket_make_public]
@@ -101,8 +29,8 @@ resource "google_storage_bucket_iam_member" "default" {
 
 # [START cloudloadbalancing_cdn_with_backend_bucket_index_page]
 resource "google_storage_bucket_object" "index_page" {
-  name       = "index-page"
-  bucket     = google_storage_bucket.default.name
+  name    = "index-page"
+  bucket  = google_storage_bucket.default.name
   content = <<-EOT
     <html><body>
     <h1>Congratulations on setting up Google Cloud CDN with Storage backend!</h1>
@@ -113,9 +41,9 @@ resource "google_storage_bucket_object" "index_page" {
 
 # [START cloudloadbalancing_cdn_with_backend_bucket_error_page]
 resource "google_storage_bucket_object" "error_page" {
-  name       = "404-page"
-  bucket     = google_storage_bucket.default.name
-  content  = <<-EOT
+  name    = "404-page"
+  bucket  = google_storage_bucket.default.name
+  content = <<-EOT
     <html><body>
     <h1>404 Error: Object you are looking for is no longer available!</h1>
     </body></html>
@@ -126,17 +54,68 @@ resource "google_storage_bucket_object" "error_page" {
 # [START cloudloadbalancing_cdn_with_backend_bucket_image]
 # image object for testing, try to access http://<your_lb_ip_address>/test.jpg
 resource "google_storage_bucket_object" "test_image" {
-  name         = "test-object"
-# Uncomment and add valid path to an object.
-#  source       = "/path/to/an/object"
-#  content_type = "image/jpeg"
+  name = "test-object"
+  # Uncomment and add valid path to an object.
+  #  source       = "/path/to/an/object"
+  #  content_type = "image/jpeg"
 
-# Delete after uncommenting above source and content_type attributes
+  # Delete after uncommenting above source and content_type attributes
   content      = "Data as string to be uploaded"
   content_type = "text/plain"
 
-  bucket       = google_storage_bucket.default.name
+  bucket = google_storage_bucket.default.name
 }
 # [END cloudloadbalancing_cdn_with_backend_bucket_image]
 
-# [END cloudloadbalancing_cdn_with_backend_bucket]
+# [START cloudloadbalancing_cdn_with_backend_bucket_ip_address]
+# reserve IP address
+resource "google_compute_global_address" "default" {
+  name = "example-ip"
+}
+# [END cloudloadbalancing_cdn_with_backend_bucket_ip_address]
+
+# [START cloudloadbalancing_cdn_with_backend_bucket_forwarding_rule]
+# forwarding rule
+resource "google_compute_global_forwarding_rule" "default" {
+  name                  = "http-lb-forwarding-rule"
+  ip_protocol           = "TCP"
+  load_balancing_scheme = "EXTERNAL"
+  port_range            = "80"
+  target                = google_compute_target_http_proxy.default.id
+  ip_address            = google_compute_global_address.default.id
+}
+# [END cloudloadbalancing_cdn_with_backend_bucket_forwarding_rule]
+
+# [START cloudloadbalancing_cdn_with_backend_bucket_http_proxy]
+# http proxy
+resource "google_compute_target_http_proxy" "default" {
+  name    = "http-lb-proxy"
+  url_map = google_compute_url_map.default.id
+}
+# [END cloudloadbalancing_cdn_with_backend_bucket_http_proxy]
+
+# [START cloudloadbalancing_cdn_with_backend_bucket_url_map]
+# url map
+resource "google_compute_url_map" "default" {
+  name            = "http-lb"
+  default_service = google_compute_backend_bucket.default.id
+}
+# [END cloudloadbalancing_cdn_with_backend_bucket_url_map]
+
+# [START cloudloadbalancing_cdn_with_backend_bucket_backend_bucket]
+# backend bucket with CDN policy with default ttl settings
+resource "google_compute_backend_bucket" "default" {
+  name        = "cat-backend-bucket"
+  description = "Contains beautiful images"
+  bucket_name = google_storage_bucket.default.name
+  enable_cdn  = true
+  cdn_policy {
+    cache_mode        = "CACHE_ALL_STATIC"
+    client_ttl        = 3600
+    default_ttl       = 3600
+    max_ttl           = 86400
+    negative_caching  = true
+    serve_while_stale = 86400
+  }
+}
+# [END cloudloadbalancing_cdn_with_backend_bucket_backend_bucket]
