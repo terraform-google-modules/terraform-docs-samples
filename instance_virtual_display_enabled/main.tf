@@ -10,7 +10,7 @@ resource "google_compute_instance" "instance_virtual_display" {
   
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-9"
+      image = "debian-cloud/debian-11"
     }
   }
   network_interface {
