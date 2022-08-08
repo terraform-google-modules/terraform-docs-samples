@@ -75,7 +75,7 @@ resource "google_compute_router_nat" "default" {
 }
 # [END cloudrun_service_static_nat]
 
-# [START cloudrun_service_service]
+# [START cloudrun_service_static_service]
 resource "google_cloud_run_service" "default" {
   provider = google-beta
   name     = "cr-static-ip-service"
@@ -99,4 +99,4 @@ resource "google_cloud_run_service" "default" {
     }
   }
 }
-# [END cloudrun_service_service]
+# [END cloudrun_service_static_service]
