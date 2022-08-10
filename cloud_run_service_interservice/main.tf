@@ -2,7 +2,7 @@
 
 # [START cloudrun_service_interservice_public_service]
 resource "google_cloud_run_service" "default" {
-  name     = "private-service"
+  name     = "public-service"
   location = "us-central1"
 
   template {
@@ -57,7 +57,7 @@ resource "google_service_account" "default" {
 
 # [START cloudrun_service_interservice_private_service]
 resource "google_cloud_run_service" "default_private" {
-  name     = "private-service-private"
+  name     = "private-service"
   location = "us-central1"
 
   template {
