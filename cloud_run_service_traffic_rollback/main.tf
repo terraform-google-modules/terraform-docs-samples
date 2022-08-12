@@ -1,4 +1,4 @@
-# [START cloud_run_service_traffic_rollback]
+# [START cloudrun_service_traffic_rollback]
 resource "google_cloud_run_service" "default" {
   name     = "cloudrun-srv"
   location = "us-central1"
@@ -11,4 +11,4 @@ resource "google_cloud_run_service" "default" {
     revision_name = "cloudrun-srv-green"
   }
 }
-# [END cloud_run_service_traffic_rollback]
+# [END cloudrun_service_traffic_rollback]

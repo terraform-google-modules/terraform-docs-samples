@@ -1,4 +1,4 @@
-# [START cloud_run_service_traffic_split_tag]
+# [START cloudrun_service_traffic_split_tag]
 resource "google_cloud_run_service" "default" {
   name     = "cloudrun-srv"
   location = "us-central1"
@@ -19,4 +19,4 @@ resource "google_cloud_run_service" "default" {
     tag     = "tag-name"  
   }
 }
-# [END cloud_run_service_traffic_split_tag]
+# [END cloudrun_service_traffic_split_tag]
