@@ -1,4 +1,4 @@
-# [START cloud_run_service_remove_tag]
+# [START cloudrun_service_remove_tag]
 resource "google_cloud_run_service" "default" {
   name     = "cloudrun-srv"
   location = "us-central1"
@@ -19,4 +19,4 @@ resource "google_cloud_run_service" "default" {
     revision_name = "cloudrun-srv-blue"
   }
 }
-# [END cloud_run_service_remove_tag]
+# [END cloudrun_service_remove_tag]

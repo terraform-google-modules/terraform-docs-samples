@@ -1,4 +1,4 @@
-# [START cloud_run_service_traffic_split]
+# [START cloudrun_service_traffic_split]
 resource "google_cloud_run_service" "default" {
   name     = "cloudrun-srv"
   location = "us-central1"
@@ -25,4 +25,4 @@ resource "google_cloud_run_service" "default" {
     revision_name = "cloudrun-srv-blue"
   }
 }
-# [END cloud_run_service_traffic_split]
+# [END cloudrun_service_traffic_split]
