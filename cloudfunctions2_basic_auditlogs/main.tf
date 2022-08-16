@@ -5,21 +5,18 @@
 # https://cloud.google.com/eventarc/docs/path-patterns
 
 resource "google_storage_bucket" "source-bucket" {
-  provider = google-beta
   name     = "gcf-source-bucket"
   location = "US"
   uniform_bucket_level_access = true
 }
  
 resource "google_storage_bucket_object" "object" {
-  provider = google-beta
   name   = "function-source.zip"
   bucket = google_storage_bucket.source-bucket.name
   source = "function-source.zip"  # Add path to the zipped function source code
 }
 
 resource "google_service_account" "account" {
-  provider     = google-beta
   account_id   = "gcf-sa"
   display_name = "Test Service Account - used for both the cloud function and eventarc trigger in the test"
 }
@@ -28,7 +25,6 @@ resource "google_service_account" "account" {
 # Here we use Audit Logs to monitor the bucket so path patterns can be used in the example of
 # google_cloudfunctions2_function below (Audit Log events have path pattern support)
 resource "google_storage_bucket" "audit-log-bucket" {
-  provider = google-beta
   name     = "gcf-auditlog-bucket"
   location = "us-central1"  # The trigger must be in the same location as the bucket
   uniform_bucket_level_access = true
@@ -36,28 +32,24 @@ resource "google_storage_bucket" "audit-log-bucket" {
 
 # Permissions on the service account used by the function and Eventarc trigger
 resource "google_project_iam_member" "invoking" {
-  provider = google-beta
   project = "my-project-name"
   role    = "roles/run.invoker"
   member  = "serviceAccount:${google_service_account.account.email}"
 }
 
 resource "google_project_iam_member" "event-receiving" {
-  provider = google-beta
   project = "my-project-name"
   role    = "roles/eventarc.eventReceiver"
   member  = "serviceAccount:${google_service_account.account.email}"
 }
 
 resource "google_project_iam_member" "artifactregistry-reader" {
-  provider = google-beta
   project = "my-project-name"
   role     = "roles/artifactregistry.reader"
   member   = "serviceAccount:${google_service_account.account.email}"
 }
 
 resource "google_cloudfunctions2_function" "function" {
-  provider = google-beta
   depends_on = [
     google_project_iam_member.event-receiving,
     google_project_iam_member.artifactregistry-reader,
