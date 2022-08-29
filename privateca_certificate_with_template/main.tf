@@ -76,7 +76,7 @@ resource "google_privateca_certificate_template" "template" {
 
 resource "google_privateca_certificate_authority" "test-ca" {
   pool = ""
-  certificate_authority_id = "my-certificate-authority"
+  certificate_authority_id = "my-certificate-authority-test-ca"
   location = "us-central1"
   deletion_protection = false
   config {
@@ -117,8 +117,21 @@ resource "google_privateca_certificate" "default" {
   location = "us-central1"
   certificate_authority = google_privateca_certificate_authority.test-ca.certificate_authority_id
   lifetime = "860s"
-  name = "my-certificate"
-  pem_csr = file("test-fixtures/rsa_csr.pem")
+  name = "my-certificate-from-template"
+  pem_csr = tls_cert_request.example.cert_request_pem
   certificate_template = google_privateca_certificate_template.template.id
+}
+
+resource "tls_private_key" "example" {
+  algorithm   = "RSA"
+}
+
+resource "tls_cert_request" "example" {
+  private_key_pem = tls_private_key.example.private_key_pem
+
+  subject {
+    common_name  = "example.com"
+    organization = "ACME Examples, Inc"
+  }
 }
 # [END privateca_create_certificate_template]

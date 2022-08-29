@@ -2,8 +2,8 @@
 resource "google_privateca_certificate_authority" "authority" {
   // This example assumes this pool already exists.
   // Pools cannot be deleted in normal test circumstances, so we depend on static pools
-  pool = ""
-  certificate_authority_id = "my-authority"
+  pool = "my-pool"
+  certificate_authority_id = "my-sample-certificate-authority"
   location = "us-central1"
   deletion_protection = false
   config {
@@ -40,10 +40,10 @@ resource "google_privateca_certificate_authority" "authority" {
 
 
 resource "google_privateca_certificate" "default" {
-  pool = ""
+  pool = "my-pool"
   location = "us-central1"
   lifetime = "860s"
-  name = "my-certificate"
+  name = "my-sample-certificate"
   config {
     subject_config  {
       subject {
@@ -72,11 +72,19 @@ resource "google_privateca_certificate" "default" {
     }
     public_key {
       format = "PEM"
-      key = filebase64("test-fixtures/rsa_public.pem")
+      key = base64encode(data.tls_public_key.example.public_key_pem)
     }
   }
   // Certificates require an authority to exist in the pool, though they don't
   // need to be explicitly connected to it
   depends_on = [google_privateca_certificate_authority.authority]
+}
+
+resource "tls_private_key" "example" {
+  algorithm = "RSA"
+}
+
+data "tls_public_key" "example" {
+  private_key_pem = tls_private_key.example.private_key_pem
 }
 # [END privateca_create_certificate]

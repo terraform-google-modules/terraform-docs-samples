@@ -2,8 +2,8 @@
 resource "google_privateca_certificate_authority" "default" {
   // This example assumes this pool already exists.
   // Pools cannot be deleted in normal test circumstances, so we depend on static pools
-  pool = "ca-pool"
-  certificate_authority_id = "my-certificate-authority"
+  pool = "my-pool"
+  certificate_authority_id = "my-certificate-authority-hashicorp"
   location = "us-central1"
   deletion_protection = "true"
   config {

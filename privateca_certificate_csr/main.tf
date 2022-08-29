@@ -1,6 +1,6 @@
 # [START privateca_create_certificate_csr]
 resource "google_privateca_certificate_authority" "test-ca" {
-  pool = ""
+  pool = "my-pool"
   certificate_authority_id = "my-certificate-authority"
   location = "us-central1"
   deletion_protection = false
@@ -38,11 +38,25 @@ resource "google_privateca_certificate_authority" "test-ca" {
 
 
 resource "google_privateca_certificate" "default" {
-  pool = ""
+  pool = "my-pool"
   location = "us-central1"
   certificate_authority = google_privateca_certificate_authority.test-ca.certificate_authority_id
   lifetime = "860s"
   name = "my-certificate"
-  pem_csr = file("test-fixtures/rsa_csr.pem")
+  pem_csr = tls_cert_request.example.cert_request_pem
 }
+
+resource "tls_private_key" "example" {
+  algorithm   = "RSA"
+}
+
+resource "tls_cert_request" "example" {
+  private_key_pem = tls_private_key.example.private_key_pem
+
+  subject {
+    common_name  = "example.com"
+    organization = "ACME Examples, Inc"
+  }
+}
+
 # [END privateca_create_certificate_csr]
