@@ -4,8 +4,12 @@
 # and the docs:
 # https://cloud.google.com/eventarc/docs/path-patterns
 
+resource "random_id" "prefix" {
+  byte_length = 8
+}
+
 resource "google_storage_bucket" "source-bucket" {
-  name     = "gcf-source-bucket"
+  name     = "${random_id.prefix.hex}-gcf-source"
   location = "US"
   uniform_bucket_level_access = true
 }
@@ -31,21 +35,24 @@ resource "google_storage_bucket" "audit-log-bucket" {
 }
 
 # Permissions on the service account used by the function and Eventarc trigger
+data "google_project" "project" {
+}
+
 resource "google_project_iam_member" "invoking" {
-  project = "my-project-name"
+  project = data.google_project.project.project_id
   role    = "roles/run.invoker"
   member  = "serviceAccount:${google_service_account.account.email}"
 }
 
 resource "google_project_iam_member" "event-receiving" {
-  project = "my-project-name"
+  project = data.google_project.project.project_id
   role    = "roles/eventarc.eventReceiver"
   member  = "serviceAccount:${google_service_account.account.email}"
   depends_on = [google_project_iam_member.invoking]
 }
 
 resource "google_project_iam_member" "artifactregistry-reader" {
-  project = "my-project-name"
+  project = data.google_project.project.project_id
   role     = "roles/artifactregistry.reader"
   member   = "serviceAccount:${google_service_account.account.email}"
   depends_on = [google_project_iam_member.event-receiving]
