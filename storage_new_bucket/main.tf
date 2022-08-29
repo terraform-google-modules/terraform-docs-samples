@@ -1,8 +1,12 @@
 # [START storage_create_new_bucket_tf]
 # Create new storage bucket in the US multi-region
 # with coldline storage
+resource "random_id" "prefix" {
+  byte_length = 8
+}
+
 resource "google_storage_bucket" "static" {
-  name          = "new-bucket"
+  name          = "${random_id.prefix.hex}-new-bucket"
   location      = "US"
   storage_class = "COLDLINE"
 

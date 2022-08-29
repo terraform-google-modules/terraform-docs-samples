@@ -21,9 +21,13 @@ resource "google_pubsub_topic_iam_binding" "binding" {
   members  = ["serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"]
 }
 
+resource "random_id" "prefix" {
+  byte_length = 8
+}
+
 // Create a new storage bucket.
 resource "google_storage_bucket" "bucket" {
-  name     = "example-bucket-name"
+  name     = "${random_id.prefix.hex}-example-bucket-name"
   provider = google-beta
   location = "US"
   uniform_bucket_level_access = true
