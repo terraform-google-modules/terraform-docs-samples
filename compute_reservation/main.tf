@@ -3,7 +3,6 @@
 resource "google_compute_reservation" "gce_reservation_local" {
   name = "gce-reservation-local"
   zone = "us-central1-c"
-  project = "my-project-name"
 
   share_settings {
     share_type = "LOCAL"
