@@ -93,6 +93,7 @@ resource "google_cloud_run_service" "default" {
       annotations = {
         "run.googleapis.com/vpc-access-connector" = google_vpc_access_connector.default.name
         "run.googleapis.com/vpc-access-egress"    = "all-traffic"
+        "autoscaling.knative.dev/maxScale"        = "5"
       }
     }
   }
