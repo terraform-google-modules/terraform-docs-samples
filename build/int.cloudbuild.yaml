@@ -23,7 +23,7 @@ steps:
   - 'TF_VAR_billing_account=$_BILLING_ACCOUNT'
 - id: test-all-samples
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'go test -v']
+  args: ['/bin/bash', '-c', 'go test -v -timeout 0']
   dir: test/integration
 tags:
 - 'ci'
