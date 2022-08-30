@@ -75,7 +75,7 @@ resource "google_privateca_certificate_template" "template" {
 }
 
 resource "google_privateca_certificate_authority" "test-ca" {
-  pool = ""
+  pool = "my-pool"
   certificate_authority_id = "my-certificate-authority-test-ca"
   location = "us-central1"
   deletion_protection = false # set to true to prevent destruction of the resource
@@ -113,7 +113,7 @@ resource "google_privateca_certificate_authority" "test-ca" {
 
 
 resource "google_privateca_certificate" "default" {
-  pool = ""
+  pool = "my-pool"
   location = "us-central1"
   certificate_authority = google_privateca_certificate_authority.test-ca.certificate_authority_id
   lifetime = "860s"
