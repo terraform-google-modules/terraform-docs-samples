@@ -1,6 +1,6 @@
 # [START cloud_sql_sqlserver_instance_flags]
 resource "google_sql_database_instance" "instance" {
-  name             = "sqlserver-instance"
+  name             = "sqlserver-instance-flags"
   region           = "us-central1"
   database_version = "SQLSERVER_2019_STANDARD"
   root_password = "INSERT-PASSWORD-HERE"
