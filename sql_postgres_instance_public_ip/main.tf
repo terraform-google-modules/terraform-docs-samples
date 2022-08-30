@@ -17,6 +17,6 @@ resource "google_sql_database_instance" "postgres_public_ip_instance_name" {
     }
     tier = "db-custom-2-7680"
   }
-  deletion_protection =  "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_postgres_instance_public_ip]

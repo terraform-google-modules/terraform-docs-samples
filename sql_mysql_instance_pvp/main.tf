@@ -14,6 +14,6 @@ resource "google_sql_database_instance" "mysql_pvp_instance_name" {
       enable_password_policy = true
     }
   }
-  deletion_protection =  "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_mysql_instance_pvp]

@@ -10,6 +10,6 @@ resource "google_sql_database_instance" "instance" {
       start_time                     = "20:55"
     }
   }
-  deletion_protection =  "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_postgres_instance_backup]

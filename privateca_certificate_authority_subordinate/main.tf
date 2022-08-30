@@ -3,7 +3,7 @@ resource "google_privateca_certificate_authority" "root-ca" {
   pool = "my-pool"
   certificate_authority_id = "my-certificate-authority-root"
   location = "us-central1"
-  deletion_protection = false
+  deletion_protection = false # set to true to prevent destruction of the resource
   ignore_active_certificates_on_deletion = true
   config {
     subject_config {
@@ -43,7 +43,7 @@ resource "google_privateca_certificate_authority" "default" {
   pool = "my-pool"
   certificate_authority_id = "my-certificate-authority-sub"
   location = "us-central1"
-  deletion_protection = "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
   subordinate_config {
     certificate_authority = google_privateca_certificate_authority.root-ca.name
   }

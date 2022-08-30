@@ -3,7 +3,7 @@ resource "google_privateca_certificate_authority" "test-ca" {
   pool = "my-pool"
   certificate_authority_id = "my-certificate-authority"
   location = "us-central1"
-  deletion_protection = false
+  deletion_protection = false # set to true to prevent destruction of the resource
   config {
     subject_config {
       subject {

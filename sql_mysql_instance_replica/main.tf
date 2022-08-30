@@ -10,7 +10,7 @@ resource "google_sql_database_instance" "primary" {
       binary_log_enabled = "true"
     }
   }
-  deletion_protection =  "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_mysql_instance_primary]
 
@@ -30,6 +30,6 @@ resource "google_sql_database_instance" "read_replica" {
     availability_type = "ZONAL"
     disk_size         = "100"
   }
-  deletion_protection =  "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_mysql_instance_replica]

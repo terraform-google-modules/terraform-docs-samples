@@ -19,6 +19,6 @@ resource "google_sql_database_instance" "instance" {
     }
     tier = "db-custom-2-7680"
   }
-  deletion_protection = "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_sqlserver_instance_flags]
