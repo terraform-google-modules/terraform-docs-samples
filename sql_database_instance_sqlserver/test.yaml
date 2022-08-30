@@ -17,4 +17,5 @@ kind: BlueprintTest
 metadata:
   name: sql_database_instance_sqlserver
 spec:
-  skip: true # due to https://github.com/hashicorp/terraform-provider-google/issues/11891
+  skip: true
+ # due to https://github.com/hashicorp/terraform-provider-google/issues/11891
