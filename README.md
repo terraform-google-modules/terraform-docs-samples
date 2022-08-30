@@ -32,9 +32,6 @@ See [Work with a Terraform configuration](https://cloud.google.com/docs/terrafor
 
 Contributions are welcome!
 
-<!---For Google employees, see
-[go/terraform-on-cgc](https://cloud.google.com/guides/authoring/terraform/).-->
-
 ## Providing feedback
 
 Open an issue in this GitHub repository.
