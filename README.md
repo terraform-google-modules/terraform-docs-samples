@@ -2,8 +2,8 @@
 
 Terraform samples intended for inclusion in [cloud.google.com](https://cloud.google.com/).
 
-Typically, the samples appear on tabs in how-to guides. For example, see
-[Creating a SQL Server instance](https://cloud.google.com/compute/docs/instances/sql-server/creating-sql-server-instances#start_sql_instance)
+Typically, the samples are imported on tabs in how-to guides. For example, see
+[Creating a SQL Server instance](https://cloud.google.com/compute/docs/instances/sql-server/creating-sql-server-instances#start_sql_instance).
 
 ## Setup
 
@@ -26,16 +26,19 @@ authenticates Terraform, letting you get started with less setup.
 
 ## How to run a sample
 
-See [Work with a Terraform configuration ](https://cloud.google.com/docs/terraform/basic-commands).
+See [Work with a Terraform configuration](https://cloud.google.com/docs/terraform/basic-commands).
 
 ## Contributing
 
 Contributions are welcome!
 
-For Google employees, see
-[go/terraform-on-cgc](https://cloud.google.com/guides/authoring/terraform/).
+<!---For Google employees, see
+[go/terraform-on-cgc](https://cloud.google.com/guides/authoring/terraform/).-->
 
 ## Providing feedback
 
-From the Google Cloud documentation, click **Send feedback** near the top right
-of the page or at the bottom of the page. This opens a feedback form.
+Open an issue in this GitHub repository.
+
+Alternativly, from the Google Cloud documentation, click **Send feedback** near
+the top right of the page or at the bottom of the page. This opens a feedback
+form.
