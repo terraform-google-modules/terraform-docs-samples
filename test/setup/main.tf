@@ -49,5 +49,7 @@ module "project" {
     "artifactregistry.googleapis.com",
     "servicedirectory.googleapis.com",
     "workflows.googleapis.com",
+    "cloudkms.googleapis.com",
+    "servicenetworking.googleapis.com",
   ]
 }

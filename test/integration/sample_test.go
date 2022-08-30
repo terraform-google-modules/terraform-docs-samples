@@ -7,6 +7,7 @@ import (
 	"path"
 	"testing"
 	"text/template"
+	"time"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
 )
@@ -16,6 +17,12 @@ const (
 	sampleDir   = "../../"
 	logFileName = "test.log"
 )
+
+// Retry if these errors are encountered.
+var retryErrors = map[string]string{
+	// IAM for Eventarc service agent is eventually consistent
+	".*Permission denied while using the Eventarc Service Agent.*": "Eventarc Service Agent IAM is eventually consistent",
+}
 
 func TestSamples(t *testing.T) {
 	// This initial blueprint test is to extract output info
@@ -37,6 +44,7 @@ func TestSamples(t *testing.T) {
 			sampleTest := tft.NewTFBlueprintTest(t,
 				tft.WithTFDir(pth),
 				tft.WithSetupPath(setupPath),
+				tft.WithRetryableTerraformErrors(retryErrors, 10, time.Minute),
 			)
 			sampleTest.Test()
 		})
