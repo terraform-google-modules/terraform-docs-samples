@@ -40,13 +40,6 @@ Session.vim
 # Crash log files
 crash.log
 
-# Kitchen files
-**/inspec.lock
-**.gem
-**/.kitchen
-**/.kitchen.local.yml
-**/Gemfile.lock
-
 test/fixtures/shared/terraform.tfvars
 
 test/integration/gcloud/config.sh

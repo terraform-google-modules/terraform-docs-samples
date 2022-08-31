@@ -5,7 +5,7 @@ go 1.19
 require (
 	cloud.google.com/go v0.83.0 // indirect
 	cloud.google.com/go/storage v1.10.0 // indirect
-	github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.2.0 // indirect
+	github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.3.0 // indirect
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect

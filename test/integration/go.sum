@@ -67,6 +67,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.2.0 h1:lBn3C9bNzvcBOAlDjTFfOJktmYMlaohaCmPfTPjttek=
 github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.2.0/go.mod h1:E655Ka0BfIYALBmqU9ZbemLk/nutxw4vU6wkLEjshSA=
+github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.3.0 h1:aG9LnCzEcbJMblptKNZ5yIgPzHKCPqxZc6gmYo0n+ZQ=
+github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.3.0/go.mod h1:E655Ka0BfIYALBmqU9ZbemLk/nutxw4vU6wkLEjshSA=
 github.com/GoogleContainerTools/kpt-functions-sdk/go v0.0.0-20220301220754-6964a09d6cd2/go.mod h1:lJYiqfBOl6AOiefK9kmkhinbffIysu+nnclOBwKEPlQ=
 github.com/Microsoft/go-winio v0.4.11/go.mod h1:VhR8bwka0BXejwEJY73c50VrPtXAaKcyvVC4A4RozmA=
 github.com/Microsoft/go-winio v0.4.14/go.mod h1:qXqCSQ3Xa7+6tgxaGTIe4Kpcdsi+P8jBhyzoq1bpyYA=

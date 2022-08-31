@@ -1,21 +1,20 @@
 package samples_test
 
 import (
-	"bytes"
 	"io/ioutil"
-	"os"
 	"path"
 	"testing"
-	"text/template"
 	"time"
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
+	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
 )
 
 const (
-	setupPath   = "../setup"
-	sampleDir   = "../../"
-	logFileName = "test.log"
+	setupPath    = "../setup"
+	sampleDir    = "../../"
+	sampleRegion = "us-central1"
+	sampleZone   = "us-central1-a"
 )
 
 // Retry if these errors are encountered.
@@ -26,23 +25,26 @@ var retryErrors = map[string]string{
 
 func TestSamples(t *testing.T) {
 	// This initial blueprint test is to extract output info
-	// so we only have to render the template once as project_id is the same for all tests.
+	// so we only have to set the env vars once.
 	setup := tft.NewTFBlueprintTest(t,
 		tft.WithTFDir(sampleDir),
 		tft.WithSetupPath(setupPath),
 	)
-	providerConfig := renderProviderConfig(t, setup.GetTFSetupStringOutput("project_id"))
+	testProjectID := setup.GetTFSetupStringOutput("project_id")
+	testEnv := map[string]string{
+		"GOOGLE_PROJECT": testProjectID,
+		"GOOGLE_REGION":  sampleRegion,
+		"GOOGLE_ZONE":    sampleZone,
+	}
+	for k, v := range testEnv {
+		utils.SetEnv(t, k, v)
+	}
 
 	testCases := discoverTestCases(t)
 	for _, tc := range testCases {
 		t.Run(tc, func(t *testing.T) {
-			// write provider config to sample dir
-			pth := path.Join(sampleDir, tc)
-			cleanUp := createOrOverwriteFile(t, path.Join(pth, "provider.tf"), providerConfig)
-			defer cleanUp()
-
 			sampleTest := tft.NewTFBlueprintTest(t,
-				tft.WithTFDir(pth),
+				tft.WithTFDir(path.Join(sampleDir, tc)),
 				tft.WithSetupPath(setupPath),
 				tft.WithRetryableTerraformErrors(retryErrors, 10, time.Minute),
 			)
@@ -74,45 +76,4 @@ func discoverTestCases(t *testing.T) []string {
 		tc = append(tc, f.Name())
 	}
 	return tc
-}
-
-// createOrOverwriteFile creates or overwrites file pth with data.
-func createOrOverwriteFile(t *testing.T, pth string, data []byte) func() {
-	f, err := os.OpenFile(pth, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer f.Close()
-	_, err = f.Write(data)
-	if err != nil {
-		t.Fatal(err)
-	}
-	return func() { os.Remove(pth) }
-}
-
-var providerTmpl = template.Must(template.New("provider").Parse(`provider "google" {
-  project     = "{{ .ProjectID }}"
-  region      = "us-central1"
-  zone        = "us-central1-a"
-}
-provider "google-beta" {
-  project     = "{{ .ProjectID }}"
-  region      = "us-central1"
-  zone        = "us-central1-a"
-}
-`))
-
-// renderProviderConfig renders a provider config with projectID.
-func renderProviderConfig(t *testing.T, projectID string) []byte {
-	var providerConfig bytes.Buffer
-	err := providerTmpl.Execute(&providerConfig,
-		struct {
-			ProjectID string
-		}{
-			ProjectID: projectID,
-		})
-	if err != nil {
-		t.Fatalf("error rendering provider config: %v", err)
-	}
-	return providerConfig.Bytes()
 }
