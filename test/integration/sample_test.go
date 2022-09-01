@@ -11,10 +11,8 @@ import (
 )
 
 const (
-	setupPath    = "../setup"
-	sampleDir    = "../../"
-	sampleRegion = "us-central1"
-	sampleZone   = "us-central1-a"
+	setupPath = "../setup"
+	sampleDir = "../../"
 )
 
 // Retry if these errors are encountered.
@@ -33,8 +31,8 @@ func TestSamples(t *testing.T) {
 	testProjectID := setup.GetTFSetupStringOutput("project_id")
 	testEnv := map[string]string{
 		"GOOGLE_PROJECT": testProjectID,
-		"GOOGLE_REGION":  sampleRegion,
-		"GOOGLE_ZONE":    sampleZone,
+		"GOOGLE_REGION":  "us-central1",
+		"GOOGLE_ZONE":    "us-central1-a",
 	}
 	for k, v := range testEnv {
 		utils.SetEnv(t, k, v)
