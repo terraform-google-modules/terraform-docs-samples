@@ -2,17 +2,15 @@
 
 resource "google_project_service" "compute_api" {
   provider = google-beta
-  project                    = "my-project-name"
   service                    = "compute.googleapis.com"
-  disable_dependent_services = true
+  disable_dependent_services = false
   disable_on_destroy         = false
 }
 
 resource "google_project_service" "run_api" {
   provider = google-beta
-  project                    = "my-project-name"
   service                    = "run.googleapis.com"
-  disable_dependent_services = true
+  disable_dependent_services = false
   disable_on_destroy         = false
 }
 
@@ -32,7 +30,6 @@ variable "run_regions" {
 resource "google_compute_global_address" "lb_default" {
   provider = google-beta
   name    = "myservice-service-ip"
-  project = "my-project-name"
 
   # Use an explicit depends_on clause to wait until API is enabled
   depends_on = [
@@ -45,7 +42,6 @@ resource "google_compute_global_address" "lb_default" {
 resource "google_compute_backend_service" "lb_default" {
   provider = google-beta
   name                  = "myservice-backend"
-  project               = "my-project-name"
   load_balancing_scheme = "EXTERNAL_MANAGED"
 
   backend {
@@ -71,7 +67,6 @@ resource "google_compute_backend_service" "lb_default" {
 resource "google_compute_url_map" "lb_default" {
   provider = google-beta
   name            = "myservice-lb-urlmap"
-  project         = "my-project-name"
   default_service = google_compute_backend_service.lb_default.id
 
   path_matcher {
@@ -92,7 +87,6 @@ resource "google_compute_url_map" "lb_default" {
 resource "google_compute_managed_ssl_certificate" "lb_default" {
   provider = google-beta
   name    = "myservice-ssl-cert"
-  project = "my-project-name"
 
   managed {
     domains = [var.domain_name]
@@ -104,7 +98,6 @@ resource "google_compute_managed_ssl_certificate" "lb_default" {
 resource "google_compute_target_https_proxy" "lb_default" {
   provider = google-beta
   name    = "myservice-https-proxy"
-  project = "my-project-name"
   url_map = google_compute_url_map.lb_default.id
   ssl_certificates = [
     google_compute_managed_ssl_certificate.lb_default.name
@@ -119,7 +112,6 @@ resource "google_compute_target_https_proxy" "lb_default" {
 resource "google_compute_global_forwarding_rule" "lb_default" {
   provider = google-beta
   name                  = "myservice-lb-fr"
-  project               = "my-project-name"
   load_balancing_scheme = "EXTERNAL_MANAGED"
   target                = google_compute_target_https_proxy.lb_default.id
   ip_address            = google_compute_global_address.lb_default.id
@@ -132,7 +124,6 @@ resource "google_compute_global_forwarding_rule" "lb_default" {
 resource "google_compute_region_network_endpoint_group" "lb_default" {
   provider = google-beta
   count                 = length(var.run_regions)
-  project               = "my-project-name"
   name                  = "myservice-neg"
   network_endpoint_type = "SERVERLESS"
   region                = var.run_regions[count.index]
@@ -152,7 +143,6 @@ output "load_balancer_ip_addr" {
 resource "google_cloud_run_service" "run_default" {
   provider = google-beta
   count    = length(var.run_regions)
-  project  = "my-project-name"
   name     = "myservice-run-app-${var.run_regions[count.index]}"
   location = var.run_regions[count.index]
 
@@ -180,7 +170,6 @@ resource "google_cloud_run_service" "run_default" {
 resource "google_cloud_run_service_iam_member" "run_allow_unauthenticated" {
   provider = google-beta
   count    = length(var.run_regions)
-  project  = "my-project-name"
   location = google_cloud_run_service.run_default[count.index].location
   service  = google_cloud_run_service.run_default[count.index].name
   role     = "roles/run.invoker"
@@ -192,7 +181,6 @@ resource "google_cloud_run_service_iam_member" "run_allow_unauthenticated" {
 resource "google_compute_url_map" "https_default" {
   provider = google-beta
   name    = "myservice-https-urlmap"
-  project = "my-project-name"
 
   default_url_redirect {
     redirect_response_code = "MOVED_PERMANENTLY_DEFAULT"
@@ -206,7 +194,6 @@ resource "google_compute_url_map" "https_default" {
 resource "google_compute_target_http_proxy" "https_default" {
   provider = google-beta
   name    = "myservice-http-proxy"
-  project = "my-project-name"
   url_map = google_compute_url_map.https_default.id
 
   depends_on = [
@@ -219,7 +206,6 @@ resource "google_compute_target_http_proxy" "https_default" {
 resource "google_compute_global_forwarding_rule" "https_default" {
   provider = google-beta
   name       = "myservice-https-fr"
-  project    = "my-project-name"
   target     = google_compute_target_http_proxy.https_default.id
   ip_address = google_compute_global_address.lb_default.id
   port_range = "80"

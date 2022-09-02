@@ -1,10 +1,10 @@
 # [START functions_v2_basic]
-locals {
-  project = "my-project-name" # Google Cloud Platform Project ID
+resource "random_id" "bucket_prefix" {
+  byte_length = 8
 }
 
 resource "google_storage_bucket" "bucket" {
-  name     = "${local.project}-gcf-source"  # Every bucket name must be globally unique
+  name     = "${random_id.bucket_prefix.hex}-gcf-source"  # Every bucket name must be globally unique
   location = "US"
   uniform_bucket_level_access = true
 }

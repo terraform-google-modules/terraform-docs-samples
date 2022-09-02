@@ -10,6 +10,6 @@ resource "google_sql_database_instance" "default" {
       location                       = "asia-northeast1"
     }
   }
-  deletion_protection =  "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_mysql_instance_backup_location]

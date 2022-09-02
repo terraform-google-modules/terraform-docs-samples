@@ -15,6 +15,6 @@ resource "google_sql_database_instance" "postgres_pvp_instance_name" {
       enable_password_policy = true
     }
   }
-  deletion_protection =  "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_postgres_instance_pvp]
