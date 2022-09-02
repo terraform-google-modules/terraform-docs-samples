@@ -69,12 +69,12 @@ resource "google_compute_backend_bucket" "static" {
   enable_cdn  = true
 }
 
-resource "random_id" "prefix" {
+resource "random_id" "bucket_prefix" {
   byte_length = 8
 }
 
 resource "google_storage_bucket" "static" {
-  name     = "${random_id.prefix.hex}-static-asset-bucket"
+  name     = "${random_id.bucket_prefix.hex}-static-asset-bucket"
   location = "US"
 }
 # [END cloudloadbalancing_url_map_bucket_and_service]

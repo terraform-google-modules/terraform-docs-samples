@@ -1,11 +1,11 @@
 # [START functions_v2_basic_gcs]
 
-resource "random_id" "prefix" {
+resource "random_id" "bucket_prefix" {
   byte_length = 8
 }
 
 resource "google_storage_bucket" "source-bucket" {
-  name     = "${random_id.prefix.hex}-gcf-source"
+  name     = "${random_id.bucket_prefix.hex}-gcf-source"
   location = "US"
   uniform_bucket_level_access = true
 }

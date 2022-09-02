@@ -2,12 +2,12 @@
 
 # [START cloudloadbalancing_cdn_with_backend_bucket_cloud_storage_bucket]
 # Cloud Storage bucket
-resource "random_id" "prefix" {
+resource "random_id" "bucket_prefix" {
   byte_length = 8
 }
 
 resource "google_storage_bucket" "default" {
-  name                        = "${random_id.prefix.hex}-my-bucket"
+  name                        = "${random_id.bucket_prefix.hex}-my-bucket"
   location                    = "us-east1"
   uniform_bucket_level_access = true
   storage_class               = "STANDARD"

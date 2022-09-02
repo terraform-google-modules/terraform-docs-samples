@@ -1,5 +1,5 @@
 # [START functions_v2_full]
-resource "random_id" "prefix" {
+resource "random_id" "bucket_prefix" {
   byte_length = 8
 }
 
@@ -14,7 +14,7 @@ resource "google_pubsub_topic" "topic" {
 }
 
 resource "google_storage_bucket" "bucket" {
-  name     = "${random_id.prefix.hex}-gcf-source"  # Every bucket name must be globally unique
+  name     = "${random_id.bucket_prefix.hex}-gcf-source"  # Every bucket name must be globally unique
   location = "US"
   uniform_bucket_level_access = true
 }

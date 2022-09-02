@@ -1,10 +1,10 @@
-resource "random_id" "prefix" {
+resource "random_id" "bucket_prefix" {
   byte_length = 8
 }
 
 resource "google_storage_bucket" "default" {
   provider                    = google-beta
-  name                        = "${random_id.prefix.hex}-example-bucket-name"
+  name                        = "${random_id.bucket_prefix.hex}-example-bucket-name"
   location                    = "US"
   uniform_bucket_level_access = true
 }
