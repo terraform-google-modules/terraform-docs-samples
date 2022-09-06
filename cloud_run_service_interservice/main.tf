@@ -1,7 +1,7 @@
 # Example of using a public Cloud Run service to call a private one
 
 # [START cloudrun_service_interservice_public_service]
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_service" "public" {
   name     = "public-service"
   location = "us-central1"
 
@@ -16,7 +16,7 @@ resource "google_cloud_run_service" "default" {
         # service's URL as an environment variable.
         env {
           name = "URL"
-          value = google_cloud_run_service.default_private.status[0].url
+          value = google_cloud_run_service.private.status[0].url
         }
       }
 
@@ -39,9 +39,9 @@ data "google_iam_policy" "public" {
 }
 
 resource "google_cloud_run_service_iam_policy" "public" {
-  location    = google_cloud_run_service.default.location
-  project     = google_cloud_run_service.default.project
-  service     = google_cloud_run_service.default.name
+  location    = google_cloud_run_service.public.location
+  project     = google_cloud_run_service.public.project
+  service     = google_cloud_run_service.public.name
 
   policy_data = data.google_iam_policy.public.policy_data
 }
@@ -56,7 +56,7 @@ resource "google_service_account" "default" {
 # [END cloudrun_service_interservice_sa]
 
 # [START cloudrun_service_interservice_private_service]
-resource "google_cloud_run_service" "default_private" {
+resource "google_cloud_run_service" "private" {
   name     = "private-service"
   location = "us-central1"
 
@@ -83,9 +83,9 @@ data "google_iam_policy" "private" {
 }
 
 resource "google_cloud_run_service_iam_policy" "private" {
-  location    = google_cloud_run_service.default_private.location
-  project     = google_cloud_run_service.default_private.project
-  service     = google_cloud_run_service.default_private.name
+  location    = google_cloud_run_service.private.location
+  project     = google_cloud_run_service.private.project
+  service     = google_cloud_run_service.private.name
 
   policy_data = data.google_iam_policy.private.policy_data
 }
