@@ -15,7 +15,7 @@ resource "google_cloud_run_service" "public" {
         # Include a reference to the private Cloud Run
         # service's URL as an environment variable.
         env {
-          name = "URL"
+          name  = "URL"
           value = google_cloud_run_service.private.status[0].url
         }
       }
@@ -39,9 +39,9 @@ data "google_iam_policy" "public" {
 }
 
 resource "google_cloud_run_service_iam_policy" "public" {
-  location    = google_cloud_run_service.public.location
-  project     = google_cloud_run_service.public.project
-  service     = google_cloud_run_service.public.name
+  location = google_cloud_run_service.public.location
+  project  = google_cloud_run_service.public.project
+  service  = google_cloud_run_service.public.name
 
   policy_data = data.google_iam_policy.public.policy_data
 }
@@ -83,9 +83,9 @@ data "google_iam_policy" "private" {
 }
 
 resource "google_cloud_run_service_iam_policy" "private" {
-  location    = google_cloud_run_service.private.location
-  project     = google_cloud_run_service.private.project
-  service     = google_cloud_run_service.private.name
+  location = google_cloud_run_service.private.location
+  project  = google_cloud_run_service.private.project
+  service  = google_cloud_run_service.private.name
 
   policy_data = data.google_iam_policy.private.policy_data
 }
