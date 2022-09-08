@@ -7,7 +7,7 @@ resource "google_project_service" "aiplatform" {
 # [END vertex_ai_enable_api]
 
 # [START vertex_ai_metadata_store]
-resource "google_vertex_ai_metadata_store" "default" {
+resource "google_vertex_ai_metadata_store" "main" {
   name          = "test-store"
   provider      = google-beta
   description   = "Example metadata store"
