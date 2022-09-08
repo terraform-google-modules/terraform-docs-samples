@@ -15,7 +15,7 @@
  */
 
 locals {
-  num_projects = 3
+  num_projects = 4
   project_ids = module.projects.*.project_id
 }
 

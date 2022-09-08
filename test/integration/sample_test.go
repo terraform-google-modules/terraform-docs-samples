@@ -3,7 +3,6 @@ package samples_test
 import (
 	"fmt"
 	"io/ioutil"
-	"math"
 	"path"
 	"sort"
 	"testing"
@@ -72,7 +71,7 @@ var skipDiscoverDirs = map[string]bool{
 
 // discoverTestCaseGroups discovers individual sample directories in the parent directory.
 // It also skips known directories that are not samples.
-func discoverTestCaseGroups(t *testing.T, projects []string) []testGroups {
+func discoverTestCaseGroups(t *testing.T, projects []string) []*testGroups {
 	t.Helper()
 	samples := []string{}
 	dirs, err := ioutil.ReadDir(sampleDir)
@@ -89,17 +88,13 @@ func discoverTestCaseGroups(t *testing.T, projects []string) []testGroups {
 	sampleLen := len(samples)
 	t.Logf("discovered %d samples", sampleLen)
 
-	tcs := []testGroups{}
-	chunkSize := int(math.Ceil(float64(sampleLen) / float64(len(projects))))
-	t.Logf("using chunk size %d", sampleLen)
-	start := 0
+	tcs := []*testGroups{}
 	for i, project := range projects {
-		end := start + chunkSize
-		if end > sampleLen {
-			end = sampleLen
-		}
-		tcs = append(tcs, testGroups{projectID: project, samples: samples[start:end], group: i})
-		start = end
+		tcs = append(tcs, &testGroups{projectID: project, samples: []string{}, group: i})
+	}
+	for i, sample := range samples {
+		idx := i % len(projects)
+		tcs[idx].samples = append(tcs[idx].samples, sample)
 	}
 	return tcs
 }
