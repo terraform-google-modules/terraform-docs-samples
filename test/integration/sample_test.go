@@ -1,8 +1,11 @@
 package samples_test
 
 import (
+	"fmt"
 	"io/ioutil"
+	"math"
 	"path"
+	"sort"
 	"testing"
 	"time"
 
@@ -14,6 +17,12 @@ const (
 	setupPath = "../setup"
 	sampleDir = "../../"
 )
+
+type testGroups struct {
+	projectID string
+	group     int
+	samples   []string
+}
 
 // Retry if these errors are encountered.
 var retryErrors = map[string]string{
@@ -28,26 +37,29 @@ func TestSamples(t *testing.T) {
 		tft.WithTFDir(sampleDir),
 		tft.WithSetupPath(setupPath),
 	)
-	testProjectID := setup.GetTFSetupStringOutput("project_id")
+	testProjectIDs := setup.GetTFSetupOutputListVal("project_ids")
 	testEnv := map[string]string{
-		"GOOGLE_PROJECT": testProjectID,
-		"GOOGLE_REGION":  "us-central1",
-		"GOOGLE_ZONE":    "us-central1-a",
+		"GOOGLE_REGION": "us-central1",
+		"GOOGLE_ZONE":   "us-central1-a",
 	}
 	for k, v := range testEnv {
 		utils.SetEnv(t, k, v)
 	}
 
-	testCases := discoverTestCases(t)
-	for _, tc := range testCases {
-		t.Run(tc, func(t *testing.T) {
-			sampleTest := tft.NewTFBlueprintTest(t,
-				tft.WithTFDir(path.Join(sampleDir, tc)),
-				tft.WithSetupPath(setupPath),
-				tft.WithRetryableTerraformErrors(retryErrors, 10, time.Minute),
-			)
-			sampleTest.Test()
-		})
+	testGroups := discoverTestCaseGroups(t, testProjectIDs)
+	for _, tg := range testGroups {
+		for _, sample := range tg.samples {
+			testName := fmt.Sprintf("%d/%s", tg.group, sample)
+			t.Run(testName, func(t *testing.T) {
+				utils.SetEnv(t, "GOOGLE_PROJECT", tg.projectID)
+				sampleTest := tft.NewTFBlueprintTest(t,
+					tft.WithTFDir(path.Join(sampleDir, sample)),
+					tft.WithSetupPath(setupPath),
+					tft.WithRetryableTerraformErrors(retryErrors, 10, time.Minute),
+				)
+				sampleTest.Test()
+			})
+		}
 	}
 }
 
@@ -58,20 +70,36 @@ var skipDiscoverDirs = map[string]bool{
 	".git":  true,
 }
 
-// discoverTestCases discovers individual sample directories in the parent directory.
+// discoverTestCaseGroups discovers individual sample directories in the parent directory.
 // It also skips known directories that are not samples.
-func discoverTestCases(t *testing.T) []string {
+func discoverTestCaseGroups(t *testing.T, projects []string) []testGroups {
 	t.Helper()
-	tc := []string{}
-	samples, err := ioutil.ReadDir(sampleDir)
+	samples := []string{}
+	dirs, err := ioutil.ReadDir(sampleDir)
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, f := range samples {
+	for _, f := range dirs {
 		if !f.IsDir() || skipDiscoverDirs[f.Name()] {
 			continue
 		}
-		tc = append(tc, f.Name())
+		samples = append(samples, f.Name())
 	}
-	return tc
+	sort.Strings(samples)
+	sampleLen := len(samples)
+	t.Logf("discovered %d samples", sampleLen)
+
+	tcs := []testGroups{}
+	chunkSize := int(math.Ceil(float64(sampleLen) / float64(len(projects))))
+	t.Logf("using chunk size %d", sampleLen)
+	start := 0
+	for i, project := range projects {
+		end := start + chunkSize
+		if end > sampleLen {
+			end = sampleLen
+		}
+		tcs = append(tcs, testGroups{projectID: project, samples: samples[start:end], group: i})
+		start = end
+	}
+	return tcs
 }

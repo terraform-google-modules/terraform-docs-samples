@@ -14,11 +14,17 @@
  * limitations under the License.
  */
 
-module "project" {
+locals {
+  num_projects = 3
+  project_ids = module.projects.*.project_id
+}
+
+module "projects" {
+  count = local.num_projects
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 13.0"
 
-  name                    = "ci-tf-samples"
+  name                    = "ci-tf-samples-${count.index}"
   random_project_id       = true
   org_id                  = var.org_id
   folder_id               = var.folder_id

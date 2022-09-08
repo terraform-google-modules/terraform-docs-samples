@@ -14,23 +14,17 @@
  * limitations under the License.
  */
 
-locals {
-  int_required_roles = [
-    "roles/owner",
-  ]
-}
-
 resource "google_service_account" "int_test" {
-  project      = module.project.project_id
+  project      = module.projects[0].project_id
   account_id   = "ci-account"
   display_name = "ci-account"
 }
 
 resource "google_project_iam_member" "int_test" {
-  count = length(local.int_required_roles)
+  count = local.num_projects
 
-  project = module.project.project_id
-  role    = local.int_required_roles[count.index]
+  project = local.project_ids[count.index]
+  role    = "roles/owner"
   member  = "serviceAccount:${google_service_account.int_test.email}"
 }
 
