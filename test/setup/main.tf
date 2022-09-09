@@ -15,6 +15,9 @@
  */
 
 locals {
+  // Sample testing is run in parallel across num_projects.
+  // Discovery and test grouping is dynamic, only this number has to be increased
+  // and build/int.cloudbuild.yaml updated for new test group.
   num_projects = 4
   project_ids = module.projects.*.project_id
 }

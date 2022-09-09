@@ -17,6 +17,7 @@ const (
 	sampleDir = "../../"
 )
 
+// testGroups represents a collection of samples matched to a projectID.
 type testGroups struct {
 	projectID string
 	group     int
@@ -30,13 +31,7 @@ var retryErrors = map[string]string{
 }
 
 func TestSamples(t *testing.T) {
-	// This initial blueprint test is to extract output info
-	// so we only have to set the env vars once.
-	setup := tft.NewTFBlueprintTest(t,
-		tft.WithTFDir(sampleDir),
-		tft.WithSetupPath(setupPath),
-	)
-	testProjectIDs := setup.GetTFSetupOutputListVal("project_ids")
+	// common test env
 	testEnv := map[string]string{
 		"GOOGLE_REGION": "us-central1",
 		"GOOGLE_ZONE":   "us-central1-a",
@@ -45,7 +40,16 @@ func TestSamples(t *testing.T) {
 		utils.SetEnv(t, k, v)
 	}
 
+	// This initial blueprint test is to extract output info
+	// so we only have to set the env vars once.
+	setup := tft.NewTFBlueprintTest(t,
+		tft.WithTFDir(sampleDir),
+		tft.WithSetupPath(setupPath),
+	)
+	testProjectIDs := setup.GetTFSetupOutputListVal("project_ids")
+	// number of groups is determined by length of testProjectIDs slice
 	testGroups := discoverTestCaseGroups(t, testProjectIDs)
+
 	for _, tg := range testGroups {
 		for _, sample := range tg.samples {
 			testName := fmt.Sprintf("%d/%s", tg.group, sample)
@@ -69,7 +73,8 @@ var skipDiscoverDirs = map[string]bool{
 	".git":  true,
 }
 
-// discoverTestCaseGroups discovers individual sample directories in the parent directory.
+// discoverTestCaseGroups discovers individual sample directories in the parent directory
+// and assigns them to a test group based on projects provided.
 // It also skips known directories that are not samples.
 func discoverTestCaseGroups(t *testing.T, projects []string) []*testGroups {
 	t.Helper()
@@ -85,16 +90,18 @@ func discoverTestCaseGroups(t *testing.T, projects []string) []*testGroups {
 		samples = append(samples, f.Name())
 	}
 	sort.Strings(samples)
-	sampleLen := len(samples)
-	t.Logf("discovered %d samples", sampleLen)
 
-	tcs := []*testGroups{}
+	// One test group is associated to one project.
+	groups := []*testGroups{}
 	for i, project := range projects {
-		tcs = append(tcs, &testGroups{projectID: project, samples: []string{}, group: i})
+		groups = append(groups, &testGroups{projectID: project, samples: []string{}, group: i})
 	}
+	// Rather than chunking we assign them in a round robin fashion as some samples like sql takes more time.
+	// Chunking would result in all sql* assigned to a single project.
+	// We sort the sample slice beforehand so assignments should be stable for a given run.
 	for i, sample := range samples {
 		idx := i % len(projects)
-		tcs[idx].samples = append(tcs[idx].samples, sample)
+		groups[idx].samples = append(groups[idx].samples, sample)
 	}
-	return tcs
+	return groups
 }
