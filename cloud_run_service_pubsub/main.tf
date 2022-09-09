@@ -34,6 +34,7 @@ resource "google_cloud_run_service_iam_binding" "binding" {
 
 # [START cloudrun_service_pubsub_token_permissions]
 resource "google_project_iam_binding" "project" {
+  project = "PROJECT_ID"   # project - (Required) The project id of the target project. This is not inferred from the provider.
   role    = "roles/iam.serviceAccountTokenCreator"
   members = ["serviceAccount:${google_service_account.sa.email}"]
 }
