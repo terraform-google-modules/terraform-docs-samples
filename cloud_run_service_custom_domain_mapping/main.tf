@@ -1,6 +1,4 @@
 # [START cloudrun_custom_domain_mapping_run_service]
-data "google_project" "project" {}
-
 resource "google_cloud_run_service" "default" {
   name     = "cloud-run-srv"
   location = "us-central1"
@@ -18,6 +16,8 @@ resource "google_cloud_run_service" "default" {
 }
 # [END cloudrun_custom_domain_mapping_run_service]
 # [START cloudrun_custom_domain_mapping]
+data "google_project" "project" {}
+
 resource "google_cloud_run_domain_mapping" "default" {
   name     = "verified-domain.com"
   location = google_cloud_run_service.default.location
