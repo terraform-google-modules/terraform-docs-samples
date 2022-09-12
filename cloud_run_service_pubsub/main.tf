@@ -37,9 +37,15 @@ resource "google_cloud_run_service_iam_binding" "binding" {
 data "google_project" "project" {
 }
 
+resource "google_project_service_identity" "pubsub_agent" {
+  provider = google-beta
+  project  = data.google_project.project.project_id
+  service  = "pubsub.googleapis.com"
+}
+
 resource "google_project_iam_binding" "project_token_creator" {
   role    = "roles/iam.serviceAccountTokenCreator"
-  members = ["serviceAccount:service-${data.google_project.project.number}@gcp-sa-pubsub.iam.gserviceaccount.com"]
+  members = ["serviceAccount:${google_project_service_identity.pubsub_agent.email}"]
 }
 # [END cloudrun_service_pubsub_token_permissions]
 
