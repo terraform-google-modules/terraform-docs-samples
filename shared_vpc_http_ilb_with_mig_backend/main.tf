@@ -1,6 +1,6 @@
 # Shared VPC Internal HTTP load balancer with a managed instance group backend
 
-# [START cloudloadbalancing_shared_vpc_int_http_gce]
+# [START cloudloadbalancing_shared_vpc_http_ilb_example]
 # VPC network
 resource "google_compute_network" "default" {
   name                    = "l7-ilb-network"
@@ -64,7 +64,6 @@ resource "google_compute_forwarding_rule" "default" {
   name                  = "l7-ilb-forwarding-rule"
   provider              = google
   region                = "us-central1"
-  depends_on            = [google_compute_subnetwork.proxy_subnet]
   ip_protocol           = "TCP"
   load_balancing_scheme = "INTERNAL_MANAGED"
   port_range            = "80"
@@ -73,6 +72,7 @@ resource "google_compute_forwarding_rule" "default" {
   subnetwork            = google_compute_subnetwork.ilb_subnet.id
   network_tier          = "PREMIUM"
   project               = "my-service-project-01"
+  depends_on            = [google_compute_subnetwork.proxy_subnet]
 }
 
 # HTTP target proxy
@@ -218,7 +218,6 @@ resource "google_project_iam_binding" "default" {
 resource "google_compute_instance" "test_vm" {
   project      = "my-service-project-02"
   name         = "l7-ilb-test-vm"
-  depends_on   = [google_project_iam_binding.default]
   provider     = google
   zone         = "us-central1-b"
   machine_type = "e2-small"
@@ -236,5 +235,6 @@ resource "google_compute_instance" "test_vm" {
       metadata["ssh-keys"]
     ]
   }
+  depends_on   = [google_project_iam_binding.default]
 }
-# [END cloudloadbalancing_shared_vpc_int_http_gce]
+# [END cloudloadbalancing_shared_vpc_http_ilb_example]
