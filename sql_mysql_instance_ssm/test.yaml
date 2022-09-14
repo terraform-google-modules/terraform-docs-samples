@@ -15,6 +15,6 @@
 apiVersion: blueprints.cloud.google.com/v1alpha1
 kind: BlueprintTest
 metadata:
-  name: sql_mysql_instance_pvp
+  name: sql_mysql_instance_ssm
 spec:
   skip: true
