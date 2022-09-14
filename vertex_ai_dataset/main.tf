@@ -40,7 +40,7 @@ resource "google_vertex_ai_dataset" "text-dataset" {
 # [END vertex_ai_dataset_text]
 
 # [START vertex_ai_dataset_video]
-resource "google_vertex_ai_dataset" "video-dataset" {
+resource "google_vertex_ai_dataset" "video_dataset" {
   display_name          = "video-dataset"
   provider              = google-beta
   metadata_schema_uri   = "gs://google-cloud-aiplatform/schema/dataset/metadata/video_1.0.0.yaml"
