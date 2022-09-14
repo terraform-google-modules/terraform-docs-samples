@@ -4,7 +4,6 @@
 # VPC network
 resource "google_compute_network" "default" {
   name                    = "l7-ilb-network"
-  provider                = google
   auto_create_subnetworks = false
   project                 = "my-host-project"
 }
@@ -12,7 +11,6 @@ resource "google_compute_network" "default" {
 # proxy-only subnet
 resource "google_compute_subnetwork" "proxy_subnet" {
   name          = "l7-ilb-proxy-subnet"
-  provider      = google
   ip_cidr_range = "10.0.0.0/24"
   region        = "us-central1"
   purpose       = "INTERNAL_HTTPS_LOAD_BALANCER"
@@ -24,7 +22,6 @@ resource "google_compute_subnetwork" "proxy_subnet" {
 # backend subnet
 resource "google_compute_subnetwork" "ilb_subnet" {
   name          = "l7-ilb-subnet"
-  provider      = google
   ip_cidr_range = "10.0.1.0/24"
   region        = "us-central1"
   network       = google_compute_network.default.id
@@ -35,7 +32,6 @@ resource "google_compute_subnetwork" "ilb_subnet" {
 resource "google_compute_firewall" "fw_iap" {
   project       = "my-host-project"
   name          = "l7-ilb-fw-allow-iap-hc"
-  provider      = google
   direction     = "INGRESS"
   network       = google_compute_network.default.id
   source_ranges = ["130.211.0.0/22", "35.191.0.0/16", "35.235.240.0/20"]
@@ -48,7 +44,6 @@ resource "google_compute_firewall" "fw_iap" {
 resource "google_compute_firewall" "fw_ilb_to_backends" {
   project       = "my-host-project"
   name          = "l7-ilb-fw-allow-ilb-to-backends"
-  provider      = google
   direction     = "INGRESS"
   network       = google_compute_network.default.id
   source_ranges = ["0.0.0.0/0"]
@@ -62,7 +57,6 @@ resource "google_compute_firewall" "fw_ilb_to_backends" {
 # forwarding rule
 resource "google_compute_forwarding_rule" "default" {
   name                  = "l7-ilb-forwarding-rule"
-  provider              = google
   region                = "us-central1"
   ip_protocol           = "TCP"
   load_balancing_scheme = "INTERNAL_MANAGED"
@@ -77,17 +71,15 @@ resource "google_compute_forwarding_rule" "default" {
 
 # HTTP target proxy
 resource "google_compute_region_target_http_proxy" "default" {
-  name     = "l7-ilb-target-http-proxy"
-  provider = google
-  region   = "us-central1"
-  url_map  = google_compute_region_url_map.default.id
-  project  = "my-service-project-01"
+  name    = "l7-ilb-target-http-proxy"
+  region  = "us-central1"
+  url_map = google_compute_region_url_map.default.id
+  project = "my-service-project-01"
 }
 
 # URL map
 resource "google_compute_region_url_map" "default" {
   name            = "l7-ilb-regional-url-map"
-  provider        = google
   region          = "us-central1"
   default_service = google_compute_region_backend_service.default.id
   project         = "my-service-project-01"
@@ -95,10 +87,9 @@ resource "google_compute_region_url_map" "default" {
 
 # regional health check
 resource "google_compute_region_health_check" "default" {
-  project  = "my-service-project-02"
-  name     = "l7-ilb-rhc"
-  provider = google
-  region   = "us-central1"
+  project = "my-service-project-02"
+  name    = "l7-ilb-rhc"
+  region  = "us-central1"
   http_health_check {
     port_specification = "USE_SERVING_PORT"
   }
@@ -108,7 +99,6 @@ resource "google_compute_region_health_check" "default" {
 resource "google_compute_region_backend_service" "default" {
   project               = "my-service-project-02"
   name                  = "l7-ilb-backend-service"
-  provider              = google
   region                = "us-central1"
   protocol              = "HTTP"
   load_balancing_scheme = "INTERNAL_MANAGED"
@@ -136,7 +126,6 @@ resource "google_compute_health_check" "default" {
 resource "google_compute_instance_template" "default" {
   project      = "my-service-project-02"
   name         = "l7-ilb-mig-template"
-  provider     = google
   machine_type = "e2-small"
   tags         = ["http-server"]
 
@@ -176,18 +165,13 @@ resource "google_compute_instance_template" "default" {
       EOF
     EOF1
   }
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 # MIG
 resource "google_compute_region_instance_group_manager" "default" {
-  project  = "my-service-project-02"
-  name     = "l7-ilb-mig1"
-  depends_on            = [google_project_iam_binding.default]
-  provider = google
-  region   = "us-central1"
+  project    = "my-service-project-02"
+  name       = "l7-ilb-mig1"
+  region     = "us-central1"
   version {
     instance_template = google_compute_instance_template.default.id
     name              = "primary"
@@ -198,6 +182,7 @@ resource "google_compute_region_instance_group_manager" "default" {
     health_check      = google_compute_health_check.default.id
     initial_delay_sec = 300
   }
+  depends_on = [google_project_iam_binding.default]
 }
 
 data "google_project" "service_project02" {
@@ -218,7 +203,6 @@ resource "google_project_iam_binding" "default" {
 resource "google_compute_instance" "test_vm" {
   project      = "my-service-project-02"
   name         = "l7-ilb-test-vm"
-  provider     = google
   zone         = "us-central1-b"
   machine_type = "e2-small"
   network_interface {
@@ -235,6 +219,6 @@ resource "google_compute_instance" "test_vm" {
       metadata["ssh-keys"]
     ]
   }
-  depends_on   = [google_project_iam_binding.default]
+  depends_on = [google_project_iam_binding.default]
 }
 # [END cloudloadbalancing_shared_vpc_http_ilb_example]
