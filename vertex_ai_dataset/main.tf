@@ -29,7 +29,7 @@ resource "google_vertex_ai_dataset" "tabular_dataset" {
 # [END vertex_ai_dataset_tabular]
 
 # [START vertex_ai_dataset_text]
-resource "google_vertex_ai_dataset" "text-dataset" {
+resource "google_vertex_ai_dataset" "text_dataset" {
   display_name          = "text-dataset"
   provider              = google-beta
   metadata_schema_uri   = "gs://google-cloud-aiplatform/schema/dataset/metadata/text_1.0.0.yaml"
