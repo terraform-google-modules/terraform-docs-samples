@@ -7,7 +7,7 @@ resource "google_project_service" "aiplatform" {
 # [END vertex_ai_enable_api]
 
 # [START vertex_ai_dataset_image]
-resource "google_vertex_ai_dataset" "image-dataset" {
+resource "google_vertex_ai_dataset" "image_dataset" {
   display_name          = "image-dataset"
   provider              = google-beta
   metadata_schema_uri   = "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml"
