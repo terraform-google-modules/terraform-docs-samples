@@ -18,7 +18,7 @@ resource "google_vertex_ai_dataset" "image_dataset" {
 # [END vertex_ai_dataset_image]
 
 # [START vertex_ai_dataset_tabular]
-resource "google_vertex_ai_dataset" "tabular-dataset" {
+resource "google_vertex_ai_dataset" "tabular_dataset" {
   display_name          = "tabular-dataset"
   provider              = google-beta
   metadata_schema_uri   = "gs://google-cloud-aiplatform/schema/dataset/metadata/tabular_1.0.0.yaml"
