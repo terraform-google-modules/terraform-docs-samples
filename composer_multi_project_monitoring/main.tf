@@ -88,7 +88,7 @@ resource "google_monitoring_alert_policy" "environment_health" {
     }
   }
 
-
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -120,6 +120,7 @@ resource "google_monitoring_alert_policy" "database_health" {
         }
     }
   }
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -150,6 +151,8 @@ resource "google_monitoring_alert_policy" "webserver_health" {
         }
     }
   }
+
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -182,6 +185,8 @@ resource "google_monitoring_alert_policy" "scheduler_heartbeat" {
         }
     }
   }
+
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -206,6 +211,8 @@ resource "google_monitoring_alert_policy" "database_cpu" {
         }
     }
   }
+
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -232,6 +239,8 @@ resource "google_monitoring_alert_policy" "scheduler_cpu" {
         }
     }
   }
+
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -258,6 +267,8 @@ resource "google_monitoring_alert_policy" "worker_cpu" {
         }
     }
   }
+
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -284,6 +295,8 @@ resource "google_monitoring_alert_policy" "webserver_cpu" {
         }
     }
   }
+
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -308,6 +321,7 @@ resource "google_monitoring_alert_policy" "parsing_time" {
         }
     }
   }
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -332,6 +346,7 @@ resource "google_monitoring_alert_policy" "database_memory" {
         }
     }
   }
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -363,6 +378,7 @@ resource "google_monitoring_alert_policy" "scheduler_memory" {
           "Scheduler Memory exceeds a threshold, summed across all schedulers in the environment. ",
           "Add more schedulers OR increase scheduler's memory OR reduce scheduling load (e.g. through lower parsing frequency or lower number of DAGs/tasks running"])
   }
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -389,6 +405,7 @@ resource "google_monitoring_alert_policy" "worker_memory" {
         }
     }
   }
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -415,6 +432,7 @@ resource "google_monitoring_alert_policy" "webserver_memory" {
         }
     }
   }
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -440,6 +458,7 @@ resource "google_monitoring_alert_policy" "scheduled_tasks_percentage" {
         }
     }
   }
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -466,6 +485,7 @@ resource "google_monitoring_alert_policy" "queued_tasks_percentage" {
         }
     }
   }
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -492,6 +512,7 @@ resource "google_monitoring_alert_policy" "queued_or_scheduled_tasks_percentage"
         }
     }
   }
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -522,6 +543,7 @@ resource "google_monitoring_alert_policy" "workers_above_minimum" {
         }
     }
   }
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -546,6 +568,7 @@ resource "google_monitoring_alert_policy" "pod_evictions" {
         }
     }
   }
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -573,6 +596,7 @@ resource "google_monitoring_alert_policy" "scheduler_errors" {
         }
     }
   }
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -600,6 +624,7 @@ resource "google_monitoring_alert_policy" "worker_errors" {
         }
     }
   }
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -627,6 +652,7 @@ resource "google_monitoring_alert_policy" "webserver_errors" {
         }
     }
   }
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
@@ -655,6 +681,7 @@ resource "google_monitoring_alert_policy" "other_errors" {
         }
     }
   }
+  # uncomment to set an auto close strategy for the alert
   #alert_strategy {
   #    auto_close = "30m"
   #}
