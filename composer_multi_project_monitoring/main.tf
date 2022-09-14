@@ -46,10 +46,10 @@ provider "google" {
 ########################################################
 
 resource "google_monitoring_monitored_project" "projects_monitored" {
+  provider      = google-beta
   for_each = local.monitored_projects
   metrics_scope = join("",["locations/global/metricsScopes/",local.monitoring_project])
-  name          = "${each.value}"
-  provider      = google-beta
+  name          = each.value
 }
 
 
