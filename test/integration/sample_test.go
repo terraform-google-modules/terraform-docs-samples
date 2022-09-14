@@ -100,8 +100,8 @@ func discoverTestCaseGroups(t *testing.T, projects []string) []*testGroups {
 	// Chunking would result in all sql* assigned to a single project.
 	// We sort the sample slice beforehand so assignments should be stable for a given run.
 	for i, sample := range samples {
-		idx := i % len(projects)
-		groups[idx].samples = append(groups[idx].samples, sample)
+		groupIndex := i % len(projects)
+		groups[groupIndex].samples = append(groups[groupIndex].samples, sample)
 	}
 	return groups
 }

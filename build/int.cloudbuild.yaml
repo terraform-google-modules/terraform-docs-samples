@@ -45,7 +45,6 @@ steps:
   dir: test/integration
   waitFor:
     - prepare
-
 tags:
 - 'ci'
 - 'integration'
