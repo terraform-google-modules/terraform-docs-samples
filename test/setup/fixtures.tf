@@ -16,7 +16,9 @@
 
 # ca pool to use in privateca samples
 resource "google_privateca_ca_pool" "default" {
-  project  = module.project.project_id
+  count = local.num_projects
+
+  project  = local.project_ids[count.index]
   name     = "my-pool"
   location = "us-central1"
   tier     = "ENTERPRISE"
