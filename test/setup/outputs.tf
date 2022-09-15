@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-output "project_id" {
-  value = module.project.project_id
+output "project_ids" {
+  value = local.project_ids
 }
 
 output "sa_key" {
