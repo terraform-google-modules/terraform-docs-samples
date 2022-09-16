@@ -3,9 +3,9 @@
 #   
 #   Usage:
 #       1. Create a new project that you will use for monitoring of Cloud Composer environments in other projects
-#       2. Store the name of this project in "monitoring_project" variable below, in the locals block
-#       3. Save the list of projects with Cloud Composer environments to be monitored in "monitored_projects", set in the locals block
-#       4. Run "terraform apply"
+#       2. Replace YOUR_MONITORING_PROJECT with the name of this project in the "metrics_scope" parameter that is part of the "Add Monitored Projects to the Monitoring project" section
+#       3. Replace the list of projects to monitor with your list of projects with Cloud Composer environments to be monitored in the "for_each" parameter of the "Add Monitored Projects to the Monitoring project" section
+#       4. Set up your environment and apply the configuration following these steps: https://cloud.google.com/docs/terraform/basic-commands. Your GOOGLE_CLOUD_PROJECT environment variable should be the new monitoring project you just created.
 #
 #   The script creates the following resources in the monitoring project:
 #           1. Adds monitored projects to Cloud Monitoring
@@ -14,30 +14,6 @@
 #
 
 
-#######################################################
-#  
-# Overall settings
-#
-########################################################
-
-
-locals {
-    monitoring_project = "YOUR_MONITORING_PROJECT"
-    monitored_projects = toset(["YOUR_PROJECT_TO_MONITOR_1", "YOUR_PROJECT_TO_MONITOR_2", "YOUR_PROJECT_TO_MONITOR_3"])
-}
-
-#######################################################
-#  
-# Provider
-#
-########################################################
-
-provider "google-beta" {
-  project = local.monitoring_project
-}
-provider "google" {
-  project = local.monitoring_project
-}
 
 #######################################################
 #  
@@ -46,9 +22,8 @@ provider "google" {
 ########################################################
 
 resource "google_monitoring_monitored_project" "projects_monitored" {
-  provider      = google-beta
-  for_each = local.monitored_projects
-  metrics_scope = join("",["locations/global/metricsScopes/",local.monitoring_project])
+  for_each = toset(["YOUR_PROJECT_TO_MONITOR_1", "YOUR_PROJECT_TO_MONITOR_2", "YOUR_PROJECT_TO_MONITOR_3"])
+  metrics_scope = join("",["locations/global/metricsScopes/","YOUR_MONITORING_PROJECT"])
   name          = each.value
 }
 
