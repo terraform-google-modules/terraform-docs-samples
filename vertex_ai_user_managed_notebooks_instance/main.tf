@@ -1,10 +1,14 @@
-# [START vertex_ai_enable_api]
 resource "google_project_service" "aiplatform" {
   provider           = google-beta
   service            = "aiplatform.googleapis.com"
   disable_on_destroy = false
 }
-# [END vertex_ai_enable_api]
+
+resource "google_project_service" "notebooks" {
+  provider           = google-beta
+  service            = "notebooks.googleapis.com"
+  disable_on_destroy = false
+}
 
 # [START vertex_ai_user_managed_notebooks_instance_basic]
 resource "google_notebooks_instance" "basic_instance" {
@@ -18,7 +22,10 @@ resource "google_notebooks_instance" "basic_instance" {
     image_family = "tf-latest-cpu"
   }
 
-  depends_on = [google_project_service.aiplatform]
+  depends_on = [
+    google_project_service.aiplatform,
+    google_project_service.notebooks
+  ]
 }
 # [END vertex_ai_user_managed_notebooks_instance_basic]
 
@@ -38,7 +45,10 @@ resource "google_notebooks_instance" "container_instance" {
     tag        = "latest"
   }
 
-  depends_on = [google_project_service.aiplatform]
+  depends_on = [
+    google_project_service.aiplatform,
+    google_project_service.notebooks
+  ]
 }
 # [END vertex_ai_user_managed_notebooks_instance_container]
 
@@ -59,6 +69,9 @@ resource "google_notebooks_instance" "gpu_instance" {
     image_family = "tf-latest-gpu"
   }
 
-  depends_on = [google_project_service.aiplatform]
+  depends_on = [
+    google_project_service.aiplatform,
+    google_project_service.notebooks
+  ]
 }
 # [END vertex_ai_user_managed_notebooks_instance_gpu]
