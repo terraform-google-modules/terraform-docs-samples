@@ -1,10 +1,14 @@
-# [START vertex_ai_enable_api]
 resource "google_project_service" "aiplatform" {
   provider           = google-beta
   service            = "aiplatform.googleapis.com"
   disable_on_destroy = false
 }
-# [END vertex_ai_enable_api]
+
+resource "google_project_service" "notebooks" {
+  provider           = google-beta
+  service            = "notebooks.googleapis.com"
+  disable_on_destroy = false
+}
 
 # [START vertex_ai_managed_notebooks_runtime_basic]
 resource "google_notebooks_runtime" "basic_runtime" {
@@ -28,7 +32,10 @@ resource "google_notebooks_runtime" "basic_runtime" {
     }
   }
 
-  depends_on = [google_project_service.aiplatform]
+  depends_on = [
+    google_project_service.aiplatform,
+    google_project_service.notebooks
+  ]
 }
 # [END vertex_ai_managed_notebooks_runtime_basic]
 
@@ -62,7 +69,10 @@ resource "google_notebooks_runtime" "gpu_runtime" {
     }
   }
 
-  depends_on = [google_project_service.aiplatform]
+  depends_on = [
+    google_project_service.aiplatform,
+    google_project_service.notebooks
+  ]
 }
 # [END vertex_ai_managed_notebooks_runtime_gpu]
 
@@ -96,7 +106,10 @@ resource "google_notebooks_runtime" "container_runtime" {
     }
   }
 
-  depends_on = [google_project_service.aiplatform]
+  depends_on = [
+    google_project_service.aiplatform,
+    google_project_service.notebooks
+  ]
 }
 # [END vertex_ai_managed_notebooks_runtime_container]
 
@@ -129,9 +142,12 @@ resource "google_notebooks_runtime" "kernel_runtime" {
     }
   }
 
-  depends_on = [google_project_service.aiplatform]
+  depends_on = [
+    google_project_service.aiplatform,
+    google_project_service.notebooks
+  ]
 }
-# [START vertex_ai_managed_notebooks_runtime_kernel]
+# [END vertex_ai_managed_notebooks_runtime_kernel]
 
 # [START vertex_ai_managed_notebooks_runtime_script]
 resource "google_notebooks_runtime" "script_runtime" {
@@ -159,7 +175,10 @@ resource "google_notebooks_runtime" "script_runtime" {
     }
   }
 
-  depends_on = [google_project_service.aiplatform]
+  depends_on = [
+    google_project_service.aiplatform,
+    google_project_service.notebooks
+  ]
 }
-# [START vertex_ai_managed_notebooks_runtime_script]
+# [END vertex_ai_managed_notebooks_runtime_script]
 
