@@ -61,6 +61,8 @@ resource "google_notebooks_runtime" "gpu_runtime" {
       }
     }
   }
+
+  depends_on = [google_project_service.aiplatform]
 }
 # [END vertex_ai_managed_notebooks_runtime_gpu]
 
@@ -93,6 +95,8 @@ resource "google_notebooks_runtime" "container_runtime" {
       }
     }
   }
+
+  depends_on = [google_project_service.aiplatform]
 }
 # [END vertex_ai_managed_notebooks_runtime_container]
 
@@ -105,7 +109,7 @@ resource "google_notebooks_runtime" "kernel_runtime" {
     access_type   = "SINGLE_USER"
     runtime_owner = "admin@hashicorptest.com"
   }
-  
+
   software_config {
     kernels {
       repository = "gcr.io/deeplearning-platform-release/base-cpu"
@@ -124,6 +128,8 @@ resource "google_notebooks_runtime" "kernel_runtime" {
       }
     }
   }
+
+  depends_on = [google_project_service.aiplatform]
 }
 # [START vertex_ai_managed_notebooks_runtime_kernel]
 
@@ -152,6 +158,8 @@ resource "google_notebooks_runtime" "script_runtime" {
       }
     }
   }
+
+  depends_on = [google_project_service.aiplatform]
 }
 # [START vertex_ai_managed_notebooks_runtime_script]
 
