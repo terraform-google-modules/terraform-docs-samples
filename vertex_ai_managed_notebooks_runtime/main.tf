@@ -1,14 +1,15 @@
-resource "google_project_service" "aiplatform" {
-  provider           = google-beta
-  service            = "aiplatform.googleapis.com"
-  disable_on_destroy = false
-}
-
+# [START vertex_ai_notebooks_api_enable]
 resource "google_project_service" "notebooks" {
   provider           = google-beta
   service            = "notebooks.googleapis.com"
   disable_on_destroy = false
 }
+
+resource "time_sleep" "wait_60_seconds_after_api_enabled" {
+  depends_on      = [google_project_service.notebooks]
+  create_duration = "60s"
+}
+# [END vertex_ai_notebooks_api_enable]
 
 # [START vertex_ai_managed_notebooks_runtime_basic]
 resource "google_notebooks_runtime" "basic_runtime" {
@@ -33,8 +34,7 @@ resource "google_notebooks_runtime" "basic_runtime" {
   }
 
   depends_on = [
-    google_project_service.aiplatform,
-    google_project_service.notebooks
+    time_sleep.wait_60_seconds_after_api_enabled
   ]
 }
 # [END vertex_ai_managed_notebooks_runtime_basic]
@@ -70,8 +70,7 @@ resource "google_notebooks_runtime" "gpu_runtime" {
   }
 
   depends_on = [
-    google_project_service.aiplatform,
-    google_project_service.notebooks
+    time_sleep.wait_60_seconds_after_api_enabled
   ]
 }
 # [END vertex_ai_managed_notebooks_runtime_gpu]
@@ -107,8 +106,7 @@ resource "google_notebooks_runtime" "container_runtime" {
   }
 
   depends_on = [
-    google_project_service.aiplatform,
-    google_project_service.notebooks
+    time_sleep.wait_60_seconds_after_api_enabled
   ]
 }
 # [END vertex_ai_managed_notebooks_runtime_container]
@@ -143,8 +141,7 @@ resource "google_notebooks_runtime" "kernel_runtime" {
   }
 
   depends_on = [
-    google_project_service.aiplatform,
-    google_project_service.notebooks
+    time_sleep.wait_60_seconds_after_api_enabled
   ]
 }
 # [END vertex_ai_managed_notebooks_runtime_kernel]
@@ -176,8 +173,7 @@ resource "google_notebooks_runtime" "script_runtime" {
   }
 
   depends_on = [
-    google_project_service.aiplatform,
-    google_project_service.notebooks
+    time_sleep.wait_60_seconds_after_api_enabled
   ]
 }
 # [END vertex_ai_managed_notebooks_runtime_script]
