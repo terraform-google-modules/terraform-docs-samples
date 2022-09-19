@@ -14,11 +14,20 @@
  * limitations under the License.
  */
 
-module "project" {
+locals {
+  // Sample testing is run in parallel across num_projects.
+  // Discovery and test grouping is dynamic, only this number has to be increased
+  // and build/int.cloudbuild.yaml updated for new test group.
+  num_projects = 4
+  project_ids = module.projects.*.project_id
+}
+
+module "projects" {
+  count = local.num_projects
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 13.0"
 
-  name                    = "ci-tf-samples"
+  name                    = "ci-tf-samples-${count.index}"
   random_project_id       = true
   org_id                  = var.org_id
   folder_id               = var.folder_id

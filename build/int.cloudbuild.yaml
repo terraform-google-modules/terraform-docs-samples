@@ -21,10 +21,30 @@ steps:
   - 'TF_VAR_org_id=$_ORG_ID'
   - 'TF_VAR_folder_id=$_FOLDER_ID'
   - 'TF_VAR_billing_account=$_BILLING_ACCOUNT'
-- id: test-all-samples
+- id: test-samples-0
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'go test -v -timeout 0']
+  args: ['/bin/bash', '-c', 'go test -v -timeout 0 -run TestSamples/0']
   dir: test/integration
+  waitFor:
+    - prepare
+- id: test-samples-1
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'go test -v -timeout 0 -run TestSamples/1']
+  dir: test/integration
+  waitFor:
+    - prepare
+- id: test-samples-2
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'go test -v -timeout 0 -run TestSamples/2']
+  dir: test/integration
+  waitFor:
+    - prepare
+- id: test-samples-3
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'go test -v -timeout 0 -run TestSamples/3']
+  dir: test/integration
+  waitFor:
+    - prepare
 tags:
 - 'ci'
 - 'integration'
