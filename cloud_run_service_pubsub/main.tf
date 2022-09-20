@@ -1,6 +1,6 @@
 # [START cloudrun_service_pubsub_service]
 resource "google_cloud_run_service" "default" {
-  name     = "cloud_run_service_name"
+  name     = "pubsub-tutorial"
   location = "us-central1"
   template {
     spec {
