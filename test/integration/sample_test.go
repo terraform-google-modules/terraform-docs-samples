@@ -55,10 +55,13 @@ func TestSamples(t *testing.T) {
 			testName := fmt.Sprintf("%d/%s", tg.group, sample)
 			t.Run(testName, func(t *testing.T) {
 				utils.SetEnv(t, "GOOGLE_PROJECT", tg.projectID)
+				fLog, fLogCloser := utils.NewTestFileLogger(t, fmt.Sprintf("%s.log", sample))
+				defer fLogCloser(t)
 				sampleTest := tft.NewTFBlueprintTest(t,
 					tft.WithTFDir(path.Join(sampleDir, sample)),
 					tft.WithSetupPath(setupPath),
 					tft.WithRetryableTerraformErrors(retryErrors, 10, time.Minute),
+					tft.WithLogger(fLog),
 				)
 				sampleTest.Test()
 			})
