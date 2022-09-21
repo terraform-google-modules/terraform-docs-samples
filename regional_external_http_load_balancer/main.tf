@@ -84,7 +84,18 @@ resource "google_compute_instance_template" "default" {
   }
   machine_type = "n1-standard-1"
   metadata = {
-    startup-script = "#! /bin/bash\nsudo apt-get update\nsudo apt-get install apache2 -y\nsudo a2ensite default-ssl\nsudo a2enmod ssl\nsudo vm_hostname=\"$(curl -H \"Metadata-Flavor:Google\" \\\nhttp://169.254.169.254/computeMetadata/v1/instance/name)\"\nsudo echo \"Page served from: $vm_hostname\" | \\\ntee /var/www/html/index.html\nsudo systemctl restart apache2"
+    startup-script = <<EOF
+    #! /bin/bash
+    sudo apt-get update
+    sudo apt-get install apache2 -y
+    sudo a2ensite default-ssl
+    sudo a2enmod ssl
+    vm_hostname="$(curl -H "Metadata-Flavor:Google" \
+    http://169.254.169.254/computeMetadata/v1/instance/name)"
+    sudo echo "Page served from: $vm_hostname" | \
+    tee /var/www/html/index.html
+    sudo systemctl restart apache2
+    EOF
   }
   network_interface {
     access_config {
