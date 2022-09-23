@@ -10,7 +10,7 @@ resource "google_secret_manager_secret" "dbuser" {
 # [START cloudrun_service_cloudsql_dbuser_secret_version]
 resource "google_secret_manager_secret_version" "dbuser_data" {
   secret      = google_secret_manager_secret.dbuser.id
-  secret_data = "secret-data"
+  secret_data = "secret-data" # Stores secret as a plain txt in state
 }
 # [END cloudrun_service_cloudsql_dbuser_secret_version]
 
@@ -26,7 +26,7 @@ resource "google_secret_manager_secret" "dbpass" {
 # [START cloudrun_service_cloudsql_dbpass_secret_version]
 resource "google_secret_manager_secret_version" "dbpass_data" {
   secret      = google_secret_manager_secret.dbpass.id
-  secret_data = "secret-data"
+  secret_data = "secret-data" # Stores secret as a plain txt in state
 }
 # [END cloudrun_service_cloudsql_dbpass_secret_version]
 
@@ -42,7 +42,7 @@ resource "google_secret_manager_secret" "dbname" {
 # [START cloudrun_service_cloudsql_dbname_secret_version]
 resource "google_secret_manager_secret_version" "dbname_data" {
   secret      = google_secret_manager_secret.dbname.id
-  secret_data = "secret-data"
+  secret_data = "secret-data" # Stores secret as a plain txt in state
 }
 # [END cloudrun_service_cloudsql_dbname_secret_version]
 
