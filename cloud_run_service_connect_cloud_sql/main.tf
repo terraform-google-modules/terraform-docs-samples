@@ -1,6 +1,5 @@
 # [START cloudrun_service_cloudsql_dbuser_secret]
 resource "google_secret_manager_secret" "dbuser" {
-  project   = "your-project-id"
   secret_id = "dbusersecret"
   replication {
     automatic = true
@@ -9,7 +8,7 @@ resource "google_secret_manager_secret" "dbuser" {
 # [END cloudrun_service_cloudsql_dbuser_secret]
 
 # [START cloudrun_service_cloudsql_dbuser_secret_version]
-resource "google_secret_manager_secret_version" "dbuser1" {
+resource "google_secret_manager_secret_version" "dbuser_data" {
   secret      = google_secret_manager_secret.dbuser.id
   secret_data = "secret-data"
 }
@@ -17,16 +16,15 @@ resource "google_secret_manager_secret_version" "dbuser1" {
 
 # [START cloudrun_service_cloudsql_dbpass_secret]
 resource "google_secret_manager_secret" "dbpass" {
-  project   = "your-project-id"
   secret_id = "dbpasssecret"
   replication {
     automatic = true
   }
 }
-# [END cloudrun_service_cloudsql_dbpass_secret_version]
+# [END cloudrun_service_cloudsql_dbpass_secret]
 
 # [START cloudrun_service_cloudsql_dbpass_secret_version]
-resource "google_secret_manager_secret_version" "dbpass1" {
+resource "google_secret_manager_secret_version" "dbpass_data" {
   secret      = google_secret_manager_secret.dbpass.id
   secret_data = "secret-data"
 }
@@ -34,7 +32,6 @@ resource "google_secret_manager_secret_version" "dbpass1" {
 
 # [START cloudrun_service_cloudsql_dbname_secret]
 resource "google_secret_manager_secret" "dbname" {
-  project   = "your-project-id"
   secret_id = "dbnamesecret"
   replication {
     automatic = true
@@ -43,7 +40,7 @@ resource "google_secret_manager_secret" "dbname" {
 # [END cloudrun_service_cloudsql_dbname_secret]
 
 # [START cloudrun_service_cloudsql_dbname_secret_version]
-resource "google_secret_manager_secret_version" "dbname1" {
+resource "google_secret_manager_secret_version" "dbname_data" {
   secret      = google_secret_manager_secret.dbname.id
   secret_data = "secret-data"
 }
@@ -53,7 +50,6 @@ resource "google_secret_manager_secret_version" "dbname1" {
 resource "google_cloud_run_service" "default" {
   name     = "cloudrun-service"
   location = "us-central1"
-  project  = "your-project-id"
 
   template {
     spec {
@@ -111,4 +107,3 @@ resource "google_cloud_run_service" "default" {
   autogenerate_revision_name = true
 }
 # [END cloudrun_service_cloudsql_default_service]
-
