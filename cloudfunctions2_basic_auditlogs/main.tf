@@ -29,7 +29,7 @@ resource "google_service_account" "account" {
 # Here we use Audit Logs to monitor the bucket so path patterns can be used in the example of
 # google_cloudfunctions2_function below (Audit Log events have path pattern support)
 resource "google_storage_bucket" "audit-log-bucket" {
-  name     = "gcf-auditlog-bucket"
+  name     = "${random_id.bucket_prefix.hex}-gcf-auditlog-bucket"
   location = "us-central1"  # The trigger must be in the same location as the bucket
   uniform_bucket_level_access = true
 }
