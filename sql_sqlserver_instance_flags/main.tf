@@ -1,6 +1,6 @@
 # [START cloud_sql_sqlserver_instance_flags]
 resource "google_sql_database_instance" "instance" {
-  name             = "sqlserver-instance"
+  name             = "sqlserver-instance-flags"
   region           = "us-central1"
   database_version = "SQLSERVER_2019_STANDARD"
   root_password = "INSERT-PASSWORD-HERE"
@@ -19,6 +19,6 @@ resource "google_sql_database_instance" "instance" {
     }
     tier = "db-custom-2-7680"
   }
-  deletion_protection = "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_sqlserver_instance_flags]

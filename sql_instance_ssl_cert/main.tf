@@ -9,7 +9,7 @@ resource "google_sql_database_instance" "mysql_instance" {
       require_ssl = "true"
     }
   }
-  deletion_protection = "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_mysql_instance_require_ssl]
 
@@ -31,7 +31,7 @@ resource "google_sql_database_instance" "postgres_instance" {
       require_ssl = "true"
     }
   }
-  deletion_protection = "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_postgres_instance_require_ssl]
 
@@ -54,6 +54,6 @@ resource "google_sql_database_instance" "sqlserver_instance" {
       require_ssl = "true"
     }
   }
-  deletion_protection = "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_sqlserver_instance_require_ssl]

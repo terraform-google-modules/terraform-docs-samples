@@ -40,7 +40,7 @@ resource "google_sql_database_instance" "default" {
       private_network = google_compute_network.private_network.id
     }
   }
-  deletion_protection = "false"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_postgres_instance_private_ip_instance]
 

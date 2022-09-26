@@ -10,7 +10,7 @@ resource "google_sql_database_instance" "mysql_instance_labels" {
       billing-code = 34802
     }
   }
-  deletion_protection = "false"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_mysql_instance_labels]
 
@@ -26,7 +26,7 @@ resource "google_sql_database_instance" "postgres_instance_labels" {
       billing-code = 34802
     }
   }
-  deletion_protection = "false"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_postgres_instance_labels]
 
@@ -43,6 +43,6 @@ resource "google_sql_database_instance" "default" {
       billing-code = 34802
     }
   }
-  deletion_protection = "false"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_sqlserver_instance_labels]

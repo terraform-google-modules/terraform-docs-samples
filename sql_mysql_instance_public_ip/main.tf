@@ -19,6 +19,6 @@ resource "google_sql_database_instance" "mysql_public_ip_instance_name" {
     }
     tier = "db-custom-4-26624"
   }
-  deletion_protection =  "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_mysql_instance_public_ip]

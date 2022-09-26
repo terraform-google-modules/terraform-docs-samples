@@ -13,6 +13,6 @@ resource "google_sql_database_instance" "default" {
       }
     }
   }
-  deletion_protection =  "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_postgres_instance_authorized_network]
