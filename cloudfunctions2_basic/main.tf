@@ -3,19 +3,10 @@ data "google_project" "project" {
   provider = google-beta
 }
 
-resource "google_project_service" "cloudfunctions_api" {
-  service                    = "cloudfunctions.googleapis.com"
-  disable_on_destroy         = false
-}
-
-resource "google_project_iam_binding" "project" {
-  provider = google-beta
-  project = data.google_project.project.id
+resource "google_project_iam_member" "bucket" { 
+  project = data.google_project.project.project_id
   role    = "roles/storage.objectViewer"
-
-  members = [
-    "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
-  ]
+  member  = "serviceAccount:${google_service_account.account.email}"
 }
 
 resource "random_id" "bucket_prefix" {

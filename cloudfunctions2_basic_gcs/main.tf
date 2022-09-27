@@ -4,16 +4,6 @@ data "google_project" "project" {
   provider = google-beta
 }
 
-resource "google_project_iam_binding" "project" {
-  provider = google-beta
-  project = data.google_project.project.id
-  role    = "roles/storage.objectViewer"  
-  
-  members = [
-    "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
-  ]
-}
-
 resource "random_id" "bucket_prefix" {
   byte_length = 8
 }
@@ -63,6 +53,12 @@ resource "google_project_iam_member" "gcs-pubsub-publishing" {
 resource "google_service_account" "account" {
   account_id   = "gcf-sa"
   display_name = "Test Service Account - used for both the cloud function and eventarc trigger in the test"
+}
+
+resource "google_project_iam_member" "bucket" {
+  project = data.google_project.project.project_id
+  role    = "roles/storage.objectViewer"
+  member  = "serviceAccount:${google_service_account.account.email}"
 }
 
 # Permissions on the service account used by the function and Eventarc trigger

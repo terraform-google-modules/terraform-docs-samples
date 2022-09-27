@@ -4,20 +4,6 @@
 # and the docs:
 # https://cloud.google.com/eventarc/docs/path-patterns
 
-data "google_project" "project" {
-  provider = google-beta
-}
-
-resource "google_project_iam_binding" "project" {
-  provider = google-beta
-  project = data.google_project.project.id
-  role    = "roles/storage.objectViewer"
-
-  members = [
-    "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
-  ]
-}
-
 resource "google_project_service" "cloudfunctions_api" {
   service                    = "cloudfunctions.googleapis.com"
   disable_on_destroy         = false
@@ -60,6 +46,12 @@ resource "google_storage_bucket" "audit-log-bucket" {
 
 # Permissions on the service account used by the function and Eventarc trigger
 data "google_project" "project" {
+}
+
+resource "google_project_iam_member" "bucket" { 
+  project = data.google_project.project.project_id
+  role    = "roles/storage.objectViewer"
+  member  = "serviceAccount:${google_service_account.account.email}"
 }
 
 resource "google_project_iam_member" "invoking" {
