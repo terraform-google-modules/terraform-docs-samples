@@ -1,5 +1,19 @@
 # [START functions_v2_basic_gcs]
 
+data "google_project" "project" {
+  provider = google-beta
+}
+
+resource "google_project_iam_binding" "project" {
+  provider = google-beta
+  project = data.google_project.project.id
+  role    = "roles/storage.objectViewer"  
+  
+  members = [
+    "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
+  ]
+}
+
 resource "random_id" "bucket_prefix" {
   byte_length = 8
 }

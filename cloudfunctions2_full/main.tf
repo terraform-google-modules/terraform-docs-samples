@@ -1,4 +1,18 @@
 # [START functions_v2_full]
+data "google_project" "project" {
+  provider = google-beta
+}
+
+resource "google_project_iam_binding" "project" {
+  provider = google-beta
+  project = data.google_project.project.id
+  role    = "roles/storage.objectViewer"  
+  
+  members = [
+    "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
+  ]
+}
+
 resource "google_project_service" "cloudfunctions_api" {
   service                    = "cloudfunctions.googleapis.com"
   disable_on_destroy         = false
