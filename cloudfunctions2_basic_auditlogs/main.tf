@@ -4,6 +4,16 @@
 # and the docs:
 # https://cloud.google.com/eventarc/docs/path-patterns
 
+resource "google_project_service" "cloudfunctions_api" {
+  service                    = "cloudfunctions.googleapis.com"
+  disable_on_destroy         = false
+}
+
+resource "google_project_service" "eventarc_api" {
+  service                    = "eventarc.googleapis.com"
+  disable_on_destroy         = false
+}
+
 resource "random_id" "bucket_prefix" {
   byte_length = 8
 }

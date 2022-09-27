@@ -1,4 +1,9 @@
 # [START functions_v2_basic]
+resource "google_project_service" "cloudfunctions_api" {
+  service                    = "cloudfunctions.googleapis.com"
+  disable_on_destroy         = false
+}
+
 resource "random_id" "bucket_prefix" {
   byte_length = 8
 }

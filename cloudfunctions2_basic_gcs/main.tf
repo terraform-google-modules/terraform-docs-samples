@@ -4,6 +4,16 @@ resource "random_id" "bucket_prefix" {
   byte_length = 8
 }
 
+resource "google_project_service" "cloudfunctions_api" {
+  service                    = "cloudfunctions.googleapis.com"
+  disable_on_destroy         = false
+}
+
+resource "google_project_service" "eventarc_api" {
+  service                    = "eventarc.googleapis.com"
+  disable_on_destroy         = false
+}
+
 resource "google_storage_bucket" "source-bucket" {
   name     = "${random_id.bucket_prefix.hex}-gcf-source"
   location = "US"
