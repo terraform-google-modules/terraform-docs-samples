@@ -2,12 +2,16 @@
 provider google{}
 provider tls{}
 
+resource "google_project_service" "privateca_api" {
+  service            = "privateca.googleapis.com"
+  disable_on_destroy = false
+}
+
 resource "tls_private_key" "example" {
   algorithm   = "RSA"
 }
 
 resource "tls_cert_request" "example" {
-  key_algorithm   = "RSA"
   private_key_pem = tls_private_key.example.private_key_pem
 
   subject {
@@ -50,7 +54,7 @@ resource "google_privateca_certificate_authority" "test-ca" {
   certificate_authority_id = "my-authority"
   location = "us-central1"
   project = "project-id"
-  pool = google_privateca_ca_pool.pool.name
+  pool = google_privateca_ca_pool.default.name
   config {
     subject_config {
       subject {
@@ -86,7 +90,7 @@ resource "google_privateca_certificate_authority" "test-ca" {
 }
 
 resource "google_privateca_certificate" "default" {
-  pool = google_privateca_ca_pool.pool.name
+  pool = google_privateca_ca_pool.default.name
   certificate_authority = google_privateca_certificate_authority.test-ca.certificate_authority_id
   project = "project-id"
   location = "us-central1"
