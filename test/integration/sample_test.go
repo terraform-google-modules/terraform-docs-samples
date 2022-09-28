@@ -28,6 +28,8 @@ type testGroups struct {
 var retryErrors = map[string]string{
 	// IAM for Eventarc service agent is eventually consistent
 	".*Permission denied while using the Eventarc Service Agent.*": "Eventarc Service Agent IAM is eventually consistent",
+	// API activation is eventually consistent.
+	".*SERVICE_DISABLED.*": "Service enablement is eventually consistent",
 }
 
 func TestSamples(t *testing.T) {
