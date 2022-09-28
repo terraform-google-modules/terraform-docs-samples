@@ -30,6 +30,8 @@ var retryErrors = map[string]string{
 	".*Permission denied while using the Eventarc Service Agent.*": "Eventarc Service Agent IAM is eventually consistent",
 	// API activation is eventually consistent.
 	".*SERVICE_DISABLED.*": "Service enablement is eventually consistent",
+	// Retry function GCS access
+        ".*does not have storage.objects.get access.*": "GCS IAM is eventually consistent",
 }
 
 func TestSamples(t *testing.T) {
