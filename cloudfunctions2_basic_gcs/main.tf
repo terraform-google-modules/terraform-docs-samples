@@ -1,9 +1,5 @@
 # [START functions_v2_basic_gcs]
 
-data "google_project" "project" {
-  provider = google-beta
-}
-
 resource "random_id" "bucket_prefix" {
   byte_length = 8
 }
