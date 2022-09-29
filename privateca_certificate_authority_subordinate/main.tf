@@ -1,11 +1,52 @@
 # [START privateca_create_subordinateca]
+resource "google_privateca_certificate_authority" "root-ca" {
+  pool = "my-pool"
+  certificate_authority_id = "my-certificate-authority-root"
+  location = "us-central1"
+  deletion_protection = false # set to true to prevent destruction of the resource
+  ignore_active_certificates_on_deletion = true
+  config {
+    subject_config {
+      subject {
+        organization = "HashiCorp"
+        common_name = "my-certificate-authority"
+      }
+      subject_alt_name {
+        dns_names = ["hashicorp.com"]
+      }
+    }
+    x509_config {
+      ca_options {
+        # is_ca *MUST* be true for certificate authorities
+        is_ca = true
+      }
+      key_usage {
+        base_key_usage {
+          # cert_sign and crl_sign *MUST* be true for certificate authorities
+          cert_sign = true
+          crl_sign = true
+        }
+        extended_key_usage {
+          server_auth = false
+        }
+      }
+    }
+  }
+  key_spec {
+    algorithm = "RSA_PKCS1_4096_SHA256"
+  }
+}
+
 resource "google_privateca_certificate_authority" "default" {
   // This example assumes this pool already exists.
   // Pools cannot be deleted in normal test circumstances, so we depend on static pools
-  pool = "ca-pool"
-  certificate_authority_id = "my-certificate-authority"
+  pool = "my-pool"
+  certificate_authority_id = "my-certificate-authority-sub"
   location = "us-central1"
-  deletion_protection = "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
+  subordinate_config {
+    certificate_authority = google_privateca_certificate_authority.root-ca.name
+  }
   config {
     subject_config {
       subject {

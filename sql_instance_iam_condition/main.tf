@@ -35,5 +35,5 @@ resource "google_sql_database_instance" "default" {
   settings {
     tier = "db-n1-standard-2"
   }
-  deletion_protection =  "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }

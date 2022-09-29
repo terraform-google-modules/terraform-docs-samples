@@ -1,6 +1,6 @@
 # [START privateca_create_ca_pool_all_fields]
 resource "google_privateca_ca_pool" "default" {
-  name = "my-pool"
+  name = "ca-pool-all-fields"
   location = "us-central1"
   tier = "ENTERPRISE"
   publishing_options {

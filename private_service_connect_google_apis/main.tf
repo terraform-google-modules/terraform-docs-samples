@@ -1,7 +1,6 @@
 # [START vpc_subnet_private_access]
 resource "google_compute_network" "network" {
   provider      = google-beta
-  project       = "my-project-name"
   name          = "my-network"
   auto_create_subnetworks = false
 }

@@ -6,7 +6,7 @@ resource "google_sql_database_instance" "instance" {
   settings {
     tier = "db-n1-standard-2"
   }
-  deletion_protection =  "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_mysql_instance_80_db_n1_s2]
 

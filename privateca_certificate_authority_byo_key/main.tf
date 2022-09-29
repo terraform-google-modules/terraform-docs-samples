@@ -26,7 +26,7 @@ resource "google_privateca_certificate_authority" "default" {
   pool = "ca-pool"
   certificate_authority_id = "my-certificate-authority"
   location = "us-central1"
-  deletion_protection = "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
   key_spec {
     cloud_kms_key_version = "projects/keys-project/locations/us-central1/keyRings/key-ring/cryptoKeys/crypto-key/cryptoKeyVersions/1"
   }

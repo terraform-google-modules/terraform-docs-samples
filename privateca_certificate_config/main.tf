@@ -1,10 +1,10 @@
 # [START privateca_create_certificate_config]
 resource "google_privateca_certificate_authority" "test-ca" {
-  certificate_authority_id = "my-certificate-authority"
+  certificate_authority_id = "my-example-certificate-authority"
   location = "us-central1"
-  pool = ""
+  pool = "my-pool"
   ignore_active_certificates_on_deletion = true
-  deletion_protection = false
+  deletion_protection = false # set to true to prevent destruction of the resource
   config {
     subject_config {
       subject {
@@ -36,11 +36,11 @@ resource "google_privateca_certificate_authority" "test-ca" {
 }
 
 resource "google_privateca_certificate" "default" {
-  pool = ""
+  pool = "my-pool"
   location = "us-central1"
   certificate_authority = google_privateca_certificate_authority.test-ca.certificate_authority_id
   lifetime = "860s"
-  name = "my-certificate"
+  name = "my-example-certificate"
   config {
     subject_config  {
       subject {
@@ -74,8 +74,17 @@ resource "google_privateca_certificate" "default" {
     }
     public_key {
       format = "PEM"
-      key = filebase64("test-fixtures/rsa_public.pem")
+      key = base64encode(data.tls_public_key.example.public_key_pem)
     }
   }
 }
+
+resource "tls_private_key" "example" {
+  algorithm = "RSA"
+}
+
+data "tls_public_key" "example" {
+  private_key_pem = tls_private_key.example.private_key_pem
+}
+
 # [END privateca_create_certificate_config]

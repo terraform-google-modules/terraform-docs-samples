@@ -11,7 +11,7 @@ resource "google_compute_instance" "default" {
   }
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-9"
+      image = "debian-cloud/debian-11"
     }
   }
 
@@ -61,8 +61,12 @@ resource "google_compute_firewall" "flask" {
 # with versioning enabled
 
 # [START storage_bucket_tf_with_versioning]
+resource "random_id" "bucket_prefix" {
+  byte_length = 8
+}
+
 resource "google_storage_bucket" "default" {
-  name          = "bucket-tfstate"
+  name          = "${random_id.bucket_prefix.hex}-bucket-tfstate"
   force_destroy = false
   location      = "US"
   storage_class = "STANDARD"

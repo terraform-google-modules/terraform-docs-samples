@@ -7,6 +7,7 @@ resource "google_project_service_identity" "gcp_sa_cloud_sql" {
 
 # [START cloud_sql_instance_keyring]
 resource "google_kms_key_ring" "keyring" {
+  provider = google-beta
   name     = "keyring-name"
   location = "us-central1"
 }
@@ -14,6 +15,7 @@ resource "google_kms_key_ring" "keyring" {
 
 # [START cloud_sql_instance_key]
 resource "google_kms_crypto_key" "key" {
+  provider = google-beta
   name     = "crypto-key-name"
   key_ring = google_kms_key_ring.keyring.id
   purpose  = "ENCRYPT_DECRYPT"
@@ -22,6 +24,7 @@ resource "google_kms_crypto_key" "key" {
 
 # [START cloud_sql_instance_crypto_key]
 resource "google_kms_crypto_key_iam_binding" "crypto_key" {
+  provider      = google-beta
   crypto_key_id = google_kms_crypto_key.key.id
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
 
@@ -41,7 +44,7 @@ resource "google_sql_database_instance" "mysql_instance_with_cmek" {
   settings {
     tier = "db-n1-standard-2"
   }
-  deletion_protection =  "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_mysql_instance_cmek]
 
@@ -55,7 +58,7 @@ resource "google_sql_database_instance" "postgres_instance_with_cmek" {
   settings {
     tier = "db-custom-2-7680"
   }
-  deletion_protection =  "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_postgres_instance_cmek]
 
@@ -70,6 +73,6 @@ resource "google_sql_database_instance" "default" {
   settings {
     tier = "db-custom-2-7680"
   }
-  deletion_protection =  "true"
+  deletion_protection = false # set to true to prevent destruction of the resource
 }
 # [END cloud_sql_sqlserver_instance_cmek]

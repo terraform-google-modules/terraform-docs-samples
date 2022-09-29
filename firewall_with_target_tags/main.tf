@@ -1,6 +1,5 @@
 # [START vpc_firewall_create]
 resource "google_compute_firewall" "rules" {
-  project     = "my-project-name"
   name        = "my-firewall-rule"
   network     = "default"
   description = "Creates firewall rule targeting tagged instances"

@@ -1,4 +1,4 @@
-# [START trafficdirector_url_map_basic]
+# [START cloudloadbalancing_url_map_bucket_and_service]
 resource "google_compute_url_map" "urlmap" {
   name        = "urlmap"
   description = "a description"
@@ -42,7 +42,7 @@ resource "google_compute_url_map" "urlmap" {
 
   test {
     service = google_compute_backend_bucket.static.id
-    host    = "hi.com"
+    host    = "example.com"
     path    = "/home"
   }
 }
@@ -69,8 +69,12 @@ resource "google_compute_backend_bucket" "static" {
   enable_cdn  = true
 }
 
+resource "random_id" "bucket_prefix" {
+  byte_length = 8
+}
+
 resource "google_storage_bucket" "static" {
-  name     = "static-asset-bucket"
+  name     = "${random_id.bucket_prefix.hex}-static-asset-bucket"
   location = "US"
 }
-# [END trafficdirector_url_map_basic]
+# [END cloudloadbalancing_url_map_bucket_and_service]
