@@ -1,3 +1,10 @@
+# [START cloudrun_service_cloudsql_enable_secretmanager]
+resource "google_project_service" "secretmanager_api" {
+  service            = "secretmanager.googleapis.com"
+  disable_on_destroy = false
+}
+# [END cloudrun_service_cloudsql_enable_secretmanager]
+
 # [START cloudrun_service_cloudsql_dbuser_secret]
 resource "google_secret_manager_secret" "dbuser" {
   secret_id = "dbusersecret"
