@@ -3,35 +3,21 @@ data "google_project" "project" {}
 
 # [END cloudrun_service_image_processing_datasources]
 
-# [START cloudrun_service_image_processing_inputbucket]
-# Input Bucket
+# [START cloudrun_service_image_processing_buckets]
+resource "random_id" "bucket_prefix" {
+  byte_length = 8
+}
+
 resource "google_storage_bucket" "imageproc_input" {
-  name     = "imageproc-input-bucket"
+  name     = "${random_id.bucket_prefix.hex}-input-bucket"
   location = "us-central1"
 }
 
-# IAM: ensure we can read from the input bucket
-resource "google_project_iam_member" "input_reader" {
-  project = data.google_project.project.project_id
-  member  = "serviceAccount:${google_cloud_run_service.imageproc.template[0].spec[0].service_account_name}"
-  role    = "roles/storage.objectViewer"
-}
-# [END cloudrun_service_image_processing_inputbucket]
-
-# [START cloudrun_service_image_processing_outputbucket]
-# Output Bucket
 resource "google_storage_bucket" "imageproc_output" {
-  name     = "imageproc-output-bucket"
+  name     = "${random_id.bucket_prefix.hex}-output-bucket"
   location = "us-central1"
 }
-
-# IAM: Ensure we can write to the output bucket
-resource "google_project_iam_member" "output_writer" {
-  project = data.google_project.project.project_id
-  member  = "serviceAccount:${google_cloud_run_service.imageproc.template[0].spec[0].service_account_name}"
-  role    = "roles/storage.objectCreator"
-}
-# [END cloudrun_service_image_processing_outputbucket]
+# [END cloudrun_service_image_processing_buckets]
 
 # [START cloudrun_service_image_processing_pubsub]
 resource "google_pubsub_topic" "imageproc" {
