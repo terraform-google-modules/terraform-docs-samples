@@ -51,7 +51,7 @@ resource "google_project_iam_binding" "project_token_creator" {
 # [END cloudrun_service_pubsub_token_permissions]
 
 # [START cloudrun_service_pubsub_topic]
-resource "google_pubsub_topic" "topic" {
+resource "google_pubsub_topic" "default" {
   name = "pubsub_topic"
 }
 # [END cloudrun_service_pubsub_topic]
@@ -59,7 +59,7 @@ resource "google_pubsub_topic" "topic" {
 # [START cloudrun_service_pubsub_sub]
 resource "google_pubsub_subscription" "subscription" {
   name  = "pubsub_subscription"
-  topic = google_pubsub_topic.topic.name
+  topic = google_pubsub_topic.default.name
   push_config {
     push_endpoint = google_cloud_run_service.default.status[0].url
     oidc_token {
