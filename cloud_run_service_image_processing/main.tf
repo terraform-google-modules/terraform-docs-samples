@@ -1,28 +1,41 @@
-# [START cloudrun_service_image_processing_datasources]
-data "google_project" "project" {}
-
-# [END cloudrun_service_image_processing_datasources]
-
 # [START cloudrun_service_image_processing_buckets]
-resource "random_id" "bucket_prefix" {
+resource "random_id" "bucket_suffix" {
   byte_length = 8
 }
 
 resource "google_storage_bucket" "imageproc_input" {
-  name     = "${random_id.bucket_prefix.hex}-input-bucket"
+  name     = "input-bucket-${random_id.bucket_suffix.hex}"
   location = "us-central1"
 }
 
 resource "google_storage_bucket" "imageproc_output" {
-  name     = "${random_id.bucket_prefix.hex}-output-bucket"
+  name     = "output-bucket-${random_id.bucket_suffix.hex}"
   location = "us-central1"
 }
 # [END cloudrun_service_image_processing_buckets]
 
-# [START cloudrun_service_image_processing_pubsub]
-resource "google_pubsub_topic" "imageproc" {
-  name = "imageproc-topic"
+# [START cloudrun_service_image_processing_crservice]
+resource "google_cloud_run_service" "default" {
+  name     = "pubsub-tutorial"
+  location = "us-central1"
+  template {
+    spec {
+      containers {
+        image = "gcr.io/cloudrun/hello"
+        env {
+          name  = "BLURRED_BUCKET_NAME"
+          value = google_storage_bucket.imageproc_output.name
+        }
+      }
+    }
+  }
+  traffic {
+    percent         = 100
+    latest_revision = true
+  }
 }
+# [END cloudrun_service_image_processing_crservice]
+
 # [START cloudrun_service_image_processing_notifications] 
 data "google_storage_project_service_account" "gcs_account" {}
 
@@ -40,55 +53,3 @@ resource "google_storage_notification" "notification" {
   depends_on     = [google_pubsub_topic_iam_binding.binding]
 }
 # [END cloudrun_service_image_processing_notifications]
-
-# Service Account for delivering messages from pubsub to cloud run
-resource "google_service_account" "delivery_account" {
-  account_id = "imageproc-invoker"
-}
-
-# IAM: let this Service Account invoke the Cloud Run service.
-resource "google_project_iam_member" "cloud_run_invoker" {
-  project = data.google_project.project.project_id
-  member  = "serviceAccount:${google_service_account.delivery_account.email}"
-  role    = "roles/run.invoker"
-}
-
-# subscription, to deliver pubsub notifications to Cloud Run service.
-resource "google_pubsub_subscription" "imageproc_subs" {
-  name                       = "imageproc-cr-sub"
-  topic                      = google_pubsub_topic.imageproc.name
-  ack_deadline_seconds       = 90
-  message_retention_duration = "1200s"
-  push_config {
-    push_endpoint = google_cloud_run_service.imageproc.status[0].url
-    oidc_token {
-      service_account_email = google_service_account.delivery_account.email
-    }
-  }
-}
-# [END cloudrun_service_image_processing_pubsub]
-
-# [START cloudrun_service_image_processing_crservice]
-resource "google_cloud_run_service" "imageproc" {
-  name     = "imageproc-tf"
-  location = "us-central1"
-
-  template {
-    spec {
-      containers {
-        image = "gcr.io/${data.google_project.project.project_id}/imageproc"
-        env {
-          name  = "BLURRED_BUCKET_NAME"
-          value = google_storage_bucket.imageproc_output.name
-        }
-      }
-    }
-  }
-
-  traffic {
-    percent         = 100
-    latest_revision = true
-  }
-}
-# [END cloudrun_service_image_processing_crservice]
-
