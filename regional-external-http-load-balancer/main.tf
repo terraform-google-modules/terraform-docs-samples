@@ -189,7 +189,7 @@ resource "google_compute_forwarding_rule" "default" {
   name                  = "l7-xlb-forwarding-rule"
   provider              = google-beta
   depends_on            = [google_compute_subnetwork.proxy_only]
-  region                = "us-east1"
+  region                = "us-west1"
 
   ip_protocol           = "TCP"
   load_balancing_scheme = "EXTERNAL_MANAGED"
