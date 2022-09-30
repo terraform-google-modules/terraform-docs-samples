@@ -62,7 +62,7 @@ resource "google_secret_manager_secret_version" "dbuser_data" {
 resource "google_secret_manager_secret_iam_member" "secretaccess_compute_dbuser" {
   secret_id = google_secret_manager_secret.dbuser.id
   role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${data.google_project.project.number}@developer.gserviceaccount.com" # Project's compute service account
+  member    = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com" # Project's compute service account
 }
 
 # [END cloudrun_service_cloudsql_dbuser_secret]
@@ -89,7 +89,7 @@ resource "google_secret_manager_secret_version" "dbpass_data" {
 resource "google_secret_manager_secret_iam_member" "secretaccess_compute_dbpass" {
   secret_id = google_secret_manager_secret.dbpass.id
   role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${data.google_project.project.number}@developer.gserviceaccount.com" # Project's compute service account
+  member    = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com" # Project's compute service account
 }
 
 # [END cloudrun_service_cloudsql_dbpass_secret]
@@ -115,7 +115,7 @@ resource "google_secret_manager_secret_version" "dbname_data" {
 resource "google_secret_manager_secret_iam_member" "secretaccess_compute_dbname" {
   secret_id = google_secret_manager_secret.dbname.id
   role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${data.google_project.project.number}@developer.gserviceaccount.com" # Project's compute service account
+  member    = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com" # Project's compute service account
 }
 
 # [END cloudrun_service_cloudsql_dbname_secret]
