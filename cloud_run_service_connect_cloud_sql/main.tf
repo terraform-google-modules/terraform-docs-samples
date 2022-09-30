@@ -171,13 +171,6 @@ resource "google_cloud_run_service" "default" {
     metadata {
       annotations = {
         "run.googleapis.com/client-name" = "terraform"
-        # Uncomment after initial service creation. Following key/value can only be applied for Cloud Run revisions 
-        # Learn more: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_service#metadata
-        # "autoscaling.knative.dev/maxScale" = "1000"
-
-        # Uncomment after initial service creation. Following key/valye can only be applied for Cloud Run revisions 
-        # Learn more: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_service#metadata 
-        # "run.googleapis.com/cloudsql-instances" = google_sql_database_instance.mysql_instance.connection_name
       }
     }
   }
