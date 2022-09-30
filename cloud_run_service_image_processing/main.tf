@@ -26,13 +26,13 @@ resource "google_project_iam_binding" "project_token_creator" {
   members = ["serviceAccount:${google_project_service_identity.pubsub_agent.email}"]
 }
 
-resource "google_pubsub_topic" "topic" {
+resource "google_pubsub_topic" "default" {
   name = "pubsub_topic"
 }
 
 resource "google_pubsub_subscription" "subscription" {
   name  = "pubsub_subscription"
-  topic = google_pubsub_topic.topic.name
+  topic = google_pubsub_topic.default.name
   push_config {
     push_endpoint = google_cloud_run_service.default.status[0].url
     oidc_token {
@@ -87,7 +87,7 @@ resource "google_cloud_run_service" "default" {
 data "google_storage_project_service_account" "gcs_account" {}
 
 resource "google_pubsub_topic_iam_binding" "binding" {
-  topic   = google_pubsub_topic.topic.name
+  topic   = google_pubsub_topic.default.name
   role    = "roles/pubsub.publisher"
   members = ["serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"]
 }
@@ -96,7 +96,7 @@ resource "google_storage_notification" "notification" {
   provider       = google
   bucket         = google_storage_bucket.imageproc_input.name
   payload_format = "JSON_API_V1"
-  topic          = google_pubsub_topic.topic.id
+  topic          = google_pubsub_topic.default.id
   depends_on     = [google_pubsub_topic_iam_binding.binding]
 }
 # [END cloudrun_service_image_processing_notifications]
