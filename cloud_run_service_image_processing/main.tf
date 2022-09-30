@@ -21,7 +21,7 @@ resource "google_project_service_identity" "pubsub_agent" {
 }
 
 resource "google_project_iam_binding" "project_token_creator" {
-  project  = data.google_project.project.project_id
+  project = data.google_project.project.project_id
   role    = "roles/iam.serviceAccountTokenCreator"
   members = ["serviceAccount:${google_project_service_identity.pubsub_agent.email}"]
 }
