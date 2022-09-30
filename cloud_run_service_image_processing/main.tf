@@ -93,7 +93,6 @@ resource "google_pubsub_topic_iam_binding" "binding" {
 }
 
 resource "google_storage_notification" "notification" {
-  provider       = google
   bucket         = google_storage_bucket.imageproc_input.name
   payload_format = "JSON_API_V1"
   topic          = google_pubsub_topic.default.id
