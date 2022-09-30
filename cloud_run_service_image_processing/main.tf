@@ -1,7 +1,6 @@
 # [START cloudrun_service_image_processing_datasources]
 data "google_project" "project" {}
 
-data "google_storage_project_service_account" "gcs_account" {}
 # [END cloudrun_service_image_processing_datasources]
 
 # [START cloudrun_service_image_processing_inputbucket]
@@ -38,6 +37,8 @@ resource "google_project_iam_member" "output_writer" {
 resource "google_pubsub_topic" "imageproc" {
   name = "imageproc-topic"
 }
+# [START cloudrun_service_image_processing_notifications] 
+data "google_storage_project_service_account" "gcs_account" {}
 
 resource "google_pubsub_topic_iam_binding" "binding" {
   topic   = google_pubsub_topic.imageproc.name
@@ -45,7 +46,6 @@ resource "google_pubsub_topic_iam_binding" "binding" {
   members = ["serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"]
 }
 
-# Configure GCS notifications to pubsub
 resource "google_storage_notification" "notification" {
   provider       = google
   bucket         = google_storage_bucket.imageproc_input.name
@@ -53,6 +53,7 @@ resource "google_storage_notification" "notification" {
   topic          = google_pubsub_topic.imageproc.id
   depends_on     = [google_pubsub_topic_iam_binding.binding]
 }
+# [END cloudrun_service_image_processing_notifications]
 
 # Service Account for delivering messages from pubsub to cloud run
 resource "google_service_account" "delivery_account" {
