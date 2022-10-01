@@ -55,10 +55,19 @@ resource "google_storage_bucket" "imageproc_input" {
   location = "us-central1"
 }
 
+output "input_bucket_name" {
+  value = google_storage_bucket.imageproc_input.name
+}
+
 resource "google_storage_bucket" "imageproc_output" {
   name     = "output-bucket-${random_id.bucket_suffix.hex}"
   location = "us-central1"
 }
+
+output "blurred_bucket_name" {
+  value = google_storage_bucket.imageproc_output.name
+}
+
 # [END cloudrun_service_image_processing_buckets]
 
 # [START cloudrun_service_image_processing_crservice]
