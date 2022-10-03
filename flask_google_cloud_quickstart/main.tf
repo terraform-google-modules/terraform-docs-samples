@@ -1,3 +1,18 @@
+# [START compute_flask_quickstart_vpc]
+resource "google_compute_network" "vpc_network" {
+  name                    = "my-custom-mode-network"
+  auto_create_subnetworks = false
+  mtu                     = 1460
+}
+
+resource "google_compute_subnetwork" "default" {
+  name          = "my-custom-subnet"
+  ip_cidr_range = "10.0.1.0/24"
+  region        = "us-west1"
+  network       = google_compute_network.vpc_network.id
+}
+# [END compute_flask_quickstart_vpc]
+
 # [START compute_flask_quickstart_vm]
 # Create a single Compute Engine instance
 resource "google_compute_instance" "default" {
@@ -19,7 +34,7 @@ resource "google_compute_instance" "default" {
   metadata_startup_script = "sudo apt-get update; sudo apt-get install -yq build-essential python-pip rsync; pip install flask"
 
   network_interface {
-    network = "default"
+    subnetwork = google_compute_subnetwork.default.id
 
     access_config {
       # Include this section to give the VM an external IP address
