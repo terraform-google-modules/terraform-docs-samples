@@ -60,5 +60,6 @@ module "projects" {
     "workflows.googleapis.com",
     "cloudkms.googleapis.com",
     "servicenetworking.googleapis.com",
+    "notebooks.googleapis.com",
   ]
 }

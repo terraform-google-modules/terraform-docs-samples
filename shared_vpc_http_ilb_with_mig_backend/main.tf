@@ -12,11 +12,12 @@ resource "google_compute_network" "default" {
 
 # [START cloudloadbalancing_shared_vpc_http_ilb_proxy_subnet]
 # proxy-only subnet
+# https://cloud.google.com/load-balancing/docs/proxy-only-subnets#proxy_only_subnet_create
 resource "google_compute_subnetwork" "proxy_subnet" {
   name          = "l7-ilb-proxy-subnet"
   ip_cidr_range = "10.0.0.0/24"
   region        = "us-central1"
-  purpose       = "INTERNAL_HTTPS_LOAD_BALANCER"
+  purpose       = "REGIONAL_MANAGED_PROXY"
   role          = "ACTIVE"
   network       = google_compute_network.default.id
   project       = "my-host-project"

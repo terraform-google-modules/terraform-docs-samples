@@ -1,6 +1,6 @@
 # [START cloudrun_service_pubsub_service]
 resource "google_cloud_run_service" "default" {
-  name     = "cloud_run_service_name"
+  name     = "pubsub-tutorial"
   location = "us-central1"
   template {
     spec {
@@ -44,6 +44,7 @@ resource "google_project_service_identity" "pubsub_agent" {
 }
 
 resource "google_project_iam_binding" "project_token_creator" {
+  project  = data.google_project.project.project_id
   role    = "roles/iam.serviceAccountTokenCreator"
   members = ["serviceAccount:${google_project_service_identity.pubsub_agent.email}"]
 }

@@ -1,5 +1,10 @@
 # [START dns_domain_tutorial]
 # to setup a web-server
+
+resource "random_id" "rnd" {
+  byte_length = 4
+}
+
 resource "google_compute_instance" "default" {
   name         = "dns-compute-instance"
   machine_type = "g1-small"
@@ -38,7 +43,7 @@ resource "google_compute_firewall" "default" {
 # to create a DNS zone
 resource "google_dns_managed_zone" "default" {
   name          = "example-zone-googlecloudexample"
-  dns_name      = "googlecloudexample.com."
+  dns_name      = "example-${random_id.rnd.hex}.com."
   description   = "Example DNS zone"
   force_destroy = "true"
 }
