@@ -51,7 +51,7 @@ resource "google_compute_firewall" "ssh" {
     protocol = "tcp"
   }
   direction     = "INGRESS"
-  network       = "default"
+  network       = google_compute_network.vpc_network.id
   priority      = 1000
   source_ranges = ["0.0.0.0/0"]
   target_tags   = ["ssh"]
@@ -62,7 +62,7 @@ resource "google_compute_firewall" "ssh" {
 # [START vpc_flask_quickstart_5000_fw]
 resource "google_compute_firewall" "flask" {
   name    = "flask-app-firewall"
-  network = "default"
+  network = google_compute_network.vpc_network.id
 
   allow {
     protocol = "tcp"
