@@ -23,20 +23,26 @@ resource "google_storage_bucket" "bucket_2" {
 }
 # [END cloudloadbalancing_global_ext_bucket_buckets]
 
+
 # [START cloudloadbalancing_global_ext_bucket_files]
-# Upload files
-resource "null_resource" "upload_cat_image" {
-  provisioner "local-exec" {
-    command = "gsutil cp -r gs://gcp-external-http-lb-with-bucket/three-cats.jpg gs://${google_storage_bucket.bucket_1.name}/never-fetch/"
-  }
+# image object for testing, try to access http://<your_lb_ip_address>/test.jpg
+resource "google_storage_bucket_object" "cat_image" {
+  name         = "never-fetch/three-cats.jpg"
+  source       = "images/three-cats.jpg"
+  content_type = "image/jpeg"
+
+  bucket = google_storage_bucket.bucket_1.name
 }
 
-resource "null_resource" "upload_dog_image" {
-  provisioner "local-exec" {
-    command = "gsutil cp -r gs://gcp-external-http-lb-with-bucket/two-dogs.jpg gs://${google_storage_bucket.bucket_2.name}/love-to-fetch/"
-  }
+resource "google_storage_bucket_object" "dog_image" {
+  name         = "love-to-fetch/two-dogs.jpg"
+  source       = "images/two-dogs.jpg"
+  content_type = "image/jpeg"
+
+  bucket = google_storage_bucket.bucket_2.name
 }
-# [END cloudloadbalancing_global_ext_bucket_files]  
+# [END cloudloadbalancing_global_ext_bucket_files]
+
 
 # [START cloudloadbalancing_global_ext_bucket_public]  
 # Make buckets public
