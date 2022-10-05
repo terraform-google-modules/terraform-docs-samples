@@ -4,6 +4,15 @@
 # and the docs:
 # https://cloud.google.com/eventarc/docs/path-patterns
 
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+      version = ">= 4.34.0"
+    }
+  }
+}
+
 resource "random_id" "bucket_prefix" {
   byte_length = 8
 }
