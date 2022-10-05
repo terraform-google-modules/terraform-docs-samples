@@ -25,7 +25,6 @@ resource "google_storage_bucket" "bucket_2" {
 
 
 # [START cloudloadbalancing_global_ext_bucket_files]
-# image object for testing, try to access http://<your_lb_ip_address>/test.jpg
 resource "google_storage_bucket_object" "cat_image" {
   name         = "never-fetch/three-cats.jpg"
   source       = "images/three-cats.jpg"
