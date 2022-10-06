@@ -157,7 +157,7 @@ resource "google_compute_firewall" "fw_ilb_ssh" {
     protocol = "tcp"
     ports = ["22"]
   }
-  target_tags = ["allow-ssh"]
+  target_tags   = ["allow-ssh"]
   source_ranges = ["0.0.0.0/0"]
 }
 
