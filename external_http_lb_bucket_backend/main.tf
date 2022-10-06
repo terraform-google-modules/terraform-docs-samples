@@ -50,7 +50,6 @@ resource "google_storage_bucket_iam_member" "bucket_1" {
   role   = "roles/storage.objectViewer"
   member = "allUsers"
 }
-# [END cloudloadbalancing_global_ext_bucket_public]
 
 resource "google_storage_bucket_iam_member" "bucket_2" {
   bucket = google_storage_bucket.bucket_2.name
