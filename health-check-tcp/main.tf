@@ -1,5 +1,5 @@
 # [START cloudloadbalancing_health_check_tcp_with_logging]
-resource "google_compute_health_check" "health-check-tcp-with-logging" {
+resource "google_compute_health_check" "health_check_tcp_with_logging" {
   provider = google-beta
 
   name = "health-check-tcp"
