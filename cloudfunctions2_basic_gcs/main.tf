@@ -1,5 +1,14 @@
 # [START functions_v2_basic_gcs]
 
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+      version = ">= 4.34.0"
+    }
+  }
+}
+
 resource "random_id" "bucket_prefix" {
   byte_length = 8
 }

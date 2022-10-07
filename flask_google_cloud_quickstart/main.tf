@@ -21,9 +21,6 @@ resource "google_compute_instance" "default" {
   zone         = "us-west1-a"
   tags         = ["ssh"]
 
-  metadata = {
-    enable-oslogin = "TRUE"
-  }
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-11"
@@ -31,7 +28,7 @@ resource "google_compute_instance" "default" {
   }
 
   # Install Flask
-  metadata_startup_script = "sudo apt-get update; sudo apt-get install -yq build-essential python-pip rsync; pip install flask"
+  metadata_startup_script = "sudo apt-get update; sudo apt-get install -yq build-essential python3-pip rsync; pip install flask"
 
   network_interface {
     subnetwork = google_compute_subnetwork.default.id
@@ -51,7 +48,7 @@ resource "google_compute_firewall" "ssh" {
     protocol = "tcp"
   }
   direction     = "INGRESS"
-  network       = "default"
+  network       = google_compute_network.vpc_network.id
   priority      = 1000
   source_ranges = ["0.0.0.0/0"]
   target_tags   = ["ssh"]
@@ -62,7 +59,7 @@ resource "google_compute_firewall" "ssh" {
 # [START vpc_flask_quickstart_5000_fw]
 resource "google_compute_firewall" "flask" {
   name    = "flask-app-firewall"
-  network = "default"
+  network = google_compute_network.vpc_network.id
 
   allow {
     protocol = "tcp"
