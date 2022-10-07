@@ -118,6 +118,9 @@ resource "google_compute_instance_template" "default" {
   network_interface {
     network    = google_compute_network.lb_network.id
     subnetwork = google_compute_subnetwork.lb_frontend_and_backend_subnet.id
+    access_config {
+      # add external ip to fetch packages like apache2, ssl
+    }
   }
   disk {
     source_image = "debian-cloud/debian-10"
@@ -198,7 +201,7 @@ resource "google_compute_region_backend_service" "default" {
 }
 # [END cloudloadbalancing_shared_vpc_http_lb_backend]
 
-# [START xcloudloadbalancing_shared_vpc_http_lb_backend]
+# [START cloudloadbalancing_shared_vpc_http_lb_backend]
 # URL map
 resource "google_compute_region_url_map" "default" {
   name            = "l7-ilb-map"
@@ -237,7 +240,7 @@ resource "google_compute_forwarding_rule" "default" {
   depends_on            = [google_compute_subnetwork.lb_frontend_and_backend_subnet]
 }
 # [END cloudloadbalancing_shared_vpc_http_lb_fw]
-# [START cloudloadbalancing_shared_vpc_http_lb_config_lb]
+# [END cloudloadbalancing_shared_vpc_http_lb_config_lb]
 
 # [START cloudloadbalancing_shared_vpc_http_lb_test_vm]
 # Test instance
@@ -265,28 +268,3 @@ resource "google_compute_instance" "vm-test" {
 }
 # [END cloudloadbalancing_shared_vpc_http_lb_test_vm]
 # [END cloudloadbalancing_shared_vpc_http_lb_basic]
-
-# TODO: Update starter script for Gcloud & Console
-
-# TODO: Seperate CL for add Testing Steps
-/*
-In Client-VM users can use
-
-# Test1
-curl <example_load_balancer_ip_here:80>)
-
-# Test2
-{
-  RESULTS=
-  for i in {1..100}
-  do
-      RESULTS="$RESULTS#$(curl --silent <example_load_balancer_ip_here:80>)"
-  done
-  echo "***"
-  echo "*** Results of load-balancing"
-  echo "***"
-  echo "$RESULTS" | tr '#' '\n' | grep -Ev "^$" | sort | uniq -c
-  echo
-}
-
-*/
