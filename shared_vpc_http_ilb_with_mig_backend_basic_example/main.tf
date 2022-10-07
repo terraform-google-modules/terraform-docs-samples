@@ -1,10 +1,10 @@
-# Google Cloud Documentation: https://cloud.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc#console
-# Shared VPC Internal HTTP load balancer with a managed instance group backend
+# Google Cloud Documentation: https://cloud.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc
 
-# https://cloud.devsite.corp.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc#host-network
+## Configure the network and subnets in the host project
+## https://cloud.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc#host-network
 
-## Configure the subnet for the load balancer's frontend and backends
-
+# [START cloudloadbalancing_shared_vpc_http_lb_basic]
+# [START cloudloadbalancing_shared_vpc_http_lb_network]
 # Shared VPC network
 resource "google_compute_network" "lb_network" {
   name                    = "lb-network"
@@ -12,7 +12,9 @@ resource "google_compute_network" "lb_network" {
   project                 = "my-host-project-357412"
   auto_create_subnetworks = false # custom subnet mode
 }
+# [END cloudloadbalancing_shared_vpc_http_lb_network]
 
+# [START cloudloadbalancing_shared_vpc_http_lb_sub_network_01]
 # Shared VPC network - backend subnet
 resource "google_compute_subnetwork" "lb_frontend_and_backend_subnet" {
   name          = "lb-frontend-and-backend-subnet"
@@ -23,7 +25,9 @@ resource "google_compute_subnetwork" "lb_frontend_and_backend_subnet" {
   role          = "ACTIVE"
   network       = google_compute_network.lb_network.id
 }
+# [END cloudloadbalancing_shared_vpc_http_lb_sub_network_01]
 
+# [START cloudloadbalancing_shared_vpc_http_lb_sub_network_02]
 # Shared VPC network - proxy-only subnet
 resource "google_compute_subnetwork" "proxy_only_subnet" {
   name          = "proxy-only-subnet"
@@ -35,9 +39,11 @@ resource "google_compute_subnetwork" "proxy_only_subnet" {
   purpose       = "REGIONAL_MANAGED_PROXY"
   network       = google_compute_network.lb_network.id
 }
+# [END cloudloadbalancing_shared_vpc_http_lb_sub_network_02]
 
 ## Configure firewall rules in the host project
 
+# [START cloudloadbalancing_shared_vpc_http_lb_fw_01]
 resource "google_compute_firewall" "fw_allow_ssh" {
   name          = "fw-allow-ssh"
   provider      = google-beta
@@ -51,7 +57,9 @@ resource "google_compute_firewall" "fw_allow_ssh" {
   }
   target_tags = ["allow-ssh"]
 }
+# [END cloudloadbalancing_shared_vpc_http_lb_fw_01]
 
+# [START cloudloadbalancing_shared_vpc_http_lb_fw_02]
 resource "google_compute_firewall" "fw_allow_health_check" {
   name          = "fw-allow-health-check"
   provider      = google-beta
@@ -64,7 +72,9 @@ resource "google_compute_firewall" "fw_allow_health_check" {
   }
   target_tags = ["load-balanced-backend"]
 }
+# [END cloudloadbalancing_shared_vpc_http_lb_fw_02]
 
+# [START cloudloadbalancing_shared_vpc_http_lb_fw_03]
 resource "google_compute_firewall" "fw_allow_proxies" {
   name          = "fw-allow-proxies"
   provider      = google-beta
@@ -78,6 +88,7 @@ resource "google_compute_firewall" "fw_allow_proxies" {
   }
   target_tags = ["load-balanced-backend"]
 }
+# [END cloudloadbalancing_shared_vpc_http_lb_fw_03]
 
 # https://cloud.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc
 
@@ -97,7 +108,7 @@ resource "google_project_iam_binding" "default" {
 
 ## Create the managed instance group backend
 
-
+# [START cloudloadbalancing_shared_vpc_http_lb_instance_template]
 # instance template
 resource "google_compute_instance_template" "default" {
   name         = "l7-ilb-backend-template"
@@ -106,7 +117,6 @@ resource "google_compute_instance_template" "default" {
   region       = "us-west1"
   machine_type = "e2-small" # using small, for more options check https://cloud.google.com/compute/docs/machine-types
   tags         = ["allow-ssh", "load-balanced-backend"]
-
   network_interface {
     network    = google_compute_network.lb_network.id
     subnetwork = google_compute_subnetwork.lb_frontend_and_backend_subnet.id
@@ -136,28 +146,31 @@ resource "google_compute_instance_template" "default" {
     EOF
   }
 }
+# [END cloudloadbalancing_shared_vpc_http_lb_instance_template]
 
+# [START cloudloadbalancing_shared_vpc_http_lb_mig]
 # MIG
 resource "google_compute_instance_group_manager" "default" {
   name     = "l7-ilb-backend-example"
   provider = google-beta
   project  = "my-service-project-01-358212"
   zone     = "us-west1-a"
+  base_instance_name = "vm"
+  target_size        = 2
   version {
     instance_template = google_compute_instance_template.default.id
     name              = "primary"
   }
-  base_instance_name = "vm"
-  target_size        = 2
   named_port {
     name = "http"
     port = 80
   }
 }
-
+# [END cloudloadbalancing_shared_vpc_http_lb_mig]
 
 ## Configure the load balance
 
+# [START cloudloadbalancing_shared_vpc_http_lb_hc]
 # health check
 resource "google_compute_health_check" "default" {
   name               = "l7-ilb-basic-check"
@@ -165,12 +178,13 @@ resource "google_compute_health_check" "default" {
   project            = "my-service-project-01-358212"
   timeout_sec        = 1
   check_interval_sec = 1
-
   http_health_check {
     port = "80"
   }
 }
+# [END cloudloadbalancing_shared_vpc_http_lb_hc]
 
+# [START cloudloadbalancing_shared_vpc_http_lb_backend]
 # backend service
 resource "google_compute_region_backend_service" "default" {
   name                  = "l7-ilb-backend-service"
@@ -187,7 +201,9 @@ resource "google_compute_region_backend_service" "default" {
     capacity_scaler = 1.0
   }
 }
+# [END cloudloadbalancing_shared_vpc_http_lb_backend]
 
+# [START xcloudloadbalancing_shared_vpc_http_lb_backend]
 # URL map
 resource "google_compute_region_url_map" "default" {
   name            = "l7-ilb-map"
@@ -196,7 +212,9 @@ resource "google_compute_region_url_map" "default" {
   region          = "us-west1"
   default_service = google_compute_region_backend_service.default.id
 }
+# [END cloudloadbalancing_shared_vpc_http_lb_backend]
 
+# [START cloudloadbalancing_shared_vpc_http_lb_http_proxy]
 # HTTP target proxy
 resource "google_compute_region_target_http_proxy" "default" {
   name     = "l7-ilb-proxy"
@@ -205,7 +223,9 @@ resource "google_compute_region_target_http_proxy" "default" {
   region   = "us-west1"
   url_map  = google_compute_region_url_map.default.id
 }
+# [END cloudloadbalancing_shared_vpc_http_lb_http_proxy]
 
+# [START cloudloadbalancing_shared_vpc_http_lb_fw]
 # Forwarding rule
 resource "google_compute_forwarding_rule" "default" {
   name                  = "l7-ilb-forwarding-rule"
@@ -221,7 +241,9 @@ resource "google_compute_forwarding_rule" "default" {
   network_tier          = "PREMIUM"
   depends_on            = [google_compute_subnetwork.lb_frontend_and_backend_subnet]
 }
+# [END cloudloadbalancing_shared_vpc_http_lb_fw]
 
+# [START cloudloadbalancing_shared_vpc_http_lb_test_vm]
 # Test instance
 resource "google_compute_instance" "vm-test" {
   name         = "client-vm"
@@ -245,13 +267,16 @@ resource "google_compute_instance" "vm-test" {
     ]
   }
 }
-
-
+# [END cloudloadbalancing_shared_vpc_http_lb_test_vm]
+# [END cloudloadbalancing_shared_vpc_http_lb_basic]
 
 /*
 In Client-VM users can use
 
+# Test1
+curl <example_load_balancer_ip_here:80>)
 
+# Test2
 {
   RESULTS=
   for i in {1..100}
