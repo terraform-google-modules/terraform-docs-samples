@@ -146,10 +146,10 @@ resource "google_compute_instance_template" "default" {
 # [START cloudloadbalancing_shared_vpc_http_lb_mig_mgr]
 # MIG
 resource "google_compute_instance_group_manager" "default" {
-  name     = "l7-ilb-backend-example"
-  provider = google-beta
-  project  = "my-service-project-01-358212"
-  zone     = "us-west1-a"
+  name               = "l7-ilb-backend-example"
+  provider           = google-beta
+  project            = "my-service-project-01-358212"
+  zone               = "us-west1-a"
   base_instance_name = "vm"
   target_size        = 2
   version {
