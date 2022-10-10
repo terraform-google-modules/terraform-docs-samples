@@ -1,7 +1,8 @@
 # Shared VPC Internal HTTPS load balancer with a managed instance group backend
 # Google Cloud Documentation: https://cloud.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc
 
-## Configure the network and subnets in the host project
+# Configure the network and subnets in the host project
+# https://cloud.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc#host-network
 
 # [START cloudloadbalancing_shared_vpc_https_lb_basic]
 # [START cloudloadbalancing_shared_vpc_https_lb_network_backend_subnet]
@@ -11,7 +12,7 @@ resource "google_compute_network" "lb_network" {
   name                    = "lb-network"
   provider                = google-beta
   project                 = "my-host-project-357412"
-  auto_create_subnetworks = false # custom subnet mode
+  auto_create_subnetworks = false
 }
 # [END cloudloadbalancing_shared_vpc_https_lb_network]
 
@@ -92,17 +93,18 @@ resource "google_compute_firewall" "fw_allow_proxies" {
 # [END cloudloadbalancing_shared_vpc_https_lb_firewalls_proxy]
 # [END cloudloadbalancing_shared_vpc_https_lb_firewalls]
 
-data "google_project" "service_project02" {
+# Config NetworkUser role to use service project
+# https://cloud.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc#deploy_load_balancer_and_backends
+data "google_project" "service_project" {
   project_id = "my-service-project-01-358212"
 }
 
-# IAM Role
 resource "google_project_iam_binding" "default" {
   project = "my-host-project-357412"
   role    = "roles/compute.networkUser"
 
   members = [
-    "serviceAccount:${data.google_project.service_project02.number}@cloudservices.gserviceaccount.com",
+    "serviceAccount:${data.google_project.service_project.number}@cloudservices.gserviceaccount.com",
   ]
 }
 
@@ -258,7 +260,7 @@ resource "google_compute_forwarding_rule" "default" {
 # [END cloudloadbalancing_shared_vpc_https_lb_config_lb]
 
 # [START cloudloadbalancing_shared_vpc_https_lb_test_vm]
-# Test instance
+# Test instance - To test, use `curl -k -s 'https://LB_IP_ADDRESS:443'`
 resource "google_compute_instance" "vm-test" {
   name         = "client-vm"
   provider     = google-beta
