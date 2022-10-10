@@ -1,11 +1,11 @@
-# Shared VPC Internal HTTP load balancer with a managed instance group backend
+# Shared VPC Internal HTTPS load balancer with a managed instance group backend
 # Google Cloud Documentation: https://cloud.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc
 
 ## Configure the network and subnets in the host project
 
-# [START cloudloadbalancing_shared_vpc_http_lb_basic]
-# [START cloudloadbalancing_shared_vpc_http_lb_network_backend_subnet]
-# [START cloudloadbalancing_shared_vpc_http_lb_network]
+# [START cloudloadbalancing_shared_vpc_https_lb_basic]
+# [START cloudloadbalancing_shared_vpc_https_lb_network_backend_subnet]
+# [START cloudloadbalancing_shared_vpc_https_lb_network]
 # Shared VPC network
 resource "google_compute_network" "lb_network" {
   name                    = "lb-network"
@@ -13,9 +13,9 @@ resource "google_compute_network" "lb_network" {
   project                 = "my-host-project-357412"
   auto_create_subnetworks = false # custom subnet mode
 }
-# [END cloudloadbalancing_shared_vpc_http_lb_network]
+# [END cloudloadbalancing_shared_vpc_https_lb_network]
 
-# [START cloudloadbalancing_shared_vpc_http_lb_backend_sub_network]
+# [START cloudloadbalancing_shared_vpc_https_lb_backend_sub_network]
 # Shared VPC network - backend subnet
 resource "google_compute_subnetwork" "lb_frontend_and_backend_subnet" {
   name          = "lb-frontend-and-backend-subnet"
@@ -26,10 +26,10 @@ resource "google_compute_subnetwork" "lb_frontend_and_backend_subnet" {
   role          = "ACTIVE"
   network       = google_compute_network.lb_network.id
 }
-# [END cloudloadbalancing_shared_vpc_http_lb_backend_sub_network]
-# [END cloudloadbalancing_shared_vpc_http_lb_network_backend_subnet]
+# [END cloudloadbalancing_shared_vpc_https_lb_backend_sub_network]
+# [END cloudloadbalancing_shared_vpc_https_lb_network_backend_subnet]
 
-# [START cloudloadbalancing_shared_vpc_http_lb_proxy_sub_network]
+# [START cloudloadbalancing_shared_vpc_https_lb_proxy_sub_network]
 # Shared VPC network - proxy-only subnet
 resource "google_compute_subnetwork" "proxy_only_subnet" {
   name          = "proxy-only-subnet"
@@ -41,10 +41,10 @@ resource "google_compute_subnetwork" "proxy_only_subnet" {
   purpose       = "REGIONAL_MANAGED_PROXY"
   network       = google_compute_network.lb_network.id
 }
-# [END cloudloadbalancing_shared_vpc_http_lb_proxy_sub_network]
+# [END cloudloadbalancing_shared_vpc_https_lb_proxy_sub_network]
 
-# [START cloudloadbalancing_shared_vpc_http_lb_firewalls]
-# [START cloudloadbalancing_shared_vpc_http_lb_firewalls_ssh]
+# [START cloudloadbalancing_shared_vpc_https_lb_firewalls]
+# [START cloudloadbalancing_shared_vpc_https_lb_firewalls_ssh]
 resource "google_compute_firewall" "fw_allow_ssh" {
   name          = "fw-allow-ssh"
   provider      = google-beta
@@ -58,9 +58,9 @@ resource "google_compute_firewall" "fw_allow_ssh" {
   }
   target_tags = ["allow-ssh"]
 }
-# [END cloudloadbalancing_shared_vpc_http_lb_firewalls_ssh]
+# [END cloudloadbalancing_shared_vpc_https_lb_firewalls_ssh]
 
-# [START cloudloadbalancing_shared_vpc_http_lb_firewalls_hc]
+# [START cloudloadbalancing_shared_vpc_https_lb_firewalls_hc]
 resource "google_compute_firewall" "fw_allow_health_check" {
   name          = "fw-allow-health-check"
   provider      = google-beta
@@ -73,9 +73,9 @@ resource "google_compute_firewall" "fw_allow_health_check" {
   }
   target_tags = ["load-balanced-backend"]
 }
-# [END cloudloadbalancing_shared_vpc_http_lb_firewalls_hc]
+# [END cloudloadbalancing_shared_vpc_https_lb_firewalls_hc]
 
-# [START cloudloadbalancing_shared_vpc_http_lb_firewalls_proxy]
+# [START cloudloadbalancing_shared_vpc_https_lb_firewalls_proxy]
 resource "google_compute_firewall" "fw_allow_proxies" {
   name          = "fw-allow-proxies"
   provider      = google-beta
@@ -89,8 +89,8 @@ resource "google_compute_firewall" "fw_allow_proxies" {
   }
   target_tags = ["load-balanced-backend"]
 }
-# [END cloudloadbalancing_shared_vpc_http_lb_firewalls_proxy]
-# [END cloudloadbalancing_shared_vpc_http_lb_firewalls]
+# [END cloudloadbalancing_shared_vpc_https_lb_firewalls_proxy]
+# [END cloudloadbalancing_shared_vpc_https_lb_firewalls]
 
 data "google_project" "service_project02" {
   project_id = "my-service-project-01-358212"
@@ -106,8 +106,8 @@ resource "google_project_iam_binding" "default" {
   ]
 }
 
-# [START cloudloadbalancing_shared_vpc_http_lb_mig]
-# [START cloudloadbalancing_shared_vpc_http_lb_mig_template]
+# [START cloudloadbalancing_shared_vpc_https_lb_mig]
+# [START cloudloadbalancing_shared_vpc_https_lb_mig_template]
 # Instance template
 resource "google_compute_instance_template" "default" {
   name         = "l7-ilb-backend-template"
@@ -146,9 +146,9 @@ resource "google_compute_instance_template" "default" {
     EOF
   }
 }
-# [END cloudloadbalancing_shared_vpc_http_lb_mig_template]
+# [END cloudloadbalancing_shared_vpc_https_lb_mig_template]
 
-# [START cloudloadbalancing_shared_vpc_http_lb_mig_mgr]
+# [START cloudloadbalancing_shared_vpc_https_lb_mig_mgr]
 # MIG
 resource "google_compute_instance_group_manager" "default" {
   name               = "l7-ilb-backend-example"
@@ -162,15 +162,15 @@ resource "google_compute_instance_group_manager" "default" {
     name              = "primary"
   }
   named_port {
-    name = "http"
-    port = 80
+    name = "https"
+    port = 443
   }
 }
-# [END cloudloadbalancing_shared_vpc_http_lb_mig_mgr]
-# [END cloudloadbalancing_shared_vpc_http_lb_mig]
+# [END cloudloadbalancing_shared_vpc_https_lb_mig_mgr]
+# [END cloudloadbalancing_shared_vpc_https_lb_mig]
 
-# [START cloudloadbalancing_shared_vpc_http_lb_config_lb]
-# [START cloudloadbalancing_shared_vpc_http_lb_hc]
+# [START cloudloadbalancing_shared_vpc_https_lb_config_lb]
+# [START cloudloadbalancing_shared_vpc_https_lb_hc]
 # health check
 resource "google_compute_health_check" "default" {
   name               = "l7-ilb-basic-check"
@@ -178,13 +178,13 @@ resource "google_compute_health_check" "default" {
   project            = "my-service-project-01-358212"
   timeout_sec        = 1
   check_interval_sec = 1
-  http_health_check {
-    port = "80"
+  https_health_check {
+    port = "443"
   }
 }
-# [END cloudloadbalancing_shared_vpc_http_lb_hc]
+# [END cloudloadbalancing_shared_vpc_https_lb_hc]
 
-# [START cloudloadbalancing_shared_vpc_http_lb_backend]
+# [START cloudloadbalancing_shared_vpc_https_lb_backend]
 # backend service
 resource "google_compute_region_backend_service" "default" {
   name                  = "l7-ilb-backend-service"
@@ -201,9 +201,9 @@ resource "google_compute_region_backend_service" "default" {
     capacity_scaler = 1.0
   }
 }
-# [END cloudloadbalancing_shared_vpc_http_lb_backend]
+# [END cloudloadbalancing_shared_vpc_https_lb_backend]
 
-# [START cloudloadbalancing_shared_vpc_http_lb_backend]
+# [START cloudloadbalancing_shared_vpc_https_lb_backend]
 # URL map
 resource "google_compute_region_url_map" "default" {
   name            = "l7-ilb-map"
@@ -212,20 +212,33 @@ resource "google_compute_region_url_map" "default" {
   region          = "us-west1"
   default_service = google_compute_region_backend_service.default.id
 }
-# [END cloudloadbalancing_shared_vpc_http_lb_backend]
+# [END cloudloadbalancing_shared_vpc_https_lb_backend]
 
-# [START cloudloadbalancing_shared_vpc_http_lb_http_proxy]
-# HTTP target proxy
-resource "google_compute_region_target_http_proxy" "default" {
-  name     = "l7-ilb-proxy"
-  provider = google-beta
-  project  = "my-service-project-01-358212"
-  region   = "us-west1"
-  url_map  = google_compute_region_url_map.default.id
+# [START cloudloadbalancing_shared_vpc_https_lb_ssl_cert]
+# Use self-signed SSL certificate
+resource "google_compute_region_ssl_certificate" "default" {
+  name        = "l7-ilb-cert"
+  provider    = google-beta
+  project     = "my-service-project-01-358212"
+  region      = "us-west1"
+  private_key = file("example_ssl/server.key")
+  certificate = file("example_ssl/server.certificate")
 }
-# [END cloudloadbalancing_shared_vpc_http_lb_http_proxy]
+# [START cloudloadbalancing_shared_vpc_https_lb_ssl_cert]
 
-# [START cloudloadbalancing_shared_vpc_http_lb_fw]
+# [START cloudloadbalancing_shared_vpc_https_lb_http_proxy]
+# HTTP target proxy
+resource "google_compute_region_target_https_proxy" "default" {
+  name             = "l7-ilb-proxy"
+  provider         = google-beta
+  project          = "my-service-project-01-358212"
+  region           = "us-west1"
+  url_map          = google_compute_region_url_map.default.id
+  ssl_certificates = [google_compute_region_ssl_certificate.default.id]
+}
+# [END cloudloadbalancing_shared_vpc_https_lb_http_proxy]
+
+# [START cloudloadbalancing_shared_vpc_https_lb_fw]
 # Forwarding rule
 resource "google_compute_forwarding_rule" "default" {
   name                  = "l7-ilb-forwarding-rule"
@@ -233,18 +246,18 @@ resource "google_compute_forwarding_rule" "default" {
   project               = "my-service-project-01-358212"
   region                = "us-west1"
   ip_protocol           = "TCP"
-  port_range            = "80"
+  port_range            = "443"
   load_balancing_scheme = "INTERNAL_MANAGED"
-  target                = google_compute_region_target_http_proxy.default.id
+  target                = google_compute_region_target_https_proxy.default.id
   network               = google_compute_network.lb_network.id
   subnetwork            = google_compute_subnetwork.lb_frontend_and_backend_subnet.id
   network_tier          = "PREMIUM"
   depends_on            = [google_compute_subnetwork.lb_frontend_and_backend_subnet]
 }
-# [END cloudloadbalancing_shared_vpc_http_lb_fw]
-# [END cloudloadbalancing_shared_vpc_http_lb_config_lb]
+# [END cloudloadbalancing_shared_vpc_https_lb_fw]
+# [END cloudloadbalancing_shared_vpc_https_lb_config_lb]
 
-# [START cloudloadbalancing_shared_vpc_http_lb_test_vm]
+# [START cloudloadbalancing_shared_vpc_https_lb_test_vm]
 # Test instance
 resource "google_compute_instance" "vm-test" {
   name         = "client-vm"
@@ -268,5 +281,5 @@ resource "google_compute_instance" "vm-test" {
     ]
   }
 }
-# [END cloudloadbalancing_shared_vpc_http_lb_test_vm]
-# [END cloudloadbalancing_shared_vpc_http_lb_basic]
+# [END cloudloadbalancing_shared_vpc_https_lb_test_vm]
+# [END cloudloadbalancing_shared_vpc_https_lb_basic]
