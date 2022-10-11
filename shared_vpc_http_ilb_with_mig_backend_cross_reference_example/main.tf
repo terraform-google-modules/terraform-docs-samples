@@ -97,12 +97,24 @@ resource "google_compute_firewall" "fw_allow_proxies" {
 # Config NetworkUser role to use service project
 # https://cloud.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc#deploy_load_balancer_and_backends
 data "google_project" "service_project" {
-  project_id = "my-service-project-01-358212"
+  project_id = "my-service-project-02-358212"
 }
 
 resource "google_project_iam_binding" "default" {
   project = "my-host-project-357412"
   role    = "roles/compute.networkUser"
+
+  members = [
+    "serviceAccount:${data.google_project.service_project.number}@cloudservices.gserviceaccount.com",
+  ]
+}
+
+# Grant permissions to the Load Balancer Admin to use the backend service
+# https://cloud.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc#grant-bs-user
+
+resource "google_project_iam_binding" "project_level_iam_lb_access" {
+  project = "my-service-project-02-358212"
+  role    = "roles/compute.loadBalancerServiceUser"
 
   members = [
     "serviceAccount:${data.google_project.service_project.number}@cloudservices.gserviceaccount.com",
