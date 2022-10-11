@@ -227,7 +227,7 @@ resource "google_compute_region_ssl_certificate" "default" {
   private_key = file("path/to/ssl/private.key")
   certificate = file("path/to/ssl/server.certificate")
 }
-# [START cloudloadbalancing_shared_vpc_https_lb_ssl_cert]
+# [END cloudloadbalancing_shared_vpc_https_lb_ssl_cert]
 
 # [START cloudloadbalancing_shared_vpc_https_lb_http_proxy]
 # HTTP target proxy
