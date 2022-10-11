@@ -1,7 +1,9 @@
 # Shared VPC Internal HTTP load balancer with a managed instance group backend
 # Google Cloud Documentation: https://cloud.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc
-#
-## Configure the network and subnets in the host project
+# In this example we use 1 host project & 1 service projects
+
+# Configure the network and subnets in the host project
+# https://cloud.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc#host-network
 
 # [START cloudloadbalancing_shared_vpc_http_lb_basic]
 # [START cloudloadbalancing_shared_vpc_http_lb_network_backend_subnet]

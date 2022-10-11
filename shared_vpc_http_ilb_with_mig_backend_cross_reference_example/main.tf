@@ -2,7 +2,7 @@
 # Google Cloud Documentation: https://cloud.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc
 # In this example we use 1 host project & 2 service projects
 
-## Configure the network and subnets in the host project
+# Configure the network and subnets in the host project
 # https://cloud.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc#host-network
 
 # [START cloudloadbalancing_shared_vpc_cross_ref_http_lb_basic]
