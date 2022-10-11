@@ -1,3 +1,13 @@
+# Project data
+data "google_project" "project" {
+}
+
+# Enable Cloud Run API
+resource "google_project_service" "cloudrun_api" {
+  service            = "run.googleapis.com"
+  disable_on_destroy = false
+}
+
 # [START cloudrun_service_pubsub_service]
 resource "google_cloud_run_service" "default" {
   name     = "pubsub-tutorial"
@@ -5,7 +15,7 @@ resource "google_cloud_run_service" "default" {
   template {
     spec {
       containers {
-        image = "gcr.io/cloudrun/hello"
+        image = "gcr.io/cloudrun/hello" # Replace with newly created image gcr.io/<project_id>/pubsub
       }
     }
   }
@@ -13,6 +23,7 @@ resource "google_cloud_run_service" "default" {
     percent         = 100
     latest_revision = true
   }
+  depends_on                 = [google_project_service.cloudrun_api]
 }
 # [END cloudrun_service_pubsub_service]
 
