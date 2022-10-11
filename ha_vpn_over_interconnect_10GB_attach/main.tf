@@ -70,7 +70,7 @@ resource "google_compute_interconnect_attachment" "ia_1" {
   type = "DEDICATED"
   encryption = "IPSEC"
   ipsec_internal_addresses = [
-    google_compute_address.address_vpn_1.self_link,
+    google_compute_address.address_vpn_ia_1.self_link,
   ]
   vlan_tag8021q = 2001
 }
@@ -84,7 +84,7 @@ resource "google_compute_interconnect_attachment" "ia_2" {
   type = "DEDICATED"
   encryption = "IPSEC"
   ipsec_internal_addresses = [
-    google_compute_address.address_vpn_2.self_link,
+    google_compute_address.address_vpn_ia_2.self_link,
   ]
   vlan_tag8021q = 2002
 }
@@ -379,7 +379,7 @@ resource "google_compute_router_peer" "vpn_peer_3" {
   router = google_compute_router.vpn_router.name
   peer_ip_address = "169.254.3.2"
   interface = google_compute_router_interface.vpn_2_if_0.name
-  peer_asn = 65034
+  peer_asn = 65011
 }
 
 resource "google_compute_router_peer" "vpn_peer_4" {
@@ -387,7 +387,7 @@ resource "google_compute_router_peer" "vpn_peer_4" {
   router = google_compute_router.vpn_router.name
   peer_ip_address = "169.254.4.2"
   interface = google_compute_router_interface.vpn_2_if_1.name
-  peer_asn = 65034
+  peer_asn = 65011
 }
 
 resource "google_compute_router_peer" "vpn_peer_5" {
