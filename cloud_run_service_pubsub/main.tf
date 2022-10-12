@@ -44,10 +44,6 @@ resource "google_cloud_run_service_iam_binding" "binding" {
 # [END cloudrun_service_pubsub_run_invoke_permissions]
 
 # [START cloudrun_service_pubsub_token_permissions]
-
-data "google_project" "project" {
-}
-
 resource "google_project_service_identity" "pubsub_agent" {
   provider = google-beta
   project  = data.google_project.project.project_id
@@ -80,5 +76,6 @@ resource "google_pubsub_subscription" "subscription" {
       x-goog-version = "v1"
     }
   }
+  depends_on                 = [google_cloud_run_service.default]
 }
 # [END cloudrun_service_pubsub_sub]
