@@ -1,15 +1,11 @@
 # HA VPN over Cloud Interconnect 10GB VLAN attachments (Dedicated Interconnect)
+
 # [START cloudinterconnect_ha_vpn_over_interconnect_10gb_attachments]
 
-provider "google" {
-   project = "your-project"
-   region = "us-east4"  # Region must support the creation of attachments on Dataplane v2
-#  zone   = "us-east4-c"
-}
-
-provider "google-beta" {
-   project = "your-project" # Region must support the creation of attachments on Dataplane v2
-   region = "us-east4"
+# Create all resources in the same region, which you can specify at the provider-level
+ provider "google" {
+  project = "your-project"
+  region = "us-east4"  # Region must support creation of all new attachments on Dataplane v2
 }
 
 # VPC Network
