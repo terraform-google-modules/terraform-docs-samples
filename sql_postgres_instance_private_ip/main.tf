@@ -1,7 +1,7 @@
 # [START cloud_sql_postgres_instance_private_ip]
 
 # [START vpc_postgres_instance_private_ip_network]
-resource "google_compute_network" "private_network" {
+resource "google_compute_network" "peering_network" {
   name                    = "private-network"
   auto_create_subnetworks = "false"
 }
@@ -13,13 +13,13 @@ resource "google_compute_global_address" "private_ip_address" {
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
   prefix_length = 16
-  network       = google_compute_network.private_network.id
+  network       = google_compute_network.peering_network.id
 }
 # [END vpc_postgres_instance_private_ip_address]
 
 # [START vpc_postgres_instance_private_ip_service_connection]
 resource "google_service_networking_connection" "private_vpc_connection" {
-  network                 = google_compute_network.private_network.id
+  network                 = google_compute_network.peering_network.id
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.private_ip_address.name]
 }
@@ -37,7 +37,7 @@ resource "google_sql_database_instance" "default" {
     tier = "db-custom-2-7680"
     ip_configuration {
       ipv4_enabled    = "false"
-      private_network = google_compute_network.private_network.id
+      private_network = google_compute_network.peering_network.id
     }
   }
   deletion_protection = false # set to true to prevent destruction of the resource
@@ -56,7 +56,7 @@ resource "google_compute_network_peering_routes_config" "peering_routes" {
 # [START  cloud_sql_mysql_instance_private_ip_dns]
 resource "google_service_networking_peered_dns_domain" "default" {
   name       = "example-com"
-  network    = google_compute_network.private_network.id
+  network    = google_compute_network.peering_network.id
   dns_suffix = "example.com."
   service    = "servicenetworking.googleapis.com"
 }
