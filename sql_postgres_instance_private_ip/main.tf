@@ -44,4 +44,22 @@ resource "google_sql_database_instance" "default" {
 }
 # [END cloud_sql_postgres_instance_private_ip_instance]
 
+# [START cloud_sql_sqlserver_instance_private_ip_routes]       
+resource "google_compute_network_peering_routes_config" "peering_routes" {
+  peering = google_service_networking_connection.default.peering
+  network = google_compute_network.peering_network.name
+  import_custom_routes = true
+  export_custom_routes = true
+}
+# [END cloud_sql_sqlserver_instance_private_ip_routes]
+
+# [START  cloud_sql_mysql_instance_private_ip_dns]
+resource "google_service_networking_peered_dns_domain" "default" {
+  name       = "example-com"
+  network    = google_compute_network.private_network.id
+  dns_suffix = "example.com."
+  service    = "servicenetworking.googleapis.com"
+}
+# [END cloud_sql_mysql_instance_private_ip_dns]
+
 # [END cloud_sql_postgres_instance_private_ip]
