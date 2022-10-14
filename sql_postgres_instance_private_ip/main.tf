@@ -18,7 +18,7 @@ resource "google_compute_global_address" "private_ip_address" {
 # [END vpc_postgres_instance_private_ip_address]
 
 # [START vpc_postgres_instance_private_ip_service_connection]
-resource "google_service_networking_connection" "private_vpc_connection" {
+resource "google_service_networking_connection" "default" {
   network                 = google_compute_network.peering_network.id
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.private_ip_address.name]
@@ -31,7 +31,7 @@ resource "google_sql_database_instance" "default" {
   region           = "us-central1"
   database_version = "POSTGRES_14"
 
-  depends_on = [google_service_networking_connection.private_vpc_connection]
+  depends_on = [google_service_networking_connection.default]
 
   settings {
     tier = "db-custom-2-7680"

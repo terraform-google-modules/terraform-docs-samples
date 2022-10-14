@@ -18,7 +18,7 @@ resource "google_compute_global_address" "private_ip_address" {
 # [END vpc_mysql_instance_private_ip_address]
 
 # [START vpc_mysql_instance_private_ip_service_connection]
-resource "google_service_networking_connection" "private_vpc_connection" {
+resource "google_service_networking_connection" "default" {
   network                 = google_compute_network.peering_network.id
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.private_ip_address.name]
@@ -31,7 +31,7 @@ resource "google_sql_database_instance" "instance" {
   region           = "us-central1"
   database_version = "MYSQL_8_0"
 
-  depends_on = [google_service_networking_connection.private_vpc_connection]
+  depends_on = [google_service_networking_connection.default]
 
   settings {
     tier = "db-f1-micro"
