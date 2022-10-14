@@ -1,8 +1,3 @@
-provider "google" {
-  credentials = file("~/Downloads/load-balancer-https-756a38447081.json")
-  project     = "load-balancer-https"
-}
-
 # [START cloud_sql_sqlserver_instance_private_ip]
 
 # [START vpc_sqlserver_instance_private_ip_network]
