@@ -48,4 +48,4 @@ resource "google_sql_database_instance" "instance_with_ad" {
 }
 # [END cloud_sql_sqlserver_instance_active_directory_instance]
 
-# [END cloud_sql_sqlserver_instance_directory_instance"
+# [END cloud_sql_sqlserver_instance_directory_instance]
