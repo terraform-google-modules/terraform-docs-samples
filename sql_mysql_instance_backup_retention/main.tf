@@ -6,10 +6,10 @@ resource "google_sql_database_instance" "default" {
   settings {
     tier = "db-f1-micro"
     backup_configuration {
-      enabled                        = true
+      enabled = true
       backup_retention_settings {
-        retained_backups               = 365
-        retention_unit                 = "COUNT"
+        retained_backups = 365
+        retention_unit   = "COUNT"
       }
     }
   }

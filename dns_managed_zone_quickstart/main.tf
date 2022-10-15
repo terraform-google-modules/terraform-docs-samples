@@ -31,8 +31,8 @@ resource "google_compute_instance" "default" {
 
 # to allow http traffic
 resource "google_compute_firewall" "default" {
-  name     = "allow-http-traffic"
-  network  = "default"
+  name    = "allow-http-traffic"
+  network = "default"
   allow {
     ports    = ["80"]
     protocol = "tcp"

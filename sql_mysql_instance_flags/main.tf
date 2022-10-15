@@ -16,8 +16,8 @@ resource "google_sql_database_instance" "instance" {
       name  = "wait_timeout"
       value = "200000"
     }
-    disk_type             = "PD_SSD"
-    tier         = "db-n1-standard-2"
+    disk_type = "PD_SSD"
+    tier      = "db-n1-standard-2"
   }
   deletion_protection = false # set to true to prevent destruction of the resource
 }

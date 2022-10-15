@@ -4,7 +4,7 @@ resource "google_sql_database_instance" "primary" {
   region           = "europe-west4"
   database_version = "MYSQL_8_0"
   settings {
-    tier               = "db-n1-standard-2"
+    tier = "db-n1-standard-2"
     backup_configuration {
       enabled            = "true"
       binary_log_enabled = "true"

@@ -12,13 +12,13 @@ resource "google_sql_database_instance" "instance" {
 
 # [START cloud_sql_mysql_instance_user]
 resource "random_password" "pwd" {
-    length = 16
-    special = false
+  length  = 16
+  special = false
 }
 
 resource "google_sql_user" "user" {
-    name = "user"
-    instance = google_sql_database_instance.instance.name
-    password = random_password.pwd.result
+  name     = "user"
+  instance = google_sql_database_instance.instance.name
+  password = random_password.pwd.result
 }
 # [END cloud_sql_mysql_instance_user]

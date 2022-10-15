@@ -20,7 +20,7 @@ resource "google_cloud_run_service" "default" {
   }
 
   traffic {
-    percent       = 75
+    percent = 75
     # This revision needs to already exist
     revision_name = "cloudrun-srv-blue"
   }

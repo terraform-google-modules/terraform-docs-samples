@@ -7,16 +7,16 @@ resource "google_cloud_run_service" "default" {
 
   traffic {
     # Update revision to 50% traffic
-    percent       = 50
+    percent = 50
     # This revision needs to already exist
-    revision_name = "cloudrun-srv-green"  
+    revision_name = "cloudrun-srv-green"
   }
 
   traffic {
     # Update tag to 50% traffic
     percent = 50
     # This tag needs to already exist
-    tag     = "tag-name"  
+    tag = "tag-name"
   }
 }
 # [END cloudrun_service_traffic_split_tag]

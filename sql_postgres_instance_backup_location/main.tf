@@ -6,8 +6,8 @@ resource "google_sql_database_instance" "default" {
   settings {
     tier = "db-custom-2-7680"
     backup_configuration {
-      enabled                        = true
-      location                       = "us-central1"
+      enabled  = true
+      location = "us-central1"
     }
   }
   deletion_protection = false # set to true to prevent destruction of the resource

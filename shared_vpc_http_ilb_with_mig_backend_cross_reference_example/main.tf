@@ -125,10 +125,10 @@ resource "google_project_iam_binding" "project_level_iam_lb_access" {
 # [START cloudloadbalancing_shared_vpc_cross_ref_http_lb_mig_template]
 # Instance template
 resource "google_compute_instance_template" "default" {
-  name         = "l7-ilb-backend-template"
-  provider     = google-beta
-  project      = "SERVICE_PROJECT_B_ID"
-  region       = "us-west1"
+  name     = "l7-ilb-backend-template"
+  provider = google-beta
+  project  = "SERVICE_PROJECT_B_ID"
+  region   = "us-west1"
   # For machine type, using small. For more options check https://cloud.google.com/compute/docs/machine-types
   machine_type = "e2-small"
   tags         = ["allow-ssh", "load-balanced-backend"]

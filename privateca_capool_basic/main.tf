@@ -1,11 +1,11 @@
 # [START privateca_create_ca_pool]
 resource "google_privateca_ca_pool" "default" {
-  name = "ca-pool"
+  name     = "ca-pool"
   location = "us-central1"
-  tier = "ENTERPRISE"
+  tier     = "ENTERPRISE"
   publishing_options {
     publish_ca_cert = true
-    publish_crl = true
+    publish_crl     = true
   }
   labels = {
     foo = "bar"

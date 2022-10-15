@@ -5,7 +5,7 @@ resource "google_sql_database_instance" "mysql_ssm_instance_name" {
   database_version    = "MYSQL_5_7"
   maintenance_version = "MYSQL_5_7_38.R20220809.02_00"
   settings {
-    tier              = "db-f1-micro"
+    tier = "db-f1-micro"
   }
   deletion_protection = false # set to true to prevent destruction of the resource
 }

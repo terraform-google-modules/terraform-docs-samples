@@ -1,5 +1,5 @@
 resource "google_compute_instance" "mirror" {
-  name = "my-instance"
+  name         = "my-instance"
   machine_type = "e2-medium"
 
   boot_disk {
@@ -20,19 +20,19 @@ resource "google_compute_network" "default" {
 }
 
 resource "google_compute_subnetwork" "default" {
-  name = "my-subnetwork"
+  name          = "my-subnetwork"
   network       = google_compute_network.default.id
   ip_cidr_range = "10.2.0.0/16"
 
 }
 
 resource "google_compute_region_backend_service" "default" {
-  name = "my-service"
+  name          = "my-service"
   health_checks = [google_compute_health_check.default.id]
 }
 
 resource "google_compute_health_check" "default" {
-  name = "my-healthcheck"
+  name               = "my-healthcheck"
   check_interval_sec = 1
   timeout_sec        = 1
   tcp_health_check {
@@ -56,7 +56,7 @@ resource "google_compute_forwarding_rule" "default" {
 
 # [START compute_vm_packet_mirror]
 resource "google_compute_packet_mirroring" "foobar" {
-  name = "my-mirroring"
+  name        = "my-mirroring"
   description = "bar"
   network {
     url = google_compute_network.default.id
@@ -72,8 +72,8 @@ resource "google_compute_packet_mirroring" "foobar" {
   }
   filter {
     ip_protocols = ["tcp"]
-    cidr_ranges = ["0.0.0.0/0"]
-    direction = "BOTH"
+    cidr_ranges  = ["0.0.0.0/0"]
+    direction    = "BOTH"
   }
 }
 # [END compute_vm_packet_mirror]

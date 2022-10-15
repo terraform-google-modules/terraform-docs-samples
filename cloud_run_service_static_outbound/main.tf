@@ -3,13 +3,13 @@
 # [START cloudrun_service_static_network]
 resource "google_compute_network" "default" {
   provider = google-beta
-  name = "cr-static-ip-network"
+  name     = "cr-static-ip-network"
 }
 # [END cloudrun_service_static_network]
 
 # [START cloudrun_service_static_subnet]
 resource "google_compute_subnetwork" "default" {
-  provider = google-beta
+  provider      = google-beta
   name          = "cr-static-ip"
   ip_cidr_range = "10.124.0.0/28"
   network       = google_compute_network.default.id
@@ -19,8 +19,8 @@ resource "google_compute_subnetwork" "default" {
 
 # [START cloudrun_service_static_vpc_conn]
 resource "google_project_service" "vpc" {
-  provider = google-beta
-  service = "vpcaccess.googleapis.com"
+  provider           = google-beta
+  service            = "vpcaccess.googleapis.com"
   disable_on_destroy = false
 }
 
@@ -43,26 +43,26 @@ resource "google_vpc_access_connector" "default" {
 # [START cloudrun_service_static_router]
 resource "google_compute_router" "default" {
   provider = google-beta
-  name    = "cr-static-ip-router"
-  network = google_compute_network.default.name
-  region  = google_compute_subnetwork.default.region
+  name     = "cr-static-ip-router"
+  network  = google_compute_network.default.name
+  region   = google_compute_subnetwork.default.region
 }
 # [END cloudrun_service_static_router]
 
 # [START cloudrun_service_static_addr]
 resource "google_compute_address" "default" {
   provider = google-beta
-  name   = "cr-static-ip-addr"
-  region = google_compute_subnetwork.default.region
+  name     = "cr-static-ip-addr"
+  region   = google_compute_subnetwork.default.region
 }
 # [END cloudrun_service_static_addr]
 
 # [START cloudrun_service_static_nat]
 resource "google_compute_router_nat" "default" {
   provider = google-beta
-  name   = "cr-static-nat"
-  router = google_compute_router.default.name
-  region = google_compute_subnetwork.default.region
+  name     = "cr-static-nat"
+  router   = google_compute_router.default.name
+  region   = google_compute_subnetwork.default.region
 
   nat_ip_allocate_option = "MANUAL_ONLY"
   nat_ips                = [google_compute_address.default.self_link]

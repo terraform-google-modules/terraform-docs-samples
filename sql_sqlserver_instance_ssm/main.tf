@@ -5,7 +5,7 @@ resource "google_sql_database_instance" "sqlserver_ssm_instance_name" {
   database_version    = "SQLSERVER_2019_STANDARD"
   maintenance_version = "SQLSERVER_2019_STANDARD_CU16_GDR.R20220821.00_00"
   settings {
-    tier              = "db-f1-micro"
+    tier = "db-f1-micro"
   }
   deletion_protection = false # set to true to prevent destruction of the resource
 }

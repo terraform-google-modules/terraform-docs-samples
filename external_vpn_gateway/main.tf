@@ -1,8 +1,8 @@
 # [START cloudvpn_ha_external]
 resource "google_compute_ha_vpn_gateway" "ha_gateway" {
-  region   = "us-central1"
-  name     = "ha-vpn"
-  network  = google_compute_network.network.id
+  region  = "us-central1"
+  name    = "ha-vpn"
+  network = google_compute_network.network.id
 }
 
 resource "google_compute_external_vpn_gateway" "external_gateway" {
@@ -36,8 +36,8 @@ resource "google_compute_subnetwork" "network_subnet2" {
 }
 
 resource "google_compute_router" "router1" {
-  name     = "ha-vpn-router1"
-  network  = google_compute_network.network.name
+  name    = "ha-vpn-router1"
+  network = google_compute_network.network.name
   bgp {
     asn = 64514
   }

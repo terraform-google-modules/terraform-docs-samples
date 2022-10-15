@@ -5,8 +5,8 @@ resource "google_compute_firewall" "rules" {
   description = "Creates firewall rule targeting tagged instances"
 
   allow {
-    protocol  = "tcp"
-    ports     = ["80", "8080", "1000-2000"]
+    protocol = "tcp"
+    ports    = ["80", "8080", "1000-2000"]
   }
 
   source_tags = ["foo"]

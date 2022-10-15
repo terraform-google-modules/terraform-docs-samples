@@ -1,6 +1,6 @@
 # [START cloudrun_service_identity_iam]
 resource "google_service_account" "cloudrun_service_identity" {
-  account_id   = "my-service-account"
+  account_id = "my-service-account"
 }
 # [END cloudrun_service_identity_iam]
 
@@ -14,7 +14,7 @@ resource "google_cloud_run_service" "default" {
       containers {
         image = "gcr.io/cloudrun/hello"
       }
-      service_account_name = google_service_account.cloudrun_service_identity.email  
+      service_account_name = google_service_account.cloudrun_service_identity.email
     }
   }
 

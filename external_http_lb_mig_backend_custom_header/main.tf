@@ -21,7 +21,7 @@ resource "google_compute_subnetwork" "default" {
 # reserved IP address
 resource "google_compute_global_address" "default" {
   provider = google-beta
-  name = "l7-xlb-static-ip"
+  name     = "l7-xlb-static-ip"
 }
 
 # forwarding rule
@@ -51,16 +51,16 @@ resource "google_compute_url_map" "default" {
 
 # backend service with custom request and response headers
 resource "google_compute_backend_service" "default" {
-  name                     = "l7-xlb-backend-service"
-  provider                 = google-beta
-  protocol                 = "HTTP"
-  port_name                = "my-port"
-  load_balancing_scheme    = "EXTERNAL"
-  timeout_sec              = 10
-  enable_cdn               = true
-  custom_request_headers   = ["X-Client-Geo-Location: {client_region_subdivision}, {client_city}"]
-  custom_response_headers  = ["X-Cache-Hit: {cdn_cache_status}"]
-  health_checks            = [google_compute_health_check.default.id]
+  name                    = "l7-xlb-backend-service"
+  provider                = google-beta
+  protocol                = "HTTP"
+  port_name               = "my-port"
+  load_balancing_scheme   = "EXTERNAL"
+  timeout_sec             = 10
+  enable_cdn              = true
+  custom_request_headers  = ["X-Client-Geo-Location: {client_region_subdivision}, {client_city}"]
+  custom_response_headers = ["X-Cache-Hit: {cdn_cache_status}"]
+  health_checks           = [google_compute_health_check.default.id]
   backend {
     group           = google_compute_instance_group_manager.default.instance_group
     balancing_mode  = "UTILIZATION"

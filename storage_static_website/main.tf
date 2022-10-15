@@ -6,13 +6,13 @@ resource "random_id" "bucket_prefix" {
 }
 
 resource "google_storage_bucket" "static_website" {
-    name          = "${random_id.bucket_prefix.hex}-static-website-bucket"
-    location      = "US"
-    storage_class = "COLDLINE"
-    website {
-        main_page_suffix = "index.html"
-        not_found_page = "index.html"
-    }
+  name          = "${random_id.bucket_prefix.hex}-static-website-bucket"
+  location      = "US"
+  storage_class = "COLDLINE"
+  website {
+    main_page_suffix = "index.html"
+    not_found_page   = "index.html"
+  }
 }
 # [END storage_static_website_create_bucket_tf]
 

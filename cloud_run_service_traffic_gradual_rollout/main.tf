@@ -14,10 +14,10 @@ resource "google_cloud_run_service" "default" {
   autogenerate_revision_name = true
 
   traffic {
-    percent       = 100
+    percent = 100
     # This revision needs to already exist
     revision_name = "cloudrun-srv-green"
-  
+
   }
 
   traffic {

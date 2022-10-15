@@ -12,10 +12,10 @@ resource "random_id" "featurestore_name_suffix" {
 }
 
 resource "google_vertex_ai_featurestore" "main" {
-  name          = "featurestore_${random_id.featurestore_name_suffix.hex}"
-  provider      = google-beta
-  region        = "us-central1"
-  labels        = {
+  name     = "featurestore_${random_id.featurestore_name_suffix.hex}"
+  provider = google-beta
+  region   = "us-central1"
+  labels = {
     environment = "testing"
   }
 
@@ -25,6 +25,6 @@ resource "google_vertex_ai_featurestore" "main" {
 
   force_destroy = true
 
-  depends_on    = [google_project_service.aiplatform]
+  depends_on = [google_project_service.aiplatform]
 }
 # [END vertex_ai_featurestore]

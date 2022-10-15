@@ -153,13 +153,13 @@ resource "google_compute_region_health_check" "default" {
 
 # [START cloudloadbalancing_backend_service_rllxlb_example]
 resource "google_compute_region_backend_service" "default" {
-  name                            = "l7-xlb-backend-service"
-  region                          = "us-west1"
-  load_balancing_scheme           = "EXTERNAL_MANAGED"
-  health_checks                   = [google_compute_region_health_check.default.id]
-  protocol                        = "HTTP"
-  session_affinity                = "NONE"
-  timeout_sec                     = 30
+  name                  = "l7-xlb-backend-service"
+  region                = "us-west1"
+  load_balancing_scheme = "EXTERNAL_MANAGED"
+  health_checks         = [google_compute_region_health_check.default.id]
+  protocol              = "HTTP"
+  session_affinity      = "NONE"
+  timeout_sec           = 30
   backend {
     group           = google_compute_instance_group_manager.default.instance_group
     balancing_mode  = "UTILIZATION"
@@ -186,10 +186,10 @@ resource "google_compute_region_target_http_proxy" "default" {
 
 # [START cloudloadbalancing_forwarding_rule_rllxlb_example]
 resource "google_compute_forwarding_rule" "default" {
-  name                  = "l7-xlb-forwarding-rule"
-  provider              = google-beta
-  depends_on            = [google_compute_subnetwork.proxy_only]
-  region                = "us-west1"
+  name       = "l7-xlb-forwarding-rule"
+  provider   = google-beta
+  depends_on = [google_compute_subnetwork.proxy_only]
+  region     = "us-west1"
 
   ip_protocol           = "TCP"
   load_balancing_scheme = "EXTERNAL_MANAGED"

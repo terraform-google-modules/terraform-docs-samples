@@ -3,7 +3,7 @@ resource "google_sql_database_instance" "instance" {
   name             = "sqlserver-instance-flags"
   region           = "us-central1"
   database_version = "SQLSERVER_2019_STANDARD"
-  root_password = "INSERT-PASSWORD-HERE"
+  root_password    = "INSERT-PASSWORD-HERE"
   settings {
     database_flags {
       name  = "1204"

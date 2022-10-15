@@ -4,7 +4,7 @@ resource "google_sql_database_instance" "mysql_instance" {
   region           = "asia-northeast1"
   database_version = "MYSQL_8_0"
   settings {
-    tier              = "db-f1-micro"
+    tier = "db-f1-micro"
     ip_configuration {
       require_ssl = "true"
     }
@@ -26,7 +26,7 @@ resource "google_sql_database_instance" "postgres_instance" {
   region           = "asia-northeast1"
   database_version = "postgres_14"
   settings {
-    tier              = "db-custom-2-7680"
+    tier = "db-custom-2-7680"
     ip_configuration {
       require_ssl = "true"
     }
@@ -47,9 +47,9 @@ resource "google_sql_database_instance" "sqlserver_instance" {
   name             = "sqlserver-instance"
   region           = "asia-northeast1"
   database_version = "SQLSERVER_2019_STANDARD"
-  root_password = "INSERT-PASSWORD-HERE"
+  root_password    = "INSERT-PASSWORD-HERE"
   settings {
-    tier              = "db-custom-2-7680"
+    tier = "db-custom-2-7680"
     ip_configuration {
       require_ssl = "true"
     }

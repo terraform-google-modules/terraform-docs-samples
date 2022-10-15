@@ -26,7 +26,7 @@ resource "google_compute_instance" "sqlserver_vm" {
       size  = 50
       type  = "pd-balanced"
     }
-    mode   = "READ_WRITE"
+    mode = "READ_WRITE"
   }
   machine_type = "n1-standard-4"
   zone         = "europe-west1-b"
@@ -34,17 +34,17 @@ resource "google_compute_instance" "sqlserver_vm" {
     access_config {
       network_tier = "PREMIUM"
     }
-    network            = google_compute_network.default.id
-    stack_type         = "IPV4_ONLY"
-    subnetwork         = google_compute_subnetwork.default.id
+    network    = google_compute_network.default.id
+    stack_type = "IPV4_ONLY"
+    subnetwork = google_compute_subnetwork.default.id
   }
 }
 # [END cloud_sql_sqlserver_vm_instance]
 
 # [START cloud_sql_sqlserver_vm_firewall_rule]
 resource "google_compute_firewall" "sql_server_1433" {
-  provider      = google-beta
-  name          = "sql-server-1433-3"
+  provider = google-beta
+  name     = "sql-server-1433-3"
   allow {
     ports    = ["1433"]
     protocol = "tcp"

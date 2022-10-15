@@ -6,8 +6,8 @@ resource "google_sql_database_instance" "instance" {
   settings {
     tier = "db-custom-2-7680"
     backup_configuration {
-      enabled                        = true
-      start_time                     = "20:55"
+      enabled    = true
+      start_time = "20:55"
     }
   }
   deletion_protection = false # set to true to prevent destruction of the resource

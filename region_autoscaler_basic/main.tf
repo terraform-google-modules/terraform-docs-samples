@@ -57,8 +57,8 @@ resource "google_compute_region_instance_group_manager" "foobar" {
   region = "us-central1"
 
   version {
-    instance_template  = google_compute_instance_template.foobar.id
-    name               = "primary"
+    instance_template = google_compute_instance_template.foobar.id
+    name              = "primary"
   }
 
   target_pools       = [google_compute_target_pool.foobar.id]

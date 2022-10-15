@@ -4,9 +4,9 @@ resource "google_sql_database_instance" "primary" {
   region           = "europe-west4"
   database_version = "POSTGRES_14"
   settings {
-    tier               = "db-custom-2-7680"
+    tier = "db-custom-2-7680"
     backup_configuration {
-      enabled            = "true"
+      enabled = "true"
     }
   }
   deletion_protection = false # set to true to prevent destruction of the resource

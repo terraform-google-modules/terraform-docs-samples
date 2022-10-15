@@ -21,7 +21,7 @@ resource "google_compute_instance" "oslogin_instance" {
   machine_type = "f1-micro"
   zone         = "us-central1-c"
   metadata = {
-    enable-oslogin: "TRUE"
+    enable-oslogin : "TRUE"
   }
   boot_disk {
     initialize_params {
@@ -42,9 +42,9 @@ resource "google_compute_instance" "oslogin_instance" {
 data "google_project" "project" {
 }
 resource "google_project_iam_member" "os-login-admin-users" {
-  project  = data.google_project.project.project_id
-  role = "roles/compute.osAdminLogin"
-  member   = "serviceAccount:service-${data.google_project.project.number}@compute-system.iam.gserviceaccount.com"
+  project = data.google_project.project.project_id
+  role    = "roles/compute.osAdminLogin"
+  member  = "serviceAccount:service-${data.google_project.project.number}@compute-system.iam.gserviceaccount.com"
 }
 # [END compute_add_iam_binding_for_oslogin]
 

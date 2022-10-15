@@ -6,15 +6,15 @@ resource "google_cloud_run_service" "default" {
   template {}
 
   traffic {
-    percent       = 100
+    percent = 100
     # This revision needs to already exist
     revision_name = "cloudrun-srv-green"
-  
+
   }
   traffic {
     # No tags for this revision
     # Keep revision at 0% traffic
-    percent       = 0
+    percent = 0
     # This revision needs to already exist
     revision_name = "cloudrun-srv-blue"
   }

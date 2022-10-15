@@ -2,16 +2,16 @@
 resource "google_network_management_connectivity_test" "address-test" {
   name = "conn-test-addr"
   source {
-      ip_address = google_compute_address.source-addr.address
-      project_id = google_compute_address.source-addr.project
-      network = google_compute_network.vpc.id
-      network_type = "GCP_NETWORK"
+    ip_address   = google_compute_address.source-addr.address
+    project_id   = google_compute_address.source-addr.project
+    network      = google_compute_network.vpc.id
+    network_type = "GCP_NETWORK"
   }
 
   destination {
-      ip_address = google_compute_address.dest-addr.address
-      project_id = google_compute_address.dest-addr.project
-      network = google_compute_network.vpc.id
+    ip_address = google_compute_address.dest-addr.address
+    project_id = google_compute_address.dest-addr.project
+    network    = google_compute_network.vpc.id
   }
 
   protocol = "UDP"

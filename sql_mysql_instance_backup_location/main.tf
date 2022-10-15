@@ -6,8 +6,8 @@ resource "google_sql_database_instance" "default" {
   settings {
     tier = "db-f1-micro"
     backup_configuration {
-      enabled                        = true
-      location                       = "asia-northeast1"
+      enabled  = true
+      location = "asia-northeast1"
     }
   }
   deletion_protection = false # set to true to prevent destruction of the resource

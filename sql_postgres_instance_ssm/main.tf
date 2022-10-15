@@ -5,7 +5,7 @@ resource "google_sql_database_instance" "postgres_ssm_instance_name" {
   database_version    = "POSTGRES_14"
   maintenance_version = "POSTGRES_14_4.R20220710.01_07"
   settings {
-    tier              = "db-f1-micro"
+    tier = "db-f1-micro"
   }
   deletion_protection = false # set to true to prevent destruction of the resource
 }

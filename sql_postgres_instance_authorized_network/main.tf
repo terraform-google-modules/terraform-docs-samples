@@ -7,8 +7,8 @@ resource "google_sql_database_instance" "default" {
     tier = "db-custom-2-7680"
     ip_configuration {
       authorized_networks {
-        name = "Network Name"
-        value = "192.0.2.0/24"
+        name            = "Network Name"
+        value           = "192.0.2.0/24"
         expiration_time = "3021-11-15T16:19:00.094Z"
       }
     }

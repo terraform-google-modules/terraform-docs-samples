@@ -11,7 +11,7 @@ resource "google_compute_reservation" "gce_reservation_local" {
   specific_reservation {
     count = 1
     instance_properties {
-      machine_type     = "n2-standard-2"
+      machine_type = "n2-standard-2"
     }
   }
 }

@@ -8,11 +8,11 @@ resource "google_project_service" "aiplatform" {
 
 # [START vertex_ai_metadata_store]
 resource "google_vertex_ai_metadata_store" "main" {
-  name          = "test-store"
-  provider      = google-beta
-  description   = "Example metadata store"
-  region        = "us-central1"
-  
-  depends_on    = [google_project_service.aiplatform]
+  name        = "test-store"
+  provider    = google-beta
+  description = "Example metadata store"
+  region      = "us-central1"
+
+  depends_on = [google_project_service.aiplatform]
 }
 # [END vertex_ai_metadata_store]

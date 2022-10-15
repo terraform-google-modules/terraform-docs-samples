@@ -1,7 +1,7 @@
 # [START vpc_serverless_connector_enable_api]
 resource "google_project_service" "vpcaccess_api" {
-  service  = "vpcaccess.googleapis.com"
-  provider = google-beta
+  service            = "vpcaccess.googleapis.com"
+  provider           = google-beta
   disable_on_destroy = false
 }
 # [END vpc_serverless_connector_enable_api]
@@ -16,13 +16,13 @@ resource "google_compute_network" "default" {
 
 # VPC access connector
 resource "google_vpc_access_connector" "connector" {
-  name          = "vpcconn"
-  provider      = google-beta
-  region        = "us-west1"
-  ip_cidr_range = "10.8.0.0/28"
-  max_throughput= 300
-  network       = google_compute_network.default.name
-  depends_on    = [google_project_service.vpcaccess_api]
+  name           = "vpcconn"
+  provider       = google-beta
+  region         = "us-west1"
+  ip_cidr_range  = "10.8.0.0/28"
+  max_throughput = 300
+  network        = google_compute_network.default.name
+  depends_on     = [google_project_service.vpcaccess_api]
 }
 
 # Cloud Router
@@ -57,7 +57,7 @@ resource "google_cloud_run_service" "gcr_service" {
         image = "us-docker.pkg.dev/cloudrun/container/hello"
         resources {
           limits = {
-            cpu = "1000m"
+            cpu    = "1000m"
             memory = "512M"
           }
         }

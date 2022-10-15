@@ -3,12 +3,12 @@ resource "google_sql_database_instance" "default" {
   name             = "sqlserver-instance-with-backup-location"
   region           = "us-central1"
   database_version = "SQLSERVER_2019_STANDARD"
-  root_password = "INSERT-PASSWORD-HERE"
+  root_password    = "INSERT-PASSWORD-HERE"
   settings {
     tier = "db-custom-2-7680"
     backup_configuration {
-      enabled                        = true
-      location                       = "us-central1"
+      enabled  = true
+      location = "us-central1"
     }
   }
   deletion_protection = false # set to true to prevent destruction of the resource

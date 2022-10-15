@@ -21,9 +21,9 @@ resource "google_storage_bucket" "static" {
 
 # The text object in Cloud Storage
 resource "google_storage_bucket_object" "default" {
-  name         = "new-object"
-# Uncomment and add valid path to an object.
-#  source       = "/path/to/an/object"
+  name = "new-object"
+  # Uncomment and add valid path to an object.
+  #  source       = "/path/to/an/object"
   content      = "Data as string to be uploaded"
   content_type = "text/plain"
   bucket       = google_storage_bucket.static.id
@@ -33,22 +33,22 @@ resource "google_storage_bucket_object" "default" {
 # [START storage_get_object_metadata_tf]
 # Get object metadata
 data "google_storage_bucket_object" "default" {
-  name         = google_storage_bucket_object.default.name
-  bucket       = google_storage_bucket.static.id
+  name   = google_storage_bucket_object.default.name
+  bucket = google_storage_bucket.static.id
 }
 
 output "object_metadata" {
-  value        = data.google_storage_bucket_object.default
+  value = data.google_storage_bucket_object.default
 }
 # [END storage_get_object_metadata_tf]
 
 # [START storage_get_bucket_metadata_tf]
 # Get bucket metadata
 data "google_storage_bucket" "default" {
-  name         = google_storage_bucket.static.id
+  name = google_storage_bucket.static.id
 }
 
 output "bucket_metadata" {
-  value        = data.google_storage_bucket.default
+  value = data.google_storage_bucket.default
 }
 # [END storage_get_bucket_metadata_tf]
