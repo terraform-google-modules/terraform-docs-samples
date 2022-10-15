@@ -1,4 +1,4 @@
-# [START cloud_sql_postgres_instance_public_ip]  
+# [START cloud_sql_postgres_instance_public_ip]
 resource "google_sql_database_instance" "postgres_public_ip_instance_name" {
   database_version = "POSTGRES_14"
   name             = "postgres-public-ip-instance-name"

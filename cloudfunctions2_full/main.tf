@@ -41,7 +41,7 @@ resource "google_cloudfunctions2_function" "function" {
 
   build_config {
     runtime     = "nodejs16"
-    entry_point = "helloPubSub" # Set the entry point 
+    entry_point = "helloPubSub" # Set the entry point
     environment_variables = {
       BUILD_CONFIG_TEST = "build_test"
     }

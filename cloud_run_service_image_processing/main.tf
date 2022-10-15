@@ -92,7 +92,7 @@ resource "google_cloud_run_service" "default" {
 }
 # [END cloudrun_service_image_processing_crservice]
 
-# [START cloudrun_service_image_processing_notifications] 
+# [START cloudrun_service_image_processing_notifications]
 data "google_storage_project_service_account" "gcs_account" {}
 
 resource "google_pubsub_topic_iam_binding" "binding" {

@@ -1,6 +1,6 @@
 # [START composer_multi_project_monitoring]
 #   Monitoring for multiple Cloud Composer environments
-#   
+#
 #   Usage:
 #       1. Create a new project that you will use for monitoring of Cloud Composer environments in other projects
 #       2. Replace YOUR_MONITORING_PROJECT with the name of this project in the "metrics_scope" parameter that is part of the "Add Monitored Projects to the Monitoring project" section
@@ -16,7 +16,7 @@
 
 
 #######################################################
-#  
+#
 # Add Monitored Projects to the Monitoring project
 #
 ########################################################
@@ -29,7 +29,7 @@ resource "google_monitoring_monitored_project" "projects_monitored" {
 
 
 #######################################################
-#  
+#
 # Create alert policies in Monitoring project
 #
 ########################################################
@@ -664,7 +664,7 @@ resource "google_monitoring_alert_policy" "other_errors" {
 
 
 #######################################################
-#  
+#
 # Create Monitoring Dashboard
 #
 ########################################################
@@ -884,7 +884,7 @@ resource "google_monitoring_dashboard" "Composer_Dashboard" {
         "xPos": 6,
         "yPos": 28
       },
-      
+
       {
         "height": 1,
         "widget": {
@@ -1011,7 +1011,7 @@ resource "google_monitoring_dashboard" "Composer_Dashboard" {
         "width": 12,
         "xPos": 0,
         "yPos": 52
-      }  
+      }
     ]
   }
 }

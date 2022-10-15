@@ -43,7 +43,7 @@ resource "google_storage_bucket_object" "dog_image" {
 # [END cloudloadbalancing_global_ext_bucket_files]
 
 
-# [START cloudloadbalancing_global_ext_bucket_public]  
+# [START cloudloadbalancing_global_ext_bucket_public]
 # Make buckets public
 resource "google_storage_bucket_iam_member" "bucket_1" {
   bucket = google_storage_bucket.bucket_1.name
@@ -103,7 +103,7 @@ resource "google_compute_url_map" "default" {
 }
 # [END cloudloadbalancing_global_ext_bucket_urlmap]
 
-# [START cloudloadbalancing_global_ext_bucket_target_http_proxy] 
+# [START cloudloadbalancing_global_ext_bucket_target_http_proxy]
 # Create HTTP target proxy
 resource "google_compute_target_http_proxy" "default" {
   name    = "http-lb-proxy"

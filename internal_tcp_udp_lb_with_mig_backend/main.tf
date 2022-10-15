@@ -129,7 +129,7 @@ resource "google_compute_firewall" "fw_hc" {
   target_tags = ["allow-health-check"]
 }
 
-# allow communication within the subnet 
+# allow communication within the subnet
 resource "google_compute_firewall" "fw_ilb_to_backends" {
   name          = "l4-ilb-fw-allow-ilb-to-backends"
   provider      = google-beta

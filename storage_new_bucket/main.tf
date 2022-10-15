@@ -12,7 +12,7 @@ resource "google_storage_bucket" "static" {
 
   uniform_bucket_level_access = true
 }
-# [END storage_create_new_bucket_tf] 
+# [END storage_create_new_bucket_tf]
 
 # [START storage_upload_object_tf]
 # Upload files

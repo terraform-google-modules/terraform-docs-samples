@@ -5,7 +5,7 @@ resource "google_compute_instance" "custom_hostname_instance" {
   machine_type = "f1-micro"
   zone         = "us-central1-c"
 
-  # Set a custom hostname below 
+  # Set a custom hostname below
   hostname = "hashicorptest.com"
 
   boot_disk {
