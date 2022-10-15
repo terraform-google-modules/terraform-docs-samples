@@ -16,7 +16,8 @@
 
 # [START privateca_create_ca_byo_key]
 resource "google_project_service_identity" "privateca_sa" {
-  service = "privateca.googleapis.com"
+  provider = google-beta
+  service  = "privateca.googleapis.com"
 }
 
 resource "google_kms_crypto_key_iam_binding" "privateca_sa_keyuser_signerverifier" {
