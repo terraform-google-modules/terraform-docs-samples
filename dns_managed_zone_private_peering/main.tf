@@ -24,13 +24,13 @@ resource "google_dns_managed_zone" "peering_zone" {
 
   private_visibility_config {
     networks {
-      network_url = google_compute_network.network-source.id
+      network_url = google_compute_network.network_source.id
     }
   }
 
   peering_config {
     target_network {
-      network_url = google_compute_network.network-target.id
+      network_url = google_compute_network.network_target.id
     }
   }
 }
