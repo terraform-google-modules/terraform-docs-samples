@@ -134,9 +134,10 @@ resource "google_cloudfunctions2_function" "function" {
     }
     event_filters {
       attribute = "resourceName"
-      value     = "/projects/_/buckets/${google_storage_bucket.audit_log_bucket.name}/objects/*.txt" # Path pattern selects 
-all .txt files in the bucket
-      operator  = "match-path-pattern"                                                               # This allows path patterns to be used in the value field
+      # Selects all .txt files in the bucket
+      value     = "/projects/_/buckets/${google_storage_bucket.audit_log_bucket.name}/objects/*.txt"
+      # Allows path patterns to be used in the value field
+      operator  = "match-path-pattern"
     }
   }
 }
