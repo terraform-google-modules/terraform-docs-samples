@@ -252,8 +252,8 @@ resource "google_compute_region_ssl_certificate" "default" {
   provider    = google-beta
   project     = "SERVICE_PROJECT_A_ID"
   region      = "us-west1"
-  private_key = file("path/to/ssl/private.key")
-  certificate = file("path/to/ssl/server.certificate")
+  private_key = file("sample-private.key") # path/to/ssl/private.key
+  certificate = file("sample-server.cert") # path/to/ssl/server.certificate
 }
 # [END cloudloadbalancing_shared_vpc_cross_ref_https_lb_ssl_cert]
 
