@@ -1,14 +1,30 @@
+/**
+ * Copyright 2022 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 # Cloud Run service replicated across multiple GCP regions
 
 resource "google_project_service" "compute_api" {
-  provider = google-beta
+  provider                   = google-beta
   service                    = "compute.googleapis.com"
   disable_dependent_services = false
   disable_on_destroy         = false
 }
 
 resource "google_project_service" "run_api" {
-  provider = google-beta
+  provider                   = google-beta
   service                    = "run.googleapis.com"
   disable_dependent_services = false
   disable_on_destroy         = false
@@ -29,7 +45,7 @@ variable "run_regions" {
 # [START cloudrun_multiregion_addr]
 resource "google_compute_global_address" "lb_default" {
   provider = google-beta
-  name    = "myservice-service-ip"
+  name     = "myservice-service-ip"
 
   # Use an explicit depends_on clause to wait until API is enabled
   depends_on = [
@@ -40,7 +56,7 @@ resource "google_compute_global_address" "lb_default" {
 
 # [START cloudrun_multiregion_backend]
 resource "google_compute_backend_service" "lb_default" {
-  provider = google-beta
+  provider              = google-beta
   name                  = "myservice-backend"
   load_balancing_scheme = "EXTERNAL_MANAGED"
 
@@ -65,7 +81,7 @@ resource "google_compute_backend_service" "lb_default" {
 
 # [START cloudrun_multiregion_urlmap]
 resource "google_compute_url_map" "lb_default" {
-  provider = google-beta
+  provider        = google-beta
   name            = "myservice-lb-urlmap"
   default_service = google_compute_backend_service.lb_default.id
 
@@ -86,7 +102,7 @@ resource "google_compute_url_map" "lb_default" {
 # [START cloudrun_multiregion_cert]
 resource "google_compute_managed_ssl_certificate" "lb_default" {
   provider = google-beta
-  name    = "myservice-ssl-cert"
+  name     = "myservice-ssl-cert"
 
   managed {
     domains = [var.domain_name]
@@ -97,8 +113,8 @@ resource "google_compute_managed_ssl_certificate" "lb_default" {
 # [START cloudrun_multiregion_proxy_https]
 resource "google_compute_target_https_proxy" "lb_default" {
   provider = google-beta
-  name    = "myservice-https-proxy"
-  url_map = google_compute_url_map.lb_default.id
+  name     = "myservice-https-proxy"
+  url_map  = google_compute_url_map.lb_default.id
   ssl_certificates = [
     google_compute_managed_ssl_certificate.lb_default.name
   ]
@@ -110,7 +126,7 @@ resource "google_compute_target_https_proxy" "lb_default" {
 
 # [START cloudrun_multiregion_forwarding]
 resource "google_compute_global_forwarding_rule" "lb_default" {
-  provider = google-beta
+  provider              = google-beta
   name                  = "myservice-lb-fr"
   load_balancing_scheme = "EXTERNAL_MANAGED"
   target                = google_compute_target_https_proxy.lb_default.id
@@ -122,7 +138,7 @@ resource "google_compute_global_forwarding_rule" "lb_default" {
 
 # [START cloudrun_multiregion_neg]
 resource "google_compute_region_network_endpoint_group" "lb_default" {
-  provider = google-beta
+  provider              = google-beta
   count                 = length(var.run_regions)
   name                  = "myservice-neg"
   network_endpoint_type = "SERVERLESS"
@@ -180,7 +196,7 @@ resource "google_cloud_run_service_iam_member" "run_allow_unauthenticated" {
 # [START cloudrun_multiregion_urlmap_https]
 resource "google_compute_url_map" "https_default" {
   provider = google-beta
-  name    = "myservice-https-urlmap"
+  name     = "myservice-https-urlmap"
 
   default_url_redirect {
     redirect_response_code = "MOVED_PERMANENTLY_DEFAULT"
@@ -193,8 +209,8 @@ resource "google_compute_url_map" "https_default" {
 # [START cloudrun_multiregion_proxy]
 resource "google_compute_target_http_proxy" "https_default" {
   provider = google-beta
-  name    = "myservice-http-proxy"
-  url_map = google_compute_url_map.https_default.id
+  name     = "myservice-http-proxy"
+  url_map  = google_compute_url_map.https_default.id
 
   depends_on = [
     google_compute_url_map.https_default
@@ -204,7 +220,7 @@ resource "google_compute_target_http_proxy" "https_default" {
 
 # [START cloudrun_multiregion_forwarding_https]
 resource "google_compute_global_forwarding_rule" "https_default" {
-  provider = google-beta
+  provider   = google-beta
   name       = "myservice-https-fr"
   target     = google_compute_target_http_proxy.https_default.id
   ip_address = google_compute_global_address.lb_default.id

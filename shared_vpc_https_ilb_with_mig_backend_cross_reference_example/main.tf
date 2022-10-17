@@ -1,3 +1,19 @@
+/**
+ * Copyright 2022 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 # Shared VPC Internal HTTPS load balancer with a managed instance group backend
 # Google Cloud Documentation: https://cloud.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc
 # In this example we use 1 host project & 2 service projects
@@ -125,10 +141,10 @@ resource "google_project_iam_binding" "project_level_iam_lb_access" {
 # [START cloudloadbalancing_shared_vpc_cross_ref_https_lb_mig_template]
 # Instance template
 resource "google_compute_instance_template" "default" {
-  name         = "l7-ilb-backend-template"
-  provider     = google-beta
-  project      = "SERVICE_PROJECT_B_ID"
-  region       = "us-west1"
+  name     = "l7-ilb-backend-template"
+  provider = google-beta
+  project  = "SERVICE_PROJECT_B_ID"
+  region   = "us-west1"
   # For machine type, using small. For more options check https://cloud.google.com/compute/docs/machine-types
   machine_type = "e2-small"
   tags         = ["allow-ssh", "load-balanced-backend"]
@@ -236,8 +252,8 @@ resource "google_compute_region_ssl_certificate" "default" {
   provider    = google-beta
   project     = "SERVICE_PROJECT_A_ID"
   region      = "us-west1"
-  private_key = file("path/to/ssl/private.key")
-  certificate = file("path/to/ssl/server.certificate")
+  private_key = file("sample-private.key") # path/to/ssl/private.key
+  certificate = file("sample-server.cert") # path/to/ssl/server.certificate
 }
 # [END cloudloadbalancing_shared_vpc_cross_ref_https_lb_ssl_cert]
 
