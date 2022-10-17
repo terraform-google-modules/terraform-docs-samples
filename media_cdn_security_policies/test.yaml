@@ -17,4 +17,4 @@ kind: BlueprintTest
 metadata:
   name: media_cdn_security_policies
 spec:
-  skip: true
+#  skip: true
