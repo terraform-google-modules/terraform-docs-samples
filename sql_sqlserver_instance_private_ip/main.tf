@@ -30,7 +30,7 @@ resource "google_sql_database_instance" "instance" {
   name             = "private-ip-sql-instance"
   region           = "us-central1"
   database_version = "SQLSERVER_2019_STANDARD"
-  root_password        = "INSERT-PASSWORD-HERE"
+  root_password    = "INSERT-PASSWORD-HERE"
 
   depends_on = [google_service_networking_connection.default]
 
@@ -47,8 +47,8 @@ resource "google_sql_database_instance" "instance" {
 
 # [START cloud_sql_sqlserver_instance_private_ip_routes]
 resource "google_compute_network_peering_routes_config" "peering_routes" {
-  peering = google_service_networking_connection.default.peering
-  network = google_compute_network.peering_network.name
+  peering              = google_service_networking_connection.default.peering
+  network              = google_compute_network.peering_network.name
   import_custom_routes = true
   export_custom_routes = true
 }
