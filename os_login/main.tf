@@ -57,7 +57,7 @@ resource "google_compute_instance" "oslogin_instance" {
 # [START compute_add_iam_binding_for_oslogin]
 data "google_project" "project" {
 }
-resource "google_project_iam_member" "os-login-admin-users" {
+resource "google_project_iam_member" "os_login_admin_users" {
   project = data.google_project.project.project_id
   role    = "roles/compute.osAdminLogin"
   member  = "serviceAccount:service-${data.google_project.project.number}@compute-system.iam.gserviceaccount.com"

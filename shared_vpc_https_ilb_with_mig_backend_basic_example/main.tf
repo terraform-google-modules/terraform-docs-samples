@@ -278,7 +278,7 @@ resource "google_compute_forwarding_rule" "default" {
 
 # [START cloudloadbalancing_shared_vpc_https_lb_test_vm]
 # Test instance - To test, use `curl -k -s 'https://LB_IP_ADDRESS:443'`
-resource "google_compute_instance" "vm-test" {
+resource "google_compute_instance" "vm_test" {
   name         = "client-vm"
   provider     = google-beta
   project      = "SERVICE_PROJECT_ID"

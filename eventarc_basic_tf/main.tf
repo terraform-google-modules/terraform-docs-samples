@@ -75,7 +75,7 @@ resource "google_cloud_run_service_iam_member" "allUsers" {
 # [START eventarc_terraform_pubsub]
 
 # Create a Pub/Sub trigger
-resource "google_eventarc_trigger" "trigger-pubsub-tf" {
+resource "google_eventarc_trigger" "trigger_pubsub_tf" {
   provider = google-beta
   name     = "trigger-pubsub-tf"
   location = google_cloud_run_service.default.location
@@ -108,7 +108,7 @@ resource "google_project_iam_binding" "project" {
 }
 
 # Create an AuditLog for Cloud Storage trigger
-resource "google_eventarc_trigger" "trigger-auditlog-tf" {
+resource "google_eventarc_trigger" "trigger_auditlog_tf" {
   provider = google-beta
   name     = "trigger-auditlog-tf"
   location = google_cloud_run_service.default.location

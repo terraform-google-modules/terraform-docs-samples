@@ -15,7 +15,7 @@
  */
 
 # [START dns_managed_zone_service_directory]
-resource "google_dns_managed_zone" "sd-zone" {
+resource "google_dns_managed_zone" "sd_zone" {
   provider = google-beta
 
   name        = "peering-zone"

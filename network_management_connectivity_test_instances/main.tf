@@ -15,7 +15,7 @@
  */
 
 # [START networkmanagement_test_instances]
-resource "google_network_management_connectivity_test" "instance-test" {
+resource "google_network_management_connectivity_test" "instance_test" {
   name = "conn-test-instances"
   source {
     instance = google_compute_instance.source.id
