@@ -1,3 +1,19 @@
+/**
+ * Copyright 2022 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 # External TCP proxy load balancer with managed instance group backend
 
 # [START cloudloadbalancing_ext_tcp_proxy_lb]
@@ -20,7 +36,7 @@ resource "google_compute_subnetwork" "default" {
 # reserved IP address
 resource "google_compute_global_address" "default" {
   provider = google-beta
-  name = "tcp-proxy-xlb-ip"
+  name     = "tcp-proxy-xlb-ip"
 }
 
 # forwarding rule
@@ -35,14 +51,14 @@ resource "google_compute_global_forwarding_rule" "default" {
 }
 
 resource "google_compute_target_tcp_proxy" "default" {
-  provider = google-beta
+  provider        = google-beta
   name            = "test-proxy-health-check"
   backend_service = google_compute_backend_service.default.id
 }
 
 # backend service
 resource "google_compute_backend_service" "default" {
-  provider = google-beta
+  provider              = google-beta
   name                  = "tcp-proxy-xlb-backend-service"
   protocol              = "TCP"
   port_name             = "tcp"
@@ -58,7 +74,7 @@ resource "google_compute_backend_service" "default" {
 }
 
 resource "google_compute_health_check" "default" {
-  provider = google-beta
+  provider           = google-beta
   name               = "tcp-proxy-health-check"
   timeout_sec        = 1
   check_interval_sec = 1

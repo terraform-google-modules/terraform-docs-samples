@@ -1,3 +1,19 @@
+/**
+ * Copyright 2022 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 # [START storage_static_website_create_bucket_tf]
 # Create new storage bucket in the US multi-region
 # with coldline storage and settings for main_page_suffix and not_found_page
@@ -6,13 +22,13 @@ resource "random_id" "bucket_prefix" {
 }
 
 resource "google_storage_bucket" "static_website" {
-    name          = "${random_id.bucket_prefix.hex}-static-website-bucket"
-    location      = "US"
-    storage_class = "COLDLINE"
-    website {
-        main_page_suffix = "index.html"
-        not_found_page = "index.html"
-    }
+  name          = "${random_id.bucket_prefix.hex}-static-website-bucket"
+  location      = "US"
+  storage_class = "COLDLINE"
+  website {
+    main_page_suffix = "index.html"
+    not_found_page   = "index.html"
+  }
 }
 # [END storage_static_website_create_bucket_tf]
 
