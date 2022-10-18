@@ -163,7 +163,7 @@ resource "google_compute_region_instance_group_manager" "mig" {
 }
 
 # allow all access from IAP and health check ranges
-resource "google_compute_firewall" "fw-iap" {
+resource "google_compute_firewall" "fw_iap" {
   name          = "l7-ilb-fw-allow-iap-hc"
   provider      = google-beta
   direction     = "INGRESS"
@@ -175,7 +175,7 @@ resource "google_compute_firewall" "fw-iap" {
 }
 
 # allow http from proxy subnet to backends
-resource "google_compute_firewall" "fw-ilb-to-backends" {
+resource "google_compute_firewall" "fw_ilb_to_backends" {
   name          = "l7-ilb-fw-allow-ilb-to-backends"
   provider      = google-beta
   direction     = "INGRESS"
@@ -189,7 +189,7 @@ resource "google_compute_firewall" "fw-ilb-to-backends" {
 }
 
 # test instance
-resource "google_compute_instance" "vm-test" {
+resource "google_compute_instance" "vm_test" {
   name         = "l7-ilb-test-vm"
   provider     = google-beta
   zone         = "europe-west1-b"

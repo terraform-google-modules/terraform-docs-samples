@@ -15,7 +15,7 @@
  */
 
 # [START privateca_create_certificate_config]
-resource "google_privateca_certificate_authority" "test-ca" {
+resource "google_privateca_certificate_authority" "test_ca" {
   certificate_authority_id               = "my-example-certificate-authority"
   location                               = "us-central1"
   pool                                   = "my-pool"
@@ -54,7 +54,7 @@ resource "google_privateca_certificate_authority" "test-ca" {
 resource "google_privateca_certificate" "default" {
   pool                  = "my-pool"
   location              = "us-central1"
-  certificate_authority = google_privateca_certificate_authority.test-ca.certificate_authority_id
+  certificate_authority = google_privateca_certificate_authority.test_ca.certificate_authority_id
   lifetime              = "860s"
   name                  = "my-example-certificate"
   config {

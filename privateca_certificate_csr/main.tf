@@ -15,7 +15,7 @@
  */
 
 # [START privateca_create_certificate_csr]
-resource "google_privateca_certificate_authority" "test-ca" {
+resource "google_privateca_certificate_authority" "test_ca" {
   pool                     = "my-pool"
   certificate_authority_id = "my-certificate-authority"
   location                 = "us-central1"
@@ -56,7 +56,7 @@ resource "google_privateca_certificate_authority" "test-ca" {
 resource "google_privateca_certificate" "default" {
   pool                  = "my-pool"
   location              = "us-central1"
-  certificate_authority = google_privateca_certificate_authority.test-ca.certificate_authority_id
+  certificate_authority = google_privateca_certificate_authority.test_ca.certificate_authority_id
   lifetime              = "860s"
   name                  = "my-certificate"
   pem_csr               = tls_cert_request.example.cert_request_pem

@@ -15,7 +15,7 @@
  */
 
 # [START dns_managed_zone_private_peering]
-resource "google_dns_managed_zone" "peering-zone" {
+resource "google_dns_managed_zone" "peering_zone" {
   name        = "peering-zone"
   dns_name    = "peering.example.com."
   description = "Example private DNS peering zone"
@@ -24,23 +24,23 @@ resource "google_dns_managed_zone" "peering-zone" {
 
   private_visibility_config {
     networks {
-      network_url = google_compute_network.network-source.id
+      network_url = google_compute_network.network_source.id
     }
   }
 
   peering_config {
     target_network {
-      network_url = google_compute_network.network-target.id
+      network_url = google_compute_network.network_target.id
     }
   }
 }
 
-resource "google_compute_network" "network-source" {
+resource "google_compute_network" "network_source" {
   name                    = "network-source"
   auto_create_subnetworks = false
 }
 
-resource "google_compute_network" "network-target" {
+resource "google_compute_network" "network_target" {
   name                    = "network-target"
   auto_create_subnetworks = false
 }

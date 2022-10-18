@@ -65,7 +65,7 @@ resource "google_privateca_ca_pool" "default" {
   }
 }
 
-resource "google_privateca_certificate_authority" "test-ca" {
+resource "google_privateca_certificate_authority" "test_ca" {
   certificate_authority_id = "my-authority"
   location                 = "us-central1"
   pool                     = google_privateca_ca_pool.default.name
@@ -105,7 +105,7 @@ resource "google_privateca_certificate_authority" "test-ca" {
 
 resource "google_privateca_certificate" "default" {
   pool                  = google_privateca_ca_pool.default.name
-  certificate_authority = google_privateca_certificate_authority.test-ca.certificate_authority_id
+  certificate_authority = google_privateca_certificate_authority.test_ca.certificate_authority_id
   location              = "us-central1"
   lifetime              = "860s"
   name                  = "my-certificate"
