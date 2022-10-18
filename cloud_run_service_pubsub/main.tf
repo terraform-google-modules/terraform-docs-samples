@@ -13,11 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-provider "google" {
-  project = "weighty-purpose-pubsub"
-  region  = "us-central1"
-}
-
 # Project data
 data "google_project" "project" {
 }
