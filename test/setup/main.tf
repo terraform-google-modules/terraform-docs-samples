@@ -19,11 +19,11 @@ locals {
   // Discovery and test grouping is dynamic, only this number has to be increased
   // and build/int.cloudbuild.yaml updated for new test group.
   num_projects = 4
-  project_ids = module.projects.*.project_id
+  project_ids  = module.projects.*.project_id
 }
 
 module "projects" {
-  count = local.num_projects
+  count   = local.num_projects
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 13.0"
 

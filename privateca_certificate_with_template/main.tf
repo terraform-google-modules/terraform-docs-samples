@@ -1,7 +1,23 @@
+/**
+ * Copyright 2022 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 # [START privateca_create_certificate_template]
 resource "google_privateca_certificate_template" "template" {
   location    = "us-central1"
-  name = "my-certificate-template"
+  name        = "my-certificate-template"
   description = "An updated sample certificate template"
 
   identity_constraints {
@@ -74,16 +90,16 @@ resource "google_privateca_certificate_template" "template" {
   }
 }
 
-resource "google_privateca_certificate_authority" "test-ca" {
-  pool = "my-pool"
+resource "google_privateca_certificate_authority" "test_ca" {
+  pool                     = "my-pool"
   certificate_authority_id = "my-certificate-authority-test-ca"
-  location = "us-central1"
-  deletion_protection = false # set to true to prevent destruction of the resource
+  location                 = "us-central1"
+  deletion_protection      = false # set to true to prevent destruction of the resource
   config {
     subject_config {
       subject {
         organization = "HashiCorp"
-        common_name = "my-certificate-authority"
+        common_name  = "my-certificate-authority"
       }
       subject_alt_name {
         dns_names = ["hashicorp.com"]
@@ -98,7 +114,7 @@ resource "google_privateca_certificate_authority" "test-ca" {
         base_key_usage {
           # cert_sign and crl_sign *MUST* be true for certificate authorities
           cert_sign = true
-          crl_sign = true
+          crl_sign  = true
         }
         extended_key_usage {
           server_auth = false
@@ -113,17 +129,17 @@ resource "google_privateca_certificate_authority" "test-ca" {
 
 
 resource "google_privateca_certificate" "default" {
-  pool = "my-pool"
-  location = "us-central1"
-  certificate_authority = google_privateca_certificate_authority.test-ca.certificate_authority_id
-  lifetime = "860s"
-  name = "my-certificate-from-template"
-  pem_csr = tls_cert_request.example.cert_request_pem
-  certificate_template = google_privateca_certificate_template.template.id
+  pool                  = "my-pool"
+  location              = "us-central1"
+  certificate_authority = google_privateca_certificate_authority.test_ca.certificate_authority_id
+  lifetime              = "860s"
+  name                  = "my-certificate-from-template"
+  pem_csr               = tls_cert_request.example.cert_request_pem
+  certificate_template  = google_privateca_certificate_template.template.id
 }
 
 resource "tls_private_key" "example" {
-  algorithm   = "RSA"
+  algorithm = "RSA"
 }
 
 resource "tls_cert_request" "example" {
