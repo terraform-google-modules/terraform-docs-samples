@@ -13,6 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+provider "google" {
+  project = "weighty-purpose-pubsub"
+  region  = "us-central1"
+}
+
 # Project data
 data "google_project" "project" {
 }
@@ -38,7 +43,7 @@ resource "google_cloud_run_service" "default" {
     percent         = 100
     latest_revision = true
   }
-  depends_on                 = [google_project_service.cloudrun_api]
+  depends_on = [google_project_service.cloudrun_api]
 }
 # [END cloudrun_service_pubsub_service]
 
@@ -91,6 +96,6 @@ resource "google_pubsub_subscription" "subscription" {
       x-goog-version = "v1"
     }
   }
-  depends_on                 = [google_cloud_run_service.default]
+  depends_on = [google_cloud_run_service.default]
 }
 # [END cloudrun_service_pubsub_sub]
