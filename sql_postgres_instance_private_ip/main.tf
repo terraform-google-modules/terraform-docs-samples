@@ -53,7 +53,7 @@ resource "google_compute_network_peering_routes_config" "peering_routes" {
 }
 # [END cloud_sql_sqlserver_instance_private_ip_routes]
 
-# [START  cloud_sql_mysql_instance_private_ip_dns]
+# [START  cloud_sql_postgres_instance_private_ip_dns]
 ## Uncomment this block after adding a valid DNS suffix
 #resource "google_service_networking_peered_dns_domain" "default" {
 #  name       = "example-com"
@@ -61,6 +61,6 @@ resource "google_compute_network_peering_routes_config" "peering_routes" {
 #  dns_suffix = "example.com."
 #  service    = "servicenetworking.googleapis.com"
 #}
-# [END cloud_sql_mysql_instance_private_ip_dns]
+# [END cloud_sql_postgres_instance_private_ip_dns]
 
 # [END cloud_sql_postgres_instance_private_ip]
