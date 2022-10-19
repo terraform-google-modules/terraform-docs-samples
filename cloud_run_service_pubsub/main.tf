@@ -13,6 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+# Project data
+data "google_project" "project" {
+}
+
+# Enable Cloud Run API
+resource "google_project_service" "cloudrun_api" {
+  service            = "run.googleapis.com"
+  disable_on_destroy = false
+}
 
 # [START cloudrun_service_pubsub_service]
 resource "google_cloud_run_service" "default" {
@@ -21,7 +30,7 @@ resource "google_cloud_run_service" "default" {
   template {
     spec {
       containers {
-        image = "gcr.io/cloudrun/hello"
+        image = "gcr.io/cloudrun/hello" # Replace with newly created image gcr.io/<project_id>/pubsub
       }
     }
   }
@@ -29,6 +38,7 @@ resource "google_cloud_run_service" "default" {
     percent         = 100
     latest_revision = true
   }
+  depends_on = [google_project_service.cloudrun_api]
 }
 # [END cloudrun_service_pubsub_service]
 
@@ -49,10 +59,6 @@ resource "google_cloud_run_service_iam_binding" "binding" {
 # [END cloudrun_service_pubsub_run_invoke_permissions]
 
 # [START cloudrun_service_pubsub_token_permissions]
-
-data "google_project" "project" {
-}
-
 resource "google_project_service_identity" "pubsub_agent" {
   provider = google-beta
   project  = data.google_project.project.project_id
@@ -85,5 +91,6 @@ resource "google_pubsub_subscription" "subscription" {
       x-goog-version = "v1"
     }
   }
+  depends_on = [google_cloud_run_service.default]
 }
 # [END cloudrun_service_pubsub_sub]
