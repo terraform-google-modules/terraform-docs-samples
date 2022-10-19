@@ -215,7 +215,7 @@ resource "google_compute_health_check" "default" {
 }
 # [END cloudloadbalancing_shared_vpc_cross_ref_http_lb_hc]
 
-# [START cloudloadbalancing_shared_vpc_cross_ref_http_lb_backend]
+# [START cloudloadbalancing_shared_vpc_cross_ref_http_lb_backend_service]
 # backend service
 resource "google_compute_region_backend_service" "default" {
   name                  = "l7-ilb-backend-service"
@@ -232,9 +232,9 @@ resource "google_compute_region_backend_service" "default" {
     capacity_scaler = 1.0
   }
 }
-# [END cloudloadbalancing_shared_vpc_cross_ref_http_lb_backend]
+# [END cloudloadbalancing_shared_vpc_cross_ref_http_lb_backend_service]
 
-# [START cloudloadbalancing_shared_vpc_cross_ref_http_lb_backend]
+# [START cloudloadbalancing_shared_vpc_cross_ref_http_lb_backend_url_map]
 # URL map
 resource "google_compute_region_url_map" "default" {
   name            = "l7-ilb-map"
@@ -243,7 +243,7 @@ resource "google_compute_region_url_map" "default" {
   region          = "us-west1"
   default_service = google_compute_region_backend_service.default.id
 }
-# [END cloudloadbalancing_shared_vpc_cross_ref_http_lb_backend]
+# [END cloudloadbalancing_shared_vpc_cross_ref_http_lb_backend_url_map]
 
 # [START cloudloadbalancing_shared_vpc_cross_ref_http_lb_http_proxy]
 # HTTP target proxy
@@ -275,8 +275,8 @@ resource "google_compute_forwarding_rule" "default" {
 # [END cloudloadbalancing_shared_vpc_cross_ref_http_lb_fw]
 # [END cloudloadbalancing_shared_vpc_cross_ref_http_lb_config_lb]
 
-# [START cloudloadbalancing_shared_vpc_cross_ref_http_lb_test_vm]
 # Test instance - To test, use `curl LB_IP_ADDRESS`
+# [START cloudloadbalancing_shared_vpc_cross_ref_http_lb_test_vm]
 resource "google_compute_instance" "vm_test" {
   name         = "client-vm"
   provider     = google-beta
