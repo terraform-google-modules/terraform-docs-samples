@@ -203,7 +203,7 @@ resource "google_compute_health_check" "default" {
 }
 # [END cloudloadbalancing_shared_vpc_https_lb_hc]
 
-# [START cloudloadbalancing_shared_vpc_https_lb_backend]
+# [START cloudloadbalancing_shared_vpc_https_lb_backend_service]
 # backend service
 resource "google_compute_region_backend_service" "default" {
   name                  = "l7-ilb-backend-service"
@@ -220,9 +220,9 @@ resource "google_compute_region_backend_service" "default" {
     capacity_scaler = 1.0
   }
 }
-# [END cloudloadbalancing_shared_vpc_https_lb_backend]
+# [END cloudloadbalancing_shared_vpc_https_lb_backend_service]
 
-# [START cloudloadbalancing_shared_vpc_https_lb_backend]
+# [START cloudloadbalancing_shared_vpc_https_lb_url_map]
 # URL map
 resource "google_compute_region_url_map" "default" {
   name            = "l7-ilb-map"
@@ -231,7 +231,7 @@ resource "google_compute_region_url_map" "default" {
   region          = "us-west1"
   default_service = google_compute_region_backend_service.default.id
 }
-# [END cloudloadbalancing_shared_vpc_https_lb_backend]
+# [END cloudloadbalancing_shared_vpc_https_lb_url_map]
 
 # [START cloudloadbalancing_shared_vpc_https_lb_ssl_cert]
 # Use self-signed SSL certificate
@@ -240,13 +240,13 @@ resource "google_compute_region_ssl_certificate" "default" {
   provider    = google-beta
   project     = "SERVICE_PROJECT_ID"
   region      = "us-west1"
-  private_key = file("sample-private.key") # path/to/ssl/private.key
-  certificate = file("sample-server.cert") # path/to/ssl/server.certificate
+  private_key = file("sample-private.key") # path to PEM-formatted file
+  certificate = file("sample-server.cert") # path to PEM-formatted file
 }
 # [END cloudloadbalancing_shared_vpc_https_lb_ssl_cert]
 
 # [START cloudloadbalancing_shared_vpc_https_lb_http_proxy]
-# HTTP target proxy
+# HTTPS target proxy
 resource "google_compute_region_target_https_proxy" "default" {
   name             = "l7-ilb-proxy"
   provider         = google-beta
@@ -276,8 +276,8 @@ resource "google_compute_forwarding_rule" "default" {
 # [END cloudloadbalancing_shared_vpc_https_lb_fw]
 # [END cloudloadbalancing_shared_vpc_https_lb_config_lb]
 
-# [START cloudloadbalancing_shared_vpc_https_lb_test_vm]
 # Test instance - To test, use `curl -k -s 'https://LB_IP_ADDRESS:443'`
+# [START cloudloadbalancing_shared_vpc_https_lb_test_vm]
 resource "google_compute_instance" "vm_test" {
   name         = "client-vm"
   provider     = google-beta
