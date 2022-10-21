@@ -35,6 +35,7 @@ export TF_VAR_billing_account="your_billing_account_id"
 With these settings in place, you can prepare a test project using Docker:
 
 ```
+cd terraform-docs-samples
 make docker_test_prepare
 ```
 
