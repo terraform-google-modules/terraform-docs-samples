@@ -26,12 +26,6 @@ resource "google_compute_autoscaler" "default" {
     min_replicas    = 1
     cooldown_period = 60
 
-    metric {
-      name                       = "pubsub.googleapis.com/subscription/num_undelivered_messages"
-      filter                     = "resource.type = pubsub_subscription AND resource.label.subscription_id = our-subscription"
-      single_instance_assignment = 65535
-    }
-
     scaling_schedules {
       name                  = "every-weekday-morning"
       description           = "Increase to 2 every weekday at 7AM for 12 hours."
@@ -49,7 +43,7 @@ resource "google_compute_instance_template" "default" {
   machine_type   = "e2-medium"
   can_ip_forward = false
 
-  tags = ["foo", "bar"]
+  tags = ["tag1", "tag2"]
 
   disk {
     source_image = data.google_compute_image.debian_11.id
@@ -60,7 +54,7 @@ resource "google_compute_instance_template" "default" {
   }
 
   metadata = {
-    foo = "bar"
+    name = "value"
   }
 
   service_account {
