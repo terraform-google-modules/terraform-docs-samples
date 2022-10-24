@@ -15,18 +15,18 @@
  */
 
 # [START networkmanagement_test_addresses]
-resource "google_network_management_connectivity_test" "address-test" {
+resource "google_network_management_connectivity_test" "address_test" {
   name = "conn-test-addr"
   source {
-    ip_address   = google_compute_address.source-addr.address
-    project_id   = google_compute_address.source-addr.project
+    ip_address   = google_compute_address.source_addr.address
+    project_id   = google_compute_address.source_addr.project
     network      = google_compute_network.vpc.id
     network_type = "GCP_NETWORK"
   }
 
   destination {
-    ip_address = google_compute_address.dest-addr.address
-    project_id = google_compute_address.dest-addr.project
+    ip_address = google_compute_address.dest_addr.address
+    project_id = google_compute_address.dest_addr.project
     network    = google_compute_network.vpc.id
   }
 
@@ -44,7 +44,7 @@ resource "google_compute_subnetwork" "subnet" {
   network       = google_compute_network.vpc.id
 }
 
-resource "google_compute_address" "source-addr" {
+resource "google_compute_address" "source_addr" {
   name         = "src-addr"
   subnetwork   = google_compute_subnetwork.subnet.id
   address_type = "INTERNAL"
@@ -52,7 +52,7 @@ resource "google_compute_address" "source-addr" {
   region       = "us-central1"
 }
 
-resource "google_compute_address" "dest-addr" {
+resource "google_compute_address" "dest_addr" {
   name         = "dest-addr"
   subnetwork   = google_compute_subnetwork.subnet.id
   address_type = "INTERNAL"

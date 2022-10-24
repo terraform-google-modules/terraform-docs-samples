@@ -15,7 +15,7 @@
  */
 
 # [START privateca_create_subordinateca]
-resource "google_privateca_certificate_authority" "root-ca" {
+resource "google_privateca_certificate_authority" "root_ca" {
   pool                                   = "my-pool"
   certificate_authority_id               = "my-certificate-authority-root"
   location                               = "us-central1"
@@ -61,7 +61,7 @@ resource "google_privateca_certificate_authority" "default" {
   location                 = "us-central1"
   deletion_protection      = false # set to true to prevent destruction of the resource
   subordinate_config {
-    certificate_authority = google_privateca_certificate_authority.root-ca.name
+    certificate_authority = google_privateca_certificate_authority.root_ca.name
   }
   config {
     subject_config {

@@ -31,7 +31,7 @@ resource "google_compute_url_map" "urlmap" {
 
     route_rules {
       priority = 1
-      service  = google_compute_backend_service.service-a.id
+      service  = google_compute_backend_service.service_a.id
       match_rules {
         prefix_match = "/"
         ignore_case  = true
@@ -43,7 +43,7 @@ resource "google_compute_url_map" "urlmap" {
     }
     route_rules {
       priority = 2
-      service  = google_compute_backend_service.service-b.id
+      service  = google_compute_backend_service.service_b.id
       match_rules {
         ignore_case  = true
         prefix_match = "/"
@@ -65,7 +65,7 @@ resource "google_compute_backend_service" "default" {
   health_checks = [google_compute_http_health_check.default.id]
 }
 
-resource "google_compute_backend_service" "service-a" {
+resource "google_compute_backend_service" "service_a" {
   name        = "service-a"
   port_name   = "http"
   protocol    = "HTTP"
@@ -74,7 +74,7 @@ resource "google_compute_backend_service" "service-a" {
   health_checks = [google_compute_http_health_check.default.id]
 }
 
-resource "google_compute_backend_service" "service-b" {
+resource "google_compute_backend_service" "service_b" {
   name        = "service-b"
   port_name   = "http"
   protocol    = "HTTP"
