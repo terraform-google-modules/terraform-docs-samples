@@ -52,7 +52,7 @@ resource "google_compute_instance_template" "default" {
   tags = ["foo", "bar"]
 
   disk {
-    source_image = data.google_compute_image.debian_9.id
+    source_image = data.google_compute_image.debian_11.id
   }
 
   network_interface {
@@ -82,7 +82,7 @@ resource "google_compute_instance_group_manager" "default" {
   base_instance_name = "autoscaler-sample"
 }
 
-data "google_compute_image" "debian_9" {
+data "google_compute_image" "debian_11" {
 
   family  = "debian-11"
   project = "debian-cloud"
