@@ -1,3 +1,19 @@
+/**
+ * Copyright 2022 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 # Shared VPC Internal HTTPS load balancer with a managed instance group backend
 # Google Cloud Documentation: https://cloud.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc
 # In this example we use 1 host project & 1 service projects
@@ -113,10 +129,10 @@ resource "google_project_iam_binding" "default" {
 # [START cloudloadbalancing_shared_vpc_https_lb_mig_template]
 # Instance template
 resource "google_compute_instance_template" "default" {
-  name         = "l7-ilb-backend-template"
-  provider     = google-beta
-  project      = "SERVICE_PROJECT_ID"
-  region       = "us-west1"
+  name     = "l7-ilb-backend-template"
+  provider = google-beta
+  project  = "SERVICE_PROJECT_ID"
+  region   = "us-west1"
   # For machine type, using small. For more options check https://cloud.google.com/compute/docs/machine-types
   machine_type = "e2-small"
   tags         = ["allow-ssh", "load-balanced-backend"]
@@ -187,7 +203,7 @@ resource "google_compute_health_check" "default" {
 }
 # [END cloudloadbalancing_shared_vpc_https_lb_hc]
 
-# [START cloudloadbalancing_shared_vpc_https_lb_backend]
+# [START cloudloadbalancing_shared_vpc_https_lb_backend_service]
 # backend service
 resource "google_compute_region_backend_service" "default" {
   name                  = "l7-ilb-backend-service"
@@ -204,9 +220,9 @@ resource "google_compute_region_backend_service" "default" {
     capacity_scaler = 1.0
   }
 }
-# [END cloudloadbalancing_shared_vpc_https_lb_backend]
+# [END cloudloadbalancing_shared_vpc_https_lb_backend_service]
 
-# [START cloudloadbalancing_shared_vpc_https_lb_backend]
+# [START cloudloadbalancing_shared_vpc_https_lb_url_map]
 # URL map
 resource "google_compute_region_url_map" "default" {
   name            = "l7-ilb-map"
@@ -215,7 +231,7 @@ resource "google_compute_region_url_map" "default" {
   region          = "us-west1"
   default_service = google_compute_region_backend_service.default.id
 }
-# [END cloudloadbalancing_shared_vpc_https_lb_backend]
+# [END cloudloadbalancing_shared_vpc_https_lb_url_map]
 
 # [START cloudloadbalancing_shared_vpc_https_lb_ssl_cert]
 # Use self-signed SSL certificate
@@ -224,13 +240,13 @@ resource "google_compute_region_ssl_certificate" "default" {
   provider    = google-beta
   project     = "SERVICE_PROJECT_ID"
   region      = "us-west1"
-  private_key = file("path/to/ssl/private.key")
-  certificate = file("path/to/ssl/server.certificate")
+  private_key = file("sample-private.key") # path to PEM-formatted file
+  certificate = file("sample-server.cert") # path to PEM-formatted file
 }
 # [END cloudloadbalancing_shared_vpc_https_lb_ssl_cert]
 
 # [START cloudloadbalancing_shared_vpc_https_lb_http_proxy]
-# HTTP target proxy
+# HTTPS target proxy
 resource "google_compute_region_target_https_proxy" "default" {
   name             = "l7-ilb-proxy"
   provider         = google-beta
@@ -260,9 +276,9 @@ resource "google_compute_forwarding_rule" "default" {
 # [END cloudloadbalancing_shared_vpc_https_lb_fw]
 # [END cloudloadbalancing_shared_vpc_https_lb_config_lb]
 
-# [START cloudloadbalancing_shared_vpc_https_lb_test_vm]
 # Test instance - To test, use `curl -k -s 'https://LB_IP_ADDRESS:443'`
-resource "google_compute_instance" "vm-test" {
+# [START cloudloadbalancing_shared_vpc_https_lb_test_vm]
+resource "google_compute_instance" "vm_test" {
   name         = "client-vm"
   provider     = google-beta
   project      = "SERVICE_PROJECT_ID"

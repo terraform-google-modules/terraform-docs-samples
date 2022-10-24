@@ -1,3 +1,19 @@
+/**
+ * Copyright 2022 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 # [START vertex_ai_enable_api]
 resource "google_project_service" "aiplatform" {
   provider           = google-beta
@@ -12,10 +28,10 @@ resource "random_id" "featurestore_name_suffix" {
 }
 
 resource "google_vertex_ai_featurestore" "main" {
-  name          = "featurestore_${random_id.featurestore_name_suffix.hex}"
-  provider      = google-beta
-  region        = "us-central1"
-  labels        = {
+  name     = "featurestore_${random_id.featurestore_name_suffix.hex}"
+  provider = google-beta
+  region   = "us-central1"
+  labels = {
     environment = "testing"
   }
 
@@ -25,6 +41,6 @@ resource "google_vertex_ai_featurestore" "main" {
 
   force_destroy = true
 
-  depends_on    = [google_project_service.aiplatform]
+  depends_on = [google_project_service.aiplatform]
 }
 # [END vertex_ai_featurestore]

@@ -16,7 +16,7 @@ timeout: 3600s
 steps:
 - id: lint-placeholder
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/true']
+  args: ['/usr/local/bin/test_lint.sh']
 tags:
 - 'ci'
 - 'lint'
