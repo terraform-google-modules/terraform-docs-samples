@@ -1,3 +1,19 @@
+/**
+ * Copyright 2022 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 # HA VPN over Cloud Interconnect 5GB VLAN attachments (Dedicated Interconnect)
 
 # [START cloudinterconnect_ha_vpn_over_interconnect_5gb_attachments]
@@ -11,7 +27,7 @@ provider "google" {
                                     # located in a different project.
   region = "us-east4"               # Important: This region must support the creation
                                     # of new VLAN attachments on Dataplane v2.
- }                                  
+ }
 
 # VPC Network
 resource "google_compute_network" "network_havpn_ic" {
@@ -68,7 +84,7 @@ resource "google_compute_interconnect_attachment" "ia_1" {
   name = "ia-1"
   project = data.google_project.project.project_id
   router = google_compute_router.ic_router.self_link
-  # If you use the same project for your Dedicated Interconnect connection and attachments, you can keep the variable in the following URL. 
+  # If you use the same project for your Dedicated Interconnect connection and attachments, you can keep the variable in the following URL.
   # If not, replace the URL and variable.
   interconnect = "https://www.googleapis.com/compute/v1/projects/${data.google_project.project.project_id}/global/interconnects/interconnect-zone1"
   description = ""
