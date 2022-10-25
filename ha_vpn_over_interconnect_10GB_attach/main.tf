@@ -3,9 +3,14 @@
 # [START cloudinterconnect_ha_vpn_over_interconnect_10gb_attachments]
 
 # Create all resources in the same region, which you can specify at the provider-level
+
  provider "google" {
-  project = "your-project"
-  region = "us-east4"  # Region must support creation of all new attachments on Dataplane v2
+ # project = "your-project"         # Uncomment to specify the project where you want
+                                    # to deploy HA VPN over Cloud Interconnect resources.
+                                    # Your Dedicated Interconnect connections can be
+                                    # located in a different project.
+   region = "us-east4"              # Important: This region must support the creation
+                                    # of new VLAN attachments on Dataplane v2.
 }
 
 # VPC Network
@@ -42,7 +47,7 @@ resource "google_compute_address" "address_vpn_ia_1" {
   address_type  = "INTERNAL"
   purpose       = "IPSEC_INTERCONNECT"
   address       = "192.168.20.0"
-  prefix_length = 29
+  prefix_length = 29 # Allows you to reserve up to 8 IP addresses
   network       = google_compute_network.network_havpn_ic.self_link
 }
 
@@ -51,16 +56,21 @@ resource "google_compute_address" "address_vpn_ia_2" {
   address_type  = "INTERNAL"
   purpose       = "IPSEC_INTERCONNECT"
   address       = "192.168.21.0"
-  prefix_length = 29
+  prefix_length = 29 # Allows you to reserve up to 8 IP addresses
   network       = google_compute_network.network_havpn_ic.self_link
 }
 
 # Create encrypted VLAN attachments
 
+data "google_project" "project" {
+}
 resource "google_compute_interconnect_attachment" "ia_1" {
   name = "ia-1"
+  project = data.google_project.project.project_id
   router = google_compute_router.ic_router.self_link
-  interconnect = "https://www.googleapis.com/compute/v1/projects/your-project/global/interconnects/interconnect-zone1"
+  # If you use the same project for your Dedicated Interconnect connection and attachments, you can keep the variable in the following URL. 
+  # If not, replace the URL and variable.
+  interconnect = "https://www.googleapis.com/compute/v1/projects/${data.google_project.project.project_id}/global/interconnects/interconnect-zone1"
   description = ""
   bandwidth = "BPS_10G"
   type = "DEDICATED"
@@ -73,8 +83,9 @@ resource "google_compute_interconnect_attachment" "ia_1" {
 
 resource "google_compute_interconnect_attachment" "ia_2" {
   name = "ia-2"
+  project = data.google_project.project.project_id
   router = google_compute_router.ic_router.self_link
-  interconnect = "https://www.googleapis.com/compute/v1/projects/your-project/global/interconnects/interconnect-zone2"
+  interconnect = "https://www.googleapis.com/compute/v1/projects/${data.google_project.project.project_id}/global/interconnects/interconnect-zone2"
   description = ""
   bandwidth = "BPS_10G"
   type = "DEDICATED"
