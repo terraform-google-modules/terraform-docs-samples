@@ -18,3 +18,4 @@ metadata:
   name: cloudinterconnect_ha_vpn_over_interconnect_5gb_attachments
 spec:
   skip: true
+  
