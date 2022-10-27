@@ -16,7 +16,7 @@
 
 # [START cloudloadbalancing_regional_health_check]
 resource "google_compute_region_health_check" "default" {
-  name     = "tcp-health-check-region"
+  name     = "tcp-health-check-region-west"
 
   timeout_sec        = 1
   check_interval_sec = 1
