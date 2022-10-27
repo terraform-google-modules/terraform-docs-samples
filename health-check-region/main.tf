@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-# [START cloudloadbalancing_global_health_check_example]
-resource "google_compute_health_check" "default" {
-  name = "tcp-global-health-check"
+# [START cloudloadbalancing_regional_health_check]
+resource "google_compute_region_health_check" "default" {
+  name     = "tcp-health-check-region"
 
   timeout_sec        = 1
   check_interval_sec = 1
@@ -24,6 +24,6 @@ resource "google_compute_health_check" "default" {
   tcp_health_check {
     port = "80"
   }
+  region = "us-west1"
 }
-
-# [END cloudloadbalancing_global_health_check_example]
+# [END cloudloadbalancing_regional_health_check]
