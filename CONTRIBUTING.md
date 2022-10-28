@@ -10,9 +10,17 @@ The following dependencies must be installed on the development system:
 - [Google Cloud SDK][google-cloud-sdk]
 - [make]
 
+## Linting and Formatting
+Files in the repository are linted or formatted to maintain a standard of quality and statically validated.
+You can run this check locally:
+
+```
+make docker_test_lint
+```
+
 ## Integration Testing
 
-Integration tests are used to verify that the samples are actuatable 
+Integration tests are used to verify that the samples are actuatable
 by Terraform. Tests are dynamically discovered based on directories in
 repo root and executed using the [blueprint-test](https://pkg.go.dev/github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test) framework.
 
@@ -30,6 +38,12 @@ Set the following environment variables.
 export TF_VAR_org_id="your_org_id"
 export TF_VAR_folder_id="your_folder_id"
 export TF_VAR_billing_account="your_billing_account_id"
+```
+
+Ensure that you are locally authenticated using gcloud:
+
+```
+gcloud auth application-default login
 ```
 
 With these settings in place, you can prepare a test project using Docker:
