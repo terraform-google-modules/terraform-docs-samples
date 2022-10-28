@@ -86,7 +86,7 @@ TestSamples/1/storage_new_bucket cmd.go:103: Running terraform with args [plan -
 TestSamples/1/storage_new_bucket retry.go:91: terraform [destroy -auto-approve -input=false -lock=false]
 ...
 TestSamples/1/storage_new_bucket command.go:185: Destroy complete! Resources: 3 destroyed.
-TestSamples/1/storage_new_bucket command.go:185: 
+TestSamples/1/storage_new_bucket command.go:185:
 --- PASS: TestSamples (17.12s)
     --- PASS: TestSamples/1/storage_new_bucket (13.95s)
 PASS
@@ -114,7 +114,7 @@ without destroying resources automatically.
     TestSamples 2022-10-28T02:24:48Z terraform.go:216: Loading env vars from setup ../setup
     ...
     TestSamples/1/storage_new_bucket 2022-10-28T02:24:59Z command.go:185: Success! The configuration is valid.
-    TestSamples/1/storage_new_bucket 2022-10-28T02:24:59Z command.go:185: 
+    TestSamples/1/storage_new_bucket 2022-10-28T02:24:59Z command.go:185:
     RUN_STAGE env var set to init
     Skipping stage apply
     RUN_STAGE env var set to init
@@ -154,7 +154,7 @@ without destroying resources automatically.
     === RUN   TestSamples
     ...
     TestSamples/1/storage_new_bucket  command.go:185: No changes. Your infrastructure matches the configuration.
-    TestSamples/1/storage_new_bucket  command.go:185: 
+    TestSamples/1/storage_new_bucket  command.go:185:
     TestSamples/1/storage_new_bucket  command.go:185: Terraform has compared your real infrastructure against your configuration
     TestSamples/1/storage_new_bucket  command.go:185: and found no differences, so no changes are needed.
     2022/10/28 02:27:47 RUN_STAGE env var set to verify
@@ -173,9 +173,9 @@ without destroying resources automatically.
     RUN_STAGE=teardown go test -v -timeout 0 -run //storage_new_bucket
     === RUN   TestSamples
     ...
-    TestSamples/1/storage_new_bucket command.go:185: 
+    TestSamples/1/storage_new_bucket command.go:185:
     TestSamples/1/storage_new_bucket command.go:185: Destroy complete! Resources: 3 destroyed.
-    TestSamples/1/storage_new_bucket command.go:185: 
+    TestSamples/1/storage_new_bucket command.go:185:
     --- PASS: TestSamples (8.49s)
         --- PASS: TestSamples/1/storage_new_bucket (5.65s)
     PASS
