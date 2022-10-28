@@ -15,6 +15,6 @@
 apiVersion: blueprints.cloud.google.com/v1alpha1
 kind: BlueprintTest
 metadata:
-  name: cloudinterconnect_ha_vpn_over_interconnect_10gb_attachments
+  name: ha_vpn_over_interconnect_10GB_attach
 spec:
   skip: true
