@@ -10,6 +10,8 @@ The following dependencies must be installed on the development system:
 - [Google Cloud SDK][google-cloud-sdk]
 - [make]
 
+Cloud Shell is recommended for development as these tools are pre-installed.
+
 ## Linting and Formatting
 Files in the repository are linted or formatted to maintain a standard of quality and statically validated.
 You can run this check locally:
@@ -52,6 +54,22 @@ With these settings in place, you can prepare a test project using Docker:
 ```
 cd terraform-docs-samples
 make docker_test_prepare
+```
+
+Sample Output:
+
+```
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+project_ids = [
+  "ci-tf-samples-0-c5ab",
+  "ci-tf-samples-1-f344",
+  "ci-tf-samples-2-b5a7",
+  "ci-tf-samples-3-6eda",
+]
+...
 ```
 
 ### Noninteractive Execution
@@ -100,7 +118,12 @@ Interactive execution is useful if you want to iteratively test a sample
 without destroying resources automatically.
 
 1. Run `make docker_run` to start the testing Docker container in
-   interactive mode.
+   interactive mode and you should see the following prompt.
+
+    Sample output:
+    ```
+    [root@... workspace]#
+    ```
 
 1. Navigate to the test directory `cd test/integration`.
 
