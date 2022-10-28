@@ -60,16 +60,6 @@ resource "google_cloud_run_service" "default" {
   depends_on = [google_project_service.run]
 }
 
-# Make Cloud Run service publicly accessible
-resource "google_cloud_run_service_iam_member" "allUsers" {
-  provider = google-beta
-  service  = google_cloud_run_service.default.name
-  location = google_cloud_run_service.default.location
-  role     = "roles/run.invoker"
-  member   = "allUsers"
-}
-
-
 # [END cloudrun_terraform_deploy_eventarc]
 
 # [START eventarc_terraform_pubsub]
@@ -89,6 +79,8 @@ resource "google_eventarc_trigger" "trigger_pubsub_tf" {
       region  = google_cloud_run_service.default.location
     }
   }
+
+  service_account = "${data.google_project.project.number}-compute@developer.gserviceaccount.com"
 
   depends_on = [google_project_service.eventarc]
 }
