@@ -15,6 +15,7 @@ Files in the repository are linted or formatted to maintain a standard of qualit
 You can run this check locally:
 
 ```
+cd terraform-docs-samples
 make docker_test_lint
 ```
 
