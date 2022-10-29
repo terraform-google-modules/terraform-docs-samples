@@ -24,4 +24,4 @@ resource "google_compute_region_health_check" "default" {
   }
   region = "us-west1"
 }
-# [END cloudloadbalancing_regional_health_check]# [END cloudloadbalancing_regional_health_check]
+# [END cloudloadbalancing_regional_health_check]
