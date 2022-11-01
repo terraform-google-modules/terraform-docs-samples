@@ -18,7 +18,7 @@
 resource "random_id" "zone_prefix" {
   byte_length = 8
 }
- 
+
 resource "google_dns_managed_zone" "sd_zone" {
   provider = google-beta
 
