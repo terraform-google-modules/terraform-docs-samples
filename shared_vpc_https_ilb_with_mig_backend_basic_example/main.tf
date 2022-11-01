@@ -28,7 +28,7 @@
 resource "google_compute_network" "lb_network" {
   name                    = "lb-network"
   provider                = google-beta
-  project                 = "HOST_PROJECT_ID"
+  project                 = "my-host-project-id"
   auto_create_subnetworks = false
 }
 # [END cloudloadbalancing_shared_vpc_https_lb_network]
@@ -38,7 +38,7 @@ resource "google_compute_network" "lb_network" {
 resource "google_compute_subnetwork" "lb_frontend_and_backend_subnet" {
   name          = "lb-frontend-and-backend-subnet"
   provider      = google-beta
-  project       = "HOST_PROJECT_ID"
+  project       = "my-host-project-id"
   region        = "us-west1"
   ip_cidr_range = "10.1.2.0/24"
   role          = "ACTIVE"
@@ -52,7 +52,7 @@ resource "google_compute_subnetwork" "lb_frontend_and_backend_subnet" {
 resource "google_compute_subnetwork" "proxy_only_subnet" {
   name          = "proxy-only-subnet"
   provider      = google-beta
-  project       = "HOST_PROJECT_ID"
+  project       = "my-host-project-id"
   region        = "us-west1"
   ip_cidr_range = "10.129.0.0/23"
   role          = "ACTIVE"
@@ -66,7 +66,7 @@ resource "google_compute_subnetwork" "proxy_only_subnet" {
 resource "google_compute_firewall" "fw_allow_ssh" {
   name          = "fw-allow-ssh"
   provider      = google-beta
-  project       = "HOST_PROJECT_ID"
+  project       = "my-host-project-id"
   direction     = "INGRESS"
   network       = google_compute_network.lb_network.id
   source_ranges = ["0.0.0.0/0"]
@@ -82,7 +82,7 @@ resource "google_compute_firewall" "fw_allow_ssh" {
 resource "google_compute_firewall" "fw_allow_health_check" {
   name          = "fw-allow-health-check"
   provider      = google-beta
-  project       = "HOST_PROJECT_ID"
+  project       = "my-host-project-id"
   direction     = "INGRESS"
   network       = google_compute_network.lb_network.id
   source_ranges = ["130.211.0.0/22", "35.191.0.0/16"]
@@ -97,7 +97,7 @@ resource "google_compute_firewall" "fw_allow_health_check" {
 resource "google_compute_firewall" "fw_allow_proxies" {
   name          = "fw-allow-proxies"
   provider      = google-beta
-  project       = "HOST_PROJECT_ID"
+  project       = "my-host-project-id"
   direction     = "INGRESS"
   network       = google_compute_network.lb_network.id
   source_ranges = ["10.129.0.0/23"]
@@ -113,11 +113,11 @@ resource "google_compute_firewall" "fw_allow_proxies" {
 # Config NetworkUser role to use service project
 # https://cloud.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc#deploy_load_balancer_and_backends
 data "google_project" "service_project" {
-  project_id = "SERVICE_PROJECT_ID"
+  project_id = "my-service-project-id"
 }
 
 resource "google_project_iam_binding" "default" {
-  project = "HOST_PROJECT_ID"
+  project = "my-host-project-id"
   role    = "roles/compute.networkUser"
 
   members = [
@@ -131,7 +131,7 @@ resource "google_project_iam_binding" "default" {
 resource "google_compute_instance_template" "default" {
   name     = "l7-ilb-backend-template"
   provider = google-beta
-  project  = "SERVICE_PROJECT_ID"
+  project  = "my-service-project-id"
   region   = "us-west1"
   # For machine type, using small. For more options check https://cloud.google.com/compute/docs/machine-types
   machine_type = "e2-small"
@@ -172,7 +172,7 @@ resource "google_compute_instance_template" "default" {
 resource "google_compute_instance_group_manager" "default" {
   name               = "l7-ilb-backend-example"
   provider           = google-beta
-  project            = "SERVICE_PROJECT_ID"
+  project            = "my-service-project-id"
   zone               = "us-west1-a"
   base_instance_name = "vm"
   target_size        = 2
@@ -194,7 +194,7 @@ resource "google_compute_instance_group_manager" "default" {
 resource "google_compute_health_check" "default" {
   name               = "l7-ilb-basic-check"
   provider           = google-beta
-  project            = "SERVICE_PROJECT_ID"
+  project            = "my-service-project-id"
   timeout_sec        = 1
   check_interval_sec = 1
   https_health_check {
@@ -208,7 +208,7 @@ resource "google_compute_health_check" "default" {
 resource "google_compute_region_backend_service" "default" {
   name                  = "l7-ilb-backend-service"
   provider              = google-beta
-  project               = "SERVICE_PROJECT_ID"
+  project               = "my-service-project-id"
   region                = "us-west1"
   protocol              = "HTTP"
   load_balancing_scheme = "INTERNAL_MANAGED"
@@ -227,7 +227,7 @@ resource "google_compute_region_backend_service" "default" {
 resource "google_compute_region_url_map" "default" {
   name            = "l7-ilb-map"
   provider        = google-beta
-  project         = "SERVICE_PROJECT_ID"
+  project         = "my-service-project-id"
   region          = "us-west1"
   default_service = google_compute_region_backend_service.default.id
 }
@@ -238,7 +238,7 @@ resource "google_compute_region_url_map" "default" {
 resource "google_compute_region_ssl_certificate" "default" {
   name        = "l7-ilb-cert"
   provider    = google-beta
-  project     = "SERVICE_PROJECT_ID"
+  project     = "my-service-project-id"
   region      = "us-west1"
   private_key = file("sample-private.key") # path to PEM-formatted file
   certificate = file("sample-server.cert") # path to PEM-formatted file
@@ -250,7 +250,7 @@ resource "google_compute_region_ssl_certificate" "default" {
 resource "google_compute_region_target_https_proxy" "default" {
   name             = "l7-ilb-proxy"
   provider         = google-beta
-  project          = "SERVICE_PROJECT_ID"
+  project          = "my-service-project-id"
   region           = "us-west1"
   url_map          = google_compute_region_url_map.default.id
   ssl_certificates = [google_compute_region_ssl_certificate.default.id]
@@ -262,7 +262,7 @@ resource "google_compute_region_target_https_proxy" "default" {
 resource "google_compute_forwarding_rule" "default" {
   name                  = "l7-ilb-forwarding-rule"
   provider              = google-beta
-  project               = "SERVICE_PROJECT_ID"
+  project               = "my-service-project-id"
   region                = "us-west1"
   ip_protocol           = "TCP"
   port_range            = "443"
@@ -281,7 +281,7 @@ resource "google_compute_forwarding_rule" "default" {
 resource "google_compute_instance" "vm_test" {
   name         = "client-vm"
   provider     = google-beta
-  project      = "SERVICE_PROJECT_ID"
+  project      = "my-service-project-id"
   zone         = "us-west1-a"
   machine_type = "e2-small"
   tags         = ["allow-ssh"]
