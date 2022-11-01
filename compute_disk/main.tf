@@ -28,6 +28,14 @@ resource "google_compute_disk" "default" {
 }
 # [END compute_disk_clone_single_zone]
 
+# [START compute_disk_snapshot_zonal]
+resource "google_compute_snapshot" "snapdisk" {
+  name        = "snapshot-name"
+  source_disk = google_compute_disk.default.name
+  zone        = "us-central1-a"
+}
+# [END compute_disk_snapshot_zonal]
+
 # [START compute_disk_clone_regional]
 resource "google_compute_region_disk" "regiondisk" {
   name                      = "region-disk-name"
@@ -39,19 +47,3 @@ resource "google_compute_region_disk" "regiondisk" {
   replica_zones = ["us-central1-a", "us-central1-f"]
 }
 # [END compute_disk_clone_regional]
-
-# [START compute_disk_snapshot]
-resource "google_compute_disk" "disk" {
-  name  = "disk-name2"
-  image = "debian-cloud/debian-11"
-  size  = 50
-  type  = "pd-ssd"
-  zone  = "us-central1-a"
-}
-
-resource "google_compute_snapshot" "snapdisk" {
-  name        = "snapshot-name"
-  source_disk = google_compute_disk.disk.name
-  zone        = "us-central1-a"
-}
-# [END compute_disk_snapshot]
