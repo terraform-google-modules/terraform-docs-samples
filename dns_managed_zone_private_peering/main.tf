@@ -15,8 +15,12 @@
  */
 
 # [START dns_managed_zone_private_peering]
+resource "random_id" "zone_prefix" {
+  byte_length = 8
+}
+
 resource "google_dns_managed_zone" "peering_zone" {
-  name        = "peering-zone"
+  name        = "${random_id.zone_prefix.hex}-peering-zone"
   dns_name    = "peering.example.com."
   description = "Example private DNS peering zone"
 
