@@ -15,10 +15,13 @@
  */
 
 # [START dns_managed_zone_service_directory]
-resource "google_dns_managed_zone" "sd_zone" {
-  provider = google-beta
+resource "random_id" "zone_suffix" {
+  byte_length = 8
+}
 
-  name        = "peering-zone"
+resource "google_dns_managed_zone" "sd_zone" {
+  provider    = google-beta
+  name        = "peering-zone-${random_id.zone_suffix.hex}"
   dns_name    = "services.example.com."
   description = "Example private DNS Service Directory zone"
 

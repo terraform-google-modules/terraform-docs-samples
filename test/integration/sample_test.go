@@ -45,7 +45,7 @@ var retryErrors = map[string]string{
 	// API activation is eventually consistent.
 	".*SERVICE_DISABLED.*": "Service enablement is eventually consistent",
 	// Retry function GCS access
-        ".*does not have storage.objects.get access.*": "GCS IAM is eventually consistent",
+	".*does not have storage.objects.get access.*": "GCS IAM is eventually consistent",
 }
 
 func TestSamples(t *testing.T) {
@@ -73,12 +73,14 @@ func TestSamples(t *testing.T) {
 			testName := fmt.Sprintf("%d/%s", tg.group, sample)
 			t.Run(testName, func(t *testing.T) {
 				utils.SetEnv(t, "GOOGLE_PROJECT", tg.projectID)
+				t.Logf("Test %s running %s project", sample, tg.projectID)
 				sampleTest := tft.NewTFBlueprintTest(t,
 					tft.WithTFDir(path.Join(sampleDir, sample)),
 					tft.WithSetupPath(setupPath),
 					tft.WithRetryableTerraformErrors(retryErrors, 10, time.Minute),
 				)
 				sampleTest.Test()
+				t.Logf("Test %s completed in %s project", sample, tg.projectID)
 			})
 		}
 	}
