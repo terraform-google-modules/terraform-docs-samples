@@ -28,7 +28,7 @@ DOCKER_BIN ?= docker
 .PHONY: docker_run
 docker_run:
 	$(DOCKER_BIN) run --rm -it \
-		-e SERVICE_ACCOUNT_JSON \
+		-v ~/.config/gcloud:/root/.config/gcloud \
 		-v "$(CURDIR)":/workspace \
 		$(REGISTRY_URL)/${DOCKER_IMAGE_DEVELOPER_TOOLS}:${DOCKER_TAG_VERSION_DEVELOPER_TOOLS} \
 		/bin/bash
@@ -37,7 +37,7 @@ docker_run:
 .PHONY: docker_test_prepare
 docker_test_prepare:
 	$(DOCKER_BIN) run --rm -it \
-		-e SERVICE_ACCOUNT_JSON \
+		-v ~/.config/gcloud:/root/.config/gcloud \
 		-e TF_VAR_org_id \
 		-e TF_VAR_folder_id \
 		-e TF_VAR_billing_account \
@@ -49,7 +49,7 @@ docker_test_prepare:
 .PHONY: docker_test_cleanup
 docker_test_cleanup:
 	$(DOCKER_BIN) run --rm -it \
-		-e SERVICE_ACCOUNT_JSON \
+		-v ~/.config/gcloud:/root/.config/gcloud \
 		-e TF_VAR_org_id \
 		-e TF_VAR_folder_id \
 		-e TF_VAR_billing_account \
@@ -61,7 +61,7 @@ docker_test_cleanup:
 .PHONY: docker_test_integration
 docker_test_integration:
 	$(DOCKER_BIN) run --rm -it \
-		-e SERVICE_ACCOUNT_JSON \
+		-v ~/.config/gcloud:/root/.config/gcloud \
 		-v "$(CURDIR)":/workspace \
 		$(REGISTRY_URL)/${DOCKER_IMAGE_DEVELOPER_TOOLS}:${DOCKER_TAG_VERSION_DEVELOPER_TOOLS} \
 		/usr/local/bin/test_integration.sh
@@ -73,3 +73,15 @@ docker_test_lint:
 		-v "$(CURDIR)":/workspace \
 		$(REGISTRY_URL)/${DOCKER_IMAGE_DEVELOPER_TOOLS}:${DOCKER_TAG_VERSION_DEVELOPER_TOOLS} \
 		/usr/local/bin/test_lint.sh
+
+# Execute a sample within the docker container
+.PHONY: docker_test_sample
+docker_test_sample:
+	if [ -z "$(SAMPLE)" ]; then \
+		echo "Please set SAMPLE variable"; \
+	fi
+	$(DOCKER_BIN) run --rm -it \
+		-v ~/.config/gcloud:/root/.config/gcloud \
+		-v "$(CURDIR)":/workspace \
+		$(REGISTRY_URL)/${DOCKER_IMAGE_DEVELOPER_TOOLS}:${DOCKER_TAG_VERSION_DEVELOPER_TOOLS} \
+		/bin/bash -c "cd test/integration && go test -v -timeout 0 -run //$(SAMPLE)"
