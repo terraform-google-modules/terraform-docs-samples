@@ -21,8 +21,7 @@ resource "random_id" "zone_prefix" {
 
 resource "google_dns_managed_zone" "sd_zone" {
   provider = google-beta
-
-  name        = "${random_id.zone_prefix.hex}-peering-zone"
+  name        = "peering-zone-${random_id.zone_prefix.hex}"
   dns_name    = "services.example.com."
   description = "Example private DNS Service Directory zone"
 

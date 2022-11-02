@@ -20,7 +20,7 @@ resource "random_id" "zone_prefix" {
 }
 
 resource "google_dns_managed_zone" "peering_zone" {
-  name        = "${random_id.zone_prefix.hex}-peering-zone"
+  name        = "peering-zone-${random_id.zone_prefix.hex}"
   dns_name    = "peering.example.com."
   description = "Example private DNS peering zone"
 
