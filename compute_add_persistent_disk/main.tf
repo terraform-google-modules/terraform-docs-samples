@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
+# [START compute_create_persistent_disk]
 resource "google_compute_disk" "default" {
   name = "disk-data"
   type = "pd-standard"
   zone = "us-west1-a"
   size = "5"
 }
+# [END compute_create_persistent_disk]
 
+# [START compute_attach_persistent_disk]
 resource "google_compute_instance" "test_node" {
   name         = "test-node"
   machine_type = "f1-micro"
@@ -43,3 +46,4 @@ resource "google_compute_instance" "test_node" {
     }
   }
 }
+# [END compute_attach_persistent_disk]
