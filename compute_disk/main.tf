@@ -28,6 +28,8 @@ resource "google_compute_disk" "default" {
 }
 # [END compute_disk_clone_single_zone]
 
+# [START compute_disk_clone_regional]
+
 # [START compute_disk_snapshot_zonal]
 resource "google_compute_snapshot" "snapdisk" {
   name        = "snapshot-name"
@@ -36,7 +38,6 @@ resource "google_compute_snapshot" "snapdisk" {
 }
 # [END compute_disk_snapshot_zonal]
 
-# [START compute_disk_clone_regional]
 resource "google_compute_region_disk" "regiondisk" {
   name                      = "region-disk-name"
   snapshot                  = google_compute_snapshot.snapdisk.id
