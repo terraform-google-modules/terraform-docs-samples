@@ -14,7 +14,14 @@
  * limitations under the License.
  */
 
+resource "google_project_service" "compute_api" {
+  service            = "compute.googleapis.com"
+  disable_on_destroy = false
+}
+
 # [START compute_create_persistent_disk]
+# Using pd-standard because it's the default for Compute Engine
+
 resource "google_compute_disk" "default" {
   name = "disk-data"
   type = "pd-standard"
