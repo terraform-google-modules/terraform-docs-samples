@@ -102,7 +102,7 @@ resource "google_privateca_certificate_authority" "test_ca" {
     algorithm = "RSA_PKCS1_4096_SHA256"
   }
 
-  // For easier cleanup.
+  // Disable CA deletion related safe checks for easier cleanup.
   deletion_protection                    = false
   skip_grace_period                      = true
   ignore_active_certificates_on_deletion = true
