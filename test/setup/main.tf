@@ -25,7 +25,7 @@ locals {
 module "projects" {
   count   = local.num_projects
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 13.0"
+  version = "~> 14.0"
 
   name                    = "ci-tf-samples-${count.index}"
   random_project_id       = true
