@@ -35,7 +35,7 @@ resource "google_compute_global_address" "private_ip_address" {
 
 # [START vpc_mysql_instance_private_ip_service_connection]
 resource "google_service_networking_connection" "default" {
-  network                 = google_compute_network.peering_network.name
+  network                 = google_compute_network.peering_network.id
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.private_ip_address.name]
 }
