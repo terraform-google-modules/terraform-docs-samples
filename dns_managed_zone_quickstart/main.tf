@@ -71,7 +71,7 @@ resource "google_dns_record_set" "default" {
   type         = "A"
   ttl          = 300
   rrdatas = [
-    google_compute_instance.default.network_interface.[0].access_config.[0].nat_ip
+    google_compute_instance.default.network_interface[0].access_config[0].nat_ip
   ]
 }
 # [END dns_domain_tutorial]
