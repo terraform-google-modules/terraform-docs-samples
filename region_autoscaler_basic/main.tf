@@ -80,8 +80,3 @@ resource "google_compute_region_instance_group_manager" "foobar" {
   target_pools       = [google_compute_target_pool.foobar.id]
   base_instance_name = "foobar"
 }
-
-data "google_compute_image" "debian_9" {
-  family  = "debian-11"
-  project = "debian-cloud"
-}
