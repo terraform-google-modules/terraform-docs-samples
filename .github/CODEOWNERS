@@ -1,0 +1,34 @@
+# Code owners file.
+# This file controls who is tagged for review for any given pull request.
+#
+# For syntax help see:
+# https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners#codeowners-syntax
+
+
+# Prefer GitHub teams over individuals to make it easier to find a suitable owner
+# when someone is OOO or leaves the team.
+
+# terraform-samples-owners is in charge of infrastructure in this repository ##### TODO: create this GitHub team #####
+# terraform-samples-reviewers reviews Terraform sample code for adherence to sample guidelines
+*                                      @GoogleCloudPlatform/terraform-samples-owners @GoogleCloudPlatform/terraform-samples-reviewers
+/.github/                              @GoogleCloudPlatform/terraform-samples-owners
+/*                                     @GoogleCloudPlatform/terraform-samples-owners
+
+/appengine/**/*                        @GoogleCloudPlatform/aap-dpes  @GoogleCloudPlatform/terraform-samples-reviewers
+/appengine/standard/django/**/*        @glasnt @GoogleCloudPlatform/aap-dpes  @GoogleCloudPlatform/terraform-samples-reviewers
+/cloud-sql/**/*                        @GoogleCloudPlatform/terraform-samples-reviewers
+/run/**/*                              @GoogleCloudPlatform/terraform-samples-reviewers
+/functions/**/*                        @GoogleCloudPlatform/terraform-samples-reviewers
+/composer/**/*                         @GoogleCloudPlatform/terraform-samples-reviewers
+/compute/**/*                          @GoogleCloudPlatform/terraform-samples-reviewers
+/cdn/**/*                              @GoogleCloudPlatform/terraform-samples-reviewers
+/vpc/**/*                              @GoogleCloudPlatform/terraform-samples-reviewers
+/lb/**/*                               @GoogleCloudPlatform/terraform-samples-reviewers
+/nat/**/*                              @GoogleCloudPlatform/terraform-samples-reviewers
+/router/**/*                           @GoogleCloudPlatform/terraform-samples-reviewers
+/dns/**/*                              @GoogleCloudPlatform/terraform-samples-reviewers
+/eventarc/**/*                         @GoogleCloudPlatform/terraform-samples-reviewers
+/storage/**/*                          @GoogleCloudPlatform/terraform-samples-reviewers
+/notebooks/**/*                        @GoogleCloudPlatform/terraform-samples-reviewers
+
+
