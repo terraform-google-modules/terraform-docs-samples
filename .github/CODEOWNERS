@@ -14,21 +14,19 @@
 /.github/                              @GoogleCloudPlatform/terraform-samples-owners
 /*                                     @GoogleCloudPlatform/terraform-samples-owners
 
-/appengine/**/*                        @GoogleCloudPlatform/aap-dpes  @GoogleCloudPlatform/terraform-samples-reviewers
-/appengine/standard/django/**/*        @glasnt @GoogleCloudPlatform/aap-dpes  @GoogleCloudPlatform/terraform-samples-reviewers
-/cloud-sql/**/*                        @GoogleCloudPlatform/terraform-samples-reviewers
-/run/**/*                              @GoogleCloudPlatform/terraform-samples-reviewers
-/functions/**/*                        @GoogleCloudPlatform/terraform-samples-reviewers
-/composer/**/*                         @GoogleCloudPlatform/terraform-samples-reviewers
-/compute/**/*                          @GoogleCloudPlatform/terraform-samples-reviewers
-/cdn/**/*                              @GoogleCloudPlatform/terraform-samples-reviewers
-/vpc/**/*                              @GoogleCloudPlatform/terraform-samples-reviewers
-/lb/**/*                               @GoogleCloudPlatform/terraform-samples-reviewers
-/nat/**/*                              @GoogleCloudPlatform/terraform-samples-reviewers
-/router/**/*                           @GoogleCloudPlatform/terraform-samples-reviewers
-/dns/**/*                              @GoogleCloudPlatform/terraform-samples-reviewers
-/eventarc/**/*                         @GoogleCloudPlatform/terraform-samples-reviewers
-/storage/**/*                          @GoogleCloudPlatform/terraform-samples-reviewers
-/notebooks/**/*                        @GoogleCloudPlatform/terraform-samples-reviewers
+/cloud-sql/**/*                        @GoogleCloudPlatform/infra-db-dpes  @GoogleCloudPlatform/terraform-samples-reviewers
+/run/**/*                              @GoogleCloudPlatform/torus-dpe  @GoogleCloudPlatform/terraform-samples-reviewers
+/functions/**/*                        @GoogleCloudPlatform/torus-dpe  @GoogleCloudPlatform/terraform-samples-reviewers
+/composer/**/*                         @GoogleCloudPlatform/cloud-dpes-composer  @GoogleCloudPlatform/terraform-samples-reviewers
+/compute/**/*                          @GoogleCloudPlatform/dee-infra  @GoogleCloudPlatform/terraform-samples-reviewers
+/cdn/**/*                              @GoogleCloudPlatform/dee-infra  @GoogleCloudPlatform/terraform-samples-reviewers
+/vpc/**/*                              @GoogleCloudPlatform/dee-infra  @GoogleCloudPlatform/terraform-samples-reviewers
+/lb/**/*                               @GoogleCloudPlatform/dee-infra  @GoogleCloudPlatform/terraform-samples-reviewers
+/nat/**/*                              @GoogleCloudPlatform/dee-infra  @GoogleCloudPlatform/terraform-samples-reviewers
+/router/**/*                           @GoogleCloudPlatform/dee-infra  @GoogleCloudPlatform/terraform-samples-reviewers
+/dns/**/*                              @GoogleCloudPlatform/dee-infra  @GoogleCloudPlatform/terraform-samples-reviewers
+/eventarc/**/*                         @GoogleCloudPlatform/torus-dpe  @GoogleCloudPlatform/terraform-samples-reviewers
+/storage/**/*                          @GoogleCloudPlatform/cloud-storage-dpe  @GoogleCloudPlatform/terraform-samples-reviewers
+/notebooks/**/*                        @GoogleCloudPlatform/dee-data-ai  @GoogleCloudPlatform/terraform-samples-reviewers
 
 
