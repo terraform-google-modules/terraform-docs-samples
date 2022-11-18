@@ -44,7 +44,7 @@ resource "google_compute_instance" "default" {
 
   boot_disk {
     initialize_params {
-      image =  "ubuntu-1404-trusty-v20160627"
+      image = "ubuntu-1404-trusty-v20160627"
     }
   }
 
