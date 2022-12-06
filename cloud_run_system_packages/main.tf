@@ -18,8 +18,8 @@
 
 # [START cloudrun_system_packages]
 resource "google_service_account" "graphviz" {
-  account_id    = "graphviz"
-  display_name  = "GraphViz Tutorial Service Account"
+  account_id   = "graphviz"
+  display_name = "GraphViz Tutorial Service Account"
 }
 
 resource "google_cloud_run_service" "default" {
@@ -34,7 +34,7 @@ resource "google_cloud_run_service" "default" {
         image = "gcr.io/cloudrun/hello"
       }
 
-      service_account_name  = google_service_account.graphviz.email
+      service_account_name = google_service_account.graphviz.email
     }
   }
 
