@@ -17,9 +17,9 @@
 # Google Cloud Documentation https://cloud.google.com/dns/docs/zones/managed-reverse-lookup-zones#console
 
 # [START dns_managed_zone_reverse_lookup]
-resource "google_dns_managed_zone" "reverse_lookup_zone" {
+resource "google_dns_managed_zone" "example" {
   name           = "my-new-zone"
-  description    = "Example DNS reverse lookup zone"
+  description    = "Example DNS reverse lookup"
   provider       = google-beta
   visibility     = "private"
   dns_name       = "2.2.20.20.in-addr.arpa."
