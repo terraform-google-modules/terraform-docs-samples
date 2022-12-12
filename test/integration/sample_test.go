@@ -16,9 +16,10 @@ package samples_test
 
 import (
 	"fmt"
-	"io/ioutil"
-	"path"
+	"io/fs"
+	"path/filepath"
 	"sort"
+	"strings"
 	"testing"
 	"time"
 
@@ -69,18 +70,19 @@ func TestSamples(t *testing.T) {
 	testGroups := discoverTestCaseGroups(t, testProjectIDs)
 
 	for _, tg := range testGroups {
-		for _, sample := range tg.samples {
-			testName := fmt.Sprintf("%d/%s", tg.group, sample)
+		for _, samplePath := range tg.samples {
+			sampleName := filepath.Base(samplePath)
+			testName := fmt.Sprintf("%d/%s", tg.group, sampleName)
 			t.Run(testName, func(t *testing.T) {
 				utils.SetEnv(t, "GOOGLE_PROJECT", tg.projectID)
-				t.Logf("Test %s running %s project", sample, tg.projectID)
+				t.Logf("Test %s running %s project", sampleName, tg.projectID)
 				sampleTest := tft.NewTFBlueprintTest(t,
-					tft.WithTFDir(path.Join(sampleDir, sample)),
+					tft.WithTFDir(samplePath),
 					tft.WithSetupPath(setupPath),
 					tft.WithRetryableTerraformErrors(retryErrors, 10, time.Minute),
 				)
 				sampleTest.Test()
-				t.Logf("Test %s completed in %s project", sample, tg.projectID)
+				t.Logf("Test %s completed in %s project", sampleName, tg.projectID)
 			})
 		}
 	}
@@ -98,16 +100,15 @@ var skipDiscoverDirs = map[string]bool{
 // It also skips known directories that are not samples.
 func discoverTestCaseGroups(t *testing.T, projects []string) []*testGroups {
 	t.Helper()
-	samples := []string{}
-	dirs, err := ioutil.ReadDir(sampleDir)
+
+	// skip any dirs with root in skipDiscoverDirs
+	skipDirs := func(f fs.FileInfo) bool {
+		rootDir := strings.SplitN(f.Name(), "/", 2)[0]
+		return skipDiscoverDirs[rootDir]
+	}
+	samples, err := walkTerraformDirs(sampleDir, skipDirs)
 	if err != nil {
 		t.Fatal(err)
-	}
-	for _, f := range dirs {
-		if !f.IsDir() || skipDiscoverDirs[f.Name()] {
-			continue
-		}
-		samples = append(samples, f.Name())
 	}
 	sort.Strings(samples)
 
@@ -124,4 +125,40 @@ func discoverTestCaseGroups(t *testing.T, projects []string) []*testGroups {
 		groups[groupIndex].samples = append(groups[groupIndex].samples, sample)
 	}
 	return groups
+}
+
+// replace with https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit/blob/1554af3ba2093bb02301ccd7061606011c82d9bc/cli/util/file.go#L17
+// after https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit/pull/1279
+const (
+	tfInternalDirPrefix = ".terraform"
+)
+
+// walkTerraformDirs traverses a provided path to return a list of directories
+// that hold terraform configs while skiping internal folders that have a
+// .terraform.* prefix
+func walkTerraformDirs(topLevelPath string, skip func(fs.FileInfo) bool) ([]string, error) {
+	var tfDirs []string
+	err := filepath.Walk(topLevelPath, func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			return fmt.Errorf("failure in accessing the path %q: %v", path, err)
+		}
+		if skip(info) {
+			return filepath.SkipDir
+		}
+		if info.IsDir() && strings.HasPrefix(info.Name(), tfInternalDirPrefix) {
+			return filepath.SkipDir
+		}
+
+		if !info.IsDir() && strings.HasSuffix(info.Name(), ".tf") {
+			tfDirs = append(tfDirs, filepath.Dir(path))
+			return filepath.SkipDir
+		}
+
+		return nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("error walking the path %q: %v", topLevelPath, err)
+	}
+
+	return tfDirs, nil
 }

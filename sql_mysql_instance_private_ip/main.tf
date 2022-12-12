@@ -75,7 +75,7 @@ resource "google_compute_network_peering_routes_config" "peering_routes" {
 
 # resource "google_service_networking_peered_dns_domain" "default" {
 #   name       = "example-com"
-#   network    = google_compute_network.peering_network.id
+#   network    = google_compute_network.peering_network.name
 #   dns_suffix = "example.com."
 #   service    = "servicenetworking.googleapis.com"
 # }
