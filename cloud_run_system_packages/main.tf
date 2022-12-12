@@ -17,6 +17,11 @@
 # Example of how to deploy a Cloud Run application with system packages
 
 # [START cloudrun_system_packages]
+resource "google_service_account" "graphviz" {
+  account_id   = "graphviz"
+  display_name = "GraphViz Tutorial Service Account"
+}
+
 resource "google_cloud_run_service" "default" {
   name     = "graphviz-example"
   location = "us-central1"
@@ -28,6 +33,8 @@ resource "google_cloud_run_service" "default" {
         #   gcr.io/<YOUR_GCP_PROJECT_ID>/graphviz
         image = "gcr.io/cloudrun/hello"
       }
+
+      service_account_name = google_service_account.graphviz.email
     }
   }
 

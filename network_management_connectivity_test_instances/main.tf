@@ -23,6 +23,7 @@ resource "google_network_management_connectivity_test" "instance_test" {
 
   destination {
     instance = google_compute_instance.destination.id
+    port     = "80"
   }
 
   protocol = "TCP"
@@ -39,7 +40,7 @@ resource "google_compute_instance" "source" {
   }
 
   network_interface {
-    network = google_compute_network.vpc.id
+    network = "default"
     access_config {
     }
   }
@@ -56,14 +57,10 @@ resource "google_compute_instance" "destination" {
   }
 
   network_interface {
-    network = google_compute_network.vpc.id
+    network = "default"
     access_config {
     }
   }
-}
-
-resource "google_compute_network" "vpc" {
-  name = "conn-test-net"
 }
 
 data "google_compute_image" "debian_9" {
