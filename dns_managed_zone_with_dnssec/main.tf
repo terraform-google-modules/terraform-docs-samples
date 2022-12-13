@@ -21,7 +21,7 @@ resource "google_dns_managed_zone" "example" {
   dns_name    = "myzone.example.com."
   description = "Example Signed Zone"
   dnssec_config {
-      state = "on"
+    state = "on"
   }
 }
 # [END dns_managed_zone_with_dnssec]
