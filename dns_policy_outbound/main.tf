@@ -15,7 +15,7 @@
  */
 
 # [START dns_policy_outbound]
-resource "google_dns_policy" "example" {
+resource "google_dns_policy" "default" {
   name = "example-outbound-policy"
 
   alternative_name_server_config {
