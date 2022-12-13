@@ -15,7 +15,7 @@
  */
 
 # [START dns_policy_inbound]
-resource "google_dns_policy" "example" {
+resource "google_dns_policy" "default" {
   name                      = "example-inbound-policy"
   enable_inbound_forwarding = true
 
