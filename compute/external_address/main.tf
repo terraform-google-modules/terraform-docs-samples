@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-# [START compute_global_external_vm_address]
+# [START compute_regional_external_vm_address]
 resource "google_compute_address" "default" {
   name   = "my-test-static-ip-address"
   region = "us-central1"
 }
-# [END compute_global_external_vm_address]
+# [END compute_regional_external_vm_address]
 
-# [START compute_global_external_vm_address_assign]
+# [START compute_regional_external_vm_address_assign]
 resource "google_compute_instance" "default" {
   name         = "dns-proxy-nfs"
   machine_type = "n1-standard-1"
@@ -40,4 +40,4 @@ resource "google_compute_instance" "default" {
     }
   }
 }
-# [END compute_global_external_vm_address_assign]
+# [END compute_regional_external_vm_address_assign]
