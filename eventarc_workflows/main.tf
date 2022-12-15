@@ -84,7 +84,7 @@ resource "google_workflows_workflow" "workflows_example" {
   region          = "us-central1"
   description     = "A sample workflow"
   service_account = google_service_account.eventarc_workflows_service_account.id
-  # Imported main workflow YAML file
+  # Imported main workflow template file
   source_contents = templatefile("workflow.tftpl", {})
 
   depends_on = [google_project_service.workflows,
