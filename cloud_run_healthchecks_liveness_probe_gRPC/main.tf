@@ -13,8 +13,8 @@ resource "google_project_service" "cloudrun_api" {
   disable_on_destroy = false
 }
 
-# Create Cloud Run Container with HTTP startup probe
-#[START cloud_run_healthchecks_startup_probe_http]
+# Create Cloud Run Container with gRPC liveness probe
+#[START cloud_run_healthchecks_liveness_probe_gRPC]
 resource "google_cloud_run_service" "default" {
   provider = google-beta
   name     = "cloudrun-service-healthcheck"
@@ -24,17 +24,14 @@ resource "google_cloud_run_service" "default" {
     spec {
       containers {
         image = "us-docker.pkg.dev/cloudrun/container/hello"
-        startup_probe {
+        liveness_probe {
           failure_threshold = 5
           initial_delay_seconds = 10
           timeout_seconds = 3
           period_seconds = 3
-          http_get {
-            path = "/"
-            http_headers {
-              name = "Access-Control-Allow-Origin"
-              value = "*"
-            }
+          grpc {
+            port = 8080
+            service = "grpc.health.v1.Health" # gRPC service should already exist
           }
         }
       }
@@ -46,4 +43,4 @@ resource "google_cloud_run_service" "default" {
     latest_revision = true
   }
 }
-#[END cloud_run_healthchecks_startup_probe_http]
+#[END cloud_run_healthchecks_liveness_probe_gRPC]

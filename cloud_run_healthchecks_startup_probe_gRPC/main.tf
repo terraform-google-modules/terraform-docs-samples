@@ -11,7 +11,6 @@ data "google_project" "project" {
 resource "google_project_service" "cloudrun_api" {
   service            = "run.googleapis.com"
   disable_on_destroy = false
-  project = "your-project-id"
 }
 
 # Create Cloud Run Container with pre-existing gRPC service

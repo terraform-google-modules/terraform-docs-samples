@@ -1,17 +1,16 @@
 provider "google-beta" {
-  project = "tf-cloud-run-healthcheck"
+  project = "your-project-id"
   region  = "us-central1"
 }
 
 data "google_project" "project" {
-  project_id = "tf-cloud-run-healthcheck"
+  project_id = "your-project-id"
 }
 
 # Enable Cloud Run API
 resource "google_project_service" "cloudrun_api" {
   service            = "run.googleapis.com"
   disable_on_destroy = false
-  project = "tf-cloud-run-healthcheck"
 }
 
 # Create Cloud Run Container with HTTP liveness probe
