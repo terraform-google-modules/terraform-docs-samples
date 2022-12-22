@@ -14,7 +14,7 @@ resource "google_project_service" "cloudrun_api" {
 }
 
 # Create Cloud Run Container with TCP startup probe
-#[START cloud_run_healthchecks_startup_probe_tcp]
+#[START cloud_run_healthchecks_startup_probe_http]
 resource "google_cloud_run_service" "default" {
   provider = google-beta
   name     = "cloudrun-service-healthcheck"
@@ -29,8 +29,12 @@ resource "google_cloud_run_service" "default" {
           initial_delay_seconds = 10
           timeout_seconds = 3
           period_seconds = 3
-          tcp_socket {
-            port = 8080
+          http_get {
+            path = "/"
+            http_headers {
+              name = "Access-Control-Allow-Origin"
+              value = "*"
+            }
           }
         }
       }
@@ -42,4 +46,4 @@ resource "google_cloud_run_service" "default" {
     latest_revision = true
   }
 }
-#[END cloud_run_healthchecks_startup_probe_tcp]
+#[END cloud_run_healthchecks_startup_probe_http]
