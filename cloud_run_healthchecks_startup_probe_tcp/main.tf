@@ -46,5 +46,11 @@ resource "google_cloud_run_service" "default" {
     percent         = 100
     latest_revision = true
   }
+  
+  lifecycle {
+    ignore_changes = [
+      metadata.0.annotations,
+    ]
+  }
 }
 #[END cloud_run_healthchecks_startup_probe_tcp]
