@@ -19,6 +19,11 @@ resource "google_cloud_run_service" "default" {
   provider = google-beta
   name     = "cloudrun-service-healthcheck"
   location = "us-central1"
+  metadata {
+    annotations = {
+      "run.googleapis.com/launch-stage" = "BETA"
+    }
+  }
 
   template {
     spec {
