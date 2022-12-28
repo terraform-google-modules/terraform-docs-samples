@@ -43,6 +43,7 @@ resource "google_compute_region_disk" "regiondisk" {
   type                      = "pd-ssd"
   region                    = "us-central1"
   physical_block_size_bytes = 4096
+  size                      = 11
 
   replica_zones = ["us-central1-a", "us-central1-f"]
 }
