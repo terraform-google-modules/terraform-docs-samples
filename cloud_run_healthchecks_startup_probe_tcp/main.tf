@@ -1,10 +1,5 @@
 provider "google-beta" {
-  project = "your-project-id"
-  region  = "us-central1"
-}
-
-data "google_project" "project" {
-  project_id = "your-project-id"
+  region = "us-central1"
 }
 
 # Enable Cloud Run API
@@ -30,10 +25,10 @@ resource "google_cloud_run_service" "default" {
       containers {
         image = "us-docker.pkg.dev/cloudrun/container/hello"
         startup_probe {
-          failure_threshold = 5
+          failure_threshold     = 5
           initial_delay_seconds = 10
-          timeout_seconds = 3
-          period_seconds = 3
+          timeout_seconds       = 3
+          period_seconds        = 3
           tcp_socket {
             port = 8080
           }
@@ -46,10 +41,10 @@ resource "google_cloud_run_service" "default" {
     percent         = 100
     latest_revision = true
   }
-  
+
   lifecycle {
     ignore_changes = [
-      metadata.0.annotations,
+      metadata[0].annotations,
     ]
   }
 }
