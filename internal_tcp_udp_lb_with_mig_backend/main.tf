@@ -24,7 +24,7 @@ resource "google_compute_network" "ilb_network" {
   auto_create_subnetworks = false
 }
 
-# backed subnet
+# backend subnet
 resource "google_compute_subnetwork" "ilb_subnet" {
   name          = "l4-ilb-subnet"
   provider      = google-beta
