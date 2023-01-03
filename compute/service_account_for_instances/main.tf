@@ -47,7 +47,10 @@ resource "google_compute_instance" "default" {
   }
 
   service_account {
-    # Google recommends custom service accounts with cloud-platform scope and permissions granted via IAM Roles.
+    # Google recommends custom service accounts with `cloud-platform` scope with
+    # specific permissions granted via IAM Roles.
+    # This approach lets you avoid embedding secret keys or user credentials
+    # in your instance, image, or app code
     email  = google_service_account.default.email
     scopes = ["cloud-platform"]
   }
