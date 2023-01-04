@@ -14,29 +14,43 @@
  * limitations under the License.
  */
 
+# [START vpc_packet_mirror_network]
+resource "google_compute_network" "network" {
+  name                    = "my-network"
+  auto_create_subnetworks = false
+}
+# [END vpc_packet_mirror_network]
+
+# [START vpc_packet_mirror_subnet]
+resource "google_compute_subnetwork" "default" {
+  name          = "my-subnet"
+  ip_cidr_range = "10.124.0.0/28"
+  network       = google_compute_network.network.id
+  region        = "us-central1"
+}
+# [END vpc_packet_mirror_subnet]
+
 # [START compute_vm_packet_mirror_vm_instance]
 resource "google_compute_instance" "mirror" {
-  project      = var.project_id # Replace this with your project ID in quotes
   zone         = "us-central1-a"
   name         = "my-instance"
   machine_type = "e2-medium"
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-9"
+      image = "debian-cloud/debian-11"
     }
   }
 
   network_interface {
-    network    = var.network # Replace with the VPC network's self-link, in quotes
-    subnetwork = var.subnet  # Replace with the subnet's self-link, in quotes
+    network    = google_compute_network.network.id
+    subnetwork = google_compute_subnetwork.default.self_link
   }
 }
 # [END compute_vm_packet_mirror_vm_instance]
 
 # [START cloudloadbalancing_vm_packet_mirror_health_check]
 resource "google_compute_health_check" "default" {
-  project            = google_compute_instance.mirror.project
   name               = "my-healthcheck"
   check_interval_sec = 1
   timeout_sec        = 1
@@ -48,7 +62,6 @@ resource "google_compute_health_check" "default" {
 
 # [START cloudloadbalancing_vm_packet_mirror_backend_service]
 resource "google_compute_region_backend_service" "default" {
-  project       = google_compute_instance.mirror.project
   region        = "us-central1"
   name          = "my-service"
   health_checks = [google_compute_health_check.default.id]
@@ -58,35 +71,33 @@ resource "google_compute_region_backend_service" "default" {
 # [START cloudloadbalancing_vm_packet_mirror_forwarding_rule]
 resource "google_compute_forwarding_rule" "default" {
   name                   = "my-ilb"
-  project                = google_compute_instance.mirror.project
   region                 = "us-central1"
   is_mirroring_collector = true
   ip_protocol            = "TCP"
   load_balancing_scheme  = "INTERNAL"
   backend_service        = google_compute_region_backend_service.default.id
   all_ports              = true
-  network                = var.network # Replace with the network's self-link, in quotes
-  subnetwork             = var.subnet  # Replace with the subnet's self-link, in quotes
+  network                = google_compute_network.network.id
+  subnetwork             = google_compute_subnetwork.default.self_link
   network_tier           = "PREMIUM"
 }
 # [END cloudloadbalancing_vm_packet_mirror_forwarding_rule]
 
 # [START compute_vm_packet_mirror]
 resource "google_compute_packet_mirroring" "default" {
-  project     = google_compute_instance.mirror.project # Replace this with a reference to your project ID
   region      = "us-central1"
   name        = "my-mirroring"
   description = "My packet mirror"
   network {
-    url = var.network # Replace this with a reference to your VPC network
+    url = google_compute_network.network.self_link
   }
   collector_ilb {
-    url = google_compute_forwarding_rule.default.id # Replace this with a reference to your forwarding rule
+    url = google_compute_forwarding_rule.default.self_link
   }
   mirrored_resources {
-    tags = ["foo"]
+    tags = ["tag-name"]
     instances {
-      url = google_compute_instance.mirror.id # Replace this with a reference to your VM instance
+      url = google_compute_instance.mirror.self_link
     }
   }
   filter {
