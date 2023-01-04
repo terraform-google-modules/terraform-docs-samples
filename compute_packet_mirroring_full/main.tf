@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2019 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,40 +14,29 @@
  * limitations under the License.
  */
 
+# [START compute_vm_packet_mirror_vm_instance]
 resource "google_compute_instance" "mirror" {
+  project      = var.project_id # Replace this with your project ID in quotes
+  zone         = "us-central1-a"
   name         = "my-instance"
   machine_type = "e2-medium"
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-11"
+      image = "debian-cloud/debian-9"
     }
   }
 
   network_interface {
-    network = google_compute_network.default.id
-    access_config {
-    }
+    network    = var.network # Replace with the VPC network's self-link, in quotes
+    subnetwork = var.subnet  # Replace with the subnet's self-link, in quotes
   }
 }
+# [END compute_vm_packet_mirror_vm_instance]
 
-resource "google_compute_network" "default" {
-  name = "my-network"
-}
-
-resource "google_compute_subnetwork" "default" {
-  name          = "my-subnetwork"
-  network       = google_compute_network.default.id
-  ip_cidr_range = "10.2.0.0/16"
-
-}
-
-resource "google_compute_region_backend_service" "default" {
-  name          = "my-service"
-  health_checks = [google_compute_health_check.default.id]
-}
-
+# [START cloudloadbalancing_vm_packet_mirror_health_check]
 resource "google_compute_health_check" "default" {
+  project            = google_compute_instance.mirror.project
   name               = "my-healthcheck"
   check_interval_sec = 1
   timeout_sec        = 1
@@ -55,35 +44,49 @@ resource "google_compute_health_check" "default" {
     port = "80"
   }
 }
+# [END cloudloadbalancing_vm_packet_mirror_health_check]
 
+# [START cloudloadbalancing_vm_packet_mirror_backend_service]
+resource "google_compute_region_backend_service" "default" {
+  project       = google_compute_instance.mirror.project
+  region        = "us-central1"
+  name          = "my-service"
+  health_checks = [google_compute_health_check.default.id]
+}
+# [END cloudloadbalancing_vm_packet_mirror_backend_service]
+
+# [START cloudloadbalancing_vm_packet_mirror_forwarding_rule]
 resource "google_compute_forwarding_rule" "default" {
-  depends_on = [google_compute_subnetwork.default]
-  name       = "my-ilb"
-
+  name                   = "my-ilb"
+  project                = google_compute_instance.mirror.project
+  region                 = "us-central1"
   is_mirroring_collector = true
   ip_protocol            = "TCP"
   load_balancing_scheme  = "INTERNAL"
   backend_service        = google_compute_region_backend_service.default.id
   all_ports              = true
-  network                = google_compute_network.default.id
-  subnetwork             = google_compute_subnetwork.default.id
+  network                = var.network # Replace with the network's self-link, in quotes
+  subnetwork             = var.subnet  # Replace with the subnet's self-link, in quotes
   network_tier           = "PREMIUM"
 }
+# [END cloudloadbalancing_vm_packet_mirror_forwarding_rule]
 
 # [START compute_vm_packet_mirror]
-resource "google_compute_packet_mirroring" "foobar" {
+resource "google_compute_packet_mirroring" "default" {
+  project     = google_compute_instance.mirror.project # Replace this with a reference to your project ID
+  region      = "us-central1"
   name        = "my-mirroring"
-  description = "bar"
+  description = "My packet mirror"
   network {
-    url = google_compute_network.default.id
+    url = var.network # Replace this with a reference to your VPC network
   }
   collector_ilb {
-    url = google_compute_forwarding_rule.default.id
+    url = google_compute_forwarding_rule.default.id # Replace this with a reference to your forwarding rule
   }
   mirrored_resources {
     tags = ["foo"]
     instances {
-      url = google_compute_instance.mirror.id
+      url = google_compute_instance.mirror.id # Replace this with a reference to your VM instance
     }
   }
   filter {
