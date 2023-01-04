@@ -1,0 +1,96 @@
+variable "domain" {
+  description = "setup your domain"
+}
+
+variable "project_id" {
+  description = "the project for deployment"
+}
+
+variable "name" {
+  description = "the name prefix for your resources"
+}
+provider "google" {
+  project = var.project_id
+
+}
+resource "random_id" "tf_prefix" {
+  byte_length = 4
+}
+
+resource "google_dns_managed_zone" "default" {
+  name        = "${var.name}-${random_id.tf_prefix.hex}"
+  dns_name    = "${var.domain}."
+  description = "Example DNS zone"
+  labels = {
+    "terraform" : true
+  }
+  visibility    = "public"
+  force_destroy = true
+}
+
+resource "google_certificate_manager_dns_authorization" "default" {
+  name        = "${var.name}-dnsauth-${random_id.tf_prefix.hex}"
+  description = "The default dns auth"
+  domain      = var.domain
+  labels = {
+    "terraform" : true
+  }
+}
+
+resource "google_dns_record_set" "cname" {
+  name         = google_certificate_manager_dns_authorization.default.dns_resource_record.0.name
+  managed_zone = google_dns_managed_zone.default.name
+  type         = google_certificate_manager_dns_authorization.default.dns_resource_record.0.type
+  ttl          = 300
+  rrdatas      = [google_certificate_manager_dns_authorization.default.dns_resource_record.0.data]
+}
+
+resource "google_certificate_manager_certificate" "root_cert" {
+  name        = "${var.name}-rootcert-${random_id.tf_prefix.hex}"
+  description = "The wildcard cert"
+  managed {
+    domains = ["${var.domain}", "*.${var.domain}"]
+    dns_authorizations = [
+      google_certificate_manager_dns_authorization.default.id
+    ]
+  }
+  labels = {
+    "terraform" : true
+  }
+}
+
+resource "google_certificate_manager_certificate_map" "certificate_map" {
+  name        = "${var.name}-certmap-${random_id.tf_prefix.hex}"
+  description = "${var.domain} certificate map"
+  labels = {
+    "terraform" : true
+  }
+}
+
+resource "google_certificate_manager_certificate_map_entry" "first_entry" {
+  name        = "${var.name}-first-entry-${random_id.tf_prefix.hex}"
+  description = "example certificate map entry"
+  map         = google_certificate_manager_certificate_map.certificate_map.name
+  labels = {
+    "terraform" : true
+  }
+  certificates = [google_certificate_manager_certificate.root_cert.id]
+  hostname     = var.domain
+}
+
+resource "google_certificate_manager_certificate_map_entry" "second_entry" {
+  name        = "${var.name}-second-entity-${random_id.tf_prefix.hex}"
+  description = "example certificate map entry"
+  map         = google_certificate_manager_certificate_map.certificate_map.name
+  labels = {
+    "terraform" : true
+  }
+  certificates = [google_certificate_manager_certificate.root_cert.id]
+  hostname     = "*.${var.domain}"
+}
+output "domain_name_servers_0" {
+  value = google_dns_managed_zone.default.name_servers.0
+}
+output "certificate_map" {
+  value = google_certificate_manager_certificate_map.certificate_map.id
+}
