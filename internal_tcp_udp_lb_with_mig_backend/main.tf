@@ -106,8 +106,8 @@ resource "google_compute_instance_template" "instance_template" {
 
 # health check
 resource "google_compute_region_health_check" "default" {
-  name     = "l4-ilb-hc"
-  region   = "europe-west1"
+  name   = "l4-ilb-hc"
+  region = "europe-west1"
   http_health_check {
     port = "80"
   }
@@ -115,8 +115,8 @@ resource "google_compute_region_health_check" "default" {
 
 # MIG
 resource "google_compute_region_instance_group_manager" "mig" {
-  name     = "l4-ilb-mig1"
-  region   = "europe-west1"
+  name   = "l4-ilb-mig1"
+  region = "europe-west1"
   version {
     instance_template = google_compute_instance_template.instance_template.id
     name              = "primary"
