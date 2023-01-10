@@ -14,90 +14,57 @@
  * limitations under the License.
  */
 
-# [START vpc_packet_mirror_network]
-resource "google_compute_network" "network" {
-  name                    = "my-network"
+# Internal TCP/UDP load balancer with a managed instance group backend
+# Packet mirroring enabled
+
+# [START vpc_int_tcp_udp_gce_packet_mirroring]
+
+# [START vpc_int_tcp_udp_gce_network]
+resource "google_compute_network" "ilb_network" {
+  name                    = "l4-ilb-network"
   auto_create_subnetworks = false
 }
-# [END vpc_packet_mirror_network]
+# [END vpc_int_tcp_udp_gce_network]
 
-# [START vpc_packet_mirror_subnet]
-resource "google_compute_subnetwork" "default" {
-  name          = "my-subnet"
-  ip_cidr_range = "10.124.0.0/28"
-  network       = google_compute_network.network.id
-  region        = "us-central1"
+# [START vpc_int_tcp_udp_gce_subnet]
+resource "google_compute_subnetwork" "ilb_subnet" {
+  name          = "l4-ilb-subnet"
+  ip_cidr_range = "10.0.1.0/24"
+  region        = "europe-west1"
+  network       = google_compute_network.ilb_network.id
 }
-# [END vpc_packet_mirror_subnet]
+# [END vpc_int_tcp_udp_gce_subnet]
 
-# [START compute_vm_packet_mirror_vm_instance]
-resource "google_compute_instance" "mirror" {
-  zone         = "us-central1-a"
-  name         = "my-instance"
-  machine_type = "e2-medium"
-
-  boot_disk {
-    initialize_params {
-      image = "debian-cloud/debian-11"
-    }
-  }
-
-  network_interface {
-    network    = google_compute_network.network.id
-    subnetwork = google_compute_subnetwork.default.self_link
-  }
-}
-# [END compute_vm_packet_mirror_vm_instance]
-
-# [START cloudloadbalancing_vm_packet_mirror_health_check]
-resource "google_compute_health_check" "default" {
-  name               = "my-healthcheck"
-  check_interval_sec = 1
-  timeout_sec        = 1
-  tcp_health_check {
-    port = "80"
-  }
-}
-# [END cloudloadbalancing_vm_packet_mirror_health_check]
-
-# [START cloudloadbalancing_vm_packet_mirror_backend_service]
-resource "google_compute_region_backend_service" "default" {
-  region        = "us-central1"
-  name          = "my-service"
-  health_checks = [google_compute_health_check.default.id]
-}
-# [END cloudloadbalancing_vm_packet_mirror_backend_service]
-
-# [START cloudloadbalancing_vm_packet_mirror_forwarding_rule]
+# [START cloudloadbalancing_int_tcp_udp_gce_forwarding_rule]
 resource "google_compute_forwarding_rule" "default" {
-  name                   = "my-ilb"
-  region                 = "us-central1"
-  is_mirroring_collector = true
+  name                   = "l4-ilb-forwarding-rule"
+  backend_service        = google_compute_region_backend_service.default.id
+  region                 = "europe-west1"
   ip_protocol            = "TCP"
   load_balancing_scheme  = "INTERNAL"
-  backend_service        = google_compute_region_backend_service.default.id
   all_ports              = true
-  network                = google_compute_network.network.id
-  subnetwork             = google_compute_subnetwork.default.self_link
-  network_tier           = "PREMIUM"
+  allow_global_access    = true
+  is_mirroring_collector = true
+  network                = google_compute_network.ilb_network.id
+  subnetwork             = google_compute_subnetwork.ilb_subnet.id
 }
-# [END cloudloadbalancing_vm_packet_mirror_forwarding_rule]
+# [END cloudloadbalancing_int_tcp_udp_gce_forwarding_rule]
 
-# [START compute_vm_packet_mirror]
+# [START vpc_int_tcp_udp_gce_packet_mirroring]
 resource "google_compute_packet_mirroring" "default" {
-  region      = "us-central1"
+  region      = "europe-west1"
   name        = "my-mirroring"
   description = "My packet mirror"
   network {
-    url = google_compute_network.network.self_link
+    url = google_compute_network.ilb_network.id
   }
   collector_ilb {
-    url = google_compute_forwarding_rule.default.self_link
+    url = google_compute_forwarding_rule.default.id
   }
   mirrored_resources {
-    tags = ["tag-name"]
+    tags = ["foo"]
     instances {
-      url = google_compute_instance.mirror.self_link
+      url = google_compute_instance.vm_test.id
     }
   }
   filter {
@@ -106,4 +73,153 @@ resource "google_compute_packet_mirroring" "default" {
     direction    = "BOTH"
   }
 }
-# [END compute_vm_packet_mirror]
+# [END vpc_int_tcp_udp_gce_packet_mirroring]
+
+# [START cloudloadbalancing_int_tcp_udp_gce_backend_service]
+resource "google_compute_region_backend_service" "default" {
+  name                  = "l4-ilb-backend-service"
+  region                = "europe-west1"
+  protocol              = "TCP"
+  load_balancing_scheme = "INTERNAL"
+  health_checks         = [google_compute_region_health_check.default.id]
+  backend {
+    group          = google_compute_region_instance_group_manager.mig.instance_group
+    balancing_mode = "CONNECTION"
+  }
+}
+# [END cloudloadbalancing_int_tcp_udp_gce_backend_service]
+
+# [START compute_int_tcp_udp_gce_instance_template]
+resource "google_compute_instance_template" "instance_template" {
+  name         = "l4-ilb-mig-template"
+  machine_type = "e2-small"
+  tags         = ["allow-ssh", "allow-health-check"]
+
+  network_interface {
+    network    = google_compute_network.ilb_network.id
+    subnetwork = google_compute_subnetwork.ilb_subnet.id
+    access_config {
+      # add external ip to fetch packages
+    }
+  }
+  disk {
+    source_image = "debian-cloud/debian-10"
+    auto_delete  = true
+    boot         = true
+  }
+
+  # install nginx and serve a simple web page
+  metadata = {
+    startup-script = <<-EOF1
+      #! /bin/bash
+      set -euo pipefail
+      export DEBIAN_FRONTEND=noninteractive
+      apt-get update
+      apt-get install -y nginx-light jq
+      NAME=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/hostname")
+      IP=$(curl -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/ip")
+      METADATA=$(curl -f -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/instance/attributes/?recursive=True" | jq 'del(.["startup-script"])')
+      cat <<EOF > /var/www/html/index.html
+      <pre>
+      Name: $NAME
+      IP: $IP
+      Metadata: $METADATA
+      </pre>
+      EOF
+    EOF1
+  }
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+# [END compute_int_tcp_udp_gce_instance_template]
+
+# [START cloudloadbalancing_int_tcp_udp_gce_health_check]
+resource "google_compute_region_health_check" "default" {
+  name   = "l4-ilb-hc"
+  region = "europe-west1"
+  http_health_check {
+    port = "80"
+  }
+}
+# [END cloudloadbalancing_int_tcp_udp_gce_health_check]
+
+# [START compute_int_tcp_udp_gce_mig]
+resource "google_compute_region_instance_group_manager" "mig" {
+  name   = "l4-ilb-mig1"
+  region = "europe-west1"
+  version {
+    instance_template = google_compute_instance_template.instance_template.id
+    name              = "primary"
+  }
+  base_instance_name = "vm"
+  target_size        = 2
+}
+# [END compute_int_tcp_udp_gce_mig]
+
+# [START vpc_int_tcp_udp_gce_mig_firewall_health_check]
+# allow all access from health check ranges
+resource "google_compute_firewall" "fw_hc" {
+  name          = "l4-ilb-fw-allow-hc"
+  direction     = "INGRESS"
+  network       = google_compute_network.ilb_network.id
+  source_ranges = ["130.211.0.0/22", "35.191.0.0/16", "35.235.240.0/20"]
+  allow {
+    protocol = "tcp"
+  }
+  target_tags = ["allow-health-check"]
+}
+# [END vpc_int_tcp_udp_gce_mig_firewall_health_check]
+
+# [START vpc_int_tcp_udp_gce_firewall_backends]
+# allow communication within the subnet
+resource "google_compute_firewall" "fw_ilb_to_backends" {
+  name          = "l4-ilb-fw-allow-ilb-to-backends"
+  direction     = "INGRESS"
+  network       = google_compute_network.ilb_network.id
+  source_ranges = ["10.0.1.0/24"]
+  allow {
+    protocol = "tcp"
+  }
+  allow {
+    protocol = "udp"
+  }
+  allow {
+    protocol = "icmp"
+  }
+}
+# [END vpc_int_tcp_udp_gce_firewall_backends]
+
+# [START vpc_int_tcp_udp_gce_firewall_ssh]
+resource "google_compute_firewall" "fw_ilb_ssh" {
+  name      = "l4-ilb-fw-ssh"
+  direction = "INGRESS"
+  network   = google_compute_network.ilb_network.id
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+  target_tags   = ["allow-ssh"]
+  source_ranges = ["0.0.0.0/0"]
+}
+# [END vpc_int_tcp_udp_gce_firewall_ssh]
+
+# [START compute_int_tcp_udp_gce_test_instance]
+resource "google_compute_instance" "vm_test" {
+  name         = "mirrored-instance"
+  tags         = ["allow-ssh"]
+  zone         = "europe-west1-b"
+  machine_type = "e2-small"
+  network_interface {
+    network    = google_compute_network.ilb_network.id
+    subnetwork = google_compute_subnetwork.ilb_subnet.id
+  }
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-10"
+    }
+  }
+}
+# [END compute_int_tcp_udp_gce_test_instance]
+
+# [END vpc_int_tcp_udp_gce_packet_mirroring]
