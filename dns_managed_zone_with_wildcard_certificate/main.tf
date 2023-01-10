@@ -28,6 +28,11 @@ resource "random_id" "tf_prefix" {
   byte_length = 4
 }
 
+resource "google_project_service" "certificatemanager_svc" {
+  service            = "certificatemanager.googleapis.com"
+  disable_on_destroy = false
+}
+
 resource "google_dns_managed_zone" "default" {
   name        = "example-mz-${random_id.tf_prefix.hex}"
   dns_name    = "${var.domain}."
