@@ -15,12 +15,12 @@
  */
 
 variable "domain" {
-  default = "skiski.cloud"
+  default     = "skiski.cloud"
   description = "setup your domain"
 }
 
 variable "name" {
-  default = "examplename"
+  default     = "examplename"
   description = "the name prefix for your resources"
 }
 
