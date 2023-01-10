@@ -15,26 +15,21 @@
  */
 
 variable "domain" {
+  default = "skiski.cloud"
   description = "setup your domain"
 }
 
-variable "project_id" {
-  description = "the project for deployment"
-}
-
 variable "name" {
+  default = "examplename"
   description = "the name prefix for your resources"
 }
-provider "google" {
-  project = var.project_id
 
-}
 resource "random_id" "tf_prefix" {
   byte_length = 4
 }
 
 resource "google_dns_managed_zone" "default" {
-  name        = "${var.name}-${random_id.tf_prefix.hex}"
+  name        = "example-mz-${random_id.tf_prefix.hex}"
   dns_name    = "${var.domain}."
   description = "Example DNS zone"
   labels = {
