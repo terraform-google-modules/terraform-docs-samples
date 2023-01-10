@@ -25,7 +25,7 @@ resource "google_compute_network" "ilb_network" {
 }
 # [END vpc_int_tcp_udp_gce_network]
 
-# [START vpc_int_tcp_udp_gce_subnet] 
+# [START vpc_int_tcp_udp_gce_subnet]
 resource "google_compute_subnetwork" "ilb_subnet" {
   name          = "l4-ilb-subnet"
   ip_cidr_range = "10.0.1.0/24"
@@ -199,4 +199,4 @@ resource "google_compute_instance" "vm_test" {
 }
 # [END compute_int_tcp_udp_gce_test_instance]
 
-# [END cloudloadbalancing_int_tcp_udp_gce]]
+# [END cloudloadbalancing_int_tcp_udp_gce]
