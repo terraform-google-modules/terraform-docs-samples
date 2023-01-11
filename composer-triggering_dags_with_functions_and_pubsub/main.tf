@@ -29,8 +29,8 @@
 #	- Creates a Cloud Composer environment
 #	- Creates a Composer Service Agent account
 #	- Grants the Cloud Composer v2 API Service Agent Extension role and the Composer Worker role to the Composer Service Agent account
-#	- Creates a new Cloud Storage bucket 
-#	- Creates a new Cloud Function and deploys the function source code from the pubsub_function.zip file to the Cloud Storage bucket 
+#	- Creates a new Cloud Storage bucket
+#	- Creates a new Cloud Function and deploys the function source code from the pubsub_function.zip file to the Cloud Storage bucket
 #	- Uploads the example DAG source code from the specified file into the Cloud Composer bucket
 
 #
@@ -105,7 +105,7 @@ resource "google_compute_subnetwork" "composer_subnetwork" {
 # Creates IAM resources #
 #                       #
 #########################
-# Comment this section to use an existing service account 
+# Comment this section to use an existing service account
 resource "google_service_account" "composer_env_sa" {
   project      = "<PROJECT_ID>"
   account_id   = "composer-worker-sa"
