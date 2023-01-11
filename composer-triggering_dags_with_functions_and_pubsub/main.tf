@@ -13,11 +13,11 @@
 # limitations under the License.
 
 
-# [START triggering_dags_with_functions_and_pubsub]                                            
-#   Triggering DAGs Using Cloud Function and Pub/Sub Messages with Terraform                                          
-#                                                                                              
-#   Usage:                                                                                     
-#       1. Select or create a new project that you will use to create the resources                      
+# [START triggering_dags_with_functions_and_pubsub]
+#   Triggering DAGs Using Cloud Function and Pub/Sub Messages with Terraform
+#
+#   Usage:
+#       1. Select or create a new project that you will use to create the resources
 #       2. Replace <PROJECT_ID> with the project ID of your project
 #       3. Replace <PROJECT_NUMBER> with the account number of your project
 #       4. Upload into your directory the pubsub_function.zip file: https://github.com/akvelon/python-docs-samples/tree/main/composer_tutorials/triggering-dags-with-functions-and-pubsub/cloud_function
@@ -188,4 +188,4 @@ resource "google_storage_bucket_object" "composer_dags_source" {
   bucket = trimprefix(trimsuffix(google_composer_environment.new_composer_env.config[0].dag_gcs_prefix, "/dags"), "gs://")
   source = "./pubsub_trigger_response_dag.py"
 }
-# [START triggering_dags_with_functions_and_pubsub]                                            
+# [START triggering_dags_with_functions_and_pubsub]
