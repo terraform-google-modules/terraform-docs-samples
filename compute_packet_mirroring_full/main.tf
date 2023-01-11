@@ -50,7 +50,7 @@ resource "google_compute_forwarding_rule" "default" {
 }
 # [END cloudloadbalancing_int_tcp_udp_gce_forwarding_rule]
 
-# [START vpc_int_tcp_udp_gce_packet_mirroring]
+# [START vpc_int_tcp_udp_gce_packet_mirroring_policy]
 resource "google_compute_packet_mirroring" "default" {
   region      = "europe-west1"
   name        = "my-mirroring"
@@ -73,7 +73,7 @@ resource "google_compute_packet_mirroring" "default" {
     direction    = "BOTH"
   }
 }
-# [END vpc_int_tcp_udp_gce_packet_mirroring]
+# [END vpc_int_tcp_udp_gce_packet_mirroring_policy]
 
 # [START cloudloadbalancing_int_tcp_udp_gce_backend_service]
 resource "google_compute_region_backend_service" "default" {
