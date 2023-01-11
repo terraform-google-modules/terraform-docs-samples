@@ -36,7 +36,7 @@ resource "google_iam_deny_policy" "default" {
   display_name = "My deny policy."
   rules {
     deny_rule {
-      denied_principals = ["principal://iam.googleapis.com/projects/-/serviceAccounts/${google_service_account.default.email}"]
+      denied_principals  = ["principal://iam.googleapis.com/projects/-/serviceAccounts/${google_service_account.default.email}"]
       denied_permissions = ["iam.googleapis.com/roles.create"]
     }
   }
