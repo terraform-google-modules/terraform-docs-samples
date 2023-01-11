@@ -185,7 +185,7 @@ resource "google_storage_bucket_object" "cloud_function_source" {
 
 resource "google_storage_bucket_object" "composer_dags_source" {
   name   = "dags/dag_pubsub_sensor.py"
-  bucket = trimprefix(trimsuffix(google_composer_environment.new_composer_env.config.0.dag_gcs_prefix, "/dags"), "gs://")
+  bucket = trimprefix(trimsuffix(google_composer_environment.new_composer_env.config[0].dag_gcs_prefix, "/dags"), "gs://")
   source = "./pubsub_trigger_response_dag.py"
 }
 # [START triggering_dags_with_functions_and_pubsub]                                            
