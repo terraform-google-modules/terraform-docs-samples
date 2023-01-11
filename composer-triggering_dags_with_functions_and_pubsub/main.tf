@@ -41,8 +41,8 @@
 #                             #
 ###############################
 resource "google_composer_environment" "new_composer_env" {
-  name   = "composer-environment"
-  region = "us-central1"
+  name    = "composer-environment"
+  region  = "us-central1"
   project = "<PROJECT_ID>"
   config {
 
@@ -62,7 +62,7 @@ resource "google_composer_environment" "new_composer_env" {
         storage_gb = 1
       }
       worker {
-        cpu = 0.5
+        cpu        = 0.5
         memory_gb  = 1.875
         storage_gb = 1
         min_count  = 1
@@ -74,8 +74,8 @@ resource "google_composer_environment" "new_composer_env" {
     environment_size = "ENVIRONMENT_SIZE_SMALL"
 
     node_config {
-      network    = google_compute_network.composer_network.id
-      subnetwork = google_compute_subnetwork.composer_subnetwork.id
+      network         = google_compute_network.composer_network.id
+      subnetwork      = google_compute_subnetwork.composer_subnetwork.id
       service_account = google_service_account.composer_env_sa.email
     }
   }
@@ -87,13 +87,13 @@ resource "google_composer_environment" "new_composer_env" {
 #                              #
 ################################
 resource "google_compute_network" "composer_network" {
-  project = "<PROJECT_ID>"
+  project                 = "<PROJECT_ID>"
   name                    = "composer-test-network"
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "composer_subnetwork" {
-  project = "<PROJECT_ID>"
+  project       = "<PROJECT_ID>"
   name          = "composer-test-subnet"
   ip_cidr_range = "10.2.0.0/16"
   region        = "us-central1"
@@ -107,7 +107,7 @@ resource "google_compute_subnetwork" "composer_subnetwork" {
 #########################
 # Comment this section to use an existing service account 
 resource "google_service_account" "composer_env_sa" {
-  project = "<PROJECT_ID>"
+  project      = "<PROJECT_ID>"
   account_id   = "composer-worker-sa"
   display_name = "Test Service Account for Composer Environment deployment "
 }
@@ -119,10 +119,10 @@ resource "google_project_iam_member" "composer-worker" {
 }
 
 resource "google_service_account_iam_member" "custom_service_account" {
-  provider = google-beta
+  provider           = google-beta
   service_account_id = google_service_account.composer_env_sa.id
-  role = "roles/composer.ServiceAgentV2Ext"
-  member = "serviceAccount:service-<PROJECT_NUMBER>@cloudcomposer-accounts.iam.gserviceaccount.com"
+  role               = "roles/composer.ServiceAgentV2Ext"
+  member             = "serviceAccount:service-<PROJECT_NUMBER>@cloudcomposer-accounts.iam.gserviceaccount.com"
 }
 
 ########################
@@ -131,8 +131,8 @@ resource "google_service_account_iam_member" "custom_service_account" {
 #                      #
 ########################
 resource "google_pubsub_topic" "trigger" {
-  project = "<PROJECT_ID>"
-  name = "dag-topic-trigger"
+  project                    = "<PROJECT_ID>"
+  name                       = "dag-topic-trigger"
   message_retention_duration = "86600s"
 }
 
@@ -143,16 +143,16 @@ resource "google_pubsub_topic" "trigger" {
 ##########################
 resource "google_cloudfunctions_function" "pubsub_function" {
   project = "<PROJECT_ID>"
-  name        = "pubsub-publisher"
-  runtime     = "python310"
-  region = "us-central1"
+  name    = "pubsub-publisher"
+  runtime = "python310"
+  region  = "us-central1"
 
-  available_memory_mb          = 128
-  source_archive_bucket        = google_storage_bucket.cloud_function_bucket.name
-  source_archive_object        = "pubsub_function.zip"
-  timeout                      = 60
-  entry_point                  = "pubsub_publisher"
-	service_account_email				 = "<PROJECT_NUMBER>-compute@developer.gserviceaccount.com"
+  available_memory_mb   = 128
+  source_archive_bucket = google_storage_bucket.cloud_function_bucket.name
+  source_archive_object = "pubsub_function.zip"
+  timeout               = 60
+  entry_point           = "pubsub_publisher"
+  service_account_email = "<PROJECT_NUMBER>-compute@developer.gserviceaccount.com"
   trigger_http          = true
 
 }
@@ -164,10 +164,10 @@ resource "google_cloudfunctions_function" "pubsub_function" {
 ##################################
 
 resource "google_storage_bucket" "cloud_function_bucket" {
-  project = "<PROJECT_ID>"
-  name     = "<PROJECT_ID>-cloud-function-source-code"
-  location = "US"
-  force_destroy = true
+  project                     = "<PROJECT_ID>"
+  name                        = "<PROJECT_ID>-cloud-function-source-code"
+  location                    = "US"
+  force_destroy               = true
   uniform_bucket_level_access = true
 }
 
@@ -185,7 +185,7 @@ resource "google_storage_bucket_object" "cloud_function_source" {
 
 resource "google_storage_bucket_object" "composer_dags_source" {
   name   = "dags/dag_pubsub_sensor.py"
-  bucket = trimprefix(trimsuffix(google_composer_environment.new_composer_env.config.0.dag_gcs_prefix,"/dags"),"gs://")
+  bucket = trimprefix(trimsuffix(google_composer_environment.new_composer_env.config.0.dag_gcs_prefix, "/dags"), "gs://")
   source = "./pubsub_trigger_response_dag.py"
 }
 # [START triggering_dags_with_functions_and_pubsub]                                            
