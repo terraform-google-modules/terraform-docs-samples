@@ -46,8 +46,8 @@ resource "google_cloud_run_service" "default" {
           timeout_seconds       = 3
           period_seconds        = 3
           grpc {
-            port    = 8080
-            service = "grpc.health.v1.Health" # gRPC service should already exist
+            # Note: A separate health checking service can be referenced. (See https://github.com/grpc/grpc/blob/master/doc/health-checking.md)
+            # service = "grpc.health.v1.Health"
           }
         }
       }
