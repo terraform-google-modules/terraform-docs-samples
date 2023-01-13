@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
-variable "domain" {
-  default     = "skiski.cloud"
-  description = "setup your domain"
-}
-
-variable "name" {
-  default     = "examplename"
-  description = "the name prefix for your resources"
+locals {
+  domain = "example.me"
+  name   = "prefixname"
 }
 
 resource "random_id" "tf_prefix" {
@@ -35,7 +30,7 @@ resource "google_project_service" "certificatemanager_svc" {
 
 resource "google_dns_managed_zone" "default" {
   name        = "example-mz-${random_id.tf_prefix.hex}"
-  dns_name    = "${var.domain}."
+  dns_name    = "${local.domain}."
   description = "Example DNS zone"
   labels = {
     "terraform" : true
@@ -45,9 +40,9 @@ resource "google_dns_managed_zone" "default" {
 }
 
 resource "google_certificate_manager_dns_authorization" "default" {
-  name        = "${var.name}-dnsauth-${random_id.tf_prefix.hex}"
+  name        = "${local.name}-dnsauth-${random_id.tf_prefix.hex}"
   description = "The default dns auth"
-  domain      = var.domain
+  domain      = local.domain
   labels = {
     "terraform" : true
   }
@@ -62,10 +57,10 @@ resource "google_dns_record_set" "cname" {
 }
 
 resource "google_certificate_manager_certificate" "root_cert" {
-  name        = "${var.name}-rootcert-${random_id.tf_prefix.hex}"
+  name        = "${local.name}-rootcert-${random_id.tf_prefix.hex}"
   description = "The wildcard cert"
   managed {
-    domains = [var.domain, "*.${var.domain}"]
+    domains = [local.domain, "*.${local.domain}"]
     dns_authorizations = [
       google_certificate_manager_dns_authorization.default.id
     ]
@@ -76,33 +71,33 @@ resource "google_certificate_manager_certificate" "root_cert" {
 }
 
 resource "google_certificate_manager_certificate_map" "certificate_map" {
-  name        = "${var.name}-certmap-${random_id.tf_prefix.hex}"
-  description = "${var.domain} certificate map"
+  name        = "${local.name}-certmap-${random_id.tf_prefix.hex}"
+  description = "${local.domain} certificate map"
   labels = {
     "terraform" : true
   }
 }
 
 resource "google_certificate_manager_certificate_map_entry" "first_entry" {
-  name        = "${var.name}-first-entry-${random_id.tf_prefix.hex}"
+  name        = "${local.name}-first-entry-${random_id.tf_prefix.hex}"
   description = "example certificate map entry"
   map         = google_certificate_manager_certificate_map.certificate_map.name
   labels = {
     "terraform" : true
   }
   certificates = [google_certificate_manager_certificate.root_cert.id]
-  hostname     = var.domain
+  hostname     = local.domain
 }
 
 resource "google_certificate_manager_certificate_map_entry" "second_entry" {
-  name        = "${var.name}-second-entity-${random_id.tf_prefix.hex}"
+  name        = "${local.name}-second-entity-${random_id.tf_prefix.hex}"
   description = "example certificate map entry"
   map         = google_certificate_manager_certificate_map.certificate_map.name
   labels = {
     "terraform" : true
   }
   certificates = [google_certificate_manager_certificate.root_cert.id]
-  hostname     = "*.${var.domain}"
+  hostname     = "*.${local.domain}"
 }
 output "domain_name_servers" {
   value = google_dns_managed_zone.default.name_servers
