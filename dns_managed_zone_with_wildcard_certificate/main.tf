@@ -90,7 +90,7 @@ resource "google_certificate_manager_certificate_map" "certificate_map" {
 }
 # [END certificatemanager_dns_wildcard_map]
 
-# [START certificatemanager_map_entry_one]
+# [START certificatemanager_dns_wildcard_map_entry_one]
 resource "google_certificate_manager_certificate_map_entry" "first_entry" {
   name        = "${local.name}-first-entry-${random_id.tf_prefix.hex}"
   description = "example certificate map entry"
