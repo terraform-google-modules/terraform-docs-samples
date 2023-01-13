@@ -80,7 +80,7 @@ resource "google_certificate_manager_certificate" "root_cert" {
 }
 # [END certificatemanager_dns_wildcard_certificate]
 
-# [START certificatemanager_map]
+# [START certificatemanager_dns_wildcard_map]
 resource "google_certificate_manager_certificate_map" "certificate_map" {
   name        = "${local.name}-certmap-${random_id.tf_prefix.hex}"
   description = "${local.domain} certificate map"
