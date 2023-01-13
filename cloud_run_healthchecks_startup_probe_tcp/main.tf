@@ -30,21 +30,18 @@ resource "google_cloud_run_service" "default" {
   provider = google-beta
   name     = "cloudrun-service-healthcheck"
   location = "us-central1"
-  metadata {
-    annotations = {
-      "run.googleapis.com/launch-stage" = "BETA"
-    }
-  }
 
   template {
     spec {
       containers {
         image = "us-docker.pkg.dev/cloudrun/container/hello"
+
         startup_probe {
           failure_threshold     = 5
           initial_delay_seconds = 10
           timeout_seconds       = 3
           period_seconds        = 3
+
           tcp_socket {
             port = 8080
           }
@@ -56,12 +53,6 @@ resource "google_cloud_run_service" "default" {
   traffic {
     percent         = 100
     latest_revision = true
-  }
-
-  lifecycle {
-    ignore_changes = [
-      metadata[0].annotations,
-    ]
   }
 }
 #[END cloud_run_healthchecks_startup_probe_tcp]
