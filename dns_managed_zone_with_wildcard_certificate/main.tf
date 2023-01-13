@@ -23,14 +23,14 @@ resource "random_id" "tf_prefix" {
   byte_length = 4
 }
 
-# [START certificatemanager_enable_service]
+# [START certificatemanager_dns_wildcard_enable_service]
 resource "google_project_service" "certificatemanager_svc" {
   service            = "certificatemanager.googleapis.com"
   disable_on_destroy = false
 }
-# [END certificatemanager_enable_service]
+# [END certificatemanager_dns_wildcard_enable_service]
 
-# [START certificatemanager_dns_managed_zone]
+# [START certificatemanager_dns_wildcard_dns_managed_zone]
 resource "google_dns_managed_zone" "default" {
   name        = "example-mz-${random_id.tf_prefix.hex}"
   dns_name    = "${local.domain}."
@@ -41,9 +41,9 @@ resource "google_dns_managed_zone" "default" {
   visibility    = "public"
   force_destroy = true
 }
-# [END certificatemanager_dns_managed_zone]
+# [END certificatemanager_dns_wildcard_dns_managed_zone]
 
-# [START certificatemanager_dns_authorization]
+# [START certificatemanager_dns_wildcard_dns_authorization]
 resource "google_certificate_manager_dns_authorization" "default" {
   name        = "${local.name}-dnsauth-${random_id.tf_prefix.hex}"
   description = "The default dns auth"
@@ -52,9 +52,9 @@ resource "google_certificate_manager_dns_authorization" "default" {
     "terraform" : true
   }
 }
-# [END certificatemanager_dns_authorization]
+# [END certificatemanager_dns_wildcard_dns_authorization]
 
-# [START certificatemanager_dns_record_set]
+# [START certificatemanager_dns_wildcard_dns_record_set]
 resource "google_dns_record_set" "cname" {
   name         = google_certificate_manager_dns_authorization.default.dns_resource_record[0].name
   managed_zone = google_dns_managed_zone.default.name
@@ -62,9 +62,9 @@ resource "google_dns_record_set" "cname" {
   ttl          = 300
   rrdatas      = [google_certificate_manager_dns_authorization.default.dns_resource_record[0].data]
 }
-# [END certificatemanager_dns_record_set]
+# [END certificatemanager_dns_wildcard_dns_record_set]
 
-# [START certificatemanager_certificate]
+# [START certificatemanager_dns_wildcard_certificate]
 resource "google_certificate_manager_certificate" "root_cert" {
   name        = "${local.name}-rootcert-${random_id.tf_prefix.hex}"
   description = "The wildcard cert"
@@ -78,7 +78,7 @@ resource "google_certificate_manager_certificate" "root_cert" {
     "terraform" : true
   }
 }
-# [END certificatemanager_certificate]
+# [END certificatemanager_dns_wildcard_certificate]
 
 # [START certificatemanager_map]
 resource "google_certificate_manager_certificate_map" "certificate_map" {
@@ -88,7 +88,7 @@ resource "google_certificate_manager_certificate_map" "certificate_map" {
     "terraform" : true
   }
 }
-# [END certificatemanager_map]
+# [END certificatemanager_dns_wildcard_map]
 
 # [START certificatemanager_map_entry_one]
 resource "google_certificate_manager_certificate_map_entry" "first_entry" {
@@ -101,9 +101,9 @@ resource "google_certificate_manager_certificate_map_entry" "first_entry" {
   certificates = [google_certificate_manager_certificate.root_cert.id]
   hostname     = local.domain
 }
-# [END certificatemanager_map_entry_one]
+# [END certificatemanager_dns_wildcard_map_entry_one]
 
-# [START certificatemanager_map_entry_two]
+# [START certificatemanager_dns_wildcard_map_entry_two]
 resource "google_certificate_manager_certificate_map_entry" "second_entry" {
   name        = "${local.name}-second-entity-${random_id.tf_prefix.hex}"
   description = "example certificate map entry"
@@ -114,7 +114,7 @@ resource "google_certificate_manager_certificate_map_entry" "second_entry" {
   certificates = [google_certificate_manager_certificate.root_cert.id]
   hostname     = "*.${local.domain}"
 }
-# [END certificatemanager_map_entry_two]
+# [END certificatemanager_dns_wildcard_map_entry_two]
 
 output "domain_name_servers" {
   value = google_dns_managed_zone.default.name_servers
