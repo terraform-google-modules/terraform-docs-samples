@@ -18,10 +18,9 @@
 #
 #   Usage:
 #       1. Select or create a new project that you will use to create the resources
-#       2. Replace ${data.google_project.project.project_id} with the project ID of your project
-#       4. Upload into your directory the pubsub_function.zip file: https://github.com/akvelon/python-docs-samples/tree/main/composer_tutorials/triggering-dags-with-functions-and-pubsub/cloud_function
-#       5. Upload into your directory the DAG source code file: https://github.com/akvelon/python-docs-samples/tree/main/composer_tutorials/triggering-dags-with-functions-and-pubsub/DAG
-#       6. Set up your environment and apply the configuration using basic Terraform commands: https://cloud.google.com/docs/terraform/basic-commands
+#       2. Upload into your directory the pubsub_function.zip file: https://github.com/akvelon/python-docs-samples/tree/main/composer_tutorials/triggering-dags-with-functions-and-pubsub/cloud_function
+#       3. Upload into your directory the DAG source code file: https://github.com/akvelon/python-docs-samples/tree/main/composer_tutorials/triggering-dags-with-functions-and-pubsub/DAG
+#       4. Set up your environment and apply the configuration using basic Terraform commands: https://cloud.google.com/docs/terraform/basic-commands
 #
 #   The script provisions the following resources in the project:
 #  	- Creates a VPC network and a subnetwork
@@ -190,4 +189,4 @@ resource "google_storage_bucket_object" "composer_dags_source" {
   bucket = trimprefix(trimsuffix(google_composer_environment.new_composer_env.config[0].dag_gcs_prefix, "/dags"), "gs://")
   source = "./pubsub_trigger_response_dag.py"
 }
-# [START triggering_dags_with_functions_and_pubsub]
+# [END triggering_dags_with_functions_and_pubsub]
