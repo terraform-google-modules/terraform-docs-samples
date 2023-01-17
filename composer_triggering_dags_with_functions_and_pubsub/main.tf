@@ -153,7 +153,7 @@ resource "google_cloudfunctions_function" "pubsub_function" {
   source_archive_object = "pubsub_function.zip"
   timeout               = 60
   entry_point           = "pubsub_publisher"
-  service_account_email = "${data.google_project.service_project.number}-compute@developer.gserviceaccount.com"
+  service_account_email = "${data.google_project.project.number}-compute@developer.gserviceaccount.com"
   trigger_http          = true
 
 }
