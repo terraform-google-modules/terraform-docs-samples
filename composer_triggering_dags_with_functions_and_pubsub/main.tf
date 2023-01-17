@@ -18,8 +18,7 @@
 #
 #   Usage:
 #       1. Select or create a new project that you will use to create the resources
-#       2. Replace <PROJECT_ID> with the project ID of your project
-#       3. Replace <PROJECT_NUMBER> with the account number of your project
+#       2. Replace ${data.google_project.project.project_id} with the project ID of your project
 #       4. Upload into your directory the pubsub_function.zip file: https://github.com/akvelon/python-docs-samples/tree/main/composer_tutorials/triggering-dags-with-functions-and-pubsub/cloud_function
 #       5. Upload into your directory the DAG source code file: https://github.com/akvelon/python-docs-samples/tree/main/composer_tutorials/triggering-dags-with-functions-and-pubsub/DAG
 #       6. Set up your environment and apply the configuration using basic Terraform commands: https://cloud.google.com/docs/terraform/basic-commands
@@ -35,6 +34,9 @@
 
 #
 
+
+data "google_project" "project" {
+}
 ###############################
 #                             #
 # Create Composer environment #
@@ -43,7 +45,7 @@
 resource "google_composer_environment" "new_composer_env" {
   name    = "composer-environment"
   region  = "us-central1"
-  project = "<PROJECT_ID>"
+  project = data.google_project.project.project_id
   config {
 
     software_config {
@@ -87,13 +89,13 @@ resource "google_composer_environment" "new_composer_env" {
 #                              #
 ################################
 resource "google_compute_network" "composer_network" {
-  project                 = "<PROJECT_ID>"
+  project                 = data.google_project.project.project_id
   name                    = "composer-test-network"
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "composer_subnetwork" {
-  project       = "<PROJECT_ID>"
+  project       = data.google_project.project.project_id
   name          = "composer-test-subnet"
   ip_cidr_range = "10.2.0.0/16"
   region        = "us-central1"
@@ -107,13 +109,13 @@ resource "google_compute_subnetwork" "composer_subnetwork" {
 #########################
 # Comment this section to use an existing service account
 resource "google_service_account" "composer_env_sa" {
-  project      = "<PROJECT_ID>"
+  project      = data.google_project.project.project_id
   account_id   = "composer-worker-sa"
   display_name = "Test Service Account for Composer Environment deployment "
 }
 
 resource "google_project_iam_member" "composer-worker" {
-  project = "<PROJECT_ID>"
+  project = data.google_project.project.project_id
   role    = "roles/composer.worker"
   member  = "serviceAccount:${google_service_account.composer_env_sa.email}"
 }
@@ -122,7 +124,7 @@ resource "google_service_account_iam_member" "custom_service_account" {
   provider           = google-beta
   service_account_id = google_service_account.composer_env_sa.id
   role               = "roles/composer.ServiceAgentV2Ext"
-  member             = "serviceAccount:service-<PROJECT_NUMBER>@cloudcomposer-accounts.iam.gserviceaccount.com"
+  member             = "serviceAccount:service-${data.google_project.project.number}@cloudcomposer-accounts.iam.gserviceaccount.com"
 }
 
 ########################
@@ -131,7 +133,7 @@ resource "google_service_account_iam_member" "custom_service_account" {
 #                      #
 ########################
 resource "google_pubsub_topic" "trigger" {
-  project                    = "<PROJECT_ID>"
+  project                    = data.google_project.project.project_id
   name                       = "dag-topic-trigger"
   message_retention_duration = "86600s"
 }
@@ -142,7 +144,7 @@ resource "google_pubsub_topic" "trigger" {
 #                        #
 ##########################
 resource "google_cloudfunctions_function" "pubsub_function" {
-  project = "<PROJECT_ID>"
+  project = data.google_project.project.project_id
   name    = "pubsub-publisher"
   runtime = "python310"
   region  = "us-central1"
@@ -152,7 +154,7 @@ resource "google_cloudfunctions_function" "pubsub_function" {
   source_archive_object = "pubsub_function.zip"
   timeout               = 60
   entry_point           = "pubsub_publisher"
-  service_account_email = "<PROJECT_NUMBER>-compute@developer.gserviceaccount.com"
+  service_account_email = "${data.google_project.service_project.number}-compute@developer.gserviceaccount.com"
   trigger_http          = true
 
 }
@@ -164,8 +166,8 @@ resource "google_cloudfunctions_function" "pubsub_function" {
 ##################################
 
 resource "google_storage_bucket" "cloud_function_bucket" {
-  project                     = "<PROJECT_ID>"
-  name                        = "<PROJECT_ID>-cloud-function-source-code"
+  project                     = data.google_project.project.project_id
+  name                        = "${data.google_project.project.project_id}-cloud-function-source-code"
   location                    = "US"
   force_destroy               = true
   uniform_bucket_level_access = true
