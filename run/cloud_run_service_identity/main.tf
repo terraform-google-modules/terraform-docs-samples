@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
-# [START cloudrun_service_access_control_run_service]
+# [START cloudrun_service_identity_iam]
+resource "google_service_account" "cloudrun_service_identity" {
+  account_id = "my-service-account"
+}
+# [END cloudrun_service_identity_iam]
+
+# [START cloudrun_service_identity_run_service]
 resource "google_cloud_run_service" "default" {
   name     = "cloud-run-srv"
   location = "us-central1"
@@ -24,6 +30,7 @@ resource "google_cloud_run_service" "default" {
       containers {
         image = "gcr.io/cloudrun/hello"
       }
+      service_account_name = google_service_account.cloudrun_service_identity.email
     }
   }
 
@@ -32,15 +39,4 @@ resource "google_cloud_run_service" "default" {
     latest_revision = true
   }
 }
-# [END cloudrun_service_access_control_run_service]
-
-# [START cloudrun_service_access_control_iam_binding]
-resource "google_cloud_run_service_iam_binding" "default" {
-  location = google_cloud_run_service.default.location
-  service  = google_cloud_run_service.default.name
-  role     = "roles/run.invoker"
-  members = [
-    "allUsers"
-  ]
-}
-# [END cloudrun_service_access_control_iam_binding]
+# [END cloudrun_service_identity_run_service]
