@@ -120,7 +120,7 @@ resource "google_cloud_run_service" "default" {
       "run.googleapis.com/ingress" = "all"
     }
   }
-  
+
   lifecycle {
     ignore_changes = [
       metadata[0].annotations,
