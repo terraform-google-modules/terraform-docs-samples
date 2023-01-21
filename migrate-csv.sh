@@ -20,5 +20,3 @@ do
     git mv ${source}-copy ${source}
     git commit -m "merge original copy of ${source}"
 done < $INPUT
-
-exit
