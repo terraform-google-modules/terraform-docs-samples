@@ -18,9 +18,7 @@
 #
 #   Usage:
 #       1. Select or create a new project that you will use to create the resources
-#       2. Upload into your directory the pubsub_function.zip file: https://github.com/akvelon/python-docs-samples/tree/main/composer_tutorials/triggering-dags-with-functions-and-pubsub/cloud_function
-#       3. Upload into your directory the DAG source code file: https://github.com/akvelon/python-docs-samples/tree/main/composer_tutorials/triggering-dags-with-functions-and-pubsub/DAG
-#       4. Set up your environment and apply the configuration using basic Terraform commands: https://cloud.google.com/docs/terraform/basic-commands
+#       2. Set up your environment and apply the configuration using basic Terraform commands: https://cloud.google.com/docs/terraform/basic-commands
 #
 #   The script provisions the following resources in the project:
 #  	- Creates a VPC network and a subnetwork
