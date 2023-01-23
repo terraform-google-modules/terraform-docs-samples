@@ -85,7 +85,7 @@ resource "google_compute_instance" "source" {
   }
 
   network_interface {
-    network    = "connectivity-vpc"
+    network    = google_compute_network.default.id
     subnetwork = google_compute_subnetwork.default.id
     network_ip = "10.0.0.42"
     access_config {
@@ -105,7 +105,7 @@ resource "google_compute_instance" "destination" {
   }
 
   network_interface {
-    network    = "connectivity-vpc"
+    network    = google_compute_network.default.id
     subnetwork = google_compute_subnetwork.default.id
     network_ip = "10.0.0.43"
     access_config {
