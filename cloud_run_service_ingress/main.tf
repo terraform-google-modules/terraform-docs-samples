@@ -15,7 +15,7 @@
  */
 
 provider "google-beta" {
-  region  = "us-central1"
+  region = "us-central1"
 }
 
 # Enable Cloud Run API
