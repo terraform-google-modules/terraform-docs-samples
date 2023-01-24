@@ -14,8 +14,23 @@
  * limitations under the License.
  */
 
-# Example of setting up a Cloud Run service with a static outbound IP
+provider "google-beta" {
+  region = "us-central1"
+}
 
+# Enable Compute Engine API
+resource "google_project_service" "compute_engine_api" {
+  service            = "compute.googleapis.com"
+  disable_on_destroy = false
+}
+
+# Enable Cloud Run API
+resource "google_project_service" "cloudrun_api" {
+  service            = "run.googleapis.com"
+  disable_on_destroy = false
+}
+
+# Example of setting up a Cloud Run service with a static outbound IP
 # [START cloudrun_service_static_network]
 resource "google_compute_network" "default" {
   provider = google-beta
@@ -43,6 +58,7 @@ resource "google_project_service" "vpc" {
 resource "google_vpc_access_connector" "default" {
   provider = google-beta
   name     = "cr-conn"
+  region   = "us-central1"
 
   subnet {
     name = google_compute_subnetwork.default.name

@@ -14,6 +14,16 @@
  * limitations under the License.
  */
 
+provider "google-beta" {
+  region = "us-central1"
+}
+
+# Enable Cloud Run API
+resource "google_project_service" "cloudrun_api" {
+  service            = "run.googleapis.com"
+  disable_on_destroy = false
+}
+
 # [START cloudrun_service_ingress]
 resource "google_cloud_run_service" "default" {
   provider = google-beta
