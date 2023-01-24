@@ -38,5 +38,11 @@ resource "google_cloud_run_service" "default" {
       "run.googleapis.com/ingress" = "internal"
     }
   }
+
+  lifecycle {
+    ignore_changes = [
+      metadata[0].annotations,
+    ]
+  }
 }
 # [END cloudrun_service_ingress]
