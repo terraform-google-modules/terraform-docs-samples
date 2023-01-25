@@ -199,7 +199,9 @@ resource "google_storage_bucket" "cloud_function_bucket" {
 resource "google_storage_bucket_object" "cloud_function_source" {
   name   = "pubsub_function.zip"
   bucket = google_storage_bucket.cloud_function_bucket.name
-  source = "./pubsub_function.zip"
+  # Uncomment to upload a zip containing the cloudfunction source code in zip format
+  #source = "/path/to/cloudfunction/source.zip"
+  content      = "Data as string to be uploaded"
 }
 
 ###################
