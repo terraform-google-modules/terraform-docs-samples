@@ -35,6 +35,31 @@
 data "google_project" "project" {
 }
 
+resource "google_project_service" "composer" {
+  project = data.google_project.project.project_id
+  service = "composer.googleapis.com"
+
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+
+  disable_dependent_services = true
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "cloud_function" {
+  project = data.google_project.project.project_id
+  service = "cloudfunctions.googleapis.com"
+
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+
+  disable_dependent_services = true
+  disable_on_destroy = false
+}
 ###############################
 #                             #
 # Create Composer environment #
