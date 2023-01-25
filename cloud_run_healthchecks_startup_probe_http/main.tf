@@ -24,29 +24,42 @@ resource "google_project_service" "cloudrun_api" {
   disable_on_destroy = false
 }
 
-# [START cloudrun_service_ingress]
+# Create Cloud Run Container with HTTP startup probe
+#[START cloud_run_healthchecks_startup_probe_http]
 resource "google_cloud_run_service" "default" {
   provider = google-beta
-  name     = "ingress-service"
+  name     = "cloudrun-service-healthcheck"
   location = "us-central1"
+  metadata {
+    annotations = {
+      "run.googleapis.com/launch-stage" = "BETA"
+    }
+  }
 
   template {
     spec {
       containers {
-        image = "gcr.io/cloudrun/hello" #public image for your service
+        image = "us-docker.pkg.dev/cloudrun/container/hello"
+        startup_probe {
+          failure_threshold     = 5
+          initial_delay_seconds = 10
+          timeout_seconds       = 3
+          period_seconds        = 3
+          http_get {
+            path = "/"
+            http_headers {
+              name  = "Access-Control-Allow-Origin"
+              value = "*"
+            }
+          }
+        }
       }
     }
   }
+
   traffic {
     percent         = 100
     latest_revision = true
-  }
-  metadata {
-    annotations = {
-      # For valid annotation values and descriptions, see
-      # https://cloud.google.com/sdk/gcloud/reference/run/deploy#--ingress
-      "run.googleapis.com/ingress" = "internal"
-    }
   }
 
   lifecycle {
@@ -55,4 +68,4 @@ resource "google_cloud_run_service" "default" {
     ]
   }
 }
-# [END cloudrun_service_ingress]
+#[END cloud_run_healthchecks_startup_probe_http]
