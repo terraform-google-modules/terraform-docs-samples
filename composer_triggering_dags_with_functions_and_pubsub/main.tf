@@ -45,7 +45,7 @@ resource "google_project_service" "composer" {
   }
 
   disable_dependent_services = true
-  disable_on_destroy = false
+  disable_on_destroy         = false
 }
 
 resource "google_project_service" "cloud_function" {
@@ -58,7 +58,7 @@ resource "google_project_service" "cloud_function" {
   }
 
   disable_dependent_services = true
-  disable_on_destroy = false
+  disable_on_destroy         = false
 }
 ###############################
 #                             #
@@ -201,7 +201,7 @@ resource "google_storage_bucket_object" "cloud_function_source" {
   bucket = google_storage_bucket.cloud_function_bucket.name
   # Uncomment to upload a zip containing the cloudfunction source code in zip format
   #source = "/path/to/cloudfunction/source.zip"
-  content      = "Data as string to be uploaded"
+  content = "Data as string to be uploaded"
 }
 
 ###################
