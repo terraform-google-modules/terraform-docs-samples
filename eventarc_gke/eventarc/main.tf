@@ -46,7 +46,7 @@ resource "google_project_service" "cloudresourcemanager" {
 
 resource "google_project_service_identity" "eventarc" {
   provider = google-beta
-  service = "eventarc.googleapis.com"
+  service  = "eventarc.googleapis.com"
   depends_on = [
     google_project_service.eventarc,
     google_project_service.cloudresourcemanager
@@ -55,8 +55,8 @@ resource "google_project_service_identity" "eventarc" {
 
 resource "google_project_iam_binding" "computeViewer" {
   provider = google-beta
-  project = data.google_project.project.id
-  role    = "roles/compute.viewer"
+  project  = data.google_project.project.id
+  role     = "roles/compute.viewer"
 
   members = ["serviceAccount:service-${data.google_project.project.number}@gcp-sa-eventarc.iam.gserviceaccount.com"]
 
