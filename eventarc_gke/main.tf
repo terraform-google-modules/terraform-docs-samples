@@ -15,11 +15,6 @@
 */
 
 # [START terraform_eventarc_enableapi]
-# Used to retrieve project_number later
-data "google_project" "project" {
-  provider = google-beta
-}
-
 # Enable required services for GKE
 resource "google_project_service" "container" {
   provider           = google-beta
