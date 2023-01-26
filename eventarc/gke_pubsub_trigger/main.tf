@@ -83,3 +83,4 @@ resource "google_eventarc_trigger" "trigger_pubsub_gke" {
 
 }
 # [END terraform_eventarc_create_pubsub_trigger]
+
