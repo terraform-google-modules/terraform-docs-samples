@@ -15,7 +15,8 @@
  */
 
 # [START compute_basic_vm_default_vpc_network]
-# Create a VM in the `default` VPC network and subnet
+# Create a VM instance from _a public image_
+# in the `default` VPC network and subnet
 
 resource "google_compute_instance" "default" {
   name         = "my-vm"
@@ -24,7 +25,7 @@ resource "google_compute_instance" "default" {
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-1404-trusty-v20160627"
+      image = "ubuntu-minimal-2210-kinetic-amd64-v20230126"
     }
   }
 
