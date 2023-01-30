@@ -17,13 +17,13 @@
 # [START terraform_eventarc_configure_serviceaccount]
 # Used to retrieve project_number later
 data "google_project" "project" {
-  provider = google-beta
+  provider = google
 }
 
 # Forwarder to pull events from Pub/Sub
 
 resource "google_service_account" "eventarc_gke_trigger_sa" {
-  provider     = google-beta
+  provider     = google
   account_id   = "eventarc-gke-trigger-sa"
   display_name = "Eventarc GKE Trigger Service Account"
 }
@@ -36,7 +36,7 @@ resource "google_service_account" "eventarc_gke_trigger_sa" {
 
 
 resource "google_project_iam_binding" "project_binding_pubsub_subscriber" {
-  provider   = google-beta
+  provider   = google
   project    = data.google_project.project.id
   role       = "roles/pubsub.subscriber"
   members    = ["serviceAccount:${google_service_account.eventarc_gke_trigger_sa.email}"]
@@ -44,7 +44,7 @@ resource "google_project_iam_binding" "project_binding_pubsub_subscriber" {
 }
 
 resource "google_project_iam_binding" "project_binding_monitoring_metricWriter" {
-  provider = google-beta
+  provider = google
   project  = data.google_project.project.id
   role     = "roles/monitoring.metricWriter"
   members = [
@@ -57,7 +57,7 @@ resource "google_project_iam_binding" "project_binding_monitoring_metricWriter" 
 # [START terraform_eventarc_create_pubsub_trigger]
 # Create a Pub/Sub trigger
 resource "google_eventarc_trigger" "trigger_pubsub_gke" {
-  provider = google-beta
+  provider = google
   name     = "trigger-pubsub-gke"
   location = "us-central1"
   matching_criteria {
