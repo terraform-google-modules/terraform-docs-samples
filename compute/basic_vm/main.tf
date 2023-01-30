@@ -15,7 +15,8 @@
  */
 
 # [START compute_basic_vm_default_vpc_network]
-# Create a VM instance from _a public image_
+
+# Create a VM instance from a public image
 # in the `default` VPC network and subnet
 
 resource "google_compute_instance" "default" {
@@ -53,6 +54,7 @@ resource "google_compute_subnetwork" "custom" {
 # [END vpc_compute_basic_vm_custom_vpc_subnet]
 
 # [START compute_basic_vm_custom_subnet]
+
 # Create a VM in a custom VPC network and subnet
 
 resource "google_compute_instance" "custom_subnet" {
