@@ -106,6 +106,8 @@ resource "google_composer_environment" "new_composer_env" {
   }
 }
 
+
+
 ################################
 #                              #
 # Creates Networking resources #
@@ -137,6 +139,12 @@ resource "google_service_account" "composer_env_sa" {
   display_name = "Test Service Account for Composer Environment deployment "
 }
 
+resource "google_project_service_identity" "composer_sa" {
+  provider = google-beta
+  project  = data.google_project.project.project_id
+  service  = "composer.googleapis.com"
+}
+
 resource "google_project_iam_member" "composer-worker" {
   project = data.google_project.project.project_id
   role    = "roles/composer.worker"
@@ -147,7 +155,7 @@ resource "google_service_account_iam_member" "custom_service_account" {
   provider           = google-beta
   service_account_id = google_service_account.composer_env_sa.id
   role               = "roles/composer.ServiceAgentV2Ext"
-  member             = "serviceAccount:service-${data.google_project.project.number}@cloudcomposer-accounts.iam.gserviceaccount.com"
+  member             = "serviceAccount:${google_project_service_identity.composer_sa.email}"
 }
 
 ########################
