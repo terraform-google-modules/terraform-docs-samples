@@ -17,27 +17,27 @@
 # Internal TCP/UDP load balancer with a managed instance group backend
 
 # [START cloudloadbalancing_int_tcp_udp_gce]
-# VPC
+
+# [START vpc_int_tcp_udp_gce_network]
 resource "google_compute_network" "ilb_network" {
   name                    = "l4-ilb-network"
-  provider                = google-beta
   auto_create_subnetworks = false
 }
+# [END vpc_int_tcp_udp_gce_network]
 
-# backend subnet
+# [START vpc_int_tcp_udp_gce_subnet]
 resource "google_compute_subnetwork" "ilb_subnet" {
   name          = "l4-ilb-subnet"
-  provider      = google-beta
   ip_cidr_range = "10.0.1.0/24"
   region        = "europe-west1"
   network       = google_compute_network.ilb_network.id
 }
+# [END vpc_int_tcp_udp_gce_subnet]
 
-# forwarding rule
+# [START cloudloadbalancing_int_tcp_udp_gce_forwarding_rule]
 resource "google_compute_forwarding_rule" "google_compute_forwarding_rule" {
   name                  = "l4-ilb-forwarding-rule"
   backend_service       = google_compute_region_backend_service.default.id
-  provider              = google-beta
   region                = "europe-west1"
   ip_protocol           = "TCP"
   load_balancing_scheme = "INTERNAL"
@@ -46,11 +46,11 @@ resource "google_compute_forwarding_rule" "google_compute_forwarding_rule" {
   network               = google_compute_network.ilb_network.id
   subnetwork            = google_compute_subnetwork.ilb_subnet.id
 }
+# [END cloudloadbalancing_int_tcp_udp_gce_forwarding_rule]
 
-# backend service
+# [START cloudloadbalancing_int_tcp_udp_gce_backend_service]
 resource "google_compute_region_backend_service" "default" {
   name                  = "l4-ilb-backend-subnet"
-  provider              = google-beta
   region                = "europe-west1"
   protocol              = "TCP"
   load_balancing_scheme = "INTERNAL"
@@ -60,11 +60,11 @@ resource "google_compute_region_backend_service" "default" {
     balancing_mode = "CONNECTION"
   }
 }
+# [END cloudloadbalancing_int_tcp_udp_gce_backend_service]
 
-# instance template
+# [START compute_int_tcp_udp_gce_instance_template]
 resource "google_compute_instance_template" "instance_template" {
   name         = "l4-ilb-mig-template"
-  provider     = google-beta
   machine_type = "e2-small"
   tags         = ["allow-ssh", "allow-health-check"]
 
@@ -108,22 +108,22 @@ resource "google_compute_instance_template" "instance_template" {
     create_before_destroy = true
   }
 }
+# [END compute_int_tcp_udp_gce_instance_template]
 
-# health check
+# [START cloudloadbalancing_int_tcp_udp_gce_health_check]
 resource "google_compute_region_health_check" "default" {
-  name     = "l4-ilb-hc"
-  provider = google-beta
-  region   = "europe-west1"
+  name   = "l4-ilb-hc"
+  region = "europe-west1"
   http_health_check {
     port = "80"
   }
 }
+# [END cloudloadbalancing_int_tcp_udp_gce_health_check]
 
-# MIG
+# [START compute_int_tcp_udp_gce_mig]
 resource "google_compute_region_instance_group_manager" "mig" {
-  name     = "l4-ilb-mig1"
-  provider = google-beta
-  region   = "europe-west1"
+  name   = "l4-ilb-mig1"
+  region = "europe-west1"
   version {
     instance_template = google_compute_instance_template.instance_template.id
     name              = "primary"
@@ -131,11 +131,12 @@ resource "google_compute_region_instance_group_manager" "mig" {
   base_instance_name = "vm"
   target_size        = 2
 }
+# [END compute_int_tcp_udp_gce_mig]
 
+# [START vpc_int_tcp_udp_gce_mig_firewall_health_check]
 # allow all access from health check ranges
 resource "google_compute_firewall" "fw_hc" {
   name          = "l4-ilb-fw-allow-hc"
-  provider      = google-beta
   direction     = "INGRESS"
   network       = google_compute_network.ilb_network.id
   source_ranges = ["130.211.0.0/22", "35.191.0.0/16", "35.235.240.0/20"]
@@ -144,11 +145,12 @@ resource "google_compute_firewall" "fw_hc" {
   }
   target_tags = ["allow-health-check"]
 }
+# [END vpc_int_tcp_udp_gce_mig_firewall_health_check]
 
+# [START vpc_int_tcp_udp_gce_firewall_backends]
 # allow communication within the subnet
 resource "google_compute_firewall" "fw_ilb_to_backends" {
   name          = "l4-ilb-fw-allow-ilb-to-backends"
-  provider      = google-beta
   direction     = "INGRESS"
   network       = google_compute_network.ilb_network.id
   source_ranges = ["10.0.1.0/24"]
@@ -162,11 +164,12 @@ resource "google_compute_firewall" "fw_ilb_to_backends" {
     protocol = "icmp"
   }
 }
+# [END vpc_int_tcp_udp_gce_firewall_backends]
 
+# [START vpc_int_tcp_udp_gce_firewall_ssh]
 # allow SSH
 resource "google_compute_firewall" "fw_ilb_ssh" {
   name      = "l4-ilb-fw-ssh"
-  provider  = google-beta
   direction = "INGRESS"
   network   = google_compute_network.ilb_network.id
   allow {
@@ -176,11 +179,12 @@ resource "google_compute_firewall" "fw_ilb_ssh" {
   target_tags   = ["allow-ssh"]
   source_ranges = ["0.0.0.0/0"]
 }
+# [END vpc_int_tcp_udp_gce_firewall_ssh]
 
-# test instance
+# [START compute_int_tcp_udp_gce_test_instance]
 resource "google_compute_instance" "vm_test" {
   name         = "l4-ilb-test-vm"
-  provider     = google-beta
+  tags         = ["allow-ssh"]
   zone         = "europe-west1-b"
   machine_type = "e2-small"
   network_interface {
@@ -193,4 +197,6 @@ resource "google_compute_instance" "vm_test" {
     }
   }
 }
+# [END compute_int_tcp_udp_gce_test_instance]
+
 # [END cloudloadbalancing_int_tcp_udp_gce]
