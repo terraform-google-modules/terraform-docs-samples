@@ -145,7 +145,7 @@ resource "google_project_service_identity" "composer_sa" {
   service  = "composer.googleapis.com"
 }
 
-resource "google_project_iam_member" "composer-worker" {
+resource "google_project_iam_member" "composer_worker" {
   project = data.google_project.project.project_id
   role    = "roles/composer.worker"
   member  = "serviceAccount:${google_service_account.composer_env_sa.email}"
