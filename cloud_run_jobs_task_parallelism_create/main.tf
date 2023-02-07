@@ -22,7 +22,6 @@ provider "google-beta" {
 resource "google_project_service" "cloudrun_api" {
   service            = "run.googleapis.com"
   disable_on_destroy = false
-  project            = data.google_project.project.project_id
 }
 
 #[START cloud_run_jobs_task_parallelism_create]
@@ -30,7 +29,6 @@ resource "google_cloud_run_v2_job" "default" {
   name         = "cloud-run-job-parallelism"
   location     = "us-central1"
   launch_stage = "BETA"
-  project      = data.google_project.project.project_id
 
   template {
     task_count  = 3

@@ -20,28 +20,24 @@ provider "google-beta" {
 
 # Compute service account
 data "google_compute_default_service_account" "default" {
-  project = data.google_project.project.project_id
 }
 
 # Enable Cloud Run API
 resource "google_project_service" "cloudrun_api" {
   service            = "run.googleapis.com"
   disable_on_destroy = false
-  project            = data.google_project.project.project_id
 }
 
 # Enable Compute Engine API
 resource "google_project_service" "computeengine_api" {
   service            = "compute.googleapis.com"
   disable_on_destroy = false
-  project            = data.google_project.project.project_id
 }
 
 # Enable Cloud Scheduler API
 resource "google_project_service" "cloudscheduler_api" {
   service            = "cloudscheduler.googleapis.com"
   disable_on_destroy = false
-  project            = data.google_project.project.project_id
 }
 
 resource "google_cloud_run_v2_job" "default" {
@@ -49,7 +45,6 @@ resource "google_cloud_run_v2_job" "default" {
   name         = "cloud-run-job"
   location     = "us-central1"
   launch_stage = "BETA"
-  project      = data.google_project.project.project_id
 
   template {
     template {
@@ -68,7 +63,6 @@ resource "google_cloud_scheduler_job" "job" {
   schedule         = "*/8 * * * *"
   attempt_deadline = "320s"
   region           = "us-central1"
-  project          = data.google_project.project.project_id
 
   retry_config {
     retry_count = 3
