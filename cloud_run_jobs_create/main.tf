@@ -18,11 +18,6 @@ provider "google-beta" {
   region = "us-central1"
 }
 
-# Project data
-data "google_project" "project" {
-  project_id = "your-project-id"
-}
-
 # Enable Cloud Run API
 resource "google_project_service" "cloudrun_api" {
   service            = "run.googleapis.com"

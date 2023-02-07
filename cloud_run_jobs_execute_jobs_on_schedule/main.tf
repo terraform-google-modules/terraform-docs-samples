@@ -18,11 +18,6 @@ provider "google-beta" {
   region = "us-central1"
 }
 
-# Project data
-data "google_project" "project" {
-  project_id = "your-project-id"
-}
-
 # Compute service account
 data "google_compute_default_service_account" "default" {
   project = data.google_project.project.project_id
