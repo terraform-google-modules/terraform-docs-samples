@@ -59,6 +59,9 @@ resource "google_certificate_manager_certificate_map" "default" {
   labels = {
     "terraform" : true
   }
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 # [END certificatemanager_google_managed_lb_auth_map]
 
