@@ -182,7 +182,7 @@ resource "google_cloudfunctions_function" "pubsub_function" {
 
   available_memory_mb   = 128
   source_archive_bucket = google_storage_bucket.cloud_function_bucket.name
-  source_archive_object = "pubsub_function.zip"
+  source_archive_object = google_storage_bucket_object.cloud_function_source.output_name
   timeout               = 60
   entry_point           = "pubsub_publisher"
   service_account_email = "${data.google_project.project.number}-compute@developer.gserviceaccount.com"
@@ -205,7 +205,7 @@ resource "google_storage_bucket" "cloud_function_bucket" {
 }
 
 resource "google_storage_bucket_object" "cloud_function_source" {
-  name   = "pubsub_function.zip"
+  name   = "pubsub-function-zip-file"
   bucket = google_storage_bucket.cloud_function_bucket.name
   # Uncomment to upload a zip containing the cloudfunction source code in zip format
   #source = "/path/to/cloudfunction/source.zip"
@@ -219,7 +219,7 @@ resource "google_storage_bucket_object" "cloud_function_source" {
 ###################
 
 resource "google_storage_bucket_object" "composer_dags_source" {
-  name   = "dags/dag_pubsub_sensor.py"
+  name   = "dags/dag-pubsub-sensor-py-file"
   bucket = trimprefix(trimsuffix(google_composer_environment.new_composer_env.config[0].dag_gcs_prefix, "/dags"), "gs://")
   source = "./pubsub_trigger_response_dag.py"
 }
