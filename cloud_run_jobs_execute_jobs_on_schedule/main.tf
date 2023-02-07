@@ -18,9 +18,13 @@ provider "google-beta" {
   region = "us-central1"
 }
 
+# Project data
+data "google_project" "project" {
+}
+
 # Compute service account
 data "google_compute_default_service_account" "default" {
-  project = "your-project-id"
+  project = data.google_project.project.project_id
 }
 
 # Enable Cloud Run API
@@ -71,7 +75,7 @@ resource "google_cloud_scheduler_job" "job" {
 
   http_target {
     http_method = "POST"
-    uri         = "https://${google_cloud_run_v2_job.default.location}-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/your-project-id/jobs/${google_cloud_run_v2_job.default.name}:run"
+    uri         = "https://${google_cloud_run_v2_job.default.location}-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/${data.google_project.project.project_id}/jobs/${google_cloud_run_v2_job.default.name}:run"
 
     oauth_token {
       service_account_email = data.google_compute_default_service_account.default.email
