@@ -99,12 +99,12 @@ resource "google_compute_managed_ssl_certificate" "default" {
 
 # [START certificatemanager_google_managed_lb_auth_target_https_proxy]
 resource "google_compute_target_https_proxy" "default" {
-  name            = "test-proxy"
+  name = "test-proxy"
 
-# Update the {certificate_map_name} and uncomment the certificate_map attribute
-#  certificate_map = "//certificatemanager.googleapis.com/projects/${data.google_project.default.project_id}/locations/global/certificateMaps/{certificate_map_name}"
+  # Update the {certificate_map_name} and uncomment the certificate_map attribute
+  #  certificate_map = "//certificatemanager.googleapis.com/projects/${data.google_project.default.project_id}/locations/global/certificateMaps/{certificate_map_name}"
 
-  url_map         = google_compute_url_map.default.id
+  url_map = google_compute_url_map.default.id
   ssl_certificates = [
     google_compute_managed_ssl_certificate.default.name
   ]
