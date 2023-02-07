@@ -97,7 +97,7 @@ resource "google_compute_managed_ssl_certificate" "default" {
 }
 # [END cloudloadbalancing_google_managed_lb_auth_cert]
 
-# [START certificatemanager_google_managed_lb_auth_target_https_proxy] 
+# [START certificatemanager_google_managed_lb_auth_target_https_proxy]
 resource "google_compute_target_https_proxy" "default" {
   name            = "test-proxy"
   certificate_map = "//certificatemanager.googleapis.com/projects/${data.google_project.default.project_id}/locations/global/certificateMaps/certmap1"
@@ -151,18 +151,6 @@ resource "google_compute_url_map" "default" {
   default_service = google_compute_backend_bucket.default.id
 }
 # [END cloudloadbalancing_google_managed_lb_auth_urlmap_https]
-
-# [START cloudloadbalancing_google_managed_lb_auth_proxy]
-resource "google_compute_target_http_proxy" "default" {
-  name    = "myservice-http-proxy"
-  url_map = google_compute_url_map.default.id
-
-  depends_on = [
-    google_compute_url_map.default
-  ]
-}
-# [END cloudloadbalancing_google_managed_lb_auth_proxy]
-
 
 
 output "certificate_map" {
