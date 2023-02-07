@@ -10,7 +10,7 @@ The following dependencies must be installed on the development system:
 - [Google Cloud SDK][google-cloud-sdk]
 - [make]
 
-Cloud Shell is recommended for development as these tools are pre-installed.
+Cloud Shell is recommended for development because these tools are pre-installed.
 
 ## Linting and Formatting
 Files in the repository are linted or formatted to maintain a standard of quality and statically validated.
@@ -27,7 +27,7 @@ Integration tests are used to verify that the samples are actuatable
 by Terraform. Tests are dynamically discovered based on directories in
 repo root and executed using the [blueprint-test](https://pkg.go.dev/github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test) framework.
 
-### Test Environment
+### Set up the Test Environment
 
 The easiest way to test the samples are in isolated test projects. The
 setup for projects are defined in [test/setup](./test/setup/)
@@ -36,25 +36,35 @@ directory.
 To use this setup, you need to authenticate gcloud with an identity that has
 Project Creator access on a folder and the Billing Account User role on a billing account.
 
-Set the following environment variables.
-```
-export TF_VAR_org_id="your_org_id"
-export TF_VAR_folder_id="your_folder_id"
-export TF_VAR_billing_account="your_billing_account_id"
-```
+1. Get you project's organization ID and folder ID:
 
-Ensure that you are locally authenticated using gcloud:
+   ```
+   gcloud projects get-ancestors <YOUR_PROJECT_ID>
+   ```
 
-```
-gcloud auth application-default login
-```
+1. Get your project's billing ID by opening https://console.cloud.google.com/billing.
 
-With these settings in place, you can prepare a test project using Docker:
 
-```
-cd terraform-docs-samples
-make docker_test_prepare
-```
+1. Set the following environment variables.
+
+   ```
+   export TF_VAR_org_id="your_org_id"
+   export TF_VAR_folder_id="your_folder_id"
+   export TF_VAR_billing_account="your_billing_account_id"
+   ```
+
+1. Ensure that you are locally authenticated using gcloud:
+
+   ```
+   gcloud auth application-default login
+   ```
+
+1. With these settings in place, you can prepare a test project using Docker:
+
+   ```
+   cd terraform-docs-samples
+   make docker_test_prepare
+   ```
 
 Sample Output:
 
