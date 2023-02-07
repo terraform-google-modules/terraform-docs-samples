@@ -17,14 +17,12 @@
 # [START terraform_eventarc_enableapi]
 # Enable required services for GKE
 resource "google_project_service" "container" {
-  provider           = google
   service            = "container.googleapis.com"
   disable_on_destroy = false
 }
 
 # Create an auto-pilot GKE cluster
 resource "google_container_cluster" "gke_cluster" {
-  provider = google
   name     = "eventarc-cluster"
   location = "us-central1"
 
