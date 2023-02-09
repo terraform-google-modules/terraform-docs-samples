@@ -61,14 +61,10 @@ resource "google_compute_backend_service" "lb_default" {
   load_balancing_scheme = "EXTERNAL_MANAGED"
 
   backend {
-    balancing_mode  = "UTILIZATION"
-    capacity_scaler = 0.85
     group           = google_compute_region_network_endpoint_group.lb_default[0].id
   }
 
   backend {
-    balancing_mode  = "UTILIZATION"
-    capacity_scaler = 0.85
     group           = google_compute_region_network_endpoint_group.lb_default[1].id
   }
 
