@@ -61,11 +61,11 @@ resource "google_compute_backend_service" "lb_default" {
   load_balancing_scheme = "EXTERNAL_MANAGED"
 
   backend {
-    group           = google_compute_region_network_endpoint_group.lb_default[0].id
+    group = google_compute_region_network_endpoint_group.lb_default[0].id
   }
 
   backend {
-    group           = google_compute_region_network_endpoint_group.lb_default[1].id
+    group = google_compute_region_network_endpoint_group.lb_default[1].id
   }
 
   # Use an explicit depends_on clause to wait until API is enabled
