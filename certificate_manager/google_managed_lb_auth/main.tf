@@ -23,8 +23,9 @@ resource "random_id" "tf_prefix" {
   byte_length = 4
 }
 
-data "google_project" "default" {
-}
+# Uncomment the `google_project.default` resource 
+#data "google_project" "default" {
+#}
 
 # [START certificatemanager_google_managed_lb_auth_servicess]
 resource "google_project_service" "certificatemanager_svc" {
