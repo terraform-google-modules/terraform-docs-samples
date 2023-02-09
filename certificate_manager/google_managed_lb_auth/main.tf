@@ -23,10 +23,6 @@ resource "random_id" "tf_prefix" {
   byte_length = 4
 }
 
-# Uncomment the `google_project.default` resource 
-#data "google_project" "default" {
-#}
-
 # [START certificatemanager_google_managed_lb_auth_servicess]
 resource "google_project_service" "certificatemanager_svc" {
   service            = "certificatemanager.googleapis.com"
@@ -99,6 +95,11 @@ resource "google_compute_managed_ssl_certificate" "default" {
 # [END cloudloadbalancing_google_managed_lb_auth_cert]
 
 # [START certificatemanager_google_managed_lb_auth_target_https_proxy]
+
+# Uncomment the `google_project.default` resource
+#data "google_project" "default" {
+#}
+
 resource "google_compute_target_https_proxy" "default" {
   name = "test-proxy"
 
