@@ -9,7 +9,7 @@
 
 INPUT=$1
 IFS=','
-[ ! -f $INPUT ] && { echo "$INPUT file not found"; exit 99; }
+[ ! -f $INPUT ] && { echo "$INPUT file not found"; exit 1; }
 while read source destination
 do
    if [ ! -d "${source}" ]
