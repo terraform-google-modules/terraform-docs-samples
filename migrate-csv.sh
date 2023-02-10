@@ -37,14 +37,16 @@ do
 	echo -e "\n\xe2\x88\xb4 Moving ${GREEN}${source}${NC} to ${GREEN}${destination}${NC}"
     git mv $source $destination 
     git commit -m "move ${source} to ${destination}"
+    # Save the ID of the revision with the moved sample for use later in merge
     saved=`git rev-parse HEAD`
+    # Reset to HEAD, temporarily rename source, and commit
     git reset --hard HEAD^
     git mv ${source} ${source}-copy
     git commit -m "temporary copy of ${source}"
-
+    # Merge current with saved revision and commit
     git merge $saved
     git commit -a -m "merge copy of ${source}"
-
+    # Rename source back to original name and commit
     git mv ${source}-copy ${source}
     git commit -m "merge original copy of ${source}"
 done < $INPUT
