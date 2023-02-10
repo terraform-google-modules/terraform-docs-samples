@@ -11,20 +11,23 @@
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
+ARROW='\033[0;32m\xe2\x89\xab'
 
 INPUT=$1
 IFS=','
 [ ! -f $INPUT ] && { echo "$INPUT file not found"; exit 1; }
+
+echo -e "${GREEN}Checking for source and destinations in CSV file${NC}"
 while read source destination
 do
    if [ ! -d "${source}" ]
    then
-    echo "Directory ${source} does not exist. "
-    echo "Make sure all directories in csv exist."
+    echo -e "---\n${RED}Error:${NC} Directory ${RED}${source} ${NC}does not exist. Make sure all directories in csv exist. \n---"
     exit 2
    fi;
+   echo -e "${ARROW} ./${source}${NC} will be copied to ${GREEN}./${destination}${NC}"
 done < $INPUT
-
+exit 
 while read source destination
 do
     destination=$(echo $destination | sed 's/\r//g')
