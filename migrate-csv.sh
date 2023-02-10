@@ -17,7 +17,8 @@ INPUT=$1
 IFS=','
 [ ! -f $INPUT ] && { echo "$INPUT file not found"; exit 1; }
 
-echo -e "${GREEN}Checking for source and destinations in CSV file${NC}"
+echo -e "${GREEN}Preview:\n${NC}"
+count=0
 while read source destination
 do
    if [ ! -d "${source}" ]
@@ -26,7 +27,9 @@ do
     exit 2
    fi;
    echo -e "${ARROW} ./${source}${NC} will be copied to ${GREEN}./${destination}${NC}"
+   let count+=1
 done < $INPUT
+echo -e "\n${GREEN}Number of samples to be copied: ${count}${NC} \n---"
 exit 
 while read source destination
 do
