@@ -7,6 +7,11 @@
 # Make sure that the csv fed into this script has no header, 
 # and ends with a new line
 
+# Formatting variables
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
 INPUT=$1
 IFS=','
 [ ! -f $INPUT ] && { echo "$INPUT file not found"; exit 1; }
