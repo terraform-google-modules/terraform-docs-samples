@@ -30,12 +30,12 @@ do
    let count+=1
 done < $INPUT
 echo -e "\n${GREEN}Number of samples to be copied: ${count}${NC} \n---"
-exit 
 while read source destination
 do
+    # Remove carriage return from destination variable
     destination=$(echo $destination | sed 's/\r//g')
-	echo -e "\n\xe2\x88\xb4 moving ${source} to ${destination}"
-    git mv $source $destination
+	echo -e "\n\xe2\x88\xb4 Moving ${GREEN}${source}${NC} to ${GREEN}${destination}${NC}"
+    git mv $source $destination 
     git commit -m "move ${source} to ${destination}"
     saved=`git rev-parse HEAD`
     git reset --hard HEAD^
