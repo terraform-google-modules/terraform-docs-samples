@@ -35,7 +35,7 @@ do
     # Remove carriage return from destination variable
     destination=$(echo $destination | sed 's/\r//g')
     # Create target directory
-    mkdir -p $destination
+    mkdir -p $(dirname $destination)
     # Move sample to destination and commit
 	echo -e "\n\xe2\x88\xb4 Moving ${GREEN}${source}${NC} to ${GREEN}${destination}${NC}\n"
     git mv $source $destination 
