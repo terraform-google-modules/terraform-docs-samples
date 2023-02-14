@@ -102,7 +102,7 @@ data "google_project" "default" {
 resource "google_compute_target_https_proxy" "default" {
   name = "test-proxy"
 
-    certificate_map = "//certificatemanager.googleapis.com/projects/${data.google_project.default.project_id}/locations/global/certificateMaps/certmap1"
+  certificate_map = "//certificatemanager.googleapis.com/projects/${data.google_project.default.project_id}/locations/global/certificateMaps/certmap1"
 
   url_map = google_compute_url_map.default.id
   ssl_certificates = [
