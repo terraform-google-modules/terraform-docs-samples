@@ -51,7 +51,7 @@ resource "google_certificate_manager_certificate" "default" {
 
 # [START certificatemanager_google_managed_lb_auth_map]
 resource "google_certificate_manager_certificate_map" "default" {
-  name        = "certmap1"
+  name        = "${local.name}-certmap1-${random_id.tf_prefix.hex}"
   description = "${local.domain} certificate map"
   labels = {
     "terraform" : true
