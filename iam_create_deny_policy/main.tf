@@ -21,14 +21,14 @@
 data "google_project" "default" {
 }
 
-# Create an Example Service A/C
+# Create a service account
 resource "google_service_account" "default" {
   display_name = "IAM Deny Example - Service Account"
   account_id   = "example-sa"
   project      = data.google_project.default.project_id
 }
 
-# Create IAM Deny Policy for the Example SA
+# Create an IAM deny policy that denies a permission for the service account
 resource "google_iam_deny_policy" "default" {
   provider     = google-beta
   parent       = urlencode("cloudresourcemanager.googleapis.com/projects/${data.google_project.default.project_id}")
