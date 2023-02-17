@@ -21,7 +21,7 @@ echo -e "${GREEN}Preview:\n${NC}"
 count=0
 {   
     read
-    while read source destination
+    while read source destination || [ -n "${source}" ] && [ -n "${destination}" ]
     do
     if [ ! -d "${source}" ]
     then
@@ -30,7 +30,7 @@ count=0
     fi;
     echo -e "${ARROW} ./${source}${NC} will be copied to ${GREEN}./${destination}${NC}"
     let count+=1
-    done 
+    done
 } < $INPUT
 echo -e "\n${GREEN}Number of samples to be copied: ${count}${NC} \n---"
 
