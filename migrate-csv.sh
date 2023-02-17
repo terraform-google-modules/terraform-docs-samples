@@ -1,11 +1,9 @@
 #!/bin/bash
 
 # This makeshift script will take a csv file in the following format:
+# source,destination
 # source-directory-1,destination-directory-1
 # source-directory-2,destination-directory-2
-#
-# Make sure that the csv fed into this script has no header,
-# and ends with a new line
 
 # Formatting variables
 RED='\033[0;31m'
