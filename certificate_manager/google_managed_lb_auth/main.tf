@@ -51,7 +51,7 @@ resource "google_certificate_manager_certificate" "default" {
 
 # [START certificatemanager_google_managed_lb_auth_map]
 resource "google_certificate_manager_certificate_map" "default" {
-  name        = "certmap1"
+  name        = "${local.name}-certmap1-${random_id.tf_prefix.hex}"
   description = "${local.domain} certificate map"
   labels = {
     "terraform" : true
@@ -99,12 +99,6 @@ resource "google_compute_target_https_proxy" "default" {
   name            = "test-proxy"
   certificate_map = "//certificatemanager.googleapis.com/${google_certificate_manager_certificate_map.default.id}"
   url_map         = google_compute_url_map.default.id
-  ssl_certificates = [
-    google_compute_managed_ssl_certificate.default.name
-  ]
-  depends_on = [
-    google_compute_managed_ssl_certificate.default
-  ]
 }
 # [END certificatemanager_google_managed_lb_auth_target_https_proxy]
 
