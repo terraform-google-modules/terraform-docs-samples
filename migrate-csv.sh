@@ -41,31 +41,33 @@ y | Y) echo -e "Continuing...\n" ;;
 n | N) exit 0 ;;
 *) echo "invalid" && exit 1 ;;
 esac
-
-while read source destination; do
-    # Remove carriage return from destination variable
-    destination=$(echo $destination | sed 's/\r//g')
-    # Create target directory
-    mkdir -p $(dirname $destination)
-    # Move sample to destination and commit
-    echo -e "\n\xe2\x88\xb4 Moving ${GREEN}${source}${NC} to ${GREEN}${destination}${NC}\n"
-    git mv $source $destination
-    git commit -m "move ${source} to ${destination}"
-    echo -e "\n"
-    # Save the ID of the revision with the moved sample for use later in merge
-    saved=$(git rev-parse HEAD)
-    # Reset to HEAD, temporarily rename source, and commit
-    git reset --hard HEAD^
-    git mv ${source} ${source}-copy
-    echo -e "\n"
-    git commit -m "temporary copy of ${source}"
-    # Merge current with saved revision and commit
-    echo -e "\n"
-    git merge $saved
-    echo -e "\n"
-    git commit -a -m "merge copy of ${source}"
-    # Rename source back to original name and commit
-    git mv ${source}-copy ${source}
-    echo -e "\n"
-    git commit -m "merge original copy of ${source}"
-done <$INPUT
+{
+    read
+    while read source destination || [ -n "${source}" ] && [ -n "${destination}" ]; do
+        # Remove carriage return from destination variable
+        destination=$(echo $destination | sed 's/\r//g')
+        # Create target directory
+        mkdir -p $(dirname $destination)
+        # Move sample to destination and commit
+        echo -e "\n\xe2\x88\xb4 Moving ${GREEN}${source}${NC} to ${GREEN}${destination}${NC}\n"
+        git mv $source $destination
+        git commit -m "move ${source} to ${destination}"
+        echo -e "\n"
+        # Save the ID of the revision with the moved sample for use later in merge
+        saved=$(git rev-parse HEAD)
+        # Reset to HEAD, temporarily rename source, and commit
+        git reset --hard HEAD^
+        git mv ${source} ${source}-copy
+        echo -e "\n"
+        git commit -m "temporary copy of ${source}"
+        # Merge current with saved revision and commit
+        echo -e "\n"
+        git merge $saved
+        echo -e "\n"
+        git commit -a -m "merge copy of ${source}"
+        # Rename source back to original name and commit
+        git mv ${source}-copy ${source}
+        echo -e "\n"
+        git commit -m "merge original copy of ${source}"
+    done
+} <$INPUT
