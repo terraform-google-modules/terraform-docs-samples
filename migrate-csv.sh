@@ -35,6 +35,13 @@ count=0
 } <$INPUT
 echo -e "\n${GREEN}Number of samples to be copied: ${count}${NC} \n---"
 
+read -p "Continue? (y/n)" continue
+case "$continue" in
+y | Y) echo -e "Continuing...\n" ;;
+n | N) exit 0 ;;
+*) echo "invalid" && exit 1 ;;
+esac
+
 while read source destination; do
     # Remove carriage return from destination variable
     destination=$(echo $destination | sed 's/\r//g')
