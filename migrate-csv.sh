@@ -19,17 +19,21 @@ IFS=','
 
 echo -e "${GREEN}Preview:\n${NC}"
 count=0
-while read source destination
-do
-   if [ ! -d "${source}" ]
-   then
-    echo -e "---\n${RED}Error:${NC} Directory ${RED}${source} ${NC}does not exist. Make sure all directories in csv exist. \n---"
-    exit 2
-   fi;
-   echo -e "${ARROW} ./${source}${NC} will be copied to ${GREEN}./${destination}${NC}"
-   let count+=1
-done < $INPUT
+{   
+    read
+    while read source destination
+    do
+    if [ ! -d "${source}" ]
+    then
+        echo -e "---\n${RED}Error:${NC} Directory ${RED}${source} ${NC}does not exist. Make sure all directories in csv exist. \n---"
+        exit 2
+    fi;
+    echo -e "${ARROW} ./${source}${NC} will be copied to ${GREEN}./${destination}${NC}"
+    let count+=1
+    done 
+} < $INPUT
 echo -e "\n${GREEN}Number of samples to be copied: ${count}${NC} \n---"
+
 while read source destination
 do
     # Remove carriage return from destination variable
