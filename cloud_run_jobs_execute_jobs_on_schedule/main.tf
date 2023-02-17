@@ -85,13 +85,11 @@ resource "google_cloud_run_v2_job" "default" {
 
 # Cloud Run Job IAM binding
 resource "google_cloud_run_v2_job_iam_binding" "binding" {
-  provider = google-beta
-  project  = data.google_project.project.project_id
-  location = google_cloud_run_v2_job.default.location
-  name     = google_cloud_run_v2_job.default.name
-  role     = "roles/run.invoker"
-  members  = ["serviceAccount:${google_service_account.cloud_run_invoker_sa.email}"]
-
+  project    = data.google_project.project.project_id
+  location   = google_cloud_run_v2_job.default.location
+  name       = google_cloud_run_v2_job.default.name
+  role       = "roles/viewer"
+  members    = ["serviceAccount:${google_service_account.cloud_run_invoker_sa.email}"]
   depends_on = [resource.google_cloud_run_v2_job.default]
 }
 
