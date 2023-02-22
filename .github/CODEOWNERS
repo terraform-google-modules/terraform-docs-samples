@@ -1,17 +1,19 @@
 # Overall sample owners
-*               @terraform-google-modules/terraform-samples-admins @terraform-google-modules/terraform-samples-reviewers
-/.github/       @terraform-google-modules/terraform-samples-admins
-/cdn/           @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
-/cloud-sql/     @terraform-google-modules/infra-db-sdk @terraform-google-modules/terraform-samples-reviewers
-/composer/      @terraform-google-modules/cloud-dpes-composer @terraform-google-modules/terraform-samples-reviewers
-/compute/       @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
-/dns/           @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
-/eventarc/      @terraform-google-modules/torus-dpe @terraform-google-modules/terraform-samples-reviewers
-/functions/     @terraform-google-modules/torus-dpe @terraform-google-modules/terraform-samples-reviewers
-/lb/            @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
-/nat/           @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
-/notebooks/     @terraform-google-modules/dee-data-ai @terraform-google-modules/terraform-samples-reviewers
-/router/        @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
-/run/           @terraform-google-modules/torus-dpe @terraform-google-modules/terraform-samples-reviewers
-/storage/       @terraform-google-modules/cloud-storage-dpe @terraform-google-modules/terraform-samples-reviewers
-/vpc/           @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+*                       @terraform-google-modules/terraform-samples-admins @terraform-google-modules/terraform-samples-reviewers
+/.github/               @terraform-google-modules/terraform-samples-admins
+/cloud-sql/             @terraform-google-modules/infra-db-sdk @terraform-google-modules/terraform-samples-reviewers
+/cloudvpn/              @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+/composer/              @terraform-google-modules/cloud-dpes-composer @terraform-google-modules/terraform-samples-reviewers
+/compute/               @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+/dns/                   @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+/eventarc/              @terraform-google-modules/torus-dpe @terraform-google-modules/terraform-samples-reviewers
+/functions/             @terraform-google-modules/torus-dpe @terraform-google-modules/terraform-samples-reviewers
+/lb/                    @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+/media-cdn/             @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+/network-connectivity/  @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+/privateca/             @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+/run/                   @terraform-google-modules/torus-dpe @terraform-google-modules/terraform-samples-reviewers
+/storage/               @terraform-google-modules/cloud-storage-dpe @terraform-google-modules/terraform-samples-reviewers
+/traffic-director/      @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+/vertex-ai/             @terraform-google-modules/dee-data-ai @terraform-google-modules/terraform-samples-reviewers
+/vpc/                   @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
