@@ -16,7 +16,7 @@
 
 # Example configuration of a Cloud Run service with request timeout
 
-# [START cloudrun_service_configuration]
+# [START cloudrun_service_configuration_request_timeout]
 resource "google_cloud_run_service" "default" {
   name     = "cloudrun-service-request-timeout"
   location = "us-central1"
@@ -32,4 +32,4 @@ resource "google_cloud_run_service" "default" {
     }
   }
 }
-# [END cloudrun_service_configuration]
+# [END cloudrun_service_configuration_request_timeout]

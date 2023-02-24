@@ -16,7 +16,7 @@
 
 # Example configuration of a Cloud Run service with environment variables
 
-# [START cloudrun_service_configuration]
+# [START cloudrun_service_configuration_env_var]
 resource "google_cloud_run_service" "default" {
   name     = "cloudrun-service-env-var"
   location = "us-central1"
@@ -40,4 +40,4 @@ resource "google_cloud_run_service" "default" {
     }
   }
 }
-# [END cloudrun_service_configuration]
+# [END cloudrun_service_configuration_env_var]

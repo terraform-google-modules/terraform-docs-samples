@@ -16,7 +16,7 @@
 
 # Example configuration of a Cloud Run service with CPU limit
 
-# [START cloudrun_service_configuration]
+# [START cloudrun_service_configuration_cpu]
 resource "google_cloud_run_service" "default" {
   name     = "cloudrun-service-cpu"
   location = "us-central1"
@@ -36,4 +36,4 @@ resource "google_cloud_run_service" "default" {
     }
   }
 }
-# [END cloudrun_service_configuration]
+# [END cloudrun_service_configuration_cpu]

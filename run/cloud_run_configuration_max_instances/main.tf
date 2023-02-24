@@ -16,7 +16,7 @@
 
 # Example configuration of a Cloud Run service with max instances
 
-# [START cloudrun_service_configuration]
+# [START cloudrun_service_configuration_max_instances]
 resource "google_cloud_run_service" "default" {
   name     = "cloudrun-service-max-instances"
   location = "us-central1"
@@ -36,4 +36,4 @@ resource "google_cloud_run_service" "default" {
     }
   }
 }
-# [END cloudrun_service_configuration]
+# [END cloudrun_service_configuration_max_instances]
