@@ -70,7 +70,13 @@ Project Creator access on a folder and the Billing Account User role on a billin
 
    ```
    export TF_VAR_org_id="your_org_id"
+   ```
+
+   ```
    export TF_VAR_folder_id="your_folder_id"
+   ```
+
+   ```
    export TF_VAR_billing_account="your_billing_account_id"
    ```
 
@@ -84,6 +90,9 @@ Project Creator access on a folder and the Billing Account User role on a billin
 
    ```
    cd terraform-docs-samples
+   ```
+
+   ```
    make docker_test_prepare
    ```
 
