@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-# [START vertex_ai_enable_api]
 resource "google_project_service" "aiplatform" {
   provider           = google-beta
   service            = "aiplatform.googleapis.com"
   disable_on_destroy = false
 }
-# [END vertex_ai_enable_api]
 
 # [START vertex_ai_featurestore_entitytype]
 resource "random_id" "featurestore_name_suffix" {
