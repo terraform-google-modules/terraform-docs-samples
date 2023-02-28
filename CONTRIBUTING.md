@@ -39,6 +39,9 @@ You can run this check locally:
 
 ```
 cd terraform-docs-samples
+```
+
+```
 make docker_test_lint
 ```
 
