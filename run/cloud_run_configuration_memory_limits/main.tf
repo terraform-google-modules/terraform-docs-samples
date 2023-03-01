@@ -33,6 +33,11 @@ resource "google_cloud_run_service" "default" {
             memory = "512Mi"
           }
         }
+        lifecycle {
+          ignore_changes = [
+            resources[0].limits,
+          ]
+        }
       }
     }
   }

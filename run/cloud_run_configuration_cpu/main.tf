@@ -32,6 +32,11 @@ resource "google_cloud_run_service" "default" {
             cpu = "1000m" # 1 vCPU
           }
         }
+        lifecycle {
+          ignore_changes = [
+            resources[0].limits,
+          ]
+        }
       }
     }
   }

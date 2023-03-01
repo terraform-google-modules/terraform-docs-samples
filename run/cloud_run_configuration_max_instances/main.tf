@@ -34,6 +34,11 @@ resource "google_cloud_run_service" "default" {
         "autoscaling.knative.dev/maxScale" = 10
       }
     }
+    lifecycle {
+      ignore_changes = [
+        metadata[0].annotations,
+      ]
+    }
   }
 }
 # [END cloudrun_service_configuration_max_instances]
