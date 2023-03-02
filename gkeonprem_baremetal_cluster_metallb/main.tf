@@ -120,7 +120,7 @@ resource "google_gkeonprem_bare_metal_cluster" "gkeonprem-bm-cluster-1" {
 resource "google_gkeonprem_bare_metal_node_pool" "node-pool1" {
   provider           = google-private
   name               = "node-pool1"
-  display_name       = "MetalLB Nodepool 1"
+  display_name       = "Nodepool 1"
   bare_metal_cluster = google_gkeonprem_bare_metal_cluster.gkeonprem-bm-cluster-1.name
   location           = local.region
   node_pool_config {
