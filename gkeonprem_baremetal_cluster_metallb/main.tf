@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
+#[START gkeonprem_bare_metal_cluster_metallb]
+# Fill in the local variables according to your baremetal environment; you must
+# already have an admin cluster created according to the prerequisites outlined
+# in https://cloud.google.com/anthos/clusters/docs/bare-metal/latest/installing/creating-clusters/create-user-cluster-api#before_you_begin
 locals {
-  project            = "YOUR_PROJECT_ID"
-  admin_cluster      = "YOUR_ADMIN_CLUSTER_NAME"
-  bmctl_version      = "BMCTL_VERSION"
-  control_plane_ip   = "IP_ADDRESS_OF_NEW_CLUSTER_CONTROL_PLANE_NODE" # 10.200.0.4
-  control_plane_vip  = "LB_VIRTUAL_IP_ADDRESS_FOR_CONTROL_PLANE_API"  # 10.200.0.50
-  ingress_vip        = "LB_VIRTUAL_IP_ADDRESS_FOR_INGRESS_GATEWAY"    # 10.200.0.51
-  lb_address_pool_1  = "ADDRESS_POOL_FOR_USE_BY_LB"                   # 10.200.0.51-10.200.0.70
-  admin_user_1_email = "GCP_ACCOUNT_EMAIL_OF_ADMIN"                   # foo-bar@gmail.com
-  worker_node_ips    = ["WORKER_NODE_1_IP", "WORKER_NODE_2_IP"]       # [10.200.0.5, 10.200.0.6]
-  region             = "us-west1"
-  endpoint           = "https://gkeonprem.googleapis.com/v1/"
+  project           = "YOUR_PROJECT_ID"
+  admin_cluster     = "YOUR_ADMIN_CLUSTER_NAME"
+  bmctl_version     = "BMCTL_VERSION"
+  control_plane_ip  = "IP_ADDRESS_OF_NEW_CLUSTER_CONTROL_PLANE_NODE" # 10.200.0.4
+  control_plane_vip = "LB_VIRTUAL_IP_ADDRESS_FOR_CONTROL_PLANE_API"  # 10.200.0.50
+  ingress_vip       = "LB_VIRTUAL_IP_ADDRESS_FOR_INGRESS_GATEWAY"    # 10.200.0.51
+  lb_address_pool_1 = "ADDRESS_POOL_FOR_USE_BY_LB"                   # 10.200.0.51-10.200.0.70
+  admin_user_emails = ["ADMIN_1_GCP_ACCOUNT", "ADMIN_2_GCP_ACCOUNT"] # [foo@gmail.com, bar@gmail.com]
+  worker_node_ips   = ["WORKER_NODE_1_IP", "WORKER_NODE_2_IP"]       # [10.200.0.5, 10.200.0.6]
+  region            = "us-west1"
+  endpoint          = "https://gkeonprem.googleapis.com/v1/"
 }
 
 provider "google-private" {
@@ -34,6 +38,7 @@ provider "google-private" {
   gkeonprem_custom_endpoint = local.endpoint
 }
 
+# Create an anthos baremetal user cluster and enroll it with the gkeonprem API
 resource "google_gkeonprem_bare_metal_cluster" "gkeonprem-bm-cluster-1" {
   provider                 = google-private
   name                     = "gkeonprem-bm-cluster-metallb"
@@ -90,8 +95,11 @@ resource "google_gkeonprem_bare_metal_cluster" "gkeonprem-bm-cluster-1" {
 
   security_config {
     authorization {
-      admin_users {
-        username = local.admin_user_1_email
+      dynamic "admin_users" {
+        for_each = local.admin_user_emails
+        content {
+          username = admin_users.value
+        }
       }
     }
   }
@@ -108,7 +116,9 @@ resource "google_gkeonprem_bare_metal_cluster" "gkeonprem-bm-cluster-1" {
   }
 }
 
+# Create a node pool of worker nodes for the anthos baremetal user cluster
 resource "google_gkeonprem_bare_metal_node_pool" "node-pool1" {
+  provider           = google-private
   name               = "node-pool1"
   display_name       = "MetalLB Nodepool 1"
   bare_metal_cluster = google_gkeonprem_bare_metal_cluster.gkeonprem-bm-cluster-1.name
@@ -126,9 +136,6 @@ resource "google_gkeonprem_bare_metal_node_pool" "node-pool1" {
     }
   }
 
-
-  provider = google-private
-
   lifecycle {
     ignore_changes = [
       annotations["baremetal.cluster.gke.io/gke-version"],
@@ -136,3 +143,4 @@ resource "google_gkeonprem_bare_metal_node_pool" "node-pool1" {
     ]
   }
 }
+#[END gkeonprem_bare_metal_cluster_metallb]
