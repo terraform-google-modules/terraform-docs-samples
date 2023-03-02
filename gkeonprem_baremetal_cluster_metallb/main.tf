@@ -35,6 +35,7 @@ provider "google-private" {
 }
 
 resource "google_gkeonprem_bare_metal_cluster" "gkeonprem-bm-cluster-1" {
+  provider                 = google-private
   name                     = "gkeonprem-bm-cluster-metallb"
   description              = "Anthos bare metal user cluster with MetalLB"
   location                 = local.region
@@ -94,8 +95,6 @@ resource "google_gkeonprem_bare_metal_cluster" "gkeonprem-bm-cluster-1" {
       }
     }
   }
-
-  provider = google-private
 
   lifecycle {
     ignore_changes = [
