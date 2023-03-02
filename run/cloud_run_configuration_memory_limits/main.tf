@@ -38,7 +38,7 @@ resource "google_cloud_run_service" "default" {
   }
   lifecycle {
     ignore_changes = [
-      template[0].spec.containers[0].resources[0].limits,
+      template[0].spec[0].containers[0].resources[0].limits,
     ]
   }
 }
