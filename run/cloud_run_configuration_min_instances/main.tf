@@ -34,11 +34,11 @@ resource "google_cloud_run_service" "default" {
         "autoscaling.knative.dev/minScale" = 1
       }
     }
-    lifecycle {
-      ignore_changes = [
-        metadata[0].annotations,
-      ]
-    }
+  }
+  lifecycle {
+    ignore_changes = [
+      template.metadata[0].annotations,
+    ]
   }
 }
 # [END cloudrun_service_configuration_min_instances]

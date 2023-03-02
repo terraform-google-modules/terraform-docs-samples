@@ -33,13 +33,13 @@ resource "google_cloud_run_service" "default" {
             memory = "512Mi"
           }
         }
-        lifecycle {
-          ignore_changes = [
-            resources[0].limits,
-          ]
-        }
       }
     }
+  }
+  lifecycle {
+    ignore_changes = [
+      template.spec.containers[0].resources[0].limits,
+    ]
   }
 }
 # [END cloudrun_service_configuration_memory_limits]
