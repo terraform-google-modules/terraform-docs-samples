@@ -22,10 +22,10 @@ resource "google_compute_firewall" "rules" {
 
   allow {
     protocol = "tcp"
-    ports    = ["80", "8080", "1000-2000"]
+    ports    = ["80", "443"]
   }
 
-  source_tags = ["foo"]
+  source_ranges = ["0.0.0.0/0"]
   target_tags = ["web"]
 }
 # [END compute_firewall_create]
