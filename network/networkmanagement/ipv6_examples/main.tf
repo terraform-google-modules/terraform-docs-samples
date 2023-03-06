@@ -19,18 +19,18 @@
 resource "google_network_management_connectivity_test" "conn_test_instances" {
   name = "conn-test-instances"
   source {
-    instance = google_compute_instance.ipv6source.id
+    instance = google_compute_instance.source.id
   }
 
   destination {
-    instance = google_compute_instance.ipv6destination.id
+    instance = google_compute_instance.destination.id
     port     = "80"
   }
 
   protocol = "TCP"
 }
 
-resource "google_compute_instance" "ipv6source" {
+resource "google_compute_instance" "source" {
   name         = "source-vm"
   machine_type = "e2-medium"
   zone         = "us-west2-a"
@@ -42,8 +42,8 @@ resource "google_compute_instance" "ipv6source" {
   }
 
   network_interface {
-    network    = google_compute_network.ipv6default.id
-    subnetwork = google_compute_subnetwork.ipv6default.id
+    network    = google_compute_network.default.id
+    subnetwork = google_compute_subnetwork.default.id
     network_ip = "10.0.0.142"
     stack_type = "IPV4_IPV6"
     access_config {
@@ -51,7 +51,7 @@ resource "google_compute_instance" "ipv6source" {
   }
 }
 
-resource "google_compute_instance" "ipv6destination" {
+resource "google_compute_instance" "destination" {
   name         = "destination-vm"
   machine_type = "e2-medium"
   zone         = "us-west2-a"
@@ -63,8 +63,8 @@ resource "google_compute_instance" "ipv6destination" {
   }
 
   network_interface {
-    network    = google_compute_network.ipv6default.id
-    subnetwork = google_compute_subnetwork.ipv6default.id
+    network    = google_compute_network.default.id
+    subnetwork = google_compute_subnetwork.default.id
     network_ip = "10.0.0.143"
     stack_type = "IPV4_IPV6"
     access_config {
@@ -72,8 +72,8 @@ resource "google_compute_instance" "ipv6destination" {
   }
 }
 
-resource "google_compute_subnetwork" "ipv6default" {
-  name = "example-dual-stack-subnetwork"
+resource "google_compute_subnetwork" "default" {
+  name = "example-subnetwork"
 
   ip_cidr_range = "10.0.0.0/22"
   region        = "us-west2"
@@ -81,18 +81,18 @@ resource "google_compute_subnetwork" "ipv6default" {
   stack_type       = "IPV4_IPV6"
   ipv6_access_type = "INTERNAL"
 
-  network = google_compute_network.ipv6default.id
+  network = google_compute_network.default.id
 }
 
-resource "google_compute_network" "ipv6default" {
-  name                     = "example-dual-stack-network"
+resource "google_compute_network" "default" {
+  name                     = "example-network"
   auto_create_subnetworks  = false
   enable_ula_internal_ipv6 = true
 }
 
 resource "google_compute_firewall" "ipv6-allow-all" {
   name    = "example-allow-incoming-ipv6"
-  network = google_compute_network.ipv6default.name
+  network = google_compute_network.default.name
 
   allow {
     protocol = "all"
@@ -102,12 +102,12 @@ resource "google_compute_firewall" "ipv6-allow-all" {
 
 resource "google_compute_firewall" "ipv4-allow-all" {
   name    = "example-allow-incoming-ipv4"
-  network = google_compute_network.ipv6default.name
+  network = google_compute_network.default.name
 
   allow {
     protocol = "all"
   }
-  source_ranges = ["10.0.0.0/22"] #["0:0:0:0/0"]
+  source_ranges = ["10.0.0.0/22"]
 }
 
 data "google_compute_image" "default" {
