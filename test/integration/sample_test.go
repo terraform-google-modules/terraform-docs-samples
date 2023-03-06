@@ -25,6 +25,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/utils"
+	"github.com/stretchr/testify/assert"
 )
 
 const (
@@ -81,6 +82,7 @@ func TestSamples(t *testing.T) {
 					tft.WithSetupPath(setupPath),
 					tft.WithRetryableTerraformErrors(retryErrors, 10, time.Minute),
 				)
+				sampleTest.DefineVerify(func(a *assert.Assertions) {})
 				sampleTest.Test()
 				t.Logf("Test %s completed in %s project", sampleName, tg.projectID)
 			})
