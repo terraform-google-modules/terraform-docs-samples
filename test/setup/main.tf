@@ -61,5 +61,6 @@ module "projects" {
     "cloudkms.googleapis.com",
     "servicenetworking.googleapis.com",
     "notebooks.googleapis.com",
+    "bigquery.googleapis.com",
   ]
 }
