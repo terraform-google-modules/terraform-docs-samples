@@ -30,6 +30,11 @@ resource "google_network_management_connectivity_test" "conn_test_instances" {
   protocol = "TCP"
 }
 
+data "google_compute_image" "default" {
+  family  = "debian-11"
+  project = "debian-cloud"
+}
+
 resource "google_compute_instance" "source" {
   name         = "source-vm"
   machine_type = "e2-medium"
@@ -108,10 +113,5 @@ resource "google_compute_firewall" "ipv4-allow-all" {
     protocol = "all"
   }
   source_ranges = ["10.0.0.0/22"]
-}
-
-data "google_compute_image" "default" {
-  family  = "debian-11"
-  project = "debian-cloud"
 }
 # [END networkmanagement_test_ipv6_instances]
