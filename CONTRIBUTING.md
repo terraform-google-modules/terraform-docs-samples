@@ -45,6 +45,13 @@ make sure that they follow the style guidelines for Terraform described in the
 
 * (Required) Don't create a `README` files for your sample.
 
+
+* (Recommended) If a sample needs an API enabled, add the service to the
+  [Test setup file](https://github.com/terraform-google-modules/terraform-docs-samples/blob/main/test/setup/main.tf).
+
+* (Recommened) If a sample adds a new directory, add codeowners to the [CODEOWNERS 
+  file](https://github.com/terraform-google-modules/terraform-docs-samples/blob/main/.github/CODEOWNERS).
+
 * (Recommended) In each resource that has a `name` argument, include the `name`
   argument first in the resource block.
 
