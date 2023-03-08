@@ -9,7 +9,7 @@ Note: If you are not associated with Google, open an issue for discussion before
 **Readiness**
 
 - [ ] Yes, **merge** this PR after it is approved
-- [ ] No, **merge** don't merge this PR after it is approved
+- [ ] No, don't **merge** this PR after it is approved
 
 **Style:**
   
