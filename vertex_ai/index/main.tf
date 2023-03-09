@@ -21,9 +21,13 @@ resource "google_project_service" "aiplatform" {
   disable_on_destroy = false
 }
 
+resource "random_id" "bucket_name_suffix" {
+  byte_length = 8
+}
+
 # Create a Cloud Storage bucket
 resource "google_storage_bucket" "bucket" {
-  name                        = "vertex-ai-index-bucket"
+  name                        = "vertex-ai-index-bucket-${random_id.bucket_name_suffix.hex}"
   location                    = "us-central1"
   uniform_bucket_level_access = true
 }
