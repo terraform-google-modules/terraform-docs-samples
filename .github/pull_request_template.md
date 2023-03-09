@@ -24,7 +24,7 @@ Note: If you are not associated with Google, open an issue for discussion before
   
 **API enablement**
 
-- [ ] If the sample needs a new API enabled to pass testing, I have added the service to the [Test setup file](https://github.com/terraform-google-modules/terraform-docs-samples/blob/main/test/setup/main.tf)
+- [ ] If the sample needs an API enabled to pass testing, I have added the service to the [Test setup file](https://github.com/terraform-google-modules/terraform-docs-samples/blob/main/test/setup/main.tf)
 
 **Review**
 
