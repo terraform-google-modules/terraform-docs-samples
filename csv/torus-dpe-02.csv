@@ -1,0 +1,7 @@
+source,destination
+eventarc_basic_tf,eventarc/basic
+eventarc_workflows,eventarc/workflows
+cloudfunctions2_basic,functions/basic
+cloudfunctions2_basic_auditlogs,functions/basic_audit_logs
+cloudfunctions2_basic_gcs,functions/basic_gcs
+cloudfunctions2_full,functions/pubsub

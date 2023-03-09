@@ -1,4 +1,4 @@
-Source,Destination
+source,destination
 cloud_run_service_add_tag,run/add_tag
 cloud_run_service_configuration,run/configuration
 cloud_run_service_connect_cloud_sql,run/connect_cloud_sql
