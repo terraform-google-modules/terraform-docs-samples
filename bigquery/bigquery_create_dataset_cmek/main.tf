@@ -47,4 +47,14 @@ resource "google_kms_key_ring" "key_ring" {
   name     = "example-keyring"
   location = "us"
 }
+
+# Enable the BigQuery service account to encrypt/decrypt Cloud KMS keys
+data "google_project" "project" {
+}
+
+resource "google_project_iam_member" "service_account_access" {
+  project = data.google_project.project.project_id
+  role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+  member  = "serviceAccount:bq-${data.google_project.project.number}@bigquery-encryption.iam.gserviceaccount.com"
+}
 # [END bigquery_create_dataset_cmek]
