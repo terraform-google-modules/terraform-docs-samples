@@ -30,7 +30,13 @@ See [Work with a Terraform configuration](https://cloud.google.com/docs/terrafor
 
 ## Contributing
 
-Contributions are welcome!
+[Contributions](https://github.com/terraform-google-modules/terraform-docs-samples/blob/main/CONTRIBUTING.md) are welcome!
+
+## Code style
+
+If you are submitting or reviewing a pull request, make sure that the sample follows the
+[Terraform sample guidelines](https://googlecloudplatform.github.io/samples-style-guide/) for
+quality and consistency.
 
 ## Providing feedback
 
