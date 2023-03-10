@@ -23,7 +23,53 @@ sign a new one.
 This project follows
 [Google's Open Source Community Guidelines](https://opensource.google/conduct/).
 
-## Dependencies
+### Review Terraform sample requirements, best practices, and code style
+
+If you are submitting or reviewing a pull request, make sure that the sample
+follows the rules for quality and consistency.
+
+#### Code style
+
+For samples that you add to the `terraform-docs-samples` GitHub repository,
+make sure that they follow the style guidelines for Terraform described in the
+[Effective samples style guide](https://googlecloudplatform.github.io/samples-style-guide/).
+
+#### Other requirements and best practices
+
+* (Required) Samples maintained in `terraform-docs-samples` must include only
+  `resource` and `data` blocks. Don't include `module` blocks in your samples.
+
+  Note: If you want to use a sample that contains `module`
+  blocks, you can use the [Cloud Foundation Toolkit
+  modules](https://g.co/dev/terraformfoundation).
+
+* (Required) Don't create a `README` file for your sample.
+
+* (Recommended) If a sample needs an API enabled, add the service to the
+  [Test setup file](https://github.com/terraform-google-modules/terraform-docs-samples/blob/main/test/setup/main.tf).
+
+* (Recommened) If a sample adds a new directory, add code owners to the [CODEOWNERS 
+  file](https://github.com/terraform-google-modules/terraform-docs-samples/blob/main/.github/CODEOWNERS).
+
+* (Recommended) In each resource that has a `name` argument, include the `name`
+  argument first in the resource block.
+
+* (Recommended) For maintainability, don't include other-vendor resources.
+   Multi-cloud isn't recommended in `terraform-docs-samples`. Only Google
+   provider resources are  recommended. For example, `terraform-docs-samples`
+   samples shouldn't have Azure or AWS resources. For multi-cloud samples,
+   [create a blueprint](https://g.co/dev/terraformfoundation) instead.
+
+* (Recommended) For simplicity and consistency, use `default` as the Terraform
+  resource name when possible. The only time it isn't possible is if a single
+  sample has multiple resources of the same type. They can't all have the same
+  resource name. In this case, use what makes sense for your sample.
+
+* (Recommended) If your sample enables an API, add
+  `disable_on_destroy = false` to prevent the API from being disabled when
+  deleting the resources.
+
+## Dependencies for testing
 
 The following dependencies must be installed on the development system:
 
@@ -34,6 +80,7 @@ The following dependencies must be installed on the development system:
 Cloud Shell is recommended for development because these tools are pre-installed.
 
 ## Linting and Formatting
+
 Files in the repository are linted or formatted to maintain a standard of quality and statically validated.
 You can run this check locally:
 
