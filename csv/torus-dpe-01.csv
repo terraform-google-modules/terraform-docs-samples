@@ -1,6 +1,6 @@
 source,destination
 cloud_run_service_add_tag,run/add_tag
-cloud_run_service_configuration,run/configuration
+cloud_run_service_configuration,run/container_template
 cloud_run_service_connect_cloud_sql,run/connect_cloud_sql
 cloud_run_service_custom_domain_mapping,run/custom_domain_mapping
 cloud_run_service_deploy_tag,run/deploy_tag
