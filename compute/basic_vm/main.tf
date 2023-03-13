@@ -53,7 +53,7 @@ resource "google_compute_subnetwork" "custom" {
 }
 # [END vpc_compute_basic_vm_custom_vpc_subnet]
 
-# [START compute_basic_vm_custom_subnet]
+# [START compute_instances_create_with_subnet]
 
 # Create a VM in a custom VPC network and subnet
 
@@ -72,4 +72,4 @@ resource "google_compute_instance" "custom_subnet" {
     }
   }
 }
-# [END compute_basic_vm_custom_subnet]
+# [END compute_instances_create_with_subnet]
