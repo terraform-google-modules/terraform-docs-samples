@@ -1,3 +1,0 @@
-source,destination
-vertex_ai_dataset,vertex-ai/vertex_ai_dataset
-vertex_ai_featurestore,vertex-ai/vertex_ai_featurestore

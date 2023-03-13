@@ -1,0 +1,8 @@
+source,destination
+storage_hmac_key,storage/hmac_key
+storage_make_data_public,storage/make_data_public
+storage_new_bucket,storage/new_bucket
+storage_object_lifecycle_setting,storage/object_lifecycle_setting
+storage_pubsub_notifications,storage/pubsub_notifications
+storage_static_website,storage/static_website
+flask_google_cloud_quickstart,storage/flask_google_cloud_quickstart
