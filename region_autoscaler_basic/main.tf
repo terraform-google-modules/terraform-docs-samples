@@ -30,7 +30,7 @@ resource "google_compute_region_autoscaler" "foobar" {
   }
 }
 
-# [START compute_instance_template_basic]
+# [START compute_template_create]
 resource "google_compute_instance_template" "foobar" {
   name         = "my-instance-template"
   machine_type = "e2-standard-4"
@@ -62,7 +62,7 @@ resource "google_compute_instance_template" "foobar" {
     ]
   }
 }
-# [END compute_instance_template_basic]
+# [END compute_template_create]
 
 resource "google_compute_target_pool" "foobar" {
   name = "my-target-pool"
