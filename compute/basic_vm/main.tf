@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-# [START compute_basic_vm_default_vpc_network]
+# [START compute_instances_create]
 
 # Create a VM instance from a public image
 # in the `default` VPC network and subnet
@@ -35,7 +35,7 @@ resource "google_compute_instance" "default" {
     access_config {}
   }
 }
-# [END compute_basic_vm_default_vpc_network]
+# [END compute_instances_create]
 
 # [START vpc_compute_basic_vm_custom_vpc_network]
 resource "google_compute_network" "custom" {
