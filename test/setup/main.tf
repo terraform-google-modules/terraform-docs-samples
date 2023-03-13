@@ -37,6 +37,7 @@ module "projects" {
   auto_create_network = true
 
   activate_apis = [
+    "aiplatform.googleapis.com",
     "artifactregistry.googleapis.com",
     "bigquery.googleapis.com",
     "certificatemanager.googleapis.com",
