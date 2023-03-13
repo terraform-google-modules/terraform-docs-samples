@@ -18,7 +18,7 @@
 module "agent_policy" {
   source     = "terraform-google-modules/cloud-operations/google//modules/agent-policy" #import the terraform agent policy module
   version    = "0.2.4"                                                                  #terraform agent policy version
-  project_id = "rajas-375116"                                                           # 
+  project_id = "YOUR_PROJECT_ID"                                                           # 
   policy_id  = "ops-agents-policy-safe-rollout"                                         # define a policy name
   agent_rules = [
     #specify which policies you want to roll out
