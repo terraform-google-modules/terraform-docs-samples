@@ -23,6 +23,7 @@ resource "random_id" "store_prefix" {
 resource "google_vertex_ai_metadata_store" "main" {
   name        = "${random_id.store_prefix.hex}-test-store"
   description = "Example metadata store"
+  provider    = google-beta
   region      = "us-central1"
 }
 # [END vertex_ai_metadata_store]
