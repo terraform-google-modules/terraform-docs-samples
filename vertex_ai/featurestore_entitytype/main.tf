@@ -14,21 +14,16 @@
  * limitations under the License.
  */
 
-resource "google_project_service" "aiplatform" {
-  provider           = google-beta
-  service            = "aiplatform.googleapis.com"
-  disable_on_destroy = false
-}
 
-# [START vertex_ai_featurestore_entitytype]
+# Featurestore name must be unique for the project
 resource "random_id" "featurestore_name_suffix" {
   byte_length = 8
 }
 
+# [START vertex_ai_featurestore_entitytype]
 resource "google_vertex_ai_featurestore" "featurestore" {
-  name     = "featurestore_${random_id.featurestore_name_suffix.hex}"
-  provider = google-beta
-  region   = "us-central1"
+  name   = "featurestore_${random_id.featurestore_name_suffix.hex}"
+  region = "us-central1"
   labels = {
     environment = "testing"
   }
@@ -38,8 +33,6 @@ resource "google_vertex_ai_featurestore" "featurestore" {
   }
 
   force_destroy = true
-
-  depends_on = [google_project_service.aiplatform]
 }
 
 output "featurestore_id" {
@@ -47,8 +40,7 @@ output "featurestore_id" {
 }
 
 resource "google_vertex_ai_featurestore_entitytype" "entity" {
-  name     = "featurestore_entitytype"
-  provider = google-beta
+  name = "featurestore_entitytype"
   labels = {
     environment = "testing"
   }
