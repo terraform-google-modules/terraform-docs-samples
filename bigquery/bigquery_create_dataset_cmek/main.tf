@@ -49,7 +49,7 @@ resource "google_kms_crypto_key" "crypto_key" {
 }
 
 resource "google_kms_key_ring" "key_ring" {
-  name     = "example-keyring1"
+  name     = "example-keyring"
   location = "us"
 }
 
