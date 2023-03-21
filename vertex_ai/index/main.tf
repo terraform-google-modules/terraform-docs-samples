@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-# Enable Vertex AI API
-resource "google_project_service" "aiplatform" {
-  provider           = google
-  service            = "aiplatform.googleapis.com"
-  disable_on_destroy = false
-}
 
+# Cloud Storage bucket name must be unique
 resource "random_id" "bucket_name_suffix" {
   byte_length = 8
 }
@@ -71,9 +66,5 @@ resource "google_vertex_ai_index" "default" {
     create = "2h"
     update = "1h"
   }
-
-  depends_on = [
-    google_project_service.aiplatform
-  ]
 }
 # [END vertex_ai_index]
