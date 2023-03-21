@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-# [START vertex_ai_notebooks_api_enable]
-resource "google_project_service" "notebooks" {
-  provider           = google-beta
-  service            = "notebooks.googleapis.com"
-  disable_on_destroy = false
-}
-# [END vertex_ai_notebooks_api_enable]
 
 # [START vertex_ai_managed_notebooks_runtime_basic]
 resource "google_notebooks_runtime" "basic_runtime" {
@@ -43,10 +36,6 @@ resource "google_notebooks_runtime" "basic_runtime" {
       }
     }
   }
-
-  depends_on = [
-    google_project_service.notebooks
-  ]
 }
 # [END vertex_ai_managed_notebooks_runtime_basic]
 
