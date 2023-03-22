@@ -39,9 +39,9 @@ provider "google-private" {
 }
 
 # Create an anthos baremetal user cluster and enroll it with the gkeonprem API
-resource "google_gkeonprem_bare_metal_cluster" "gkeonprem-bm-cluster-1" {
-  provider                 = google-private
+resource "google_gkeonprem_bare_metal_cluster" "default" {
   name                     = "gkeonprem-bm-cluster-metallb"
+  provider                 = google-private
   description              = "Anthos bare metal user cluster with MetalLB"
   location                 = local.region
   bare_metal_version       = local.bmctl_version
@@ -117,11 +117,11 @@ resource "google_gkeonprem_bare_metal_cluster" "gkeonprem-bm-cluster-1" {
 }
 
 # Create a node pool of worker nodes for the anthos baremetal user cluster
-resource "google_gkeonprem_bare_metal_node_pool" "node-pool1" {
-  provider           = google-private
+resource "google_gkeonprem_bare_metal_node_pool" "default" {
   name               = "node-pool1"
   display_name       = "Nodepool 1"
-  bare_metal_cluster = google_gkeonprem_bare_metal_cluster.gkeonprem-bm-cluster-1.name
+  provider           = google-private
+  bare_metal_cluster = google_gkeonprem_bare_metal_cluster.default.name
   location           = local.region
   node_pool_config {
     operating_system = "LINUX"
