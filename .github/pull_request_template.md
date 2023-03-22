@@ -14,13 +14,15 @@ Note: If you are not associated with Google, open an issue for discussion before
 **Style**
   
 - [ ] My sample follows the rules described for Terraform in the [Effective Samples style guide](https://googlecloudplatform.github.io/samples-style-guide/)
+- [ ] My sample follows the other requirements and best practices in the [Contributing 
+guide](https://github.com/terraform-google-modules/terraform-docs-samples/blob/main/CONTRIBUTING.md#other-requirements-and-best-practices)
   
 **Testing**
   
 - [ ] I have performed tests described in the [Contributing guide](https://github.com/terraform-google-modules/terraform-docs-samples/blob/main/CONTRIBUTING.md):
   
-   - [ ] **Tests** pass: `terraform apply` (see [Test Environment Setup](https://github.com/terraform-google-modules/terraform-docs-samples/blob/main/CONTRIBUTING.md#set-up-the-test-environment)
-   - [ ] **Lint** pass: `terraform fmt` check. See [Linting and Formatting](https://github.com/terraform-google-modules/terraform-docs-samples/blob/main/CONTRIBUTING.md#linting-and-formatting)
+   - [ ] **[Tests](https://github.com/terraform-google-modules/terraform-docs-samples/blob/main/CONTRIBUTING.md#set-up-the-test-environment)** pass: `terraform apply`
+   - [ ] **[Lint](https://github.com/terraform-google-modules/terraform-docs-samples/blob/main/CONTRIBUTING.md#linting-and-formatting)** pass: `terraform fmt` check
   
 **Intended location**
   

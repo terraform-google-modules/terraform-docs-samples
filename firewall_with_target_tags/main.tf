@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-# [START vpc_firewall_create]
+# [START compute_firewall_create]
 resource "google_compute_firewall" "rules" {
   name        = "my-firewall-rule"
   network     = "default"
@@ -22,10 +22,10 @@ resource "google_compute_firewall" "rules" {
 
   allow {
     protocol = "tcp"
-    ports    = ["80", "8080", "1000-2000"]
+    ports    = ["80", "443"]
   }
 
-  source_tags = ["foo"]
-  target_tags = ["web"]
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["web"]
 }
-# [END vpc_firewall_create]
+# [END compute_firewall_create]

@@ -19,18 +19,12 @@ provider "google" {
   region = "us-central1"
 }
 
-# Enable Vertex AI API
-resource "google_project_service" "aiplatform" {
-  provider           = google
-  service            = "aiplatform.googleapis.com"
-  disable_on_destroy = false
-}
-
-# [START vertex_ai_endpoint]
+# Endpoin name must be unique for the project
 resource "random_id" "endpoint_id" {
   byte_length = 4
 }
 
+# [START vertex_ai_endpoint]
 resource "google_vertex_ai_endpoint" "default" {
   name         = substr(random_id.endpoint_id.dec, 0, 10)
   display_name = "sample-endpoint"
@@ -39,10 +33,6 @@ resource "google_vertex_ai_endpoint" "default" {
   labels = {
     label-one = "value-one"
   }
-
-  depends_on = [
-    google_project_service.aiplatform
-  ]
 }
 # [END vertex_ai_endpoint]
 
