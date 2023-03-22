@@ -44,8 +44,12 @@ resource "google_kms_crypto_key" "crypto_key" {
 }
 
 resource "google_kms_key_ring" "key_ring" {
-  name     = "example-keyring"
+  name     = "${random_id.default.hex}-example-keyring"
   location = "us"
+}
+
+resource "random_id" "default" {
+  byte_length = 8
 }
 
 # Enable the BigQuery service account to encrypt/decrypt Cloud KMS keys
