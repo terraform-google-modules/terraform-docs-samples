@@ -28,13 +28,13 @@ resource "google_compute_disk" "default" {
 }
 # [END compute_disk_clone_single_zone]
 
-# [START compute_disk_snapshot_zonal]
+# [START compute_snapshot_create]
 resource "google_compute_snapshot" "snapdisk" {
   name        = "snapshot-name"
   source_disk = google_compute_disk.default.name
   zone        = "us-central1-a"
 }
-# [END compute_disk_snapshot_zonal]
+# [END compute_snapshot_create]
 
 # [START compute_disk_clone_regional]
 resource "google_compute_region_disk" "regiondisk" {
