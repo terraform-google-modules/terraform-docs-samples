@@ -38,11 +38,20 @@ provider "google-private" {
   gkeonprem_custom_endpoint = local.endpoint
 }
 
+# Enable GKE OnPrem API
+resource "google_project_service" "default" {
+  project            = local.project
+  service            = "gkeonprem.googleapis.com"
+  disable_on_destroy = false
+}
+
 # Create an anthos baremetal user cluster and enroll it with the gkeonprem API
 resource "google_gkeonprem_bare_metal_cluster" "default" {
   name                     = "gkeonprem-bm-cluster-metallb"
-  provider                 = google-private
   description              = "Anthos bare metal user cluster with MetalLB"
+  provider                 = google-private
+  depends_on               = [google_project_service.default]
+  create_duration          = "90s"
   location                 = local.region
   bare_metal_version       = local.bmctl_version
   admin_cluster_membership = "projects/${local.project}/locations/global/memberships/${local.admin_cluster}"
@@ -53,7 +62,7 @@ resource "google_gkeonprem_bare_metal_cluster" "default" {
     }
   }
   control_plane {
-    node_pool_config {
+    control_plane_node_pool_config {
       node_pool_config {
         operating_system = "LINUX"
         node_configs {
