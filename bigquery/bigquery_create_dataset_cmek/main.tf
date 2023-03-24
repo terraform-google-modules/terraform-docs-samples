@@ -14,15 +14,6 @@
  * limitations under the License.
  */
 
-resource "google_project_service" "bigquery" {
-  service            = "bigquery.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "cloudkms" {
-  service            = "cloudkms.googleapis.com"
-  disable_on_destroy = false
-}
 
 # [START bigquery_create_dataset_cmek]
 resource "google_bigquery_dataset" "default" {
@@ -41,6 +32,7 @@ resource "google_bigquery_dataset" "default" {
     billing_group = "accounting",
     pii           = "sensitive"
   }
+  depends_on = [google_project_iam_member.service_account_access]
 }
 
 resource "google_kms_crypto_key" "crypto_key" {
@@ -50,7 +42,12 @@ resource "google_kms_crypto_key" "crypto_key" {
 
 resource "google_kms_key_ring" "key_ring" {
   name     = "example-keyring"
+  name     = "${random_id.default.hex}-example-keyring"
   location = "us"
+}
+
+resource "random_id" "default" {
+  byte_length = 8
 }
 
 # Enable the BigQuery service account to encrypt/decrypt Cloud KMS keys
@@ -61,7 +58,5 @@ resource "google_project_iam_member" "service_account_access" {
   project = data.google_project.project.project_id
   role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   member  = "serviceAccount:bq-${data.google_project.project.number}@bigquery-encryption.iam.gserviceaccount.com"
-
-  depends_on = [google_project_service.bigquery, google_project_service.cloudkms]
 }
 # [END bigquery_create_dataset_cmek]
