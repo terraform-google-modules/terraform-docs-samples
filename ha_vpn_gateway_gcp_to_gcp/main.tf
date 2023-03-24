@@ -69,6 +69,7 @@ resource "google_compute_subnetwork" "network2_subnet2" {
 
 resource "google_compute_router" "router1" {
   name    = "ha-vpn-router1"
+  region  = "us-central1"
   network = google_compute_network.network1.name
   bgp {
     asn = 64514
@@ -77,6 +78,7 @@ resource "google_compute_router" "router1" {
 
 resource "google_compute_router" "router2" {
   name    = "ha-vpn-router2"
+  region  = "us-central1"
   network = google_compute_network.network2.name
   bgp {
     asn = 64515
