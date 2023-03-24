@@ -14,20 +14,10 @@
  * limitations under the License.
  */
 
-# Enable Vertex AI API
-resource "google_project_service" "aiplatform" {
-  provider           = google
-  service            = "aiplatform.googleapis.com"
-  disable_on_destroy = false
-}
 
 # [START vertex_ai_tensorboard]
 resource "google_vertex_ai_tensorboard" "default" {
   display_name = "vertex-ai-tensorboard-sample-name"
   region       = "us-central1"
-
-  depends_on = [
-    google_project_service.aiplatform
-  ]
 }
 # [END vertex_ai_tensorboard]
