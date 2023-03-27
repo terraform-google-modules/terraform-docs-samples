@@ -14,6 +14,15 @@
  * limitations under the License.
  */
 
+resource "google_project_service" "bigquery" {
+  service            = "bigquery.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "cloudkms" {
+  service            = "cloudkms.googleapis.com"
+  disable_on_destroy = false
+}
 
 # [START bigquery_create_dataset_cmek]
 resource "google_bigquery_dataset" "default" {
