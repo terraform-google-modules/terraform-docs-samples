@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
-resource "google_project_service" "project" {
+resource "google_project_service" "bigquery" {
   service            = "bigquery.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "cloudkms" {
+  service            = "cloudkms.googleapis.com"
   disable_on_destroy = false
 }
 
@@ -36,6 +41,7 @@ resource "google_bigquery_dataset" "default" {
     billing_group = "accounting",
     pii           = "sensitive"
   }
+  depends_on = [google_project_iam_member.service_account_access]
 }
 
 resource "google_kms_crypto_key" "crypto_key" {
@@ -43,8 +49,12 @@ resource "google_kms_crypto_key" "crypto_key" {
   key_ring = google_kms_key_ring.key_ring.id
 }
 
+resource "random_id" "default" {
+  byte_length = 8
+}
+
 resource "google_kms_key_ring" "key_ring" {
-  name     = "example-keyring"
+  name     = "${random_id.default.hex}-example-keyring"
   location = "us"
 }
 
