@@ -35,5 +35,10 @@ resource "google_cloud_run_service" "default" {
       }
     }
   }
+  lifecycle {
+    ignore_changes = [
+      template[0].metadata[0].annotations,
+    ]
+  }
 }
 # [END cloudrun_service_configuration_max_instances]

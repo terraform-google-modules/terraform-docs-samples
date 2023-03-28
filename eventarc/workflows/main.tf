@@ -83,7 +83,7 @@ resource "google_workflows_workflow" "workflows_example" {
   provider        = google-beta
   region          = "us-central1"
   description     = "A sample workflow"
-  service_account = google_service_account.eventarc_workflows_service_account.id
+  service_account = google_service_account.eventarc_workflows_service_account.email
   # Imported main workflow template file
   source_contents = templatefile("workflow.tftpl", {})
 
@@ -108,7 +108,7 @@ resource "google_eventarc_trigger" "trigger_pubsub_tf" {
   }
 
 
-  service_account = google_service_account.eventarc_workflows_service_account.id
+  service_account = google_service_account.eventarc_workflows_service_account.email
 
   depends_on = [google_project_service.pubsub, google_project_service.eventarc,
   google_service_account.eventarc_workflows_service_account]
