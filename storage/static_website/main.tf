@@ -16,7 +16,7 @@
 
 # [START storage_static_website_create_bucket_tf]
 # Create new storage bucket in the US multi-region
-# with coldline storage and settings for main_page_suffix and not_found_page
+# and settings for main_page_suffix and not_found_page
 resource "random_id" "bucket_prefix" {
   byte_length = 8
 }
@@ -24,10 +24,10 @@ resource "random_id" "bucket_prefix" {
 resource "google_storage_bucket" "static_website" {
   name          = "${random_id.bucket_prefix.hex}-static-website-bucket"
   location      = "US"
-  storage_class = "COLDLINE"
+  storage_class = "STANDARD"
   website {
     main_page_suffix = "index.html"
-    not_found_page   = "index.html"
+    not_found_page   = "404.html"
   }
 }
 # [END storage_static_website_create_bucket_tf]
