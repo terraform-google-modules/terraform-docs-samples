@@ -1,6 +1,7 @@
 # Create new storage bucket in the US multi-region
 # with standard storage
 
+# [START storage_create_bucket_upload_object_tf]
 resource "google_storage_bucket" "static" {
   project       = "<var>PROJECT_ID</var>"
   name         = "<var>BUCKET_NAME</var>"
@@ -19,3 +20,4 @@ resource "google_storage_bucket_object" "default" {
   content_type = "text/plain"
   bucket       = google_storage_bucket.static.id
 }
+# [END storage_create_bucket_upload_object_tf]
