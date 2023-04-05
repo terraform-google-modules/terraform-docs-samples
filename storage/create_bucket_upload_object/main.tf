@@ -3,7 +3,6 @@
 
 # [START storage_create_bucket_upload_object_tf]
 resource "google_storage_bucket" "static" {
-  project       = "<var>PROJECT_ID</var>"
   name         = "<var>BUCKET_NAME</var>"
   location      = "US"
   storage_class = "STANDARD"
