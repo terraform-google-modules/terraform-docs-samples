@@ -51,7 +51,6 @@ resource "google_gkeonprem_bare_metal_cluster" "default" {
   description              = "Anthos bare metal user cluster with MetalLB"
   provider                 = google-private
   depends_on               = [google_project_service.default]
-  create_duration          = "90s"
   location                 = local.region
   bare_metal_version       = local.bmctl_version
   admin_cluster_membership = "projects/${local.project}/locations/global/memberships/${local.admin_cluster}"
