@@ -19,6 +19,7 @@
 # already have an admin cluster created according to the prerequisites outlined
 # in https://cloud.google.com/anthos/clusters/docs/bare-metal/latest/installing/creating-clusters/create-user-cluster-api#before_you_begin
 locals {
+  project           = "YOUR_PROJECT_ID"
   admin_cluster     = "YOUR_ADMIN_CLUSTER_NAME"
   bmctl_version     = "BMCTL_VERSION"
   control_plane_ip  = "IP_ADDRESS_OF_NEW_CLUSTER_CONTROL_PLANE_NODE" # 10.200.0.4
@@ -31,22 +32,15 @@ locals {
   endpoint          = "https://gkeonprem.googleapis.com/v1/"
 }
 
-# The GCP project to be used. If the 'project_id' is not provided to this data
-# source then it is inferred from the 'GOOGLE_CLOUD_PROJECT' environment
-# variable
-data "google_project" "project" {
-  # project_id = "YOUR_PROJECT_ID"
-}
-
 provider "google-private" {
-  project                   = data.google_project.project.project_id
+  project                   = local.project
   region                    = local.region
   gkeonprem_custom_endpoint = local.endpoint
 }
 
 # Enable GKE OnPrem API
 resource "google_project_service" "default" {
-  project            = data.google_project.project.project_id
+  project            = local.project
   service            = "gkeonprem.googleapis.com"
   disable_on_destroy = false
 }
@@ -59,7 +53,7 @@ resource "google_gkeonprem_bare_metal_cluster" "default" {
   depends_on               = [google_project_service.default]
   location                 = local.region
   bare_metal_version       = local.bmctl_version
-  admin_cluster_membership = "projects/${data.google_project.project.project_id}/locations/global/memberships/${local.admin_cluster}"
+  admin_cluster_membership = "projects/${local.project}/locations/global/memberships/${local.admin_cluster}"
   network_config {
     island_mode_cidr {
       service_address_cidr_blocks = ["172.26.0.0/16"]
