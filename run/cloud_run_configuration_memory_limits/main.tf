@@ -36,5 +36,10 @@ resource "google_cloud_run_service" "default" {
       }
     }
   }
+  lifecycle {
+    ignore_changes = [
+      template[0].spec[0].containers[0].resources[0].limits,
+    ]
+  }
 }
 # [END cloudrun_service_configuration_memory_limits]

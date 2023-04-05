@@ -68,5 +68,6 @@ module "projects" {
     "servicenetworking.googleapis.com",
     "notebooks.googleapis.com",
     "gkeonprem.googleapis.com",
+    "osconfig.googleapis.com"
   ]
 }
