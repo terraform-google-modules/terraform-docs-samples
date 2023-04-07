@@ -64,9 +64,6 @@ module "projects" {
     "secretmanager.googleapis.com",
     "sqladmin.googleapis.com",
     "workflows.googleapis.com",
-    "cloudkms.googleapis.com",
-    "servicenetworking.googleapis.com",
-    "notebooks.googleapis.com",
     "osconfig.googleapis.com"
   ]
 }
