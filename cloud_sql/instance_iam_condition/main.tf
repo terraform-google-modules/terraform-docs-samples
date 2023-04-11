@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+# Allow users to connect to specific Cloud SQL instances
+
 data "google_project" "project" {
 }
 
@@ -30,7 +32,7 @@ data "google_iam_policy" "sql_iam_policy" {
       "serviceAccount:${google_project_service_identity.gcp_sa_cloud_sql.email}",
     ]
     condition {
-      expression  = "resource.name == 'projects/${data.google_project.project.id}/instances/${google_sql_database_instance.default.name}' && resource.type == 'sqladmin.googleapis.com/Instance'"
+      expression  = "resource.name == 'projects/${data.google_project.project.project_id}/instances/${google_sql_database_instance.default.name}' && resource.type == 'sqladmin.googleapis.com/Instance'"
       title       = "created"
       description = "Cloud SQL instance creation"
     }
@@ -38,7 +40,7 @@ data "google_iam_policy" "sql_iam_policy" {
 }
 
 resource "google_project_iam_policy" "project" {
-  project     = data.google_project.project.id
+  project     = data.google_project.project.project_id
   policy_data = data.google_iam_policy.sql_iam_policy.policy_data
 }
 # [END cloud_sql_instance_iam_conditions]
