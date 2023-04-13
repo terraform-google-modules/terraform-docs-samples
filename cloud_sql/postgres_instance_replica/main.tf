@@ -25,7 +25,13 @@ resource "google_sql_database_instance" "primary" {
       enabled = "true"
     }
   }
-  deletion_protection = false # set to true to prevent destruction of the resource
+  # set `deletion_protection_enabled` flag to true to enable deletion protection of 
+  # an instance at the GCP level. Enabling this protection will guard against 
+  # accidental deletion across all surfaces (API, gcloud, Cloud Console and Terraform) 
+  # by enabling the GCP Cloud SQL instance deletion protection. On the other hand, 
+  # `deletion_protection` flag prevents destroy of the resource only when the deletion 
+  # is attempted in terraform.
+  deletion_protection = false
 }
 # [END cloud_sql_postgres_instance_primary]
 
@@ -45,6 +51,12 @@ resource "google_sql_database_instance" "read_replica" {
     availability_type = "ZONAL"
     disk_size         = "100"
   }
-  deletion_protection = false # set to true to prevent destruction of the resource
+  # set `deletion_protection_enabled` flag to true to enable deletion protection of 
+  # an instance at the GCP level. Enabling this protection will guard against 
+  # accidental deletion across all surfaces (API, gcloud, Cloud Console and Terraform) 
+  # by enabling the GCP Cloud SQL instance deletion protection. On the other hand, 
+  # `deletion_protection` flag prevents destroy of the resource only when the deletion 
+  # is attempted in terraform.
+  deletion_protection = false
 }
 # [END cloud_sql_postgres_instance_replica]
