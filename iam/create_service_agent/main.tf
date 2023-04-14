@@ -30,32 +30,6 @@ resource "google_project_service_identity" "default" {
 }
 # [END iam_create_project_level_service_agent]
 
-# [START iam_create_folder_level_service_agent]
-data "google_folder" "default" {
-}
-
-# Create all folder-level Logging service agents
-resource "google_project_service_identity" "folder_level" {
-  provider = google-beta
-
-  folder  = data.google_folder.default.number
-  service = "logging.googleapis.com"
-}
-# [END iam_create_folder_level_service_agent]
-
-# [START iam_create_folder_level_service_agent]
-data "google_organization" "default" {
-}
-
-# Create all folder-level Logging service agents
-resource "google_project_service_identity" "org_level" {
-  provider = google-beta
-
-  folder  = data.google_organization.default.number
-  service = "logging.googleapis.com"
-}
-# [END iam_create_folder_level_service_agent]
-
 # [START iam_grant_role_primary_service_agent]
 # Grant the primary aiplatform.googleapis.com service agent (AI Platform
 # Service Agent) the Vertex AI Service Agent role
