@@ -23,10 +23,10 @@ data "google_project" "default" {
 
 # Create all project-level AI Platform service agents
 resource "google_project_service_identity" "default" {
-    provider = google-beta
+  provider = google-beta
 
-    project = data.google_project.default.project_id
-    service = "aiplatform.googleapis.com"
+  project = data.google_project.default.project_id
+  service = "aiplatform.googleapis.com"
 }
 # [END iam_create_project_level_service_agent]
 
@@ -36,23 +36,23 @@ data "google_folder" "default" {
 
 # Create all folder-level Logging service agents
 resource "google_project_service_identity" "folder_level" {
-    provider = google-beta
+  provider = google-beta
 
-    folder = data.google_folder.default.number
-    service = "logging.googleapis.com"
+  folder  = data.google_folder.default.number
+  service = "logging.googleapis.com"
 }
 # [END iam_create_folder_level_service_agent]
 
 # [START iam_create_folder_level_service_agent]
-data "google_organization" "default"{
+data "google_organization" "default" {
 }
 
 # Create all folder-level Logging service agents
 resource "google_project_service_identity" "org_level" {
-    provider = google-beta
+  provider = google-beta
 
-    folder = data.google_organization.default.number
-    service = "logging.googleapis.com"
+  folder  = data.google_organization.default.number
+  service = "logging.googleapis.com"
 }
 # [END iam_create_folder_level_service_agent]
 
