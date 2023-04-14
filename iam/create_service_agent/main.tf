@@ -17,11 +17,16 @@
 # Google Cloud Documentation: https://cloud.google.com/iam/docs/deny-access#create-deny-policy
 # Hashicorp Documentation: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iam_deny_policy
 
+/*
+Create all service agents for aiplatform.googleapis.com for
+the `default` project, then grant roles to the service agents.
+*/
+
 # [START iam_create_project_level_service_agent]
 data "google_project" "default" {
 }
 
-# Create all project-level AI Platform service agents
+# Create all project-level aiplatform.googleapis.com service agents
 resource "google_project_service_identity" "default" {
   provider = google-beta
 
