@@ -22,7 +22,7 @@ resource "google_certificate_manager_dns_authorization" "default" {
   description = "example dns authorization "
   domain      = "test.example.com"
 }
-# [START mediacdn_cert_mgr_dns_auth]
+# [END mediacdn_cert_mgr_dns_auth]
 
 # [START mediacdn_cert_mgr_dns_cert]
 resource "google_certificate_manager_certificate" "default" {
