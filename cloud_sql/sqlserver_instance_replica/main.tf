@@ -26,7 +26,7 @@ resource "google_sql_database_instance" "primary" {
       enabled = "true"
     }
   }
-  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by 
+  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
   # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
   deletion_protection = false
 }
@@ -48,7 +48,7 @@ resource "google_sql_database_instance" "read_replica" {
     availability_type = "ZONAL"
     disk_size         = "100"
   }
-  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by 
+  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
   # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
   deletion_protection = false
 }
