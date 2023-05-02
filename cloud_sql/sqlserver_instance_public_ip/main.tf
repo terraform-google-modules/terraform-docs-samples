@@ -34,6 +34,8 @@ resource "google_sql_database_instance" "sqlserver_public_ip_instance_name" {
       ipv4_enabled = true
     }
   }
-  deletion_protection = false # set to true to prevent destruction of the resource
+  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
+  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
+  deletion_protection = false
 }
 # [END cloud_sql_sqlserver_instance_public_ip]

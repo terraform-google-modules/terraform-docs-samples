@@ -22,7 +22,9 @@ resource "google_sql_database_instance" "source" {
   settings {
     tier = "db-n1-standard-2"
   }
-  deletion_protection = false # set to true to prevent destruction of the resource
+  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
+  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
+  deletion_protection = false
 }
 # [END cloud_sql_postgres_instance_source]
 
@@ -34,6 +36,8 @@ resource "google_sql_database_instance" "clone" {
   clone {
     source_instance_name = google_sql_database_instance.source.id
   }
-  deletion_protection = false # set to true to prevent destruction of the resource
+  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
+  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
+  deletion_protection = false
 }
 # [END cloud_sql_postgres_instance_clone]

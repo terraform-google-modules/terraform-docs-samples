@@ -60,7 +60,9 @@ resource "google_sql_database_instance" "mysql_instance_with_cmek" {
   settings {
     tier = "db-n1-standard-2"
   }
-  deletion_protection = false # set to true to prevent destruction of the resource
+  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
+  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
+  deletion_protection = false
 }
 # [END cloud_sql_mysql_instance_cmek]
 
@@ -74,7 +76,9 @@ resource "google_sql_database_instance" "postgres_instance_with_cmek" {
   settings {
     tier = "db-custom-2-7680"
   }
-  deletion_protection = false # set to true to prevent destruction of the resource
+  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
+  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
+  deletion_protection = false
 }
 # [END cloud_sql_postgres_instance_cmek]
 
@@ -89,6 +93,8 @@ resource "google_sql_database_instance" "default" {
   settings {
     tier = "db-custom-2-7680"
   }
-  deletion_protection = false # set to true to prevent destruction of the resource
+  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
+  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
+  deletion_protection = false
 }
 # [END cloud_sql_sqlserver_instance_cmek]
