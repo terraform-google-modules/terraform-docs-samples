@@ -28,7 +28,9 @@ resource "google_sql_database_instance" "default" {
       transaction_log_retention_days = "3"
     }
   }
-  deletion_protection = false # set to true to prevent destruction of the resource
+  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
+  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
+  deletion_protection = false
 }
 # [END cloud_sql_mysql_instance_pitr]
 
@@ -46,6 +48,8 @@ resource "google_sql_database_instance" "postgres_instance_pitr" {
       transaction_log_retention_days = "3"
     }
   }
-  deletion_protection = false # set to true to prevent destruction of the resource
+  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
+  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
+  deletion_protection = false
 }
 # [END cloud_sql_postgres_instance_pitr]

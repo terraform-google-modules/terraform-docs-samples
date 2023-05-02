@@ -26,7 +26,9 @@ resource "google_sql_database_instance" "primary" {
       binary_log_enabled = "true"
     }
   }
-  deletion_protection = false # set to true to prevent destruction of the resource
+  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
+  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
+  deletion_protection = false
 }
 # [END cloud_sql_mysql_instance_primary]
 
@@ -46,6 +48,8 @@ resource "google_sql_database_instance" "read_replica" {
     availability_type = "ZONAL"
     disk_size         = "100"
   }
-  deletion_protection = false # set to true to prevent destruction of the resource
+  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
+  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
+  deletion_protection = false
 }
 # [END cloud_sql_mysql_instance_replica]
