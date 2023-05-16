@@ -24,23 +24,28 @@ terraform {
   }
 }
 
-resource "random_id" "bucket_prefix" {
+resource "random_id" "default" {
   byte_length = 8
 }
 
-resource "google_storage_bucket" "bucket" {
-  name                        = "${random_id.bucket_prefix.hex}-gcf-source" # Every bucket name must be globally unique
+resource "google_storage_bucket" "default" {
+  name                        = "${random_id.default.hex}-gcf-source" # Every bucket name must be globally unique
   location                    = "US"
   uniform_bucket_level_access = true
 }
 
+data "archive_file" "default" {
+  type        = "zip"
+  output_path = "/tmp/function-source.zip"
+  source_dir  = "functions/hello-world/"
+}
 resource "google_storage_bucket_object" "object" {
   name   = "function-source.zip"
-  bucket = google_storage_bucket.bucket.name
-  source = "function-source.zip" # Add path to the zipped function source code
+  bucket = google_storage_bucket.default.name
+  source = data.archive_file.default.output_path # Add path to the zipped function source code
 }
 
-resource "google_cloudfunctions2_function" "function" {
+resource "google_cloudfunctions2_function" "default" {
   name        = "function-v2"
   location    = "us-central1"
   description = "a new function"
@@ -50,7 +55,7 @@ resource "google_cloudfunctions2_function" "function" {
     entry_point = "helloHttp" # Set the entry point
     source {
       storage_source {
-        bucket = google_storage_bucket.bucket.name
+        bucket = google_storage_bucket.default.name
         object = google_storage_bucket_object.object.name
       }
     }
@@ -64,6 +69,6 @@ resource "google_cloudfunctions2_function" "function" {
 }
 
 output "function_uri" {
-  value = google_cloudfunctions2_function.function.service_config[0].uri
+  value = google_cloudfunctions2_function.default.service_config[0].uri
 }
 # [END functions_v2_basic]
