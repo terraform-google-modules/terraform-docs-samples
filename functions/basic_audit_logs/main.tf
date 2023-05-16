@@ -38,7 +38,7 @@ resource "google_storage_bucket" "source_bucket" {
   uniform_bucket_level_access = true
 }
 
-data "archive_file" "archive" {
+data "archive_file" "default" {
   type        = "zip"
   output_path = "/tmp/function-source.zip"
   source_dir  = "function-source/"
@@ -47,7 +47,7 @@ data "archive_file" "archive" {
 resource "google_storage_bucket_object" "default" {
   name   = "function-source.zip"
   bucket = google_storage_bucket.source_bucket.name
-  source = data.archive_file.archive.output_path # Path to the zipped function source code
+  source = data.archive_file.default.output_path # Path to the zipped function source code
 }
 
 resource "google_service_account" "default" {
