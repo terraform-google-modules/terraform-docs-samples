@@ -17,8 +17,7 @@
 # [START functions_v2_basic_auditlogs]
 # This example follows the examples shown in this Google Cloud Community blog post
 # https://medium.com/google-cloud/applying-a-path-pattern-when-filtering-in-eventarc-f06b937b4c34
-# and the docs:
-# https://cloud.google.com/eventarc/docs/path-patterns
+# and the docs https://cloud.google.com/eventarc/docs/path-patterns
 
 terraform {
   required_providers {
@@ -39,14 +38,20 @@ resource "google_storage_bucket" "source_bucket" {
   uniform_bucket_level_access = true
 }
 
-resource "google_storage_bucket_object" "object" {
-  name   = "function-source.zip"
-  bucket = google_storage_bucket.source_bucket.name
-  source = "function-source.zip" # Add path to the zipped function source code
+data "archive_file" "default" {
+  type        = "zip"
+  output_path = "/tmp/function-source.zip"
+  source_dir  = "function-source/"
 }
 
-resource "google_service_account" "account" {
-  account_id   = "gcf-sa"
+resource "google_storage_bucket_object" "default" {
+  name   = "function-source.zip"
+  bucket = google_storage_bucket.source_bucket.name
+  source = data.archive_file.default.output_path # Path to the zipped function source code
+}
+
+resource "google_service_account" "default" {
+  account_id   = "test-gcf-sa"
   display_name = "Test Service Account - used for both the cloud function and eventarc trigger in the test"
 }
 
@@ -66,24 +71,24 @@ data "google_project" "project" {
 resource "google_project_iam_member" "invoking" {
   project = data.google_project.project.project_id
   role    = "roles/run.invoker"
-  member  = "serviceAccount:${google_service_account.account.email}"
+  member  = "serviceAccount:${google_service_account.default.email}"
 }
 
 resource "google_project_iam_member" "event_receiving" {
   project    = data.google_project.project.project_id
   role       = "roles/eventarc.eventReceiver"
-  member     = "serviceAccount:${google_service_account.account.email}"
+  member     = "serviceAccount:${google_service_account.default.email}"
   depends_on = [google_project_iam_member.invoking]
 }
 
 resource "google_project_iam_member" "artifactregistry_reader" {
   project    = data.google_project.project.project_id
   role       = "roles/artifactregistry.reader"
-  member     = "serviceAccount:${google_service_account.account.email}"
+  member     = "serviceAccount:${google_service_account.default.email}"
   depends_on = [google_project_iam_member.event_receiving]
 }
 
-resource "google_cloudfunctions2_function" "function" {
+resource "google_cloudfunctions2_function" "default" {
   depends_on = [
     google_project_iam_member.event_receiving,
     google_project_iam_member.artifactregistry_reader,
@@ -101,7 +106,7 @@ resource "google_cloudfunctions2_function" "function" {
     source {
       storage_source {
         bucket = google_storage_bucket.source_bucket.name
-        object = google_storage_bucket_object.object.name
+        object = google_storage_bucket_object.default.name
       }
     }
   }
@@ -116,14 +121,14 @@ resource "google_cloudfunctions2_function" "function" {
     }
     ingress_settings               = "ALLOW_INTERNAL_ONLY"
     all_traffic_on_latest_revision = true
-    service_account_email          = google_service_account.account.email
+    service_account_email          = google_service_account.default.email
   }
 
   event_trigger {
     trigger_region        = "us-central1" # The trigger must be in the same location as the bucket
     event_type            = "google.cloud.audit.log.v1.written"
     retry_policy          = "RETRY_POLICY_RETRY"
-    service_account_email = google_service_account.account.email
+    service_account_email = google_service_account.default.email
     event_filters {
       attribute = "serviceName"
       value     = "storage.googleapis.com"

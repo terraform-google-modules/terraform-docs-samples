@@ -30,24 +30,30 @@ resource "random_id" "bucket_prefix" {
 }
 
 resource "google_storage_bucket" "source_bucket" {
-  name                        = "${random_id.bucket_prefix.hex}-gcf-source"
+  name                        = "${random_id.bucket_prefix.hex}-gcf-source-bucket"
   location                    = "US"
   uniform_bucket_level_access = true
 }
 
-resource "google_storage_bucket_object" "object" {
+data "archive_file" "default" {
+  type        = "zip"
+  output_path = "/tmp/function-source.zip"
+  source_dir  = "function-source/"
+}
+
+resource "google_storage_bucket_object" "default" {
   name   = "function-source.zip"
   bucket = google_storage_bucket.source_bucket.name
-  source = "function-source.zip" # Add path to the zipped function source code
+  source = data.archive_file.default.output_path # Path to the zipped function source code
 }
 
 resource "google_storage_bucket" "trigger_bucket" {
-  name                        = "gcf-trigger-bucket"
+  name                        = "${random_id.bucket_prefix.hex}-gcf-trigger-bucket"
   location                    = "us-central1" # The trigger must be in the same location as the bucket
   uniform_bucket_level_access = true
 }
 
-data "google_storage_project_service_account" "gcs_account" {
+data "google_storage_project_service_account" "default" {
 }
 
 # To use GCS CloudEvent triggers, the GCS service account requires the Pub/Sub Publisher(roles/pubsub.publisher) IAM role in the specified project.
@@ -58,7 +64,7 @@ data "google_project" "project" {
 resource "google_project_iam_member" "gcs_pubsub_publishing" {
   project = data.google_project.project.project_id
   role    = "roles/pubsub.publisher"
-  member  = "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"
+  member  = "serviceAccount:${data.google_storage_project_service_account.default.email_address}"
 }
 
 resource "google_service_account" "account" {
@@ -88,7 +94,7 @@ resource "google_project_iam_member" "artifactregistry_reader" {
   depends_on = [google_project_iam_member.event_receiving]
 }
 
-resource "google_cloudfunctions2_function" "function" {
+resource "google_cloudfunctions2_function" "default" {
   depends_on = [
     google_project_iam_member.event_receiving,
     google_project_iam_member.artifactregistry_reader,
@@ -106,7 +112,7 @@ resource "google_cloudfunctions2_function" "function" {
     source {
       storage_source {
         bucket = google_storage_bucket.source_bucket.name
-        object = google_storage_bucket_object.object.name
+        object = google_storage_bucket_object.default.name
       }
     }
   }
