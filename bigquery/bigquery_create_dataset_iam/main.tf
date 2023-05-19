@@ -35,6 +35,9 @@ resource "google_bigquery_dataset" "default" {
   }
 }
 
+# Update the user, group, or service account
+# provided by the members argument with the
+# appropriate principals for your organization.
 data "google_iam_policy" "default" {
   binding {
     role = "roles/bigquery.dataOwner"
