@@ -15,12 +15,12 @@
  */
 
 
+# [START aiplatform_create_featurestore_entitytype_sample]
 # Featurestore name must be unique for the project
 resource "random_id" "featurestore_name_suffix" {
   byte_length = 8
 }
 
-# [START vertex_ai_featurestore_entitytype]
 resource "google_vertex_ai_featurestore" "featurestore" {
   name   = "featurestore_${random_id.featurestore_name_suffix.hex}"
   region = "us-central1"
@@ -55,4 +55,4 @@ resource "google_vertex_ai_featurestore_entitytype" "entity" {
 
   depends_on = [google_vertex_ai_featurestore.featurestore]
 }
-# [END vertex_ai_featurestore_entitytype]
+# [END aiplatform_create_featurestore_entitytype_sample]
