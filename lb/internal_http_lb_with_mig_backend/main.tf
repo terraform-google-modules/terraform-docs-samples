@@ -16,6 +16,7 @@
 
 # Internal HTTP load balancer with a managed instance group backend
 
+# [START cloudloadbalancing_internal_http_lb_with_mig_backend_parent_tag]
 # [START cloudloadbalancing_int_http_gce]
 # VPC network
 resource "google_compute_network" "ilb_network" {
@@ -205,3 +206,4 @@ resource "google_compute_instance" "vm_test" {
   }
 }
 # [END cloudloadbalancing_int_http_gce]
+# [END cloudloadbalancing_internal_http_lb_with_mig_backend_parent_tag]

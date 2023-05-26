@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudloadbalancing_regional_external_http_load_balancer_parent_tag]
 # [START cloudloadbalancing_rllxlb_example]
 
 # [START cloudloadbalancing_vpc_network_rllxlb_example]
@@ -228,3 +229,4 @@ resource "google_compute_forwarding_rule" "default" {
 # [END cloudloadbalancing_forwarding_rule_rllxlb_example]
 
 # [END cloudloadbalancing_rllxlb_example]
+# [END cloudloadbalancing_regional_external_http_load_balancer_parent_tag]

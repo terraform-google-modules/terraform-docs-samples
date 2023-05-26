@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START dns_policy_basic_parent_tag]
 # [START dns_policy_basic]
 resource "google_dns_policy" "example_policy" {
   name                      = "example-policy"
@@ -49,3 +50,4 @@ resource "google_compute_network" "network_2" {
   auto_create_subnetworks = false
 }
 # [END dns_policy_basic]
+# [END dns_policy_basic_parent_tag]

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudrun_traffic_gradual_rollout_parent_tag]
 # [START cloudrun_service_traffic_gradual_rollout]
 resource "google_cloud_run_service" "default" {
   name     = "cloudrun-srv"
@@ -43,3 +44,4 @@ resource "google_cloud_run_service" "default" {
   }
 }
 # [END cloudrun_service_traffic_gradual_rollout]
+# [END cloudrun_traffic_gradual_rollout_parent_tag]

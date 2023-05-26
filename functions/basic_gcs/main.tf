@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START functions_basic_gcs_parent_tag]
 # [START functions_v2_basic_gcs]
 
 terraform {
@@ -142,3 +143,4 @@ resource "google_cloudfunctions2_function" "default" {
   }
 }
 # [END functions_v2_basic_gcs]
+# [END functions_basic_gcs_parent_tag]

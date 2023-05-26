@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START compute_region_autoscaler_basic_parent_tag]
 resource "google_compute_region_autoscaler" "foobar" {
   name   = "my-region-autoscaler"
   region = "us-central1"
@@ -80,3 +81,4 @@ resource "google_compute_region_instance_group_manager" "foobar" {
   target_pools       = [google_compute_target_pool.foobar.id]
   base_instance_name = "foobar"
 }
+# [END compute_region_autoscaler_basic_parent_tag]

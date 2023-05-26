@@ -16,6 +16,7 @@
 
 # External TCP proxy load balancer with managed instance group backend
 
+# [START cloudloadbalancing_external_tcp_proxy_lb_mig_backend_parent_tag]
 # [START cloudloadbalancing_ext_tcp_proxy_lb]
 # VPC
 resource "google_compute_network" "default" {
@@ -159,3 +160,4 @@ resource "google_compute_firewall" "default" {
   target_tags = ["allow-health-check"]
 }
 # [END cloudloadbalancing_ext_tcp_proxy_lb]
+# [END cloudloadbalancing_external_tcp_proxy_lb_mig_backend_parent_tag]

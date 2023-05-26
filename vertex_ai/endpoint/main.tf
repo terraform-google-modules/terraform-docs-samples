@@ -19,6 +19,7 @@ provider "google" {
   region = "us-central1"
 }
 
+# [START aiplatform_endpoint_parent_tag]
 # [START aiplatform_create_endpoint_sample]
 # Endpoin name must be unique for the project
 resource "random_id" "endpoint_id" {
@@ -35,4 +36,4 @@ resource "google_vertex_ai_endpoint" "default" {
   }
 }
 # [END aiplatform_create_endpoint_sample]
-
+# [END aiplatform_endpoint_parent_tag]

@@ -17,6 +17,7 @@
 # External HTTP load balancer with a CDN-enabled managed instance group backend
 # and custom request and response headers
 
+# [START cloudloadbalancing_external_http_lb_mig_backend_custom_header_parent_tag]
 # [START cloudloadbalancing_ext_http_gce_custom_header]
 # VPC
 resource "google_compute_network" "default" {
@@ -171,3 +172,4 @@ resource "google_compute_firewall" "default" {
   target_tags = ["allow-health-check"]
 }
 # [END cloudloadbalancing_ext_http_gce_custom_header]
+# [END cloudloadbalancing_external_http_lb_mig_backend_custom_header_parent_tag]

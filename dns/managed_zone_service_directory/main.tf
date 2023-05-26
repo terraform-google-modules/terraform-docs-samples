@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START dns_managed_zone_service_directory_parent_tag]
 # [START dns_managed_zone_service_directory]
 resource "random_id" "zone_suffix" {
   byte_length = 8
@@ -48,3 +49,4 @@ resource "google_compute_network" "network" {
   auto_create_subnetworks = false
 }
 # [END dns_managed_zone_service_directory]
+# [END dns_managed_zone_service_directory_parent_tag]

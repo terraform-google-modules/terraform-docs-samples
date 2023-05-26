@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START functions_basic_parent_tag]
 # [START functions_v2_basic]
 terraform {
   required_providers {
@@ -72,3 +73,4 @@ output "function_uri" {
   value = google_cloudfunctions2_function.default.service_config[0].uri
 }
 # [END functions_v2_basic]
+# [END functions_basic_parent_tag]

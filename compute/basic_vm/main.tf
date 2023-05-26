@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START compute_basic_vm_parent_tag]
 # [START compute_instances_create]
 
 # Create a VM instance from a public image
@@ -73,3 +74,4 @@ resource "google_compute_instance" "custom_subnet" {
   }
 }
 # [END compute_instances_create_with_subnet]
+# [END compute_basic_vm_parent_tag]

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START functions_basic_audit_logs_parent_tag]
 # [START functions_v2_basic_auditlogs]
 # This example follows the examples shown in this Google Cloud Community blog post
 # https://medium.com/google-cloud/applying-a-path-pattern-when-filtering-in-eventarc-f06b937b4c34
@@ -147,3 +148,4 @@ resource "google_cloudfunctions2_function" "default" {
   }
 }
 # [END functions_v2_basic_auditlogs]
+# [END functions_basic_audit_logs_parent_tag]

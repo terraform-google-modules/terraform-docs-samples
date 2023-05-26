@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudloadbalancing_target_grpc_proxy_basic_parent_tag]
 # [START cloudloadbalancing_target_grpc_proxy_basic]
 resource "google_compute_target_grpc_proxy" "default" {
   name                   = "proxy"
@@ -103,3 +104,4 @@ resource "google_compute_health_check" "default" {
   }
 }
 # [END cloudloadbalancing_target_grpc_proxy_basic]
+# [END cloudloadbalancing_target_grpc_proxy_basic_parent_tag]

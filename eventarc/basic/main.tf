@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START eventarc_basic_parent_tag]
 # [START eventarc_terraform_enableapis]
 # Used to retrieve project_number later
 data "google_project" "project" {
@@ -129,3 +130,4 @@ resource "google_eventarc_trigger" "trigger_auditlog_tf" {
 }
 
 # [END eventarc_terraform_auditlog_storage]
+# [END eventarc_basic_parent_tag]

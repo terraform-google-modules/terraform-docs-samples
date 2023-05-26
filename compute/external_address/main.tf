@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START compute_external_address_parent_tag]
 # [START compute_regional_external_vm_address]
 resource "google_compute_address" "default" {
   name   = "my-test-static-ip-address"
@@ -41,3 +42,4 @@ resource "google_compute_instance" "default" {
   }
 }
 # [END compute_regional_external_vm_address_assign]
+# [END compute_external_address_parent_tag]

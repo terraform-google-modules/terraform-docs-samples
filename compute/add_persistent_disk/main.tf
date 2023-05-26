@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START compute_add_persistent_disk_parent_tag]
 resource "google_project_service" "compute_api" {
   service            = "compute.googleapis.com"
   disable_on_destroy = false
@@ -54,3 +55,4 @@ resource "google_compute_instance" "test_node" {
   }
 }
 # [END compute_attach_persistent_disk]
+# [END compute_add_persistent_disk_parent_tag]

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START storage_pubsub_notifications_parent_tag]
 # [START storage_create_pubsub_notifications_tf]
 // Create a Pub/Sub notification.
 resource "google_storage_notification" "notification" {
@@ -54,3 +55,4 @@ resource "google_pubsub_topic" "topic" {
   provider = google-beta
 }
 # [END storage_create_pubsub_notifications_tf]
+# [END storage_pubsub_notifications_parent_tag]

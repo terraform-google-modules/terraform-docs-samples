@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+# [START aiplatform_dataset_parent_tag]
+# [START aiplatform_dataset]
 
 # [START aiplatform_create_dataset_image_sample]
 resource "google_vertex_ai_dataset" "image_dataset" {
@@ -46,3 +48,5 @@ resource "google_vertex_ai_dataset" "video_dataset" {
   region              = "us-central1"
 }
 # [END aiplatform_create_dataset_video_sample]
+# [END aiplatform_dataset]
+# [END aiplatform_dataset_parent_tag]

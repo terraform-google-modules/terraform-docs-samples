@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudloadbalancing_url_map_bucket_and_service_parent_tag]
 # [START cloudloadbalancing_url_map_bucket_and_service]
 resource "google_compute_url_map" "urlmap" {
   name        = "urlmap"
@@ -94,3 +95,4 @@ resource "google_storage_bucket" "static" {
   location = "US"
 }
 # [END cloudloadbalancing_url_map_bucket_and_service]
+# [END cloudloadbalancing_url_map_bucket_and_service_parent_tag]

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START compute_spot_instance_basic_parent_tag]
 # [START compute_spot_instance_create]
 
 resource "google_compute_instance" "spot_vm_instance" {
@@ -43,3 +44,4 @@ resource "google_compute_instance" "spot_vm_instance" {
 }
 
 # [END compute_spot_instance_create]
+# [END compute_spot_instance_basic_parent_tag]

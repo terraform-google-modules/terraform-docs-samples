@@ -15,6 +15,7 @@
  */
 
 
+# [START networkmanagement_ipv6_dual_stack_parent_tag]
 # [START networkmanagement_test_ipv6_instances]
 resource "google_network_management_connectivity_test" "conn_test_instances" {
   name = "conn-test-instances"
@@ -115,3 +116,4 @@ resource "google_compute_firewall" "ipv4-allow-all" {
   source_ranges = ["10.0.0.0/22"]
 }
 # [END networkmanagement_test_ipv6_instances]
+# [END networkmanagement_ipv6_dual_stack_parent_tag]

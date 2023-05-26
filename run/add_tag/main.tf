@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudrun_add_tag_parent_tag]
 # [START cloudrun_service_add_tag]
 resource "google_cloud_run_service" "default" {
   name     = "cloudrun-srv"
@@ -35,3 +36,4 @@ resource "google_cloud_run_service" "default" {
   }
 }
 # [END cloudrun_service_add_tag]
+# [END cloudrun_add_tag_parent_tag]

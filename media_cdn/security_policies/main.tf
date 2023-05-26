@@ -18,6 +18,7 @@
 # Hashicorp: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_security_policy
 # In Google Cloud Console - Check in `Cloud Armor` for created policy
 
+# [START mediacdn_security_policies_parent_tag]
 # [START mediacdn_create_security_policy]
 resource "google_compute_security_policy" "default" {
   name        = "block-australia"
@@ -47,3 +48,4 @@ resource "google_compute_security_policy" "default" {
   }
 }
 # [END mediacdn_create_security_policy]
+# [END mediacdn_security_policies_parent_tag]

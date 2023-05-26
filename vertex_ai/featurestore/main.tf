@@ -15,6 +15,7 @@
  */
 
 
+# [START aiplatform_featurestore_parent_tag]
 # [START aiplatform_create_featurestore_sample]
 # Featurestore name must be unique for the project
 resource "random_id" "featurestore_name_suffix" {
@@ -35,3 +36,4 @@ resource "google_vertex_ai_featurestore" "main" {
   force_destroy = true
 }
 # [END aiplatform_create_featurestore_sample]
+# [END aiplatform_featurestore_parent_tag]

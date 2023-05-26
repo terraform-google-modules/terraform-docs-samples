@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START compute_os_login_parent_tag]
 # [START compute_terraform-oslogin-example]
 
 # [START compute_enable_oslogin_api]
@@ -65,3 +66,4 @@ resource "google_project_iam_member" "os_login_admin_users" {
 # [END compute_add_iam_binding_for_oslogin]
 
 # [END compute_terraform-oslogin-example]
+# [END compute_os_login_parent_tag]

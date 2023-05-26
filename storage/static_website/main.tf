@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START storage_static_website_parent_tag]
 # [START storage_static_website_create_bucket_tf]
 # Create new storage bucket in the US multi-region
 # and settings for main_page_suffix and not_found_page
@@ -58,3 +59,4 @@ resource "google_storage_bucket_object" "errorpage" {
   bucket       = google_storage_bucket.static_website.id
 }
 # [END storage_static_website_upload_files_tf]
+# [END storage_static_website_parent_tag]

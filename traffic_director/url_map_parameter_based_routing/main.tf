@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START trafficdirector_url_map_parameter_based_routing_parent_tag]
 # [START trafficdirector_url_map_parameter_based_routing]
 resource "google_compute_url_map" "urlmap" {
   name            = "urlmap"
@@ -90,3 +91,4 @@ resource "google_compute_http_health_check" "default" {
   timeout_sec        = 1
 }
 # [END trafficdirector_url_map_parameter_based_routing]
+# [END trafficdirector_url_map_parameter_based_routing_parent_tag]

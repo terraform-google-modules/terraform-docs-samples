@@ -16,6 +16,7 @@
 
 # Internal HTTPS load balancer with HTTP-to-HTTPS redirect
 
+# [START cloudloadbalancing_int_https_lb_https_redirect_parent_tag]
 # [START cloudloadbalancing_int_https_with_redirect]
 
 # VPC network
@@ -299,3 +300,4 @@ resource "google_compute_region_url_map" "redirect" {
   }
 }
 # [END cloudloadbalancing_int_https_with_redirect]
+# [END cloudloadbalancing_int_https_lb_https_redirect_parent_tag]

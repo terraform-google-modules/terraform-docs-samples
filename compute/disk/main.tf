@@ -15,6 +15,7 @@
  */
 
 
+# [START compute_disk_parent_tag]
 # [START compute_disk_clone_single_zone]
 resource "google_compute_disk" "default" {
   name  = "disk-name1"
@@ -48,3 +49,4 @@ resource "google_compute_region_disk" "regiondisk" {
   replica_zones = ["us-central1-a", "us-central1-f"]
 }
 # [END compute_disk_clone_regional]
+# [END compute_disk_parent_tag]

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START dns_managed_zone_private_forwarding_parent_tag]
 # [START dns_managed_zone_private_forwarding]
 resource "google_dns_managed_zone" "private_zone" {
   name        = "private-zone"
@@ -54,3 +55,4 @@ resource "google_compute_network" "network_2" {
   auto_create_subnetworks = false
 }
 # [END dns_managed_zone_private_forwarding]
+# [END dns_managed_zone_private_forwarding_parent_tag]

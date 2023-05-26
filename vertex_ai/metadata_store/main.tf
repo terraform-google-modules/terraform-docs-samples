@@ -15,6 +15,7 @@
  */
 
 
+# [START aiplatform_metadata_store_parent_tag]
 # [START aiplatform_create_metadata_store_sample]
 resource "random_id" "store_prefix" {
   byte_length = 8
@@ -27,3 +28,4 @@ resource "google_vertex_ai_metadata_store" "main" {
   region      = "us-central1"
 }
 # [END aiplatform_create_metadata_store_sample]
+# [END aiplatform_metadata_store_parent_tag]

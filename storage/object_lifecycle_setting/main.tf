@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START storage_object_lifecycle_setting_parent_tag]
 # [START storage_create_lifecycle_setting_tf]
 resource "random_id" "bucket_prefix" {
   byte_length = 8
@@ -35,3 +36,4 @@ resource "google_storage_bucket" "auto_expire" {
   }
 }
 # [END storage_create_lifecycle_setting_tf]
+# [END storage_object_lifecycle_setting_parent_tag]

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudrun_secure_services_parent_tag]
 # [START cloudrun_secure_services_backend]
 resource "google_cloud_run_service" "renderer" {
   provider = google-beta
@@ -116,3 +117,4 @@ output "backend_url" {
 output "frontend_url" {
   value = google_cloud_run_service.editor.status[0].url
 }
+# [END cloudrun_secure_services_parent_tag]

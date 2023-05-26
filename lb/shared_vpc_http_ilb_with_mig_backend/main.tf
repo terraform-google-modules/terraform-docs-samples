@@ -16,6 +16,7 @@
 
 # Shared VPC Internal HTTP load balancer with a managed instance group backend
 
+# [START cloudloadbalancing_shared_vpc_http_ilb_with_mig_backend_parent_tag]
 # [START cloudloadbalancing_shared_vpc_http_ilb_example]
 # [START cloudloadbalancing_shared_vpc_http_ilb_network]
 # VPC network
@@ -269,3 +270,4 @@ resource "google_compute_instance" "test_vm" {
 }
 # [END cloudloadbalancing_shared_vpc_http_ilb_test_instance]
 # [END cloudloadbalancing_shared_vpc_http_ilb_example]
+# [END cloudloadbalancing_shared_vpc_http_ilb_with_mig_backend_parent_tag]

@@ -15,6 +15,7 @@
  */
 
 
+# [START aiplatform_user_managed_notebooks_instance_parent_tag]
 # [START aiplatform_create_user_managed_notebooks_instance_sample]
 resource "google_notebooks_instance" "basic_instance" {
   name         = "notebooks-instance-basic"
@@ -27,3 +28,4 @@ resource "google_notebooks_instance" "basic_instance" {
   }
 }
 # [END aiplatform_create_user_managed_notebooks_instance_sample]
+# [END aiplatform_user_managed_notebooks_instance_parent_tag]

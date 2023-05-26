@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START dns_managed_zone_private_peering_parent_tag]
 # [START dns_managed_zone_private_peering]
 resource "random_id" "zone_suffix" {
   byte_length = 8
@@ -49,3 +50,4 @@ resource "google_compute_network" "network_target" {
   auto_create_subnetworks = false
 }
 # [END dns_managed_zone_private_peering]
+# [END dns_managed_zone_private_peering_parent_tag]

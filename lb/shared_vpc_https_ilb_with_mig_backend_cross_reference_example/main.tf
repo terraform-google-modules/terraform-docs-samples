@@ -21,6 +21,7 @@
 # Configure the network and subnets in the host project
 # https://cloud.google.com/load-balancing/docs/l7-internal/l7-internal-shared-vpc#host-network
 
+# [START cloudloadbalancing_shared_vpc_https_ilb_with_mig_backend_cross_reference_example_parent_tag]
 # [START cloudloadbalancing_shared_vpc_cross_ref_https_lb_basic]
 # [START cloudloadbalancing_shared_vpc_cross_ref_https_lb_network_backend_subnet]
 # [START cloudloadbalancing_shared_vpc_cross_ref_https_lb_network]
@@ -314,3 +315,4 @@ resource "google_compute_instance" "vm_test" {
 }
 # [END cloudloadbalancing_shared_vpc_cross_ref_https_lb_test_vm]
 # [END cloudloadbalancing_shared_vpc_cross_ref_https_lb_basic]
+# [END cloudloadbalancing_shared_vpc_https_ilb_with_mig_backend_cross_reference_example_parent_tag]

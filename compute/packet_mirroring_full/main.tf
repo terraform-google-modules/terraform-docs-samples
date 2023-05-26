@@ -17,6 +17,7 @@
 # Internal TCP/UDP load balancer with a managed instance group backend
 # Packet mirroring enabled
 
+# [START compute_packet_mirroring_full_parent_tag]
 # [START vpc_int_tcp_udp_gce_packet_mirroring]
 
 # [START vpc_int_tcp_udp_gce_network]
@@ -223,3 +224,4 @@ resource "google_compute_instance" "vm_test" {
 # [END compute_int_tcp_udp_gce_test_instance]
 
 # [END vpc_int_tcp_udp_gce_packet_mirroring]
+# [END compute_packet_mirroring_full_parent_tag]

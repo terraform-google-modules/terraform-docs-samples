@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+# [START vpc_private_service_connect_google_apis_parent_tag]
+
 # [START vpc_subnet_private_access]
 resource "google_compute_network" "network" {
   provider                = google-beta
@@ -55,3 +57,5 @@ resource "google_compute_global_forwarding_rule" "default" {
   load_balancing_scheme = ""
 }
 # [END compute_forwarding_rule_private_access]
+
+# [END vpc_private_service_connect_google_apis_parent_tag]

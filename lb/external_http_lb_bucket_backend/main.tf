@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudloadbalancing_external_http_lb_bucket_backend_parent_tag]
 # [START cloudloadbalancing_global_ext_bucket_buckets]
 # Create Cloud Storage buckets
 resource "random_id" "bucket_prefix" {
@@ -138,3 +139,4 @@ resource "google_compute_global_forwarding_rule" "default" {
   ip_address            = google_compute_global_address.default.id
 }
 # [END cloudloadbalancing_global_ext_bucket_forwarding_rule]
+# [END cloudloadbalancing_external_http_lb_bucket_backend_parent_tag]

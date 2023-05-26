@@ -17,6 +17,7 @@
 
 # Sample OS policy based on example - https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies#example-2
 
+# [START compute_os_config_policy_parent_tag]
 # [START osconfig_os_policy_assignment]
 resource "google_os_config_os_policy_assignment" "my-os-policy-assignment" {
 
@@ -87,3 +88,4 @@ resource "google_os_config_os_policy_assignment" "my-os-policy-assignment" {
   }
 }
 # [END osconfig_os_policy_assignment]
+# [END compute_os_config_policy_parent_tag]

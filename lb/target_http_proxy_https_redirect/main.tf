@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudloadbalancing_target_http_proxy_https_redirect_parent_tag]
 # [START cloudloadbalancing_target_http_proxy_https_redirect]
 resource "google_compute_target_http_proxy" "default" {
   name    = "test-https-redirect-proxy"
@@ -28,3 +29,4 @@ resource "google_compute_url_map" "default" {
   }
 }
 # [END cloudloadbalancing_target_http_proxy_https_redirect]
+# [END cloudloadbalancing_target_http_proxy_https_redirect_parent_tag]

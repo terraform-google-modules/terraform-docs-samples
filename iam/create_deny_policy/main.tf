@@ -17,6 +17,7 @@
 # Google Cloud Documentation: https://cloud.google.com/iam/docs/deny-access#create-deny-policy
 # Hashicorp Documentation: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iam_deny_policy
 
+# [START iam_create_deny_policy_parent_tag]
 # [START iam_create_deny_policy]
 data "google_project" "default" {
 }
@@ -42,3 +43,4 @@ resource "google_iam_deny_policy" "default" {
   }
 }
 # [END iam_create_deny_policy]
+# [END iam_create_deny_policy_parent_tag]

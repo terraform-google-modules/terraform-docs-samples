@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudrun_custom_domain_mapping_parent_tag]
 # [START cloudrun_custom_domain_mapping_run_service]
 resource "google_cloud_run_service" "default" {
   name     = "cloud-run-srv"
@@ -45,3 +46,4 @@ resource "google_cloud_run_domain_mapping" "default" {
   }
 }
 # [END cloudrun_custom_domain_mapping]
+# [END cloudrun_custom_domain_mapping_parent_tag]

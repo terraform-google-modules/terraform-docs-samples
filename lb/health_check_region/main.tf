@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudloadbalancing_health_check_region_parent_tag]
 # [START cloudloadbalancing_regional_health_check]
 resource "google_compute_region_health_check" "default" {
   name               = "tcp-health-check-region-west"
@@ -25,3 +26,4 @@ resource "google_compute_region_health_check" "default" {
   region = "us-west1"
 }
 # [END cloudloadbalancing_regional_health_check]
+# [END cloudloadbalancing_health_check_region_parent_tag]

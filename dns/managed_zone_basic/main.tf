@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START dns_managed_zone_basic_parent_tag]
 # [START dns_managed_zone_basic]
 resource "google_dns_managed_zone" "example_zone" {
   name        = "example-zone"
@@ -28,3 +29,4 @@ resource "random_id" "rnd" {
   byte_length = 4
 }
 # [END dns_managed_zone_basic]
+# [END dns_managed_zone_basic_parent_tag]

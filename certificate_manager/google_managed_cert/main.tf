@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+# [START certificatemanager_google_managed_cert_parent_tag]
+# [START certificatemanager_google_managed_cert_parent_tag]
 resource "random_id" "default" {
   byte_length = 4
 }
@@ -35,3 +37,5 @@ resource "google_certificate_manager_certificate" "default" {
   }
 }
 # [END certificatemanager_google_managed_certificate]
+# [END certificatemanager_google_managed_cert_parent_tag]
+# [END certificatemanager_google_managed_cert_parent_tag]

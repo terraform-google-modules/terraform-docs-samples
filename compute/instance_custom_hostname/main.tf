@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START compute_instance_custom_hostname_parent_tag]
 # [START compute_instances_create_custom_hostname]
 
 resource "google_compute_instance" "custom_hostname_instance" {
@@ -38,3 +39,4 @@ resource "google_compute_instance" "custom_hostname_instance" {
 }
 
 # [END compute_instances_create_custom_hostname]
+# [END compute_instance_custom_hostname_parent_tag]

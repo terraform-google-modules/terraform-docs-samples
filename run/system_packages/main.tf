@@ -16,6 +16,7 @@
 
 # Example of how to deploy a Cloud Run application with system packages
 
+# [START cloudrun_system_packages_parent_tag]
 # [START cloudrun_system_packages]
 resource "google_service_account" "graphviz" {
   account_id   = "graphviz"
@@ -54,3 +55,4 @@ resource "google_cloud_run_service_iam_member" "allow_unauthenticated" {
   member   = "allUsers"
 }
 # [END cloudrun_system_packages_allow_unauthenticated]
+# [END cloudrun_system_packages_parent_tag]

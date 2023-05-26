@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudloadbalancing_health_check_tcp_parent_tag]
 # [START cloudloadbalancing_health_check_tcp_with_logging]
 resource "google_compute_health_check" "health_check_tcp_with_logging" {
   provider = google-beta
@@ -32,3 +33,4 @@ resource "google_compute_health_check" "health_check_tcp_with_logging" {
   }
 }
 # [END cloudloadbalancing_health_check_tcp_with_logging]
+# [END cloudloadbalancing_health_check_tcp_parent_tag]

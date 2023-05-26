@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START functions_pubsub_parent_tag]
 # [START functions_v2_full]
 terraform {
   required_providers {
@@ -96,3 +97,4 @@ resource "google_cloudfunctions2_function" "default" {
   }
 }
 # [END functions_v2_full]
+# [END functions_pubsub_parent_tag]

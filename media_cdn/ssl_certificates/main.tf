@@ -16,6 +16,7 @@
 
 # Media CDN Docs: https://cloud.google.com/media-cdn/docs/configure-ssl-certificates
 
+# [START mediacdn_ssl_certificates_parent_tag]
 # [START mediacdn_cert_mgr_dns_auth]
 resource "google_certificate_manager_dns_authorization" "default" {
   name        = "example-dns-auth"
@@ -39,3 +40,4 @@ resource "google_certificate_manager_certificate" "default" {
   }
 }
 # [END mediacdn_cert_mgr_dns_cert]
+# [END mediacdn_ssl_certificates_parent_tag]

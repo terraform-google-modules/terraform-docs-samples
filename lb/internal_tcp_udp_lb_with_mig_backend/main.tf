@@ -16,6 +16,7 @@
 
 # Internal TCP/UDP load balancer with a managed instance group backend
 
+# [START cloudloadbalancing_internal_tcp_udp_lb_with_mig_backend_parent_tag]
 # [START cloudloadbalancing_int_tcp_udp_gce]
 
 # [START vpc_int_tcp_udp_gce_network]
@@ -200,3 +201,4 @@ resource "google_compute_instance" "vm_test" {
 # [END compute_int_tcp_udp_gce_test_instance]
 
 # [END cloudloadbalancing_int_tcp_udp_gce]
+# [END cloudloadbalancing_internal_tcp_udp_lb_with_mig_backend_parent_tag]

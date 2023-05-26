@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START dns_record_set_basic_parent_tag]
 # [START dns_record_set_basic]
 resource "google_dns_managed_zone" "parent_zone" {
   name        = "sample-zone"
@@ -29,3 +30,4 @@ resource "google_dns_record_set" "default" {
   ttl          = 86400
 }
 # [END dns_record_set_basic]
+# [END dns_record_set_basic_parent_tag]

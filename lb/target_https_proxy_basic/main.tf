@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudloadbalancing_target_https_proxy_basic_parent_tag]
 # [START cloudloadbalancing_target_https_proxy_basic]
 resource "google_compute_target_https_proxy" "default" {
   name             = "test-proxy"
@@ -95,3 +96,4 @@ resource "google_compute_http_health_check" "default" {
   timeout_sec        = 1
 }
 # [END cloudloadbalancing_target_https_proxy_basic]
+# [END cloudloadbalancing_target_https_proxy_basic_parent_tag]

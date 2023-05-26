@@ -15,6 +15,7 @@
  */
 
 
+# [START aiplatform_managed_notebooks_runtime_parent_tag]
 # [START aiplatform_create_managed_notebooks_runtime_sample]
 resource "google_notebooks_runtime" "basic_runtime" {
   name     = "notebooks-runtime-basic"
@@ -38,4 +39,4 @@ resource "google_notebooks_runtime" "basic_runtime" {
   }
 }
 # [END aiplatform_create_managed_notebooks_runtime_sample]
-
+# [END aiplatform_managed_notebooks_runtime_parent_tag]

@@ -16,6 +16,7 @@
 
 # Google Cloud Documentation https://cloud.google.com/dns/docs/zones/managed-reverse-lookup-zones
 
+# [START dns_managed_zone_reverse_lookup_parent_tag]
 # [START dns_managed_zone_reverse_lookup]
 resource "google_dns_managed_zone" "default" {
   name           = "my-new-zone"
@@ -26,3 +27,4 @@ resource "google_dns_managed_zone" "default" {
   reverse_lookup = "true"
 }
 # [END dns_managed_zone_reverse_lookup]
+# [END dns_managed_zone_reverse_lookup_parent_tag]

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START compute_instance_virtual_display_enabled_parent_tag]
 # [START compute_instance_virtual_display_enabled]
 
 resource "google_compute_instance" "instance_virtual_display" {
@@ -38,3 +39,4 @@ resource "google_compute_instance" "instance_virtual_display" {
 }
 
 # [END compute_instance_virtual_display_enabled]
+# [END compute_instance_virtual_display_enabled_parent_tag]

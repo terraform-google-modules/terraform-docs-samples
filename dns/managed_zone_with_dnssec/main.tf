@@ -15,6 +15,7 @@
  */
 
 # Google Cloud Documentation: https://cloud.google.com/dns/docs/dnssec-config#creating
+# [START dns_managed_zone_with_dnssec_parent_tag]
 # [START dns_managed_zone_with_dnssec]
 resource "google_dns_managed_zone" "example" {
   name        = "example-zone-name"
@@ -25,3 +26,4 @@ resource "google_dns_managed_zone" "example" {
   }
 }
 # [END dns_managed_zone_with_dnssec]
+# [END dns_managed_zone_with_dnssec_parent_tag]

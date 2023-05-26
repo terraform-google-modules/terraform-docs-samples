@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START storage_hmac_key_parent_tag]
 # [START storage_hmac_key]
 # Create a new service account
 resource "google_service_account" "service_account" {
@@ -25,3 +26,4 @@ resource "google_storage_hmac_key" "key" {
   service_account_email = google_service_account.service_account.email
 }
 # [END storage_hmac_key]
+# [END storage_hmac_key_parent_tag]

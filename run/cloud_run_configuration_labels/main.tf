@@ -16,6 +16,7 @@
 
 # Example configuration of a Cloud Run service with labels
 
+# [START cloudrun_cloud_run_configuration_labels_parent_tag]
 # [START cloudrun_service_configuration_labels]
 resource "google_cloud_run_service" "default" {
   name     = "cloudrun-service-labels"
@@ -38,3 +39,4 @@ resource "google_cloud_run_service" "default" {
   }
 }
 # [END cloudrun_service_configuration_labels]
+# [END cloudrun_cloud_run_configuration_labels_parent_tag]

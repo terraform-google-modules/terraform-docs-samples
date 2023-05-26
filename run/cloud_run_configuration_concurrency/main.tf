@@ -16,6 +16,7 @@
 
 # Example configuration of a Cloud Run service with concurrency set
 
+# [START cloudrun_cloud_run_configuration_concurrency_parent_tag]
 # [START cloudrun_service_configuration_concurrency]
 resource "google_cloud_run_service" "default" {
   name     = "cloudrun-service-concurrency"
@@ -33,3 +34,4 @@ resource "google_cloud_run_service" "default" {
   }
 }
 # [END cloudrun_service_configuration_concurrency]
+# [END cloudrun_cloud_run_configuration_concurrency_parent_tag]

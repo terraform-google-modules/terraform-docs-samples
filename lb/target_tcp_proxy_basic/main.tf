@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudloadbalancing_target_tcp_proxy_basic_parent_tag]
 # [START cloudloadbalancing_target_tcp_proxy_basic]
 resource "google_compute_target_tcp_proxy" "default" {
   name            = "test-proxy"
@@ -38,3 +39,4 @@ resource "google_compute_health_check" "default" {
   }
 }
 # [END cloudloadbalancing_target_tcp_proxy_basic]
+# [END cloudloadbalancing_target_tcp_proxy_basic_parent_tag]

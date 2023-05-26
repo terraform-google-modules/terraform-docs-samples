@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START dns_managed_zone_quickstart_parent_tag]
 # [START dns_domain_tutorial]
 # to setup a web-server
 
@@ -75,3 +76,4 @@ resource "google_dns_record_set" "default" {
   ]
 }
 # [END dns_domain_tutorial]
+# [END dns_managed_zone_quickstart_parent_tag]

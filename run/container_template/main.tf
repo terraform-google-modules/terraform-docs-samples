@@ -16,6 +16,7 @@
 
 # Example configuration of a Cloud Run service
 
+# [START cloudrun_container_template_parent_tag]
 # [START cloudrun_service_configuration]
 resource "google_cloud_run_service" "default" {
   name     = "config"
@@ -137,3 +138,4 @@ resource "google_cloud_run_service" "default" {
   }
 }
 # [END cloudrun_service_configuration]
+# [END cloudrun_container_template_parent_tag]

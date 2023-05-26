@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudrun_traffic_rollback_parent_tag]
 # [START cloudrun_service_traffic_rollback]
 resource "google_cloud_run_service" "default" {
   name     = "cloudrun-srv"
@@ -28,3 +29,4 @@ resource "google_cloud_run_service" "default" {
   }
 }
 # [END cloudrun_service_traffic_rollback]
+# [END cloudrun_traffic_rollback_parent_tag]

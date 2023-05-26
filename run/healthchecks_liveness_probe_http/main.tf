@@ -19,6 +19,7 @@ provider "google-beta" {
 }
 
 # Enable Cloud Run API
+# [START cloudrun_healthchecks_liveness_probe_http_parent_tag]
 resource "google_project_service" "cloudrun_api" {
   service            = "run.googleapis.com"
   disable_on_destroy = false
@@ -60,3 +61,4 @@ resource "google_cloud_run_service" "default" {
   }
 }
 #[END cloud_run_healthchecks_liveness_probe_http]
+# [END cloudrun_healthchecks_liveness_probe_http_parent_tag]

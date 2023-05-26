@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START trafficdirector_url_map_traffic_director_path_parent_tag]
 # [START trafficdirector_url_map_traffic_director_path]
 resource "google_compute_url_map" "urlmap" {
   name            = "urlmap"
@@ -119,3 +120,4 @@ resource "google_compute_health_check" "default" {
   }
 }
 # [END trafficdirector_url_map_traffic_director_path]
+# [END trafficdirector_url_map_traffic_director_path_parent_tag]

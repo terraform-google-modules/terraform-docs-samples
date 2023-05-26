@@ -17,6 +17,7 @@
 # Terraform Registry: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/network_services_edge_cache_keyset
 # Google Cloud Documentation: https://cloud.google.com/media-cdn/docs/create-keyset#gcloud-cli
 
+# [START mediacdn_keyset_parent_tag]
 # [START mediacdn_edge_cache_keyset]
 resource "google_network_services_edge_cache_keyset" "default" {
   name        = "prod-vod-keyset"
@@ -31,3 +32,4 @@ resource "google_network_services_edge_cache_keyset" "default" {
   }
 }
 # [END mediacdn_edge_cache_keyset]
+# [END mediacdn_keyset_parent_tag]

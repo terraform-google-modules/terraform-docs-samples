@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START compute_reservation_parent_tag]
 # [START compute_reservation_create_local_reservation]
 
 resource "google_compute_reservation" "gce_reservation_local" {
@@ -33,3 +34,4 @@ resource "google_compute_reservation" "gce_reservation_local" {
 }
 
 # [END compute_reservation_create_local_reservation]
+# [END compute_reservation_parent_tag]

@@ -16,6 +16,7 @@
 
 # Example configuration of a Cloud Run service with memory limit
 
+# [START cloudrun_cloud_run_configuration_memory_limits_parent_tag]
 # [START cloudrun_service_configuration_memory_limits]
 resource "google_cloud_run_service" "default" {
   name     = "cloudrun-service-memory-limits"
@@ -43,3 +44,4 @@ resource "google_cloud_run_service" "default" {
   }
 }
 # [END cloudrun_service_configuration_memory_limits]
+# [END cloudrun_cloud_run_configuration_memory_limits_parent_tag]

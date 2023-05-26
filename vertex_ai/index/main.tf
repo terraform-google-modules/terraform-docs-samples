@@ -15,6 +15,7 @@
  */
 
 
+# [START aiplatform_index_parent_tag]
 # [START aiplatform_create_index_sample]
 # Cloud Storage bucket name must be unique
 resource "random_id" "bucket_name_suffix" {
@@ -68,3 +69,4 @@ resource "google_vertex_ai_index" "default" {
   }
 }
 # [END aiplatform_create_index_sample]
+# [END aiplatform_index_parent_tag]

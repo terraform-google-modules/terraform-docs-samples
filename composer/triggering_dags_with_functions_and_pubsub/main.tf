@@ -13,6 +13,7 @@
 # limitations under the License.
 
 
+# [START composer_triggering_dags_with_functions_and_pubsub_parent_tag]
 # [START triggering_dags_with_functions_and_pubsub]
 #   Triggering DAGs Using Cloud Function and Pub/Sub Messages with Terraform
 #
@@ -224,3 +225,4 @@ resource "google_storage_bucket_object" "composer_dags_source" {
   source = "./pubsub_trigger_response_dag.py"
 }
 # [END triggering_dags_with_functions_and_pubsub]
+# [END composer_triggering_dags_with_functions_and_pubsub_parent_tag]

@@ -19,6 +19,7 @@ provider "google-beta" {
 }
 
 # Enable Cloud Run API
+# [START cloudrun_jobs_task_parallelism_create_parent_tag]
 resource "google_project_service" "cloudrun_api" {
   service            = "run.googleapis.com"
   disable_on_destroy = false
@@ -42,3 +43,4 @@ resource "google_cloud_run_v2_job" "default" {
   }
 }
 #[END cloud_run_jobs_task_parallelism_create]
+# [END cloudrun_jobs_task_parallelism_create_parent_tag]

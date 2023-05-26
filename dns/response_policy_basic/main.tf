@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START dns_response_policy_basic_parent_tag]
 # [START dns_response_policy_basic]
 resource "google_compute_network" "network_1" {
   provider = google-beta
@@ -42,3 +43,4 @@ resource "google_dns_response_policy" "example_response_policy" {
   }
 }
 # [END dns_response_policy_basic]
+# [END dns_response_policy_basic_parent_tag]

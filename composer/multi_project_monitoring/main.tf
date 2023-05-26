@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START composer_multi_project_monitoring_parent_tag]
 # [START composer_multi_project_monitoring]
 #   Monitoring for multiple Cloud Composer environments
 #
@@ -1034,3 +1035,4 @@ resource "google_monitoring_dashboard" "Composer_Dashboard" {
 EOF
 }
 # [END composer_multi_project_monitoring]
+# [END composer_multi_project_monitoring_parent_tag]

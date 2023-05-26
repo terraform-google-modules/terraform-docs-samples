@@ -16,6 +16,7 @@
 
 # External HTTP load balancer with an CDN-enabled managed instance group backend
 
+# [START cloudloadbalancing_external_http_lb_mig_backend_parent_tag]
 # [START cloudloadbalancing_ext_http_gce_instance_template]
 resource "google_compute_instance_template" "default" {
   name = "lb-backend-template"
@@ -153,3 +154,4 @@ resource "google_compute_global_forwarding_rule" "default" {
   ip_address            = google_compute_global_address.default.id
 }
 # [END cloudloadbalancing_ext_http_gce_instance_forwarding_rule]
+# [END cloudloadbalancing_external_http_lb_mig_backend_parent_tag]

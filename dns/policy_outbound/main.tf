@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START dns_policy_outbound_parent_tag]
 # [START dns_policy_outbound]
 resource "google_dns_policy" "default" {
   name = "example-outbound-policy"
@@ -38,3 +39,4 @@ resource "google_compute_network" "default" {
   auto_create_subnetworks = false
 }
 # [END dns_policy_outbound]
+# [END dns_policy_outbound_parent_tag]

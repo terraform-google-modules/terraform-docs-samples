@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudrun_tasks_parent_tag]
 # [START cloudrun_service_tasks_service]
 resource "google_cloud_run_service" "default" {
   name     = "cloud-run-service-name"
@@ -68,3 +69,4 @@ resource "google_cloud_tasks_queue" "default" {
   provider = google-beta
 }
 # [END cloudrun_service_tasks_queue]
+# [END cloudrun_tasks_parent_tag]

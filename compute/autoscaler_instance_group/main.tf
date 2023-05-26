@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START compute_autoscaler_instance_group_parent_tag]
 # [START compute_autoscale_schedule]
 resource "google_compute_autoscaler" "default" {
   provider = google-beta
@@ -81,3 +82,4 @@ data "google_compute_image" "debian_11" {
   family  = "debian-11"
   project = "debian-cloud"
 }
+# [END compute_autoscaler_instance_group_parent_tag]
