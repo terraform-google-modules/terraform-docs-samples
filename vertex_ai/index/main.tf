@@ -15,6 +15,7 @@
  */
 
 
+# [START aiplatform_create_index_sample]
 # Cloud Storage bucket name must be unique
 resource "random_id" "bucket_name_suffix" {
   byte_length = 8
@@ -37,7 +38,6 @@ resource "google_storage_bucket_object" "data" {
 EOF
 }
 
-# [START vertex_ai_index]
 resource "google_vertex_ai_index" "default" {
   region       = "us-central1"
   display_name = "sample-index-batch-update"
@@ -67,4 +67,4 @@ resource "google_vertex_ai_index" "default" {
     update = "1h"
   }
 }
-# [END vertex_ai_index]
+# [END aiplatform_create_index_sample]

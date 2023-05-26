@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
+
+# [START aiplatform_create_featurestore_sample]
 # Featurestore name must be unique for the project
 resource "random_id" "featurestore_name_suffix" {
   byte_length = 8
 }
 
-# [START vertex_ai_featurestore]
 resource "google_vertex_ai_featurestore" "main" {
   name   = "featurestore_${random_id.featurestore_name_suffix.hex}"
   region = "us-central1"
@@ -33,4 +34,4 @@ resource "google_vertex_ai_featurestore" "main" {
 
   force_destroy = true
 }
-# [END vertex_ai_featurestore]
+# [END aiplatform_create_featurestore_sample]
