@@ -19,12 +19,12 @@ provider "google" {
   region = "us-central1"
 }
 
+# [START aiplatform_create_endpoint_sample]
 # Endpoin name must be unique for the project
 resource "random_id" "endpoint_id" {
   byte_length = 4
 }
 
-# [START vertex_ai_endpoint]
 resource "google_vertex_ai_endpoint" "default" {
   name         = substr(random_id.endpoint_id.dec, 0, 10)
   display_name = "sample-endpoint"
@@ -34,5 +34,5 @@ resource "google_vertex_ai_endpoint" "default" {
     label-one = "value-one"
   }
 }
-# [END vertex_ai_endpoint]
+# [END aiplatform_create_endpoint_sample]
 

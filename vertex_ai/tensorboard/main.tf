@@ -15,9 +15,9 @@
  */
 
 
-# [START vertex_ai_tensorboard]
+# [START aiplatform_create_tensorboard_sample]
 resource "google_vertex_ai_tensorboard" "default" {
   display_name = "vertex-ai-tensorboard-sample-name"
   region       = "us-central1"
 }
-# [END vertex_ai_tensorboard]
+# [END aiplatform_create_tensorboard_sample]

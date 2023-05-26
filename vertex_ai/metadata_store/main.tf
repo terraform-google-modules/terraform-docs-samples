@@ -15,15 +15,15 @@
  */
 
 
+# [START aiplatform_create_metadata_store_sample]
 resource "random_id" "store_prefix" {
   byte_length = 8
 }
 
-# [START vertex_ai_metadata_store]
 resource "google_vertex_ai_metadata_store" "main" {
   name        = "${random_id.store_prefix.hex}-test-store"
   description = "Example metadata store"
   provider    = google-beta
   region      = "us-central1"
 }
-# [END vertex_ai_metadata_store]
+# [END aiplatform_create_metadata_store_sample]

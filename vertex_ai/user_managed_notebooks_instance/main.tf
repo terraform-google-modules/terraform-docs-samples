@@ -15,7 +15,7 @@
  */
 
 
-# [START vertex_ai_user_managed_notebooks_instance_basic]
+# [START aiplatform_create_user_managed_notebooks_instance_sample]
 resource "google_notebooks_instance" "basic_instance" {
   name         = "notebooks-instance-basic"
   location     = "us-central1-a"
@@ -26,4 +26,4 @@ resource "google_notebooks_instance" "basic_instance" {
     image_family = "tf-ent-2-9-cu113-notebooks"
   }
 }
-# [END vertex_ai_user_managed_notebooks_instance_basic]
+# [END aiplatform_create_user_managed_notebooks_instance_sample]
