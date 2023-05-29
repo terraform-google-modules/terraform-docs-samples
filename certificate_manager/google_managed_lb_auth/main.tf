@@ -23,7 +23,7 @@ resource "random_id" "tf_prefix" {
   byte_length = 4
 }
 
-# [START certificatemanager_google_managed_lb_auth_servicess]
+# [START certificatemanager_google_managed_lb_auth_services]
 resource "google_project_service" "certificatemanager_svc" {
   service            = "certificatemanager.googleapis.com"
   disable_on_destroy = false
