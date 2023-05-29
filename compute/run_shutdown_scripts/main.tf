@@ -38,7 +38,7 @@ resource "google_compute_instance" "default" {
 # [END compute_terraform_shutdown_script_direct_example]
 
 
-# [START compute_terraform_shutdown_scriipt_file_example]
+# [START compute_terraform_shutdown_script_file_example]
 resource "google_compute_instance" "shutdown_content_from_file" {
   name         = "instance-name-shutdown-content-from-file"
   machine_type = "f1-micro"
@@ -59,4 +59,4 @@ resource "google_compute_instance" "shutdown_content_from_file" {
     }
   }
 }
-# [END compute_terraform_shutdown_scriipt_file_example]
+# [END compute_terraform_shutdown_script_file_example]
