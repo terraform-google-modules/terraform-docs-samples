@@ -1,4 +1,3 @@
-
 /**
  * Copyright 2023 Google LLC
  *
@@ -15,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START bigquery_bigquery_create_dataset_parent_tag]
 resource "google_project_service" "project" {
   service            = "bigquery.googleapis.com"
   disable_on_destroy = false
@@ -35,3 +35,4 @@ resource "google_bigquery_dataset" "default" {
   }
 }
 # [END bigquery_create_dataset]
+# [END bigquery_bigquery_create_dataset_parent_tag]
