@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START certificatemanagerdns_managed_zone_with_wildcard_certificate_parent_tag]
 locals {
   domain = "example.me"
   name   = "prefixname"
@@ -122,3 +123,4 @@ output "domain_name_servers" {
 output "certificate_map" {
   value = google_certificate_manager_certificate_map.certificate_map.id
 }
+# [END certificatemanagerdns_managed_zone_with_wildcard_certificate_parent_tag]
