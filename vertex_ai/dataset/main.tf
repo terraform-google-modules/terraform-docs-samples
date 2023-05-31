@@ -15,6 +15,7 @@
  */
 
 
+# [START aiplatform_dataset_parent_tag]
 # [START aiplatform_create_dataset_image_sample]
 resource "google_vertex_ai_dataset" "image_dataset" {
   display_name        = "image-dataset"
@@ -46,3 +47,4 @@ resource "google_vertex_ai_dataset" "video_dataset" {
   region              = "us-central1"
 }
 # [END aiplatform_create_dataset_video_sample]
+# [END aiplatform_dataset_parent_tag]
