@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START compute_os_login_ssh_key_parent_tag]
 # [START compute_os_login_ssh_public_key]
 data "google_client_openid_userinfo" "me" {
 }
@@ -65,3 +66,4 @@ resource "google_compute_instance" "default" {
   }
 }
 # [END compute_os_login_google_compute_instance_ssh_keys]
+# [END compute_os_login_ssh_key_parent_tag]
