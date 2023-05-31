@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START storage_make_data_public_parent_tag]
 resource "random_id" "bucket_prefix" {
   byte_length = 8
 }
@@ -34,3 +35,4 @@ resource "google_storage_bucket_iam_member" "member" {
   member   = "allUsers"
 }
 # [END storage_make_data_public]
+# [END storage_make_data_public_parent_tag]

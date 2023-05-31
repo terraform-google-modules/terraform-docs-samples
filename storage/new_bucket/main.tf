@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START storage_new_bucket_parent_tag]
 # [START storage_create_new_bucket_tf]
 # Create new storage bucket in the US multi-region
 # with coldline storage
@@ -68,3 +69,4 @@ output "bucket_metadata" {
   value = data.google_storage_bucket.default
 }
 # [END storage_get_bucket_metadata_tf]
+# [END storage_new_bucket_parent_tag]

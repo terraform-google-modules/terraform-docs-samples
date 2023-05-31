@@ -19,6 +19,7 @@
 #   1. https://cloud.google.com/media-cdn/docs/quickstart#create-service
 #   2. https://cloud.google.com/media-cdn/docs/origins#cloud-storage-origins
 
+# [START mediacdn_quickstart_parent_tag]
 resource "google_storage_bucket" "default" {
   name                        = "my-bucket-123123"
   location                    = "US"
@@ -77,3 +78,4 @@ resource "google_network_services_edge_cache_service" "default" {
   }
 }
 # [END mediacdn_edge_cache_service]
+# [END mediacdn_quickstart_parent_tag]
