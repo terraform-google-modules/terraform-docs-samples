@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START storage_flask_google_cloud_quickstart_parent_tag]
 # [START compute_flask_quickstart_vpc]
 resource "google_compute_network" "vpc_network" {
   name                    = "my-custom-mode-network"
@@ -103,3 +104,4 @@ resource "google_storage_bucket" "default" {
   }
 }
 # [END storage_bucket_tf_with_versioning]
+# [END storage_flask_google_cloud_quickstart_parent_tag]

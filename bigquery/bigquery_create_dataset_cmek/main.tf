@@ -14,17 +14,6 @@
  * limitations under the License.
  */
 
-# [START bigquery_bigquery_create_dataset_cmek_parent_tag]
-resource "google_project_service" "bigquery" {
-  service            = "bigquery.googleapis.com"
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "cloudkms" {
-  service            = "cloudkms.googleapis.com"
-  disable_on_destroy = false
-}
-
 # [START bigquery_create_dataset_cmek]
 resource "google_bigquery_dataset" "default" {
   dataset_id                      = "mydataset"
@@ -69,4 +58,3 @@ resource "google_project_iam_member" "service_account_access" {
   member  = "serviceAccount:bq-${data.google_project.project.number}@bigquery-encryption.iam.gserviceaccount.com"
 }
 # [END bigquery_create_dataset_cmek]
-# [END bigquery_bigquery_create_dataset_cmek_parent_tag]

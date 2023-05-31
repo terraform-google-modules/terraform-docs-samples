@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START certificatemanager_google_managed_lb_auth_parent_tag]
 locals {
   domain = "example.me"
   name   = "prefixname"
@@ -151,4 +152,4 @@ output "certificate_map" {
 output "load_balancer_ip_addr" {
   value = google_compute_global_address.default.address
 }
-
+# [END certificatemanager_google_managed_lb_auth_parent_tag]

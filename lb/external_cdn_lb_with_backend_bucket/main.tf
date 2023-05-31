@@ -16,6 +16,7 @@
 
 # CDN load balancer with Cloud bucket as backend
 
+# [START cloudloadbalancing_external_cdn_lb_with_backend_bucket_parent_tag]
 # [START cloudloadbalancing_cdn_with_backend_bucket_cloud_storage_bucket]
 # Cloud Storage bucket
 resource "random_id" "bucket_prefix" {
@@ -139,3 +140,4 @@ resource "google_compute_backend_bucket" "default" {
   }
 }
 # [END cloudloadbalancing_cdn_with_backend_bucket_backend_bucket]
+# [END cloudloadbalancing_external_cdn_lb_with_backend_bucket_parent_tag]

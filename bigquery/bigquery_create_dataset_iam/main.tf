@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-
-# [START bigquery_bigquery_create_dataset_iam_parent_tag]
-resource "google_project_service" "default" {
-  service            = "bigquery.googleapis.com"
-  disable_on_destroy = false
-}
-
 # [START bigquery_create_dataset_iam]
 resource "google_bigquery_dataset" "default" {
   dataset_id                      = "mydataset"
@@ -71,4 +64,3 @@ resource "google_bigquery_dataset_iam_policy" "default" {
   policy_data = data.google_iam_policy.default.policy_data
 }
 # [END bigquery_create_dataset_iam]
-# [END bigquery_bigquery_create_dataset_iam_parent_tag]
