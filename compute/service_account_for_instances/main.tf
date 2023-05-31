@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START compute_service_account_for_instances_parent_tag]
 # [START iam_service_account_for_vm]
 resource "google_service_account" "default" {
   account_id   = "service-account-id"
@@ -56,3 +57,4 @@ resource "google_compute_instance" "default" {
   }
 }
 # [END compute_instance_run_as_service_account]
+# [END compute_service_account_for_instances_parent_tag]
