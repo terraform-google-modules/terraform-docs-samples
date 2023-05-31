@@ -15,11 +15,6 @@
  * limitations under the License.
  */
 
-resource "google_project_service" "project" {
-  service            = "bigquery.googleapis.com"
-  disable_on_destroy = false
-}
-
 # [START bigquery_create_dataset]
 resource "google_bigquery_dataset" "default" {
   dataset_id                      = "mydataset"
