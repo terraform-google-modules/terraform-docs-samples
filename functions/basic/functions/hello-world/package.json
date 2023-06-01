@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "@google-cloud/functions-framework": "^2.1.0"
+    "@google-cloud/functions-framework": "^3.0.0"
   }
 }
