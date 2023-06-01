@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloud_sql_mysql_instance_replica_parent_tag]
 # [START cloud_sql_mysql_instance_primary]
 resource "google_sql_database_instance" "primary" {
   name             = "mysql-primary-instance-name"
@@ -53,3 +54,4 @@ resource "google_sql_database_instance" "read_replica" {
   deletion_protection = false
 }
 # [END cloud_sql_mysql_instance_replica]
+# [END cloud_sql_mysql_instance_replica_parent_tag]
