@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloud_sql_postgres_instance_clone_parent_tag]
 # [START cloud_sql_postgres_instance_source]
 resource "google_sql_database_instance" "source" {
   name             = "postgres-instance-source-name"
@@ -41,3 +42,4 @@ resource "google_sql_database_instance" "clone" {
   deletion_protection = false
 }
 # [END cloud_sql_postgres_instance_clone]
+# [END cloud_sql_postgres_instance_clone_parent_tag]
