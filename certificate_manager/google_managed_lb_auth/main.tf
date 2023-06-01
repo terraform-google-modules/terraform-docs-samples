@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START certificatemanager_google_managed_lb_auth_parent_tag]
 locals {
   domain = "example.me"
   name   = "prefixname"
@@ -23,7 +24,7 @@ resource "random_id" "tf_prefix" {
   byte_length = 4
 }
 
-# [START certificatemanager_google_managed_lb_auth_servicess]
+# [START certificatemanager_google_managed_lb_auth_services]
 resource "google_project_service" "certificatemanager_svc" {
   service            = "certificatemanager.googleapis.com"
   disable_on_destroy = false
@@ -151,4 +152,4 @@ output "certificate_map" {
 output "load_balancer_ip_addr" {
   value = google_compute_global_address.default.address
 }
-
+# [END certificatemanager_google_managed_lb_auth_parent_tag]

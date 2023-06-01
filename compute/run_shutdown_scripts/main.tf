@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START compute_run_shutdown_scripts_parent_tag]
 # [START compute_terraform_shutdown_script_direct_example]
 resource "google_compute_instance" "default" {
   name         = "instance-name-shutdown-content-directly"
@@ -38,6 +39,7 @@ resource "google_compute_instance" "default" {
 # [END compute_terraform_shutdown_script_direct_example]
 
 
+# [START compute_terraform_shutdown_script_file_example]
 # [START compute_terraform_shutdown_scriipt_file_example]
 resource "google_compute_instance" "shutdown_content_from_file" {
   name         = "instance-name-shutdown-content-from-file"
@@ -59,4 +61,6 @@ resource "google_compute_instance" "shutdown_content_from_file" {
     }
   }
 }
+# [END compute_terraform_shutdown_script_file_example]
 # [END compute_terraform_shutdown_scriipt_file_example]
+# [END compute_run_shutdown_scripts_parent_tag]
