@@ -22,6 +22,7 @@ Create all service agents for aiplatform.googleapis.com for
 the `default` project, then grant roles to the service agents.
 */
 
+# [START iam_create_service_agent_parent_tag]
 # [START iam_create_project_level_service_agent]
 data "google_project" "default" {
 }
@@ -53,3 +54,4 @@ resource "google_project_iam_member" "primary" {
   member  = "serviceAccount:${google_project_service_identity.default.email}"
 }
 # [END iam_grant_roles_to_service_agents]
+# [END iam_create_service_agent_parent_tag]

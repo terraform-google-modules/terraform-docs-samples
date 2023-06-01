@@ -15,7 +15,7 @@
  */
 
 
-# [START vertex_ai_managed_notebooks_runtime_basic]
+# [START aiplatform_create_managed_notebooks_runtime_sample]
 resource "google_notebooks_runtime" "basic_runtime" {
   name     = "notebooks-runtime-basic"
   location = "us-central1"
@@ -37,5 +37,5 @@ resource "google_notebooks_runtime" "basic_runtime" {
     }
   }
 }
-# [END vertex_ai_managed_notebooks_runtime_basic]
+# [END aiplatform_create_managed_notebooks_runtime_sample]
 
