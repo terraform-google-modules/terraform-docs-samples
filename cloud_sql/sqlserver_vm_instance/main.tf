@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloud_sql_sqlserver_vm_instance_parent_tag]
 # VPC network
 resource "google_compute_network" "default" {
   provider                = google-beta
@@ -72,3 +73,4 @@ resource "google_compute_firewall" "sql_server_1433" {
   source_ranges = ["0.0.0.0/0"]
 }
 # [END cloud_sql_sqlserver_vm_firewall_rule]
+# [END cloud_sql_sqlserver_vm_instance_parent_tag]
