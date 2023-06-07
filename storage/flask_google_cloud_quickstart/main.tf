@@ -97,7 +97,7 @@ resource "google_kms_key_ring" "terraform_state" {
 
 resource "google_kms_crypto_key" "terraform_state_bucket" {
   name            = "test-terraform-state-bucket"
-  key_ring        = "${google_kms_key_ring.terraform_state.id}"
+  key_ring        = google_kms_key_ring.terraform_state.id
   rotation_period = "86400s"
 
   lifecycle {
@@ -111,8 +111,8 @@ data "google_project" "project" {
 
 resource "google_project_iam_member" "grant_google_storage_service_encrypt_decrypt" {
   project = data.google_project.project.project_id
-  role       = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-  member     = "serviceAccount:service-${data.google_project.project.number}@gs-project-accounts.iam.gserviceaccount.com"
+  role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+  member  = "serviceAccount:service-${data.google_project.project.number}@gs-project-accounts.iam.gserviceaccount.com"
 }
 # [END storage_kms_encryption_tfstate]
 
