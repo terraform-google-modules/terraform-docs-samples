@@ -89,6 +89,33 @@ resource "google_compute_firewall" "flask" {
 # Create new multi-region storage bucket in the US
 # with versioning enabled
 
+# [START storage_kms_encryption_tfstate]
+resource "google_kms_key_ring" "terraform_state" {
+  name     = "test-terraform-state"
+  location = "us"
+}
+
+resource "google_kms_crypto_key" "terraform_state_bucket" {
+  name            = "test-terraform-state-bucket"
+  key_ring        = "${google_kms_key_ring.terraform_state.id}"
+  rotation_period = "86400s"
+
+  lifecycle {
+    prevent_destroy = false
+  }
+}
+
+# Enable the Cloud Storage service account to encrypt/decrypt Cloud KMS keys
+data "google_project" "project" {
+}
+
+resource "google_project_iam_member" "grant_google_storage_service_encrypt_decrypt" {
+  project = data.google_project.project.project_id
+  role       = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+  member     = "serviceAccount:service-${data.google_project.project.number}@gs-project-accounts.iam.gserviceaccount.com"
+}
+# [END storage_kms_encryption_tfstate]
+
 # [START storage_bucket_tf_with_versioning]
 resource "random_id" "bucket_prefix" {
   byte_length = 8
@@ -101,6 +128,9 @@ resource "google_storage_bucket" "default" {
   storage_class = "STANDARD"
   versioning {
     enabled = true
+  }
+  encryption {
+    default_kms_key_name = google_kms_crypto_key.terraform_state_bucket.id
   }
 }
 # [END storage_bucket_tf_with_versioning]
