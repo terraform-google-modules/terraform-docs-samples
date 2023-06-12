@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-# [START cloud_sql_postgres_instance_clone_parent_tag]
-# [START cloud_sql_postgres_instance_source]
-resource "google_sql_database_instance" "source" {
-  name             = "postgres-instance-source-name"
+# [START cloud_sql_mysql_instance_80_db_n1_s2]
+resource "google_sql_database_instance" "instance" {
+  name             = "mysql-instance"
   region           = "us-central1"
-  database_version = "POSTGRES_12"
+  database_version = "MYSQL_8_0"
   settings {
     tier = "db-n1-standard-2"
   }
@@ -27,19 +26,17 @@ resource "google_sql_database_instance" "source" {
   # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
   deletion_protection = false
 }
-# [END cloud_sql_postgres_instance_source]
+# [END cloud_sql_mysql_instance_80_db_n1_s2]
 
-# [START cloud_sql_postgres_instance_clone]
-resource "google_sql_database_instance" "clone" {
-  name             = "postgres-instance-clone-name"
-  region           = "us-central1"
-  database_version = "POSTGRES_12"
-  clone {
-    source_instance_name = google_sql_database_instance.source.id
-  }
-  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
-  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
-  deletion_protection = false
+# [START cloud_sql_mysql_instance_user]
+resource "random_password" "pwd" {
+  length  = 16
+  special = false
 }
-# [END cloud_sql_postgres_instance_clone]
-# [END cloud_sql_postgres_instance_clone_parent_tag]
+
+resource "google_sql_user" "user" {
+  name     = "user"
+  instance = google_sql_database_instance.instance.name
+  password = random_password.pwd.result
+}
+# [END cloud_sql_mysql_instance_user]
