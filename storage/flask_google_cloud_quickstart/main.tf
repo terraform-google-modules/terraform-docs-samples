@@ -91,7 +91,7 @@ resource "google_compute_firewall" "flask" {
 
 # [START storage_kms_encryption_tfstate]
 resource "google_kms_key_ring" "terraform_state" {
-  name     = "test-terraform-state"
+  name     = "${random_id.bucket_prefix.hex}-bucket-tfstate"
   location = "us"
 }
 
@@ -109,7 +109,7 @@ resource "google_kms_crypto_key" "terraform_state_bucket" {
 data "google_project" "project" {
 }
 
-resource "google_project_iam_member" "grant_google_storage_service_encrypt_decrypt" {
+resource "google_project_iam_member" "default" {
   project = data.google_project.project.project_id
   role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   member  = "serviceAccount:service-${data.google_project.project.number}@gs-project-accounts.iam.gserviceaccount.com"
