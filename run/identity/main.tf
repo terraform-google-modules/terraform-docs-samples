@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudrun_identity_parent_tag]
 # [START cloudrun_service_identity_iam]
 resource "google_service_account" "cloudrun_service_identity" {
   account_id = "my-service-account"
@@ -40,3 +41,4 @@ resource "google_cloud_run_service" "default" {
   }
 }
 # [END cloudrun_service_identity_run_service]
+# [END cloudrun_identity_parent_tag]

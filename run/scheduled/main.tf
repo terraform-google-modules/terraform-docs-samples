@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudrun_scheduled_parent_tag]
 resource "google_project_service" "run_api" {
   service            = "run.googleapis.com"
   disable_on_destroy = false
@@ -108,3 +109,4 @@ resource "google_cloud_run_service_iam_member" "default" {
   member   = "serviceAccount:${google_service_account.default.email}"
 }
 # [END cloudrun_service_scheduled_iam]
+# [END cloudrun_scheduled_parent_tag]

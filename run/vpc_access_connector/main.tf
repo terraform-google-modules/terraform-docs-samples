@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudrun_vpc_access_connector_parent_tag]
 # [START vpc_serverless_connector_enable_api]
 resource "google_project_service" "vpcaccess_api" {
   service            = "vpcaccess.googleapis.com"
@@ -96,3 +97,4 @@ resource "google_cloud_run_service" "gcr_service" {
   autogenerate_revision_name = true
 }
 # [END cloudrun_vpc_serverless_connector]
+# [END cloudrun_vpc_access_connector_parent_tag]
