@@ -19,6 +19,7 @@ provider "google-beta" {
 }
 
 # Enable Compute Engine API
+# [START cloudrun_static_outbound_parent_tag]
 resource "google_project_service" "compute_engine_api" {
   service            = "compute.googleapis.com"
   disable_on_destroy = false
@@ -144,3 +145,4 @@ resource "google_cloud_run_service" "default" {
   }
 }
 # [END cloudrun_service_static_service]
+# [END cloudrun_static_outbound_parent_tag]
