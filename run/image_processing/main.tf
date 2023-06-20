@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudrun_image_processing_parent_tag]
 # [START cloudrun_service_existing_pubsub]
 resource "google_service_account" "sa" {
   account_id   = "cloud-run-pubsub-invoker"
@@ -124,3 +125,4 @@ resource "google_storage_notification" "notification" {
   depends_on     = [google_pubsub_topic_iam_binding.binding]
 }
 # [END cloudrun_service_image_processing_notifications]
+# [END cloudrun_image_processing_parent_tag]

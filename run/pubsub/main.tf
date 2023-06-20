@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 # Project data
+# [START cloudrun_pubsub_parent_tag]
 data "google_project" "project" {
 }
 
@@ -94,3 +95,4 @@ resource "google_pubsub_subscription" "subscription" {
   depends_on = [google_cloud_run_service.default]
 }
 # [END cloudrun_service_pubsub_sub]
+# [END cloudrun_pubsub_parent_tag]
