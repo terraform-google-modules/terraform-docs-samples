@@ -15,6 +15,7 @@
  */
 
 # Project data
+# [START cloudrun_connect_cloud_sql_parent_tag]
 data "google_project" "project" {
 }
 
@@ -197,3 +198,4 @@ resource "google_cloud_run_service" "default" {
   depends_on                 = [google_project_service.secretmanager_api, google_project_service.cloudrun_api, google_project_service.sqladmin_api]
 }
 # [END cloudrun_service_cloudsql_default_service]
+# [END cloudrun_connect_cloud_sql_parent_tag]

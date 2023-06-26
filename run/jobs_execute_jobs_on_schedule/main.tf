@@ -19,6 +19,7 @@ provider "google-beta" {
 }
 
 # Project data
+# [START cloudrun_jobs_execute_jobs_on_schedule_parent_tag]
 data "google_project" "project" {
 }
 
@@ -119,3 +120,4 @@ resource "google_cloud_scheduler_job" "job" {
   depends_on = [resource.google_project_service.cloudscheduler_api, resource.google_cloud_run_v2_job.default, resource.google_cloud_run_v2_job_iam_binding.binding]
 }
 #[END cloud_run_jobs_execute_jobs_on_schedule]
+# [END cloudrun_jobs_execute_jobs_on_schedule_parent_tag]

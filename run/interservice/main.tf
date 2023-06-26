@@ -16,6 +16,7 @@
 
 # Example of using a public Cloud Run service to call a private one
 
+# [START cloudrun_interservice_parent_tag]
 # [START cloudrun_service_interservice_public_service]
 resource "google_cloud_run_service" "public" {
   name     = "public-service"
@@ -106,3 +107,4 @@ resource "google_cloud_run_service_iam_policy" "private" {
   policy_data = data.google_iam_policy.private.policy_data
 }
 # [END cloudrun_service_interservice_private_policy]
+# [END cloudrun_interservice_parent_tag]

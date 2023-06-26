@@ -16,6 +16,7 @@
 
 # Example of how to deploy a publicly-accessible Cloud Run application
 
+# [START cloudrun_noauth_parent_tag]
 # [START cloudrun_service_noauth]
 resource "google_cloud_run_service" "default" {
   name     = "cloudrun-srv"
@@ -49,3 +50,4 @@ resource "google_cloud_run_service_iam_policy" "noauth" {
   policy_data = data.google_iam_policy.noauth.policy_data
 }
 # [END cloudrun_service_noauth_iam]
+# [END cloudrun_noauth_parent_tag]
