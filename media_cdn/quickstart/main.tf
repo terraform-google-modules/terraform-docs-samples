@@ -40,7 +40,7 @@ resource "google_network_services_edge_cache_origin" "default" {
 
 # [START mediacdn_edge_cache_service]
 resource "google_network_services_edge_cache_service" "default" {
-  name        = "cloud-media-service"
+  name = "cloud-media-service"
   routing {
     host_rule {
       hosts        = ["googlecloudexample.com"]
