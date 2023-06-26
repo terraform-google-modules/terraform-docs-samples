@@ -16,6 +16,7 @@
 
 # Cloud Run service replicated across multiple GCP regions
 
+# [START cloudrun_multiple_regions_parent_tag]
 resource "google_project_service" "compute_api" {
   provider                   = google-beta
   service                    = "compute.googleapis.com"
@@ -224,3 +225,4 @@ resource "google_compute_global_forwarding_rule" "https_default" {
   depends_on = [google_compute_target_http_proxy.https_default]
 }
 # [END cloudrun_multiregion_forwarding_https]
+# [END cloudrun_multiple_regions_parent_tag]

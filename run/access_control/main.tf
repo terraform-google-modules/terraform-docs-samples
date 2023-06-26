@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START cloudrun_access_control_parent_tag]
 # [START cloudrun_service_access_control_run_service]
 resource "google_cloud_run_service" "default" {
   name     = "cloud-run-srv"
@@ -44,3 +45,4 @@ resource "google_cloud_run_service_iam_binding" "default" {
   ]
 }
 # [END cloudrun_service_access_control_iam_binding]
+# [END cloudrun_access_control_parent_tag]
