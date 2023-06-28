@@ -91,7 +91,8 @@ resource "google_compute_instance" "default" {
     }
   }
 
-  // Local SSD interface type; NVME for image with optimized NVMe drivers or SCSI
+  # Local SSD interface type; NVME for image with optimized NVMe drivers or SCSI
+  # Local SSD are 375 GiB in size
   scratch_disk {
     interface = "SCSI"
   }
