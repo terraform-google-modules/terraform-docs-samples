@@ -96,5 +96,10 @@ resource "google_compute_instance" "default" {
   scratch_disk {
     interface = "SCSI"
   }
+
+  network_interface {
+    network = "default"
+    access_config {}
+  }
 }
 # [END compute_instances_create_with_local_ssd]
