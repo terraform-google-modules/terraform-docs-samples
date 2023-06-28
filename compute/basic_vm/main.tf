@@ -81,9 +81,9 @@ resource "google_compute_instance" "custom_subnet" {
 # Create a VM with a local SSD for temporary storage use cases
 
 resource "google_compute_instance" "default" {
-    name = "my-vm-instance-with-scratch"
-    machine_type = "n2-standard-8" 
-    zone = "us-central1-a" 
+  name         = "my-vm-instance-with-scratch"
+  machine_type = "n2-standard-8"
+  zone         = "us-central1-a"
 
   boot_disk {
     initialize_params {
@@ -97,5 +97,4 @@ resource "google_compute_instance" "default" {
     interface = "SCSI"
   }
 }
-
 # [END compute_instances_create_with_local_ssd]
