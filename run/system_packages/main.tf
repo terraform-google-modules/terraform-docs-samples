@@ -23,25 +23,18 @@ resource "google_service_account" "graphviz" {
   display_name = "GraphViz Tutorial Service Account"
 }
 
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
   name     = "graphviz-example"
   location = "us-central1"
 
   template {
-    spec {
-      containers {
-        # Replace with the URL of your graphviz image
-        #   gcr.io/<YOUR_GCP_PROJECT_ID>/graphviz
-        image = "gcr.io/cloudrun/hello"
-      }
-
-      service_account_name = google_service_account.graphviz.email
+    containers {
+      # Replace with the URL of your graphviz image
+      #   gcr.io/<YOUR_GCP_PROJECT_ID>/graphviz
+      image = "gcr.io/cloudrun/hello"
     }
-  }
 
-  traffic {
-    percent         = 100
-    latest_revision = true
+    service_account = google_service_account.graphviz.email
   }
 }
 # [END cloudrun_system_packages]
@@ -49,8 +42,8 @@ resource "google_cloud_run_service" "default" {
 # [START cloudrun_system_packages_allow_unauthenticated]
 # Make Cloud Run service publicly accessible
 resource "google_cloud_run_service_iam_member" "allow_unauthenticated" {
-  service  = google_cloud_run_service.default.name
-  location = google_cloud_run_service.default.location
+  service  = google_cloud_run_v2_service.default.name
+  location = google_cloud_run_v2_service.default.location
   role     = "roles/run.invoker"
   member   = "allUsers"
 }

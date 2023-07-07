@@ -109,40 +109,34 @@ resource "google_compute_router_nat" "default" {
 # [END cloudrun_service_static_nat]
 
 # [START cloudrun_service_static_service]
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
   provider = google-beta
   name     = "cr-static-ip-service"
   location = google_compute_subnetwork.default.region
 
   template {
-    spec {
-      containers {
-        # Replace with the URL of your container
-        #   gcr.io/<YOUR_GCP_PROJECT_ID>/<YOUR_CONTAINER_NAME>
-        image = "us-docker.pkg.dev/cloudrun/container/hello"
-      }
+    containers {
+      # Replace with the URL of your container
+      #   gcr.io/<YOUR_GCP_PROJECT_ID>/<YOUR_CONTAINER_NAME>
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
-
-    metadata {
-      annotations = {
-        "run.googleapis.com/vpc-access-connector" = google_vpc_access_connector.default.name
-        "run.googleapis.com/vpc-access-egress"    = "all-traffic"
-        "autoscaling.knative.dev/maxScale"        = "5"
-      }
+    scaling {
+      max_instance_count = 5
+    }
+    vpc_access {
+      connector = google_vpc_access_connector.default.id
+      egress    = "ALL_TRAFFIC"
     }
   }
+  ingress = "INGRESS_TRAFFIC_ALL"
 
-  metadata {
-    annotations = {
-      "run.googleapis.com/ingress" = "all"
-    }
-  }
-
+  # [END cloudrun_service_static_service]
   lifecycle {
     ignore_changes = [
-      metadata[0].annotations,
+      ingress, template[0].vpc_access
     ]
   }
+  # [START cloudrun_service_static_service]
 }
 # [END cloudrun_service_static_service]
 # [END cloudrun_static_outbound_parent_tag]

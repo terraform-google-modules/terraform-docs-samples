@@ -15,7 +15,7 @@
  */
 
 # [START cloudrun_service_traffic_split_tag]
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
   name     = "cloudrun-srv"
   location = "us-central1"
 
@@ -25,7 +25,8 @@ resource "google_cloud_run_service" "default" {
     # Update revision to 50% traffic
     percent = 50
     # This revision needs to already exist
-    revision_name = "cloudrun-srv-green"
+    revision = "cloudrun-srv-green"
+    type     = "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"
   }
 
   traffic {

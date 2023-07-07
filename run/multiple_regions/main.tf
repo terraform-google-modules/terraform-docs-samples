@@ -141,7 +141,7 @@ resource "google_compute_region_network_endpoint_group" "lb_default" {
   network_endpoint_type = "SERVERLESS"
   region                = var.run_regions[count.index]
   cloud_run {
-    service = google_cloud_run_service.run_default[count.index].name
+    service = google_cloud_run_v2_service.run_default[count.index].name
   }
 }
 # [END cloudrun_multiregion_neg]
@@ -153,23 +153,16 @@ output "load_balancer_ip_addr" {
 # [END cloudrun_multiregion_addr]
 
 # [START cloudrun_multiregion_service]
-resource "google_cloud_run_service" "run_default" {
+resource "google_cloud_run_v2_service" "run_default" {
   provider = google-beta
   count    = length(var.run_regions)
   name     = "myservice-run-app-${var.run_regions[count.index]}"
   location = var.run_regions[count.index]
 
   template {
-    spec {
-      containers {
-        image = "us-docker.pkg.dev/cloudrun/container/hello"
-      }
+    containers {
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
-  }
-
-  traffic {
-    percent         = 100
-    latest_revision = true
   }
 
   # Use an explicit depends_on clause to wait until API is enabled
@@ -183,8 +176,8 @@ resource "google_cloud_run_service" "run_default" {
 resource "google_cloud_run_service_iam_member" "run_allow_unauthenticated" {
   provider = google-beta
   count    = length(var.run_regions)
-  location = google_cloud_run_service.run_default[count.index].location
-  service  = google_cloud_run_service.run_default[count.index].name
+  location = google_cloud_run_v2_service.run_default[count.index].location
+  service  = google_cloud_run_v2_service.run_default[count.index].name
   role     = "roles/run.invoker"
   member   = "allUsers"
 }

@@ -15,30 +15,28 @@
  */
 
 # [START cloudrun_service_traffic_split]
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
   name     = "cloudrun-srv"
   location = "us-central1"
 
   template {
-    spec {
-      containers {
-        image = "us-docker.pkg.dev/cloudrun/container/hello"
-      }
+    containers {
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
-    metadata {
-      name = "cloudrun-srv-green"
-    }
+    revision = "cloudrun-srv-green"
   }
 
   traffic {
-    percent       = 25
-    revision_name = "cloudrun-srv-green"
+    percent  = 25
+    revision = "cloudrun-srv-green"
+    type     = "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"
   }
 
   traffic {
     percent = 75
     # This revision needs to already exist
-    revision_name = "cloudrun-srv-blue"
+    revision = "cloudrun-srv-blue"
+    type     = "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"
   }
 }
 # [END cloudrun_service_traffic_split]

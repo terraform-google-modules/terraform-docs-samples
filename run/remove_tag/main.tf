@@ -15,7 +15,7 @@
  */
 
 # [START cloudrun_service_remove_tag]
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
   name     = "cloudrun-srv"
   location = "us-central1"
 
@@ -24,7 +24,9 @@ resource "google_cloud_run_service" "default" {
   traffic {
     percent = 100
     # This revision needs to already exist
-    revision_name = "cloudrun-srv-green"
+    revision = "cloudrun-srv-green"
+    type     = "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"
+
 
   }
   traffic {
@@ -32,7 +34,8 @@ resource "google_cloud_run_service" "default" {
     # Keep revision at 0% traffic
     percent = 0
     # This revision needs to already exist
-    revision_name = "cloudrun-srv-blue"
+    revision = "cloudrun-srv-blue"
+    type     = "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"
   }
 }
 # [END cloudrun_service_remove_tag]

@@ -25,34 +25,26 @@ resource "google_project_service" "cloudrun_api" {
 }
 
 # [START cloudrun_service_ingress]
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
   provider = google-beta
   name     = "ingress-service"
   location = "us-central1"
 
-  template {
-    spec {
-      containers {
-        image = "gcr.io/cloudrun/hello" #public image for your service
-      }
-    }
-  }
-  traffic {
-    percent         = 100
-    latest_revision = true
-  }
-  metadata {
-    annotations = {
-      # For valid annotation values and descriptions, see
-      # https://cloud.google.com/sdk/gcloud/reference/run/deploy#--ingress
-      "run.googleapis.com/ingress" = "internal"
-    }
-  }
+  # For valid annotation values and descriptions, see
+  # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#ingress
+  ingress = "INGRESS_TRAFFIC_INTERNAL_ONLY"
 
+  template {
+    containers {
+      image = "gcr.io/cloudrun/hello" #public image for your service
+    }
+  }
+  # [END cloudrun_service_ingress]
   lifecycle {
     ignore_changes = [
-      metadata[0].annotations,
+      ingress
     ]
   }
+  # [START cloudrun_service_ingress]
 }
 # [END cloudrun_service_ingress]

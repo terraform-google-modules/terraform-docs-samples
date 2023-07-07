@@ -26,33 +26,26 @@ resource "google_project_service" "cloudrun_api" {
 
 # Create Cloud Run Container with TCP startup probe
 #[START cloud_run_healthchecks_startup_probe_tcp]
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
   provider = google-beta
   name     = "cloudrun-service-healthcheck"
   location = "us-central1"
 
   template {
-    spec {
-      containers {
-        image = "us-docker.pkg.dev/cloudrun/container/hello"
+    containers {
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
 
-        startup_probe {
-          failure_threshold     = 5
-          initial_delay_seconds = 10
-          timeout_seconds       = 3
-          period_seconds        = 3
+      startup_probe {
+        failure_threshold     = 5
+        initial_delay_seconds = 10
+        timeout_seconds       = 3
+        period_seconds        = 3
 
-          tcp_socket {
-            port = 8080
-          }
+        tcp_socket {
+          port = 8080
         }
       }
     }
-  }
-
-  traffic {
-    percent         = 100
-    latest_revision = true
   }
 }
 #[END cloud_run_healthchecks_startup_probe_tcp]
