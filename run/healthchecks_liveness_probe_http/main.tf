@@ -43,6 +43,8 @@ resource "google_cloud_run_v2_service" "default" {
 
         http_get {
           path = "/"
+          # Custom headers to set in the request
+          # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#http_headers
           http_headers {
             name  = "Access-Control-Allow-Origin"
             value = "*"

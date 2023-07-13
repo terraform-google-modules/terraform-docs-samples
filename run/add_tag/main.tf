@@ -21,6 +21,8 @@ resource "google_cloud_run_v2_service" "default" {
 
   template {}
 
+  # Define the traffic split for each revision
+  # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#traffic
   traffic {
     percent = 100
     # This revision needs to already exist

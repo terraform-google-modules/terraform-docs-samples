@@ -131,6 +131,7 @@ resource "google_cloud_run_v2_service" "default" {
   ingress = "INGRESS_TRAFFIC_ALL"
 
   # [END cloudrun_service_static_service]
+  # Used in sample testing. These fields may change in 'terraform plan' output, which is expected and thus non-blocking.
   lifecycle {
     ignore_changes = [
       ingress, template[0].vpc_access

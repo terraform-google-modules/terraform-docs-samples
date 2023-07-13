@@ -93,6 +93,8 @@ resource "google_cloud_run_v2_service" "default" {
   location = "us-central1"
   template {
     containers {
+
+      # Replace with newly created image gcr.io/<project_id>/pubsub
       image = "gcr.io/cloudrun/hello"
       env {
         name  = "BLURRED_BUCKET_NAME"

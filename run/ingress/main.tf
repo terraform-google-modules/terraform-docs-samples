@@ -40,6 +40,7 @@ resource "google_cloud_run_v2_service" "default" {
     }
   }
   # [END cloudrun_service_ingress]
+  # Used in sample testing. These fields may change in 'terraform plan' output, which is expected and thus non-blocking.
   lifecycle {
     ignore_changes = [
       ingress
