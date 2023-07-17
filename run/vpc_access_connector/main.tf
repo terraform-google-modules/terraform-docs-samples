@@ -63,38 +63,36 @@ resource "google_compute_router_nat" "router_nat" {
 
 # [START cloudrun_vpc_serverless_connector]
 # Cloud Run service
-resource "google_cloud_run_service" "gcr_service" {
+resource "google_cloud_run_v2_service" "gcr_service" {
   name     = "mygcrservice"
   provider = google-beta
   location = "us-west1"
 
   template {
-    spec {
-      containers {
-        image = "us-docker.pkg.dev/cloudrun/container/hello"
-        resources {
-          limits = {
-            cpu    = "1000m"
-            memory = "512M"
-          }
+    containers {
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
+      resources {
+        limits = {
+          cpu    = "1000m"
+          memory = "512Mi"
         }
       }
       # the service uses this SA to call other Google Cloud APIs
       # service_account_name = myservice_runtime_sa
     }
 
-    metadata {
-      annotations = {
-        # Limit scale up to prevent any cost blow outs!
-        "autoscaling.knative.dev/maxScale" = "5"
-        # Use the VPC Connector
-        "run.googleapis.com/vpc-access-connector" = google_vpc_access_connector.connector.name
-        # all egress from the service should go through the VPC Connector
-        "run.googleapis.com/vpc-access-egress" = "all-traffic"
-      }
+    scaling {
+      # Limit scale up to prevent any cost blow outs!
+      max_instance_count = 5
+    }
+
+    vpc_access {
+      # Use the VPC Connector
+      connector = google_vpc_access_connector.connector.id
+      # all egress from the service should go through the VPC Connector
+      egress = "ALL_TRAFFIC"
     }
   }
-  autogenerate_revision_name = true
 }
 # [END cloudrun_vpc_serverless_connector]
 # [END cloudrun_vpc_access_connector_parent_tag]
