@@ -26,35 +26,28 @@ resource "google_project_service" "cloudrun_api" {
 
 # Create Cloud Run Container with gRPC liveness probe
 #[START cloud_run_healthchecks_liveness_probe_gRPC]
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
   provider = google-beta
   name     = "cloudrun-service-healthcheck"
   location = "us-central1"
 
   template {
-    spec {
-      containers {
-        # Note: Change to the name of your image
-        image = "us-docker.pkg.dev/cloudrun/container/hello"
+    containers {
+      # Note: Change to the name of your image
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
 
-        liveness_probe {
-          failure_threshold     = 5
-          initial_delay_seconds = 10
-          timeout_seconds       = 3
-          period_seconds        = 3
+      liveness_probe {
+        failure_threshold     = 5
+        initial_delay_seconds = 10
+        timeout_seconds       = 3
+        period_seconds        = 3
 
-          # Note: Change to the name of your pre-existing grpc health status service
-          grpc {
-            service = "grpc.health.v1.Health"
-          }
+        # Note: Change to the name of your pre-existing grpc health status service
+        grpc {
+          service = "grpc.health.v1.Health"
         }
       }
     }
-  }
-
-  traffic {
-    percent         = 100
-    latest_revision = true
   }
 }
 #[END cloud_run_healthchecks_liveness_probe_gRPC]

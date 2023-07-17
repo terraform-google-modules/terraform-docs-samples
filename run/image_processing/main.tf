@@ -22,8 +22,8 @@ resource "google_service_account" "sa" {
 }
 
 resource "google_cloud_run_service_iam_binding" "binding" {
-  location = google_cloud_run_service.default.location
-  service  = google_cloud_run_service.default.name
+  location = google_cloud_run_v2_service.default.location
+  service  = google_cloud_run_v2_service.default.name
   role     = "roles/run.invoker"
   members  = ["serviceAccount:${google_service_account.sa.email}"]
 }
@@ -51,7 +51,7 @@ resource "google_pubsub_subscription" "subscription" {
   name  = "pubsub_subscription"
   topic = google_pubsub_topic.default.name
   push_config {
-    push_endpoint = google_cloud_run_service.default.status[0].url
+    push_endpoint = google_cloud_run_v2_service.default.uri
     oidc_token {
       service_account_email = google_service_account.sa.email
     }
@@ -88,23 +88,19 @@ output "blurred_bucket_name" {
 # [END cloudrun_service_image_processing_buckets]
 
 # [START cloudrun_service_image_processing_crservice]
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
   name     = "pubsub-tutorial"
   location = "us-central1"
   template {
-    spec {
-      containers {
-        image = "gcr.io/cloudrun/hello"
-        env {
-          name  = "BLURRED_BUCKET_NAME"
-          value = google_storage_bucket.imageproc_output.name
-        }
+    containers {
+
+      # Replace with newly created image gcr.io/<project_id>/pubsub
+      image = "gcr.io/cloudrun/hello"
+      env {
+        name  = "BLURRED_BUCKET_NAME"
+        value = google_storage_bucket.imageproc_output.name
       }
     }
-  }
-  traffic {
-    percent         = 100
-    latest_revision = true
   }
 }
 # [END cloudrun_service_image_processing_crservice]
