@@ -55,7 +55,9 @@ resource "google_cloud_run_v2_service" "default" {
 
       # [START cloudrun_service_configuration_limit_memory]
       # [START cloudrun_service_configuration_limit_cpu]
+      # [START cloudrun_service_configuration_cpu_allocation]
       resources {
+        # [END cloudrun_service_configuration_cpu_allocation]
         limits = {
           # CPU usage limit
           cpu = "1" # 1 vCPU
@@ -63,9 +65,11 @@ resource "google_cloud_run_v2_service" "default" {
           # Memory usage limit (per container)
           memory = "512Mi"
         }
+        # [START cloudrun_service_configuration_cpu_allocation]
         # If true, garbage-collect CPU when once a request finishes
         cpu_idle = false
       }
+      # [START cloudrun_service_configuration_cpu_allocation]
       # [END cloudrun_service_configuration_limit_memory]
       # [END cloudrun_service_configuration_limit_cpu]
 
@@ -103,7 +107,7 @@ resource "google_cloud_run_v2_service" "default" {
     baz : "quux"
   }
   # [END cloudrun_service_configuration_labels]
-  
+
   # [START cloudrun_service_configuration_containers]
 }
 # [END cloudrun_service_configuration_containers]
