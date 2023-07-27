@@ -28,17 +28,14 @@ resource "google_cloud_run_service" "default" {
         image = "us-docker.pkg.dev/cloudrun/container/hello"
 
         # Container "entry-point" command
-        # https://cloud.google.com/run/docs/configuring/containers#configure-entrypoint
         command = ["/server"]
 
         # Container "entry-point" args
-        # https://cloud.google.com/run/docs/configuring/containers#configure-entrypoint
         args = []
         # [END cloudrun_service_configuration_containers]
 
         # [START cloudrun_service_configuration_http2]
         # Enable HTTP/2
-        # https://cloud.google.com/run/docs/configuring/http2
         ports {
           name           = "h2c"
           container_port = 8080
@@ -47,7 +44,6 @@ resource "google_cloud_run_service" "default" {
 
         # [START cloudrun_service_configuration_env_var]
         # Environment variables
-        # https://cloud.google.com/run/docs/configuring/environment-variables
         env {
           name  = "foo"
           value = "bar"
@@ -63,11 +59,9 @@ resource "google_cloud_run_service" "default" {
         resources {
           limits = {
             # CPU usage limit
-            # https://cloud.google.com/run/docs/configuring/cpu
             cpu = "1000m" # 1 vCPU
 
             # Memory usage limit (per container)
-            # https://cloud.google.com/run/docs/configuring/memory-limits
             memory = "512Mi"
           }
         }
@@ -80,13 +74,11 @@ resource "google_cloud_run_service" "default" {
 
       # [START cloudrun_service_configuration_timeout]
       # Timeout
-      # https://cloud.google.com/run/docs/configuring/request-timeout
       timeout_seconds = 300
       # [END cloudrun_service_configuration_timeout]
 
       # [START cloudrun_service_configuration_concurrency]
       # Maximum concurrent requests
-      # https://cloud.google.com/run/docs/configuring/concurrency
       container_concurrency = 80
       # [END cloudrun_service_configuration_concurrency]
 
@@ -102,15 +94,12 @@ resource "google_cloud_run_service" "default" {
       annotations = {
 
         # Max instances
-        # https://cloud.google.com/run/docs/configuring/max-instances
         "autoscaling.knative.dev/maxScale" = 10
 
         # Min instances
-        # https://cloud.google.com/run/docs/configuring/min-instances
         "autoscaling.knative.dev/minScale" = 1
 
         # If true, garbage-collect CPU when once a request finishes
-        # https://cloud.google.com/run/docs/configuring/cpu-allocation
         "run.googleapis.com/cpu-throttling" = false
       }
       # [END cloudrun_service_configuration_max_instances]
@@ -118,7 +107,6 @@ resource "google_cloud_run_service" "default" {
 
       # [START cloudrun_service_configuration_labels]
       # Labels
-      # https://cloud.google.com/run/docs/configuring/labels
       labels = {
         foo : "bar"
         baz : "quux"
