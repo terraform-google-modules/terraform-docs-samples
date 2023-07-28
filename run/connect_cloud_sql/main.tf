@@ -185,8 +185,8 @@ resource "google_cloud_run_v2_service" "default" {
           }
         }
       }
-
       # [START cloudrun_service_cloudsql_default_service_minimal]
+
       volume_mounts {
         name       = "cloudsql"
         mount_path = "/cloudsql"
