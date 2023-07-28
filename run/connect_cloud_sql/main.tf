@@ -183,6 +183,16 @@ resource "google_cloud_run_v2_service" "default" {
           }
         }
       }
+      volume_mounts {
+        name       = "cloudsql"
+        mount_path = "/cloudsql"
+      }
+    }
+    volumes {
+      name = "cloudsql"
+      cloud_sql_instance {
+        instances = [google_sql_database_instance.mysql_instance.connection_name]
+      }
     }
   }
 
