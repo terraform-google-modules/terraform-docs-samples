@@ -21,3 +21,31 @@ resource "google_secret_manager_secret_iam_member" "default" {
   member     = "serviceAccount:${data.google_project.default.number}-compute@developer.gserviceaccount.com"
   depends_on = [google_secret_manager_secret.default]
 }
+
+resource "google_cloud_run_v2_service" "default" {
+  name     = "cloudrun-srv"
+  location = "us-central1"
+  ingress  = "INGRESS_TRAFFIC_ALL"
+
+  template {
+    volumes {
+      name = "my-service-volume"
+      secret {
+        secret       = google_secret_manager_secret.default.secret_id
+        items {
+          version = "latest"
+          path    = "my-secret"
+          mode    = 0 # use default 0444
+        }
+      }
+    }
+    containers {
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
+      volume_mounts {
+        name       = "my-service-volume"
+        mount_path = "/secrets"
+      }
+    }
+  }
+  depends_on = [google_secret_manager_secret_version.default]
+}
