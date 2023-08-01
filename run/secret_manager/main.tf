@@ -1,5 +1,7 @@
 
-data "google_project" "default" {
+resource "google_service_account" "default" {
+  account_id   = "cloud-run-service-account"
+  display_name = "Service account for Cloud Run"
 }
 
 resource "google_secret_manager_secret" "default" {
@@ -18,7 +20,7 @@ resource "google_secret_manager_secret_iam_member" "default" {
   secret_id = google_secret_manager_secret.default.id
   role      = "roles/secretmanager.secretAccessor"
   # Grant the default Compute service account access to this secret.
-  member     = "serviceAccount:${data.google_project.default.number}-compute@developer.gserviceaccount.com"
+  member     = "serviceAccount:${google_service_account.default.email}"
   depends_on = [google_secret_manager_secret.default]
 }
 
@@ -46,6 +48,7 @@ resource "google_cloud_run_v2_service" "default" {
         mount_path = "/secrets"
       }
     }
+    service_account = google_service_account.default.email
   }
   depends_on = [google_secret_manager_secret_version.default]
 }
