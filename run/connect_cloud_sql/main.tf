@@ -38,7 +38,7 @@ resource "google_project_service" "cloudrun_api" {
 }
 
 # Creates SQL instance (~15 minutes to fully spin up)
-resource "google_sql_database_instance" "mysql_instance" {
+resource "google_sql_database_instance" "default" {
   name             = "mysql-instance-1"
   region           = "us-central1"
   database_version = "MYSQL_8_0"
@@ -139,7 +139,7 @@ resource "google_secret_manager_secret_iam_member" "secretaccess_compute_dbname"
 
 # [END cloudrun_service_cloudsql_dbname_secret]
 
-
+# [START cloudrun_service_cloudsql_default_service_minimal]
 # [START cloudrun_service_cloudsql_default_service]
 resource "google_cloud_run_v2_service" "default" {
   name     = "cloudrun-service"
@@ -148,10 +148,12 @@ resource "google_cloud_run_v2_service" "default" {
   template {
     containers {
       image = "us-docker.pkg.dev/cloudrun/container/hello:latest" # Image to deploy
+      # [END cloudrun_service_cloudsql_default_service_minimal]
+
       # Sets a environment variable for instance connection name
       env {
         name  = "INSTANCE_CONNECTION_NAME"
-        value = google_sql_database_instance.mysql_instance.connection_name
+        value = google_sql_database_instance.default.connection_name
       }
       # Sets a secret environment variable for database user secret
       env {
@@ -183,11 +185,23 @@ resource "google_cloud_run_v2_service" "default" {
           }
         }
       }
+      # [START cloudrun_service_cloudsql_default_service_minimal]
+
+      volume_mounts {
+        name       = "cloudsql"
+        mount_path = "/cloudsql"
+      }
+    }
+    volumes {
+      name = "cloudsql"
+      cloud_sql_instance {
+        instances = [google_sql_database_instance.default.connection_name]
+      }
     }
   }
-
   client     = "terraform"
   depends_on = [google_project_service.secretmanager_api, google_project_service.cloudrun_api, google_project_service.sqladmin_api]
 }
+# [END cloudrun_service_cloudsql_default_service_minimal]
 # [END cloudrun_service_cloudsql_default_service]
 # [END cloudrun_connect_cloud_sql_parent_tag]
