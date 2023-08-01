@@ -15,8 +15,8 @@ resource "google_secret_manager_secret_version" "default" {
 }
 
 resource "google_secret_manager_secret_iam_member" "default" {
-  secret_id  = google_secret_manager_secret.default.id
-  role       = "roles/secretmanager.secretAccessor"
+  secret_id = google_secret_manager_secret.default.id
+  role      = "roles/secretmanager.secretAccessor"
   # Grant the default Compute service account access to this secret.
   member     = "serviceAccount:${data.google_project.default.number}-compute@developer.gserviceaccount.com"
   depends_on = [google_secret_manager_secret.default]
@@ -31,7 +31,7 @@ resource "google_cloud_run_v2_service" "default" {
     volumes {
       name = "my-service-volume"
       secret {
-        secret       = google_secret_manager_secret.default.secret_id
+        secret = google_secret_manager_secret.default.secret_id
         items {
           version = "latest"
           path    = "my-secret"
