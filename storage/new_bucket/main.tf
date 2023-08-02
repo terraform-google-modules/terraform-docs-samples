@@ -32,14 +32,12 @@ resource "google_storage_bucket" "static" {
 # [END storage_create_new_bucket_tf]
 
 # [START storage_upload_object_tf]
-# Upload files
-# Discussion about using tf to upload a large number of objects
-# https://stackoverflow.com/questions/68455132/terraform-copy-multiple-files-to-bucket-at-the-same-time-bucket-creation
+# Creates a text file based on content_type with content
+# in Google Storage Bucket
 
-# The text object in Cloud Storage
 resource "google_storage_bucket_object" "default" {
   name = "new-object"
-  # Uncomment and add valid path to an object.
+  # Uncomment the following to upload an existing object from local file system
   #  source       = "/path/to/an/object"
   content      = "Data as string to be uploaded"
   content_type = "text/plain"
