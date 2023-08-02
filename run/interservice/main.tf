@@ -18,29 +18,26 @@
 
 # [START cloudrun_interservice_parent_tag]
 # [START cloudrun_service_interservice_public_service]
-resource "google_cloud_run_service" "public" {
+resource "google_cloud_run_v2_service" "public" {
   name     = "public-service"
   location = "us-central1"
 
   template {
-    spec {
-      containers {
-        # TODO<developer>: replace this with a public service container
-        # (This service can be invoked by anyone on the internet)
-        image = "us-docker.pkg.dev/cloudrun/container/hello"
+    containers {
+      # TODO<developer>: replace this with a public service container
+      # (This service can be invoked by anyone on the internet)
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
 
-        # Include a reference to the private Cloud Run
-        # service's URL as an environment variable.
-        env {
-          name  = "URL"
-          value = google_cloud_run_service.private.status[0].url
-        }
+      # Include a reference to the private Cloud Run
+      # service's URL as an environment variable.
+      env {
+        name  = "URL"
+        value = google_cloud_run_v2_service.private.uri
       }
-
-      # Give the "public" Cloud Run service
-      # a service account's identity
-      service_account_name = google_service_account.default.email
     }
+    # Give the "public" Cloud Run service
+    # a service account's identity
+    service_account = google_service_account.default.email
   }
 }
 # [END cloudrun_service_interservice_public_service]
@@ -56,9 +53,9 @@ data "google_iam_policy" "public" {
 }
 
 resource "google_cloud_run_service_iam_policy" "public" {
-  location = google_cloud_run_service.public.location
-  project  = google_cloud_run_service.public.project
-  service  = google_cloud_run_service.public.name
+  location = google_cloud_run_v2_service.public.location
+  project  = google_cloud_run_v2_service.public.project
+  service  = google_cloud_run_v2_service.public.name
 
   policy_data = data.google_iam_policy.public.policy_data
 }
@@ -73,17 +70,15 @@ resource "google_service_account" "default" {
 # [END cloudrun_service_interservice_sa]
 
 # [START cloudrun_service_interservice_private_service]
-resource "google_cloud_run_service" "private" {
+resource "google_cloud_run_v2_service" "private" {
   name     = "private-service"
   location = "us-central1"
 
   template {
-    spec {
-      containers {
-        // TODO<developer>: replace this with a private service container
-        // (This service should only be invocable by the public service)
-        image = "us-docker.pkg.dev/cloudrun/container/hello"
-      }
+    containers {
+      // TODO<developer>: replace this with a private service container
+      // (This service should only be invocable by the public service)
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
   }
 }
@@ -100,9 +95,9 @@ data "google_iam_policy" "private" {
 }
 
 resource "google_cloud_run_service_iam_policy" "private" {
-  location = google_cloud_run_service.private.location
-  project  = google_cloud_run_service.private.project
-  service  = google_cloud_run_service.private.name
+  location = google_cloud_run_v2_service.private.location
+  project  = google_cloud_run_v2_service.private.project
+  service  = google_cloud_run_v2_service.private.name
 
   policy_data = data.google_iam_policy.private.policy_data
 }
