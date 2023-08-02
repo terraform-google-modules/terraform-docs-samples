@@ -18,7 +18,7 @@
 
 # [START cloudrun_service_configuration_concurrency]
 resource "google_cloud_run_service" "default" {
-  name     = "cloudrun-service-concurrency"
+  name     = "run-concurrency-sample"
   location = "us-central1"
 
   template {

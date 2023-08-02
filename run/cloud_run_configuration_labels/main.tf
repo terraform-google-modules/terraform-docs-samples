@@ -18,7 +18,7 @@
 
 # [START cloudrun_service_configuration_labels]
 resource "google_cloud_run_service" "default" {
-  name     = "cloudrun-service-labels"
+  name     = "run-labels-sample"
   location = "us-central1"
 
   template {

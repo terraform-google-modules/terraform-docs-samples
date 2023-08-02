@@ -18,7 +18,7 @@
 
 # [START cloudrun_service_configuration_containers]
 resource "google_cloud_run_service" "default" {
-  name     = "cloudrun-service-containers"
+  name     = "run-containers-sample"
   location = "us-central1"
 
   template {

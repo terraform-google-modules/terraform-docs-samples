@@ -18,7 +18,7 @@
 
 # [START cloudrun_service_configuration_h2c]
 resource "google_cloud_run_service" "default" {
-  name     = "cloudrun-service-h2c"
+  name     = "run-h2c-sample"
   location = "us-central1"
 
   template {

@@ -18,7 +18,7 @@
 
 # [START cloudrun_service_configuration_env_var]
 resource "google_cloud_run_service" "default" {
-  name     = "cloudrun-service-env-var"
+  name     = "run-env-var-sample"
   location = "us-central1"
 
   template {

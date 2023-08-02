@@ -18,7 +18,7 @@
 
 # [START cloudrun_service_configuration_cpu]
 resource "google_cloud_run_service" "default" {
-  name     = "cloudrun-service-cpu"
+  name     = "run-config-cpu-sample"
   location = "us-central1"
 
   template {

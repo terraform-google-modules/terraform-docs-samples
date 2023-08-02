@@ -16,7 +16,7 @@
 
 # [START cloudrun_service_add_tag]
 resource "google_cloud_run_v2_service" "default" {
-  name     = "cloudrun-srv"
+  name     = "run-add-tag-sample"
   location = "us-central1"
 
   template {}

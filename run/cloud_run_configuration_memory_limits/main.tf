@@ -18,7 +18,7 @@
 
 # [START cloudrun_service_configuration_memory_limits]
 resource "google_cloud_run_service" "default" {
-  name     = "cloudrun-service-memory-limits"
+  name     = "run-config-memory-limits-sample"
   location = "us-central1"
 
   template {

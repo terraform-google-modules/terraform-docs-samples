@@ -18,7 +18,7 @@
 
 # [START cloudrun_service_configuration_max_instances]
 resource "google_cloud_run_service" "default" {
-  name     = "cloudrun-service-max-instances"
+  name     = "run-max-instances-sample"
   location = "us-central1"
 
   template {
