@@ -16,49 +16,38 @@
 
 # [START cloudrun_secure_services_parent_tag]
 # [START cloudrun_secure_services_backend]
-resource "google_cloud_run_service" "renderer" {
+resource "google_cloud_run_v2_service" "renderer" {
   provider = google-beta
   name     = "renderer"
   location = "us-central1"
   template {
-    spec {
-      containers {
-        # Replace with the URL of your Secure Services > Renderer image.
-        #   gcr.io/<PROJECT_ID>/renderer
-        image = "gcr.io/cloudrun/hello"
-      }
-      service_account_name = google_service_account.renderer.email
+    containers {
+      # Replace with the URL of your Secure Services > Renderer image.
+      #   gcr.io/<PROJECT_ID>/renderer
+      image = "gcr.io/cloudrun/hello"
     }
-  }
-  traffic {
-    percent         = 100
-    latest_revision = true
+    service_account = google_service_account.renderer.email
   }
 }
 # [END cloudrun_secure_services_backend]
 
 # [START cloudrun_secure_services_frontend]
-resource "google_cloud_run_service" "editor" {
+resource "google_cloud_run_v2_service" "editor" {
   provider = google-beta
   name     = "editor"
   location = "us-central1"
   template {
-    spec {
-      containers {
-        # Replace with the URL of your Secure Services > Editor image.
-        #   gcr.io/<PROJECT_ID>/editor
-        image = "gcr.io/cloudrun/hello"
-        env {
-          name  = "EDITOR_UPSTREAM_RENDER_URL"
-          value = google_cloud_run_service.renderer.status[0].url
-        }
+    containers {
+      # Replace with the URL of your Secure Services > Editor image.
+      #   gcr.io/<PROJECT_ID>/editor
+      image = "gcr.io/cloudrun/hello"
+      env {
+        name  = "EDITOR_UPSTREAM_RENDER_URL"
+        value = google_cloud_run_v2_service.renderer.uri
       }
-      service_account_name = google_service_account.editor.email
     }
-  }
-  traffic {
-    percent         = 100
-    latest_revision = true
+    service_account = google_service_account.editor.email
+
   }
 }
 # [END cloudrun_secure_services_frontend]
@@ -82,8 +71,8 @@ resource "google_service_account" "editor" {
 # [START cloudrun_secure_services_backend_invoker_access]
 resource "google_cloud_run_service_iam_member" "editor_invokes_renderer" {
   provider = google-beta
-  location = google_cloud_run_service.renderer.location
-  service  = google_cloud_run_service.renderer.name
+  location = google_cloud_run_v2_service.renderer.location
+  service  = google_cloud_run_v2_service.renderer.name
   role     = "roles/run.invoker"
   member   = "serviceAccount:${google_service_account.editor.email}"
 }
@@ -102,19 +91,19 @@ data "google_iam_policy" "noauth" {
 
 resource "google_cloud_run_service_iam_policy" "noauth" {
   provider = google-beta
-  location = google_cloud_run_service.editor.location
-  project  = google_cloud_run_service.editor.project
-  service  = google_cloud_run_service.editor.name
+  location = google_cloud_run_v2_service.editor.location
+  project  = google_cloud_run_v2_service.editor.project
+  service  = google_cloud_run_v2_service.editor.name
 
   policy_data = data.google_iam_policy.noauth.policy_data
 }
 # [END cloudrun_secure_services_frontend_access]
 
 output "backend_url" {
-  value = google_cloud_run_service.renderer.status[0].url
+  value = google_cloud_run_v2_service.renderer.uri
 }
 
 output "frontend_url" {
-  value = google_cloud_run_service.editor.status[0].url
+  value = google_cloud_run_v2_service.editor.uri
 }
 # [END cloudrun_secure_services_parent_tag]
