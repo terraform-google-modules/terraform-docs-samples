@@ -18,15 +18,13 @@
 
 # [START cloudrun_noauth_parent_tag]
 # [START cloudrun_service_noauth]
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
   name     = "cloudrun-srv"
   location = "us-central1"
 
   template {
-    spec {
-      containers {
-        image = "us-docker.pkg.dev/cloudrun/container/hello"
-      }
+    containers {
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
   }
 }
@@ -43,9 +41,9 @@ data "google_iam_policy" "noauth" {
 }
 
 resource "google_cloud_run_service_iam_policy" "noauth" {
-  location = google_cloud_run_service.default.location
-  project  = google_cloud_run_service.default.project
-  service  = google_cloud_run_service.default.name
+  location = google_cloud_run_v2_service.default.location
+  project  = google_cloud_run_v2_service.default.project
+  service  = google_cloud_run_v2_service.default.name
 
   policy_data = data.google_iam_policy.noauth.policy_data
 }

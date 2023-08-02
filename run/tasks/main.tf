@@ -16,20 +16,14 @@
 
 # [START cloudrun_tasks_parent_tag]
 # [START cloudrun_service_tasks_service]
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
   name     = "cloud-run-service-name"
   location = "us-central1"
   provider = google-beta
   template {
-    spec {
-      containers {
-        image = "gcr.io/cloudrun/hello"
-      }
+    containers {
+      image = "gcr.io/cloudrun/hello"
     }
-  }
-  traffic {
-    percent         = 100
-    latest_revision = true
   }
 }
 # [END cloudrun_service_tasks_service]
@@ -44,12 +38,12 @@ resource "google_service_account" "sa" {
 
 # [START cloudrun_service_tasks_run_invoke_permissions]
 resource "google_cloud_run_service_iam_binding" "binding" {
-  location = google_cloud_run_service.default.location
-  service  = google_cloud_run_service.default.name
+  location = google_cloud_run_v2_service.default.location
+  service  = google_cloud_run_v2_service.default.name
   role     = "roles/run.invoker"
   members  = ["serviceAccount:${google_service_account.sa.email}"]
   provider = google-beta
-  project  = google_cloud_run_service.default.project
+  project  = google_cloud_run_v2_service.default.project
 }
 # [END cloudrun_service_tasks_run_invoke_permissions]
 
@@ -58,7 +52,7 @@ resource "google_project_iam_binding" "project_binding" {
   role     = "roles/iam.serviceAccountTokenCreator"
   members  = ["serviceAccount:${google_service_account.sa.email}"]
   provider = google-beta
-  project  = google_cloud_run_service.default.project
+  project  = google_cloud_run_v2_service.default.project
 }
 # [END cloudrun_service_tasks_token_permissions]
 

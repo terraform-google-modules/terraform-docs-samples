@@ -36,21 +36,14 @@ resource "google_project_service" "scheduler_api" {
 }
 
 # [START cloudrun_service_scheduled_service]
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
   name     = "my-scheduled-service"
   location = "us-central1"
 
   template {
-    spec {
-      containers {
-        image = "us-docker.pkg.dev/cloudrun/container/hello"
-      }
+    containers {
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
-  }
-
-  traffic {
-    percent         = 100
-    latest_revision = true
   }
 
   # Use an explicit depends_on clause to wait until API is enabled
@@ -76,6 +69,7 @@ resource "google_service_account" "default" {
 # [START cloudrun_service_scheduled_job]
 resource "google_cloud_scheduler_job" "default" {
   name             = "scheduled-cloud-run-job"
+  region           = "us-central1"
   description      = "Invoke a Cloud Run container on a schedule."
   schedule         = "*/8 * * * *"
   time_zone        = "America/New_York"
@@ -87,7 +81,7 @@ resource "google_cloud_scheduler_job" "default" {
 
   http_target {
     http_method = "POST"
-    uri         = google_cloud_run_service.default.status[0].url
+    uri         = google_cloud_run_v2_service.default.uri
 
     oidc_token {
       service_account_email = google_service_account.default.email
@@ -103,8 +97,8 @@ resource "google_cloud_scheduler_job" "default" {
 
 # [START cloudrun_service_scheduled_iam]
 resource "google_cloud_run_service_iam_member" "default" {
-  location = google_cloud_run_service.default.location
-  service  = google_cloud_run_service.default.name
+  location = google_cloud_run_v2_service.default.location
+  service  = google_cloud_run_v2_service.default.name
   role     = "roles/run.invoker"
   member   = "serviceAccount:${google_service_account.default.email}"
 }
