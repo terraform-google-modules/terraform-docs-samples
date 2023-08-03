@@ -39,10 +39,6 @@ resource "google_sql_database_instance" "read_replica" {
   region               = "europe-west4"
   database_version     = "POSTGRES_14"
 
-  replica_configuration {
-    failover_target = false
-  }
-
   settings {
     tier              = "db-custom-2-7680"
     availability_type = "ZONAL"
