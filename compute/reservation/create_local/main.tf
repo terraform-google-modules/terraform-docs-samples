@@ -16,7 +16,7 @@
 
 # [START compute_reservation_create_local_reservation]
 
-resource "google_compute_reservation" "deafult" {
+resource "google_compute_reservation" "default" {
   name = "gce-reservation-local"
   zone = "us-central1-a"
 
