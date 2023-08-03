@@ -102,7 +102,7 @@ resource "google_compute_managed_ssl_certificate" "lb_default" {
   name     = "myservice-ssl-cert"
 
   managed {
-    domains = [var.domain_name]
+    domains = ["example.com"]
   }
 }
 # [END cloudrun_multiregion_cert]
