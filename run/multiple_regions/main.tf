@@ -32,11 +32,6 @@ resource "google_project_service" "run_api" {
 }
 
 # [START cloudrun_multiregion_variables]
-variable "domain_name" {
-  type    = string
-  default = "example.com"
-}
-
 variable "run_regions" {
   type    = list(string)
   default = ["us-central1", "europe-west1"]
@@ -106,14 +101,6 @@ resource "google_compute_managed_ssl_certificate" "lb_default" {
   }
 }
 # [END cloudrun_multiregion_cert]
-
-# Defined following to avoid unused variable lint error for `domain_name` variable
-resource "local_file" "example" {
-  content  = "${var.domain_name}\n"
-  filename = "/tmp/example_text_file.txt"
-}
-
-
 # [START cloudrun_multiregion_proxy_https]
 resource "google_compute_target_https_proxy" "lb_default" {
   provider = google-beta
