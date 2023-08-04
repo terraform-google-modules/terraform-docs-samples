@@ -37,7 +37,9 @@ jobs:
           MAKEFILE=$(find . -name Makefile -print -quit)
           if [ ! -z "$MAKEFILE" ]; then
             echo MAKEFILE not null: $MAKEFILE
+            cat $MAKEFILE
             echo dev-tools=gcr.io/cloud-foundation-cicd/cft/developer-tools:1 >> "$GITHUB_OUTPUT"
+            cat $GITHUB_OUTPUT
           else
             echo MAKEFILE is null
             VERSION=$(grep "DOCKER_TAG_VERSION_DEVELOPER_TOOLS := " $MAKEFILE | cut -d\  -f3)
