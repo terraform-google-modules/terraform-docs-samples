@@ -28,7 +28,7 @@ concurrency:
 
 jobs:
   lint:
-    name: 'lint'
+    name: 'lint everything'
     runs-on: 'ubuntu-latest'
     steps:
       - uses: 'actions/checkout@v3'
