@@ -27,8 +27,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
-    name: 'lint everything'
+  lint-everything:
+    name: 'lint'
     runs-on: 'ubuntu-latest'
     steps:
       - uses: 'actions/checkout@v3'
