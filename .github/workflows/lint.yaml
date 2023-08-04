@@ -16,7 +16,7 @@
 # https://github.com/GoogleCloudPlatform/cloud-foundation-toolkit/blob/master/infra/terraform/modules/lint_file/lint.yaml.tftpl
 
 name: 'testing lint'
-
+run-name: 'testing lint run-name parameter'
 on:
   pull_request:
     branches:
