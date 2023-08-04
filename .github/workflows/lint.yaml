@@ -34,6 +34,7 @@ jobs:
       - uses: 'actions/checkout@v3'
       - id: variables
         run: |
+          echo "THIS IS A TEST TEST TEST TO SEE IF THIS OUTPUT IS VISIBLE"
           MAKEFILE=$(find . -name Makefile -print -quit)
           if [ ! -z "$MAKEFILE" ]; then
             echo dev-tools=gcr.io/cloud-foundation-cicd/cft/developer-tools:1 >> "$GITHUB_OUTPUT"
