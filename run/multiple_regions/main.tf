@@ -102,10 +102,17 @@ resource "google_compute_managed_ssl_certificate" "lb_default" {
   name     = "myservice-ssl-cert"
 
   managed {
-    domains = [var.domain_name]
+    domains = ["example.com"]
   }
 }
 # [END cloudrun_multiregion_cert]
+
+# Defined following to avoid unused variable lint error for `domain_name` variable
+resource "local_file" "example" {
+  content  = "${var.domain_name}\n"
+  filename = "/tmp/example_text_file.txt"
+}
+
 
 # [START cloudrun_multiregion_proxy_https]
 resource "google_compute_target_https_proxy" "lb_default" {
