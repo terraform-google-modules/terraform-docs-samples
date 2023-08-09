@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-resource "google_service_account" "default" {
-  account_id   = "cloud-run-service-account"
-  display_name = "Service account for Cloud Run"
-}
+/**
+* This sample demonstrates how to deploy a Cloud Run service with a Secret 
+* Manager secret value assigned to an environment variable or as a mounted
+* volume. 
+*/
 
+# [START cloudrun_secret_manager_secret]
 resource "google_secret_manager_secret" "default" {
   secret_id = "my-secret"
   replication {
@@ -30,6 +32,13 @@ resource "google_secret_manager_secret_version" "default" {
   secret      = google_secret_manager_secret.default.name
   secret_data = "this is secret data"
 }
+# [END cloudrun_secret_manager_secret]
+
+# [START cloudrun_secret_manager_service_account_iam]
+resource "google_service_account" "default" {
+  account_id   = "cloud-run-service-account"
+  display_name = "Service account for Cloud Run"
+}
 
 resource "google_secret_manager_secret_iam_member" "default" {
   secret_id = google_secret_manager_secret.default.id
@@ -38,7 +47,8 @@ resource "google_secret_manager_secret_iam_member" "default" {
   member     = "serviceAccount:${google_service_account.default.email}"
   depends_on = [google_secret_manager_secret.default]
 }
-
+# [END cloudrun_secret_manager_service_account_iam]
+# [START cloudrun_secret_manager_mounted]
 resource "google_cloud_run_v2_service" "mounted_secret" {
   name     = "cloudrun-srv-mounted-secret"
   location = "us-central1"
@@ -67,7 +77,8 @@ resource "google_cloud_run_v2_service" "mounted_secret" {
   }
   depends_on = [google_secret_manager_secret_version.default]
 }
-
+# [END cloudrun_secret_manager_mounted]
+# [START cloudrun_secret_manager_env_variable]
 resource "google_cloud_run_v2_service" "env_variable_secret" {
   name     = "cloudrun-srv-env-var-secret"
   location = "us-central1"
@@ -90,3 +101,4 @@ resource "google_cloud_run_v2_service" "env_variable_secret" {
   }
   depends_on = [google_secret_manager_secret_version.default]
 }
+# [END cloudrun_secret_manager_env_variable
