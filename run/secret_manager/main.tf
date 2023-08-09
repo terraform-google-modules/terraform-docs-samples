@@ -43,11 +43,12 @@ resource "google_service_account" "default" {
 resource "google_secret_manager_secret_iam_member" "default" {
   secret_id = google_secret_manager_secret.default.id
   role      = "roles/secretmanager.secretAccessor"
-  # Grant the default Compute service account access to this secret.
+  # Grant the new deployed service account access to this secret.
   member     = "serviceAccount:${google_service_account.default.email}"
   depends_on = [google_secret_manager_secret.default]
 }
 # [END cloudrun_secret_manager_service_account_iam]
+
 # [START cloudrun_secret_manager_mounted]
 resource "google_cloud_run_v2_service" "mounted_secret" {
   name     = "cloudrun-srv-mounted-secret"
@@ -78,6 +79,7 @@ resource "google_cloud_run_v2_service" "mounted_secret" {
   depends_on = [google_secret_manager_secret_version.default]
 }
 # [END cloudrun_secret_manager_mounted]
+
 # [START cloudrun_secret_manager_env_variable]
 resource "google_cloud_run_v2_service" "env_variable_secret" {
   name     = "cloudrun-srv-env-var-secret"
