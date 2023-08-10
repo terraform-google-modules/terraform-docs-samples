@@ -37,7 +37,8 @@ resource "google_storage_bucket" "static" {
 
 resource "google_storage_bucket_object" "default" {
   name = "new-object"
-  # Uncomment source to upload an existing object from the local file system
+  # To upload an existing object from the local file system:
+  # Uncomment and update the source attribute.
   # Update the content_type attribute to match the type of object to be uploaded.
   # Remove the content attribute.
   #  source       = "/path/to/an/object"
