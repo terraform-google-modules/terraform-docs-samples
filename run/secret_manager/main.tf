@@ -15,9 +15,9 @@
  */
 
 /**
-* This sample demonstrates how to deploy a Cloud Run service with a Secret 
+* This sample demonstrates how to deploy a Cloud Run service with a Secret
 * Manager secret value assigned to an environment variable or as a mounted
-* volume. 
+* volume.
 */
 
 # [START cloudrun_secret_manager_secret]
