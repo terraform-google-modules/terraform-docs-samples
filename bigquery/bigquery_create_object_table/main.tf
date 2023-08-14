@@ -65,11 +65,9 @@ resource "google_bigquery_table" "test" {
     metadata_cache_mode = "MANUAL"
   }
 
-  # `max_staleness` must be specified when `metadata_cache_mode`
-  # is `AUTOMATIC`. And omitted when `MANUAL`.
-  # encoded as a string encoding of sql IntervalValue type
-  # (canonical format).
-  # https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#interval_type
+  # `max_staleness` must be specified as an interval literal, 
+  # when `metadata_cache_mode` is `AUTOMATIC`, omitted otherwise.
+  # Interval literal: https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#interval_literals
   # max_staleness = "0-0 0 10:0:0"
 
   # Ensure the connection can access the bucket before table creation.
