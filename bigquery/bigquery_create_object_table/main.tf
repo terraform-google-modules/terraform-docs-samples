@@ -21,7 +21,7 @@ provider "google" {
   region  = "us-central1"
 }
 
-resource "google_bigquery_connection" "test" {
+resource "google_bigquery_connection" "default" {
   connection_id = "my-connection-id"
   location      = "US"
   cloud_resource {}
@@ -29,35 +29,35 @@ resource "google_bigquery_connection" "test" {
 
 data "google_project" "project" {}
 
-resource "google_project_iam_member" "test" {
+resource "google_project_iam_member" "default" {
   role    = "roles/storage.objectViewer"
   project = data.google_project.project.id
-  member  = "serviceAccount:${google_bigquery_connection.test.cloud_resource[0].service_account_id}"
+  member  = "serviceAccount:${google_bigquery_connection.default.cloud_resource[0].service_account_id}"
 }
 
-resource "google_bigquery_dataset" "test" {
+resource "google_bigquery_dataset" "default" {
   dataset_id = "my_dataset_id"
 }
 
-resource "google_storage_bucket" "test" {
+resource "google_storage_bucket" "default" {
   name                        = "my-bucket-81123"
   location                    = "US"
   force_destroy               = true
   uniform_bucket_level_access = true
 }
 
-resource "google_bigquery_table" "test" {
+resource "google_bigquery_table" "default" {
   deletion_protection = false
   table_id            = "my-table-id"
-  dataset_id          = google_bigquery_dataset.test.dataset_id
+  dataset_id          = google_bigquery_dataset.default.dataset_id
   external_data_configuration {
-    connection_id = google_bigquery_connection.test.name
+    connection_id = google_bigquery_connection.default.name
     autodetect    = false
     # REQUIRED for object tables.
     object_metadata = "SIMPLE"
 
     source_uris = [
-      "gs://${google_storage_bucket.test.name}/*",
+      "gs://${google_storage_bucket.default.name}/*",
     ]
 
     # `MANUAL` for manual metadata refresh
@@ -74,7 +74,7 @@ resource "google_bigquery_table" "test" {
   # Without this dependency, Terraform may try to create the table when 
   # the connection does not have the correct IAM Role resulting in failures.
   depends_on = [
-    google_project_iam_member.test
+    google_project_iam_member.default
   ]
 }
 # [END bigquery_create_object_table]
