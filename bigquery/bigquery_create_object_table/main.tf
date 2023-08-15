@@ -13,6 +13,12 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+/*
+* This sample demonstrates how to create an Object Table in BigQuery.
+* For more information please refer to:
+* http://cloud/bigquery/docs/object-table-introduction
+* http://cloud/bigquery/docs/object-tables
+*/
 
 # [START bigquery_create_object_table]
 resource "google_bigquery_connection" "default" {
