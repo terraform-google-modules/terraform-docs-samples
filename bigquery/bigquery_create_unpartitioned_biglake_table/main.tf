@@ -94,8 +94,6 @@ resource "google_bigquery_table" "default" {
     source_uris = [
       "gs://${google_storage_bucket.default.name}/data/*"
     ]
-    # [`hive_parititioning_options`](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table.html#hive_partitioning_options) may be specified for partitioned tables.
-    # hive_partitioning_options {}
 
     # For Query Acceleration, specify either:
     # `MANUAL` for manual metadata refresh
