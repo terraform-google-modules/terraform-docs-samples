@@ -16,11 +16,6 @@
 */
 
 # [START bigquery_create_object_table]
-provider "google" {
-  project = "bq-huron"
-  region  = "us-central1"
-}
-
 resource "google_bigquery_connection" "default" {
   connection_id = "my-connection-id"
   location      = "US"
@@ -31,7 +26,7 @@ data "google_project" "project" {}
 
 resource "google_project_iam_member" "default" {
   role    = "roles/storage.objectViewer"
-  project = data.google_project.project.id
+  project = data.google_project.project.project_id
   member  = "serviceAccount:${google_bigquery_connection.default.cloud_resource[0].service_account_id}"
 }
 
