@@ -17,19 +17,16 @@
 # Example configuration of a Cloud Run service with concurrency set
 
 # [START cloudrun_service_configuration_concurrency]
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
   name     = "cloudrun-service-concurrency"
   location = "us-central1"
 
   template {
-    spec {
-      containers {
-        image = "us-docker.pkg.dev/cloudrun/container/hello"
-      }
-      # Maximum concurrent requests
-      # https://cloud.google.com/run/docs/configuring/concurrency
-      container_concurrency = 80
+    containers {
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
+    # Maximum concurrent requests
+    max_instance_request_concurrency = 80
   }
 }
 # [END cloudrun_service_configuration_concurrency]
