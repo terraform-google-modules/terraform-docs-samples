@@ -1,4 +1,3 @@
-
 /**
 * Copyright 2023 Google LLC
 *
@@ -60,13 +59,13 @@ resource "google_bigquery_table" "default" {
     metadata_cache_mode = "MANUAL"
   }
 
-  # `max_staleness` must be specified as an interval literal, 
+  # `max_staleness` must be specified as an interval literal,
   # when `metadata_cache_mode` is `AUTOMATIC`, omitted otherwise.
   # Interval literal: https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#interval_literals
   # max_staleness = "0-0 0 10:0:0"
 
   # Ensure the connection can access the bucket before table creation.
-  # Without this dependency, Terraform may try to create the table when 
+  # Without this dependency, Terraform may try to create the table when
   # the connection does not have the correct IAM Role resulting in failures.
   depends_on = [
     google_project_iam_member.default
