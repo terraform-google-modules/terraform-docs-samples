@@ -22,7 +22,7 @@
 # ├── 00000.parquet
 # └── metadata
 #     └── table.manifest.json
-# A bucket, with an empty 
+# A bucket, with an empty
 resource "google_storage_bucket" "default" {
   name                        = "my-bucket-81123"
   location                    = "US"
