@@ -22,9 +22,13 @@
 # ├── 00000.parquet
 # └── metadata
 #     └── table.manifest.json
-# A bucket, with an empty
+# A bucket, with an empty data dir
+# Cloud Storage bucket name must be unique
+resource "random_id" "bucket_name_suffix" {
+  byte_length = 8
+}
 resource "google_storage_bucket" "default" {
-  name                        = "my-bucket-81123"
+  name                        = "my-bucket-${random_id.bucket_name_suffix.hex}"
   location                    = "US"
   force_destroy               = true
   uniform_bucket_level_access = true
