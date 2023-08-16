@@ -97,7 +97,7 @@ resource "google_bigquery_table" "default" {
     # Autodetect determines whether schema autodetect is active or inactive.
     autodetect    = false
     source_format = "PARQUET"
-    source_uris   = ["gs://${google_storage_bucket.bucket.name}/publish/*"]
+    source_uris   = ["gs://${google_storage_bucket.default.name}/publish/*"]
     # [`hive_parititioning_options`](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table.html#hive_partitioning_options) may be specified for partitioned tables.
     hive_partitioning_options {
       mode                     = "CUSTOM"
