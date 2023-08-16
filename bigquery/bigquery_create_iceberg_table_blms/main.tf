@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/**
+* This sample creates a BigLake Iceberg Table using a BigLake Metastore URI.
+* https://cloud.google.com/bigquery/docs/iceberg-tables#create-using-biglake-metastore
+*/
+
 # [START bigquery_create_iceberg_blms]
 
 # ASSUME that there is a valid BLMS URI under:
