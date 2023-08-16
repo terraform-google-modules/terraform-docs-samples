@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 # [START bigquery_create_iceberg_blms]
 
 # ASSUME that there is a valid BLMS URI under:
@@ -36,8 +36,8 @@ resource "google_bigquery_dataset" "default" {
 
 resource "google_bigquery_table" "default" {
   deletion_protection = false
-  table_id   = "my-table-id"
-  dataset_id = google_bigquery_dataset.default.dataset_id
+  table_id            = "my-table-id"
+  dataset_id          = google_bigquery_dataset.default.dataset_id
   external_data_configuration {
     autodetect    = false
     source_format = "ICEBERG"
