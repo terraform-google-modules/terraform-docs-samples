@@ -16,8 +16,8 @@
 /*
 * This sample demonstrates how to create an Object Table in BigQuery.
 * For more information please refer to:
-* http://cloud/bigquery/docs/object-table-introduction
-* http://cloud/bigquery/docs/object-tables
+* https://cloud.google.com/bigquery/docs/object-table-introduction
+* https://cloud.google.com/bigquery/docs/object-tables
 */
 
 # [START bigquery_create_object_table]
