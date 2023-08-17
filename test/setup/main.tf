@@ -39,6 +39,7 @@ module "projects" {
   activate_apis = [
     "aiplatform.googleapis.com",
     "artifactregistry.googleapis.com",
+    "biglake.googleapis.com",
     "bigquery.googleapis.com",
     "bigqueryconnection.googleapis.com",
     "certificatemanager.googleapis.com",
