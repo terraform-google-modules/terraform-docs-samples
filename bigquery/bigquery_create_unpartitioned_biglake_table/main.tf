@@ -13,6 +13,13 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+
+/**
+* This sample creates an Cloud Storage BigLake Table on unpartitioned data.
+* scheme.
+* https://cloud.google.com/bigquery/docs/create-cloud-storage-table-biglake
+*/
+
 # [START bigquery_create_biglake_unpartitioned_table]
 # Create a bucket where the table is stored.
 # A pre-existing bucket with files maybe used.
