@@ -81,7 +81,6 @@ resource "google_bigquery_table" "default" {
   # depends_on = [time_sleep.wait_7_min]
   dataset_id = google_bigquery_dataset.default.dataset_id
   table_id   = "my_table"
-  project    = data.google_project.project.id
   schema     = <<EOF
     [
         {
