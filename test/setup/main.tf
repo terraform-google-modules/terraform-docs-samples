@@ -40,6 +40,7 @@ module "projects" {
     "aiplatform.googleapis.com",
     "artifactregistry.googleapis.com",
     "bigquery.googleapis.com",
+    "bigqueryconnection.googleapis.com",
     "certificatemanager.googleapis.com",
     "compute.googleapis.com",
     "cloudbuild.googleapis.com",
