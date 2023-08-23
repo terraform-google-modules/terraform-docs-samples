@@ -17,28 +17,25 @@
 # Example configuration of a Cloud Run service with max instances
 
 # [START cloudrun_service_configuration_max_instances]
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
   name     = "cloudrun-service-max-instances"
   location = "us-central1"
 
   template {
-    spec {
-      containers {
-        image = "us-docker.pkg.dev/cloudrun/container/hello"
-      }
+    containers {
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
-    metadata {
-      annotations = {
-        # Max instances
-        # https://cloud.google.com/run/docs/configuring/max-instances
-        "autoscaling.knative.dev/maxScale" = 10
-      }
+    scaling {
+      # Max instances
+      max_instance_count = 10
     }
   }
+  # [END cloudrun_service_configuration_max_instances]
   lifecycle {
     ignore_changes = [
-      template[0].metadata[0].annotations,
+      template[0].scaling,
     ]
   }
+  # [START cloudrun_service_configuration_max_instances]
 }
 # [END cloudrun_service_configuration_max_instances]
