@@ -26,4 +26,5 @@ resource "google_looker_instance" "main" {
     client_secret = "my-client-secret"
   }
 }
+
 # [END looker_google_looker_instance_basic]
