@@ -15,7 +15,9 @@
  */
 
 # [START looker_google_looker_instance_full]
-resource "google_looker_instance" "looker-instance" {
+# Creates a Standard edition Looker (Google Cloud core) instance with full functionality enabled.
+
+resource "google_looker_instance" "main" {
   name              = "my-instance"
   platform_edition  = "LOOKER_CORE_STANDARD"
   region            = "us-central1"
