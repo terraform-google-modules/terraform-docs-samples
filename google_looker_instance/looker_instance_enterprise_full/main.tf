@@ -15,7 +15,8 @@
  */
 
 # [START looker_google_looker_instance_enterprise_full]
-resource "google_looker_instance" "looker-instance" {
+# Creates an Enterprise edition Looker (Google Cloud core) instance with full, Private IP functionality.
+resource "google_looker_instance" "looker-instance" "main" {
   name               = "my-instance"
   platform_edition   = "LOOKER_CORE_ENTERPRISE_ANNUAL"
   region             = "us-central1"
@@ -65,13 +66,13 @@ resource "google_looker_instance" "looker-instance" {
   ]
 }
 
-resource "google_service_networking_connection" "looker_vpc_connection" {
+resource "google_service_networking_connection""looker_vpc_connection" "main" {
   network                 = data.google_compute_network.looker_network.id
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.looker_range.name]
 }
 
-resource "google_compute_global_address" "looker_range" {
+resource "google_compute_global_address" "looker_range" "main" {
   name          = "looker-range"
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
@@ -79,13 +80,13 @@ resource "google_compute_global_address" "looker_range" {
   network       = data.google_compute_network.looker_network.id
 }
 
-data "google_project" "project" {}
+data "google_project" "project" "main" {}
 
-data "google_compute_network" "looker_network" {
+data "google_compute_network" "looker_network" "main" {
   name = "looker-network"
 }
 
-resource "google_kms_crypto_key_iam_member" "crypto_key" {
+resource "google_kms_crypto_key_iam_member" "crypto_key" "main" {
   crypto_key_id = "looker-kms-key"
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   member        = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-looker.iam.gserviceaccount.com"
