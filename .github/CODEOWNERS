@@ -1,6 +1,6 @@
 # Overall sample owners
-*                       @terraform-google-modules/terraform-samples-admins @terraform-google-modules/terraform-samples-reviewers
-/.github/               @terraform-google-modules/terraform-samples-admins
+*                       @terraform-google-modules/terraform-samples-git-admins @terraform-google-modules/terraform-samples-reviewers
+/.github/               @terraform-google-modules/terraform-samples-git-admins
 /cloud_sql/             @terraform-google-modules/infra-db-sdk @terraform-google-modules/terraform-samples-reviewers
 /cloudvpn/              @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /composer/              @terraform-google-modules/cloud-dpes-composer @terraform-google-modules/terraform-samples-reviewers
