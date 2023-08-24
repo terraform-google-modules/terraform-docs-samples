@@ -17,28 +17,28 @@
 # Example configuration of a Cloud Run service with CPU limit
 
 # [START cloudrun_service_configuration_cpu]
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
   name     = "cloudrun-service-cpu"
   location = "us-central1"
 
   template {
-    spec {
-      containers {
-        image = "us-docker.pkg.dev/cloudrun/container/hello"
-        resources {
-          limits = {
-            # CPU usage limit
-            # https://cloud.google.com/run/docs/configuring/cpu
-            cpu = "1000m" # 1 vCPU
-          }
+    containers {
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
+      resources {
+        limits = {
+          # CPU usage limit
+          cpu = "1"
         }
       }
     }
   }
+  # [END cloudrun_service_configuration_cpu]
   lifecycle {
     ignore_changes = [
-      template[0].spec[0].containers[0].resources[0].limits,
+      template[0].containers[0].resources[0].limits,
     ]
   }
+  # [START cloudrun_service_configuration_cpu]
 }
+
 # [END cloudrun_service_configuration_cpu]
