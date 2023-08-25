@@ -12,12 +12,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
-
+ */
+ 
 # [START looker_google_looker_instance_basic]
 # Creates a Standard edition Looker (Google Cloud core) instance with basic functionality enabled.
-
-resource "google_looker_instance" "looker-instance" "main" {
+resource "google_looker_instance" "main" {
   name             = "my-instance"
   platform_edition = "LOOKER_CORE_STANDARD"
   region           = "us-central1"
