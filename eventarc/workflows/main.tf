@@ -51,8 +51,8 @@ resource "google_service_account" "eventarc_workflows_service_account" {
 
 # Grant the logWriter role to the service account
 resource "google_project_iam_binding" "project_binding_eventarc" {
-  project  = data.google_project.project.id
-  role     = "roles/logging.logWriter"
+  project = data.google_project.project.id
+  role    = "roles/logging.logWriter"
 
   members = ["serviceAccount:${google_service_account.eventarc_workflows_service_account.email}"]
 
@@ -61,8 +61,8 @@ resource "google_project_iam_binding" "project_binding_eventarc" {
 
 # Grant the workflows.invoker role to the service account
 resource "google_project_iam_binding" "project_binding_workflows" {
-  project  = data.google_project.project.id
-  role     = "roles/workflows.invoker"
+  project = data.google_project.project.id
+  role    = "roles/workflows.invoker"
 
   members = ["serviceAccount:${google_service_account.eventarc_workflows_service_account.email}"]
 
@@ -99,7 +99,6 @@ resource "google_eventarc_trigger" "trigger_pubsub_tf" {
   destination {
     workflow = google_workflows_workflow.workflows_example.id
   }
-
 
   service_account = google_service_account.eventarc_workflows_service_account.email
 
