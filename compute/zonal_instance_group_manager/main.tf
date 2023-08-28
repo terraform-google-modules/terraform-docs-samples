@@ -56,7 +56,7 @@ resource "google_compute_instance_group_manager" "default" {
     name              = "primary"
   }
 
-  base_instance_name = "autoscaler-sample"
+  base_instance_name = "my-igms-instance"
 }
 
 # [END compute_zonal_instance_group_manager_simple_tag]
