@@ -16,7 +16,6 @@
 
 # [START compute_zonal_instance_group_manager_parent_tag]
 data "google_compute_image" "debian_11" {
-
   family  = "debian-11"
   project = "debian-cloud"
 }
