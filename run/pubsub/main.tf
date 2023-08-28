@@ -30,7 +30,7 @@ resource "google_cloud_run_v2_service" "default" {
   location = "us-central1"
   template {
     containers {
-      image = "gcr.io/cloudrun/hello" # Replace with newly created image gcr.io/<project_id>/pubsub
+      image = "us-docker.pkg.dev/cloudrun/container/hello" # Replace with newly created image gcr.io/<project_id>/pubsub
     }
   }
   depends_on = [google_project_service.cloudrun_api]
