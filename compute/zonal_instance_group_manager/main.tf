@@ -15,8 +15,7 @@
  */
 
 # [START compute_zonal_instance_group_manager_parent_tag]
-data "google_compute_image" "debian_11" {
-
+data "google_compute_image" "default" {
   family  = "debian-11"
   project = "debian-cloud"
 }
@@ -29,7 +28,7 @@ resource "google_compute_instance_template" "default" {
   tags = ["tag1", "tag2"]
 
   disk {
-    source_image = data.google_compute_image.debian_11.id
+    source_image = data.google_compute_image.default.id
   }
 
   network_interface {
