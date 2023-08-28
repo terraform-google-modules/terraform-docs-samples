@@ -18,19 +18,17 @@
 # [START eventarc_terraform_enableapis]
 # Used to retrieve project_number later
 data "google_project" "project" {
-  provider = google-beta
+  provider = google
 }
 
 # Enable Cloud Run API
 resource "google_project_service" "run" {
-  provider           = google-beta
   service            = "run.googleapis.com"
   disable_on_destroy = false
 }
 
 # Enable Eventarc API
 resource "google_project_service" "eventarc" {
-  provider           = google-beta
   service            = "eventarc.googleapis.com"
   disable_on_destroy = false
 }
@@ -40,22 +38,14 @@ resource "google_project_service" "eventarc" {
 # [START cloudrun_terraform_deploy_eventarc]
 
 # Deploy Cloud Run service
-resource "google_cloud_run_service" "default" {
-  provider = google-beta
+resource "google_cloud_run_v2_service" "default" {
   name     = "cloudrun-hello-tf"
   location = "us-east1"
 
   template {
-    spec {
-      containers {
-        image = "gcr.io/cloudrun/hello"
-      }
+    containers {
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
-  }
-
-  traffic {
-    percent         = 100
-    latest_revision = true
   }
 
   depends_on = [google_project_service.run]
@@ -67,17 +57,18 @@ resource "google_cloud_run_service" "default" {
 
 # Create a Pub/Sub trigger
 resource "google_eventarc_trigger" "trigger_pubsub_tf" {
-  provider = google-beta
   name     = "trigger-pubsub-tf"
-  location = google_cloud_run_service.default.location
+  location = google_cloud_run_v2_service.default.location
+
   matching_criteria {
     attribute = "type"
     value     = "google.cloud.pubsub.topic.v1.messagePublished"
   }
+  
   destination {
     cloud_run_service {
-      service = google_cloud_run_service.default.name
-      region  = google_cloud_run_service.default.location
+      service = google_cloud_run_v2_service.default.name
+      region  = google_cloud_run_v2_service.default.location
     }
   }
 
@@ -91,9 +82,8 @@ resource "google_eventarc_trigger" "trigger_pubsub_tf" {
 
 # Give default Compute service account eventarc.eventReceiver role
 resource "google_project_iam_binding" "project" {
-  provider = google-beta
-  project  = data.google_project.project.id
-  role     = "roles/eventarc.eventReceiver"
+  project = data.google_project.project.id
+  role    = "roles/eventarc.eventReceiver"
 
   members = [
     "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
@@ -102,10 +92,10 @@ resource "google_project_iam_binding" "project" {
 
 # Create an AuditLog for Cloud Storage trigger
 resource "google_eventarc_trigger" "trigger_auditlog_tf" {
-  provider = google-beta
   name     = "trigger-auditlog-tf"
-  location = google_cloud_run_service.default.location
+  location = google_cloud_run_v2_service.default.location
   project  = data.google_project.project.id
+
   matching_criteria {
     attribute = "type"
     value     = "google.cloud.audit.log.v1.written"
@@ -118,10 +108,11 @@ resource "google_eventarc_trigger" "trigger_auditlog_tf" {
     attribute = "methodName"
     value     = "storage.objects.create"
   }
+
   destination {
     cloud_run_service {
-      service = google_cloud_run_service.default.name
-      region  = google_cloud_run_service.default.location
+      service = google_cloud_run_v2_service.default.name
+      region  = google_cloud_run_v2_service.default.location
     }
   }
   service_account = "${data.google_project.project.number}-compute@developer.gserviceaccount.com"
