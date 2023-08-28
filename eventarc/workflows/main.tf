@@ -18,26 +18,23 @@
 # [START eventarc_terraform_enableapis]
 # Used to retrieve project_number later
 data "google_project" "project" {
-  provider = google-beta
+  provider = google
 }
 
 # Enable Eventarc API
 resource "google_project_service" "eventarc" {
-  provider           = google-beta
   service            = "eventarc.googleapis.com"
   disable_on_destroy = false
 }
 
 # Enable Pub/Sub API
 resource "google_project_service" "pubsub" {
-  provider           = google-beta
   service            = "pubsub.googleapis.com"
   disable_on_destroy = false
 }
 
 # Enable Workflows API
 resource "google_project_service" "workflows" {
-  provider           = google-beta
   service            = "workflows.googleapis.com"
   disable_on_destroy = false
 }
@@ -48,14 +45,12 @@ resource "google_project_service" "workflows" {
 
 # Create a service account for Eventarc trigger and Workflows
 resource "google_service_account" "eventarc_workflows_service_account" {
-  provider     = google-beta
   account_id   = "eventarc-workflows-sa"
   display_name = "Eventarc Workflows Service Account"
 }
 
 # Grant the logWriter role to the service account
 resource "google_project_iam_binding" "project_binding_eventarc" {
-  provider = google-beta
   project  = data.google_project.project.id
   role     = "roles/logging.logWriter"
 
@@ -66,7 +61,6 @@ resource "google_project_iam_binding" "project_binding_eventarc" {
 
 # Grant the workflows.invoker role to the service account
 resource "google_project_iam_binding" "project_binding_workflows" {
-  provider = google-beta
   project  = data.google_project.project.id
   role     = "roles/workflows.invoker"
 
@@ -81,7 +75,6 @@ resource "google_project_iam_binding" "project_binding_workflows" {
 # Define and deploy a workflow
 resource "google_workflows_workflow" "workflows_example" {
   name            = "pubsub-workflow-tf"
-  provider        = google-beta
   region          = "us-central1"
   description     = "A sample workflow"
   service_account = google_service_account.eventarc_workflows_service_account.email
@@ -98,7 +91,6 @@ resource "google_workflows_workflow" "workflows_example" {
 # Create an Eventarc trigger routing Pub/Sub events to Workflows
 resource "google_eventarc_trigger" "trigger_pubsub_tf" {
   name     = "trigger-pubsub-workflow-tf"
-  provider = google-beta
   location = "us-central1"
   matching_criteria {
     attribute = "type"
