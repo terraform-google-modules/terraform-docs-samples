@@ -64,7 +64,7 @@ resource "google_eventarc_trigger" "trigger_pubsub_tf" {
     attribute = "type"
     value     = "google.cloud.pubsub.topic.v1.messagePublished"
   }
-  
+
   destination {
     cloud_run_service {
       service = google_cloud_run_v2_service.default.name
