@@ -31,7 +31,7 @@ resource "google_cloud_run_v2_service" "default" {
     containers {
       # Replace with the URL of your graphviz image
       #   gcr.io/<YOUR_GCP_PROJECT_ID>/graphviz
-      image = "gcr.io/cloudrun/hello"
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
 
     service_account = google_service_account.graphviz.email
