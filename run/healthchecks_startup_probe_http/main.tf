@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-provider "google-beta" {
-  region = "us-central1"
-}
 
 # Enable Cloud Run API
 resource "google_project_service" "cloudrun_api" {
@@ -27,7 +24,6 @@ resource "google_project_service" "cloudrun_api" {
 # Create Cloud Run Container with HTTP startup probe
 #[START cloud_run_healthchecks_startup_probe_http]
 resource "google_cloud_run_v2_service" "default" {
-  provider = google-beta
   name     = "cloudrun-service-healthcheck"
   location = "us-central1"
 
