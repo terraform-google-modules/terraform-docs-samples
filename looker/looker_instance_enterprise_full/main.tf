@@ -22,13 +22,13 @@ resource "google_looker_instance" "main" {
   region             = "us-central1"
   private_ip_enabled = true
   public_ip_enabled  = false
-  reserved_range     = google_compute_global_address.looker_range.name
-  consumer_network   = data.google_compute_network.looker_network.id
+  reserved_range     = google_compute_global_address.main.name
+  consumer_network   = data.google_compute_network.main.id
   admin_settings {
     allowed_email_domains = ["google.com"]
   }
   encryption_config {
-    kms_key_name = "looker-kms-key"
+    kms_key_name = google_kms_crypto_key.main.name
   }
   maintenance_window {
     day_of_week = "THURSDAY"
@@ -62,14 +62,29 @@ resource "google_looker_instance" "main" {
     client_secret = "my-client-secret"
   }
   depends_on = [
-    google_service_networking_connection.looker_vpc_connection
+    google_service_networking_connection.main,
+    google_kms_crypto_key.main
   ]
 }
 
+resource "google_kms_key_ring" "main" {
+  name     = "keyring-example"
+  location = "us-central1"
+}
+
+resource "google_kms_crypto_key" "main" {
+  name            = "crypto-key-example"
+  key_ring        = google_kms_key_ring.main.id
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "google_service_networking_connection" "main" {
-  network                 = data.google_compute_network.looker_network.id
+  network                 = data.google_compute_network.main.id
   service                 = "servicenetworking.googleapis.com"
-  reserved_peering_ranges = [google_compute_global_address.looker_range.name]
+  reserved_peering_ranges = [google_compute_global_address.main.name]
 }
 
 resource "google_compute_global_address" "main" {
@@ -77,18 +92,18 @@ resource "google_compute_global_address" "main" {
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
   prefix_length = 20
-  network       = data.google_compute_network.looker_network.id
+  network       = data.google_compute_network.main.id
 }
 
 data "google_project" "main" {}
 
 data "google_compute_network" "main" {
-  name = "looker-network"
+  name = "default"
 }
 
 resource "google_kms_crypto_key_iam_member" "main" {
-  crypto_key_id = "looker-kms-key"
+  crypto_key_id = google_kms_crypto_key.main.id
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-  member        = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-looker.iam.gserviceaccount.com"
+  member        = "serviceAccount:service-${data.google_project.main.number}@gcp-sa-looker.iam.gserviceaccount.com"
 }
 # [END looker_google_looker_instance_enterprise_full]
