@@ -17,28 +17,29 @@
 # Example configuration of a Cloud Run service with min instances
 
 # [START cloudrun_service_configuration_min_instances]
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
   name     = "cloudrun-service-min-instances"
   location = "us-central1"
 
   template {
-    spec {
-      containers {
-        image = "us-docker.pkg.dev/cloudrun/container/hello"
-      }
+    containers {
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
-    metadata {
-      annotations = {
-        # Min instances
-        # https://cloud.google.com/run/docs/configuring/min-instances
-        "autoscaling.knative.dev/minScale" = 1
-      }
+    scaling {
+      # Min instances
+      min_instance_count = 1
+      # [END cloudrun_service_configuration_min_instances]
+      # Add to prevent violation: "max_instance_count: must be greater or equal than min_instance_count.""
+      max_instance_count = 2
+      # [START cloudrun_service_configuration_min_instances]
     }
   }
+  # [END cloudrun_service_configuration_min_instances]
   lifecycle {
     ignore_changes = [
-      template[0].metadata[0].annotations,
+      template[0].scaling,
     ]
   }
+  # [START cloudrun_service_configuration_min_instances]
 }
 # [END cloudrun_service_configuration_min_instances]

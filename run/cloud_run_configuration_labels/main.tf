@@ -17,23 +17,18 @@
 # Example configuration of a Cloud Run service with labels
 
 # [START cloudrun_service_configuration_labels]
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
   name     = "cloudrun-service-labels"
   location = "us-central1"
 
   template {
-    spec {
-      containers {
-        image = "us-docker.pkg.dev/cloudrun/container/hello"
-      }
+    containers {
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
-    metadata {
-      # Labels
-      # https://cloud.google.com/run/docs/configuring/labels
-      labels = {
-        foo : "bar"
-        baz : "quux"
-      }
+    # Labels
+    labels = {
+      foo : "bar"
+      baz : "quux"
     }
   }
 }

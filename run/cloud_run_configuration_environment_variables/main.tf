@@ -17,25 +17,22 @@
 # Example configuration of a Cloud Run service with environment variables
 
 # [START cloudrun_service_configuration_env_var]
-resource "google_cloud_run_service" "default" {
+resource "google_cloud_run_v2_service" "default" {
   name     = "cloudrun-service-env-var"
   location = "us-central1"
 
   template {
-    spec {
-      containers {
-        image = "us-docker.pkg.dev/cloudrun/container/hello"
+    containers {
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
 
-        # Environment variables
-        # https://cloud.google.com/run/docs/configuring/environment-variables
-        env {
-          name  = "foo"
-          value = "bar"
-        }
-        env {
-          name  = "baz"
-          value = "quux"
-        }
+      # Environment variables
+      env {
+        name  = "foo"
+        value = "bar"
+      }
+      env {
+        name  = "baz"
+        value = "quux"
       }
     }
   }
