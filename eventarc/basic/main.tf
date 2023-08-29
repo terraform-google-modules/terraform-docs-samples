@@ -40,6 +40,17 @@ resource "google_project_service" "pubsub" {
 }
 # [END eventarc_terraform_enableapis]
 
+# [START storage_terraform_deploy_eventarc]
+resource "google_storage_bucket" "default" {
+  name          = "${data.google_project.project.name}-bucket"
+  location      = "US"
+  force_destroy = true
+
+  uniform_bucket_level_access = true
+}
+
+# [END storage_terraform_deploy_eventarc]
+
 # [START cloudrun_terraform_deploy_eventarc]
 
 # Deploy Cloud Run service
