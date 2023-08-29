@@ -112,6 +112,8 @@ resource "google_eventarc_trigger" "trigger_auditlog_tf" {
   location = google_cloud_run_v2_service.default.location
   project  = data.google_project.project.id
 
+  event_data_content_type = "application/json"
+
   matching_criteria {
     attribute = "type"
     value     = "google.cloud.audit.log.v1.written"
