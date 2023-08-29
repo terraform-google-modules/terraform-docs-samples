@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# [START eventarc_workflows_template]
 # This is a sample workflow that simply logs the incoming Pub/Sub event
 # Note that $$ is needed for Terraform
 
@@ -29,3 +30,5 @@ main:
           - message: $${text.decode(base64)}
     - return_pubsub_message:
         return: $${message}
+
+# [END eventarc_workflows_template]
