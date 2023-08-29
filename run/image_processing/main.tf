@@ -95,7 +95,7 @@ resource "google_cloud_run_v2_service" "default" {
     containers {
 
       # Replace with newly created image gcr.io/<project_id>/pubsub
-      image = "gcr.io/cloudrun/hello"
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
       env {
         name  = "BLURRED_BUCKET_NAME"
         value = google_storage_bucket.imageproc_output.name
