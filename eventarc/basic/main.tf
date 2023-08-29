@@ -33,6 +33,11 @@ resource "google_project_service" "eventarc" {
   disable_on_destroy = false
 }
 
+# Enable Pub/Sub API
+resource "google_project_service" "pubsub" {
+  service            = "pubsub.googleapis.com"
+  disable_on_destroy = false
+}
 # [END eventarc_terraform_enableapis]
 
 # [START cloudrun_terraform_deploy_eventarc]
