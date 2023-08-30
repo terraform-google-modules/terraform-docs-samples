@@ -14,30 +14,21 @@
  * limitations under the License.
  */
 
-provider "google-beta" {
-  region = "us-central1"
-}
+# Example configuration of a Cloud Run service with CPU limit
 
-# Enable Cloud Run API
-resource "google_project_service" "cloudrun_api" {
-  service            = "run.googleapis.com"
-  disable_on_destroy = false
-}
-
-#[START cloudrun_jobs_max_retries_create]
-resource "google_cloud_run_v2_job" "default" {
-  name         = "cloud-run-job-retries"
-  location     = "us-central1"
-  launch_stage = "BETA"
+# [START cloudrun_service_configuration_cpu_allocation]
+resource "google_cloud_run_v2_service" "default" {
+  name     = "cloudrun-service-cpu-allocation"
+  location = "us-central1"
 
   template {
-    template {
-      max_retries = 3
-
-      containers {
-        image = "us-docker.pkg.dev/cloudrun/container/job:latest"
+    containers {
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
+      resources {
+        # If true, garbage-collect CPU when once a request finishes
+        cpu_idle = false
       }
     }
   }
 }
-#[END cloudrun_jobs_max_retries_create]
+# [END cloudrun_service_configuration_cpu_allocation]
