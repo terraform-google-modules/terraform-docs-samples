@@ -92,6 +92,7 @@ resource "google_workflows_workflow" "workflows_example" {
 resource "google_eventarc_trigger" "trigger_pubsub_tf" {
   name     = "trigger-pubsub-workflow-tf"
   location = "us-central1"
+
   matching_criteria {
     attribute = "type"
     value     = "google.cloud.pubsub.topic.v1.messagePublished"
