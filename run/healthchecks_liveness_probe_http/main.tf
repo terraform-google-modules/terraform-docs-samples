@@ -21,7 +21,7 @@ resource "google_project_service" "cloudrun_api" {
 }
 
 # Create Cloud Run Container with HTTP liveness probe
-#[START cloud_run_healthchecks_liveness_probe_http]
+#[START cloudrun_healthchecks_liveness_probe_http]
 resource "google_cloud_run_v2_service" "default" {
   name     = "cloudrun-service-healthcheck"
   location = "us-central1"
@@ -49,4 +49,4 @@ resource "google_cloud_run_v2_service" "default" {
     }
   }
 }
-#[END cloud_run_healthchecks_liveness_probe_http]
+#[END cloudrun_healthchecks_liveness_probe_http]
