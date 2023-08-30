@@ -48,14 +48,12 @@ resource "google_storage_bucket" "default" {
 
   uniform_bucket_level_access = true
 }
-
 # [END storage_terraform_deploy_eventarc]
 
 # [START cloudrun_terraform_deploy_eventarc]
-
 # Deploy Cloud Run service
 resource "google_cloud_run_v2_service" "default" {
-  name     = "cloudrun-hello-tf"
+  name     = "helloworld-events"
   location = "us-east1"
 
   template {
@@ -94,49 +92,4 @@ resource "google_eventarc_trigger" "trigger_pubsub_tf" {
 }
 
 # [END eventarc_terraform_pubsub]
-# [START eventarc_terraform_auditlog_storage]
-
-# Give default Compute service account eventarc.eventReceiver role
-resource "google_project_iam_binding" "project" {
-  project = data.google_project.project.id
-  role    = "roles/eventarc.eventReceiver"
-
-  members = [
-    "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
-  ]
-}
-
-# Create an AuditLog for Cloud Storage trigger
-resource "google_eventarc_trigger" "trigger_auditlog_tf" {
-  name     = "trigger-auditlog-tf"
-  location = google_cloud_run_v2_service.default.location
-  project  = data.google_project.project.id
-
-  event_data_content_type = "application/json"
-
-  matching_criteria {
-    attribute = "type"
-    value     = "google.cloud.audit.log.v1.written"
-  }
-  matching_criteria {
-    attribute = "serviceName"
-    value     = "storage.googleapis.com"
-  }
-  matching_criteria {
-    attribute = "methodName"
-    value     = "storage.objects.create"
-  }
-
-  destination {
-    cloud_run_service {
-      service = google_cloud_run_v2_service.default.name
-      region  = google_cloud_run_v2_service.default.location
-    }
-  }
-  service_account = "${data.google_project.project.number}-compute@developer.gserviceaccount.com"
-
-  depends_on = [google_project_service.eventarc]
-}
-
-# [END eventarc_terraform_auditlog_storage]
 # [END eventarc_basic_parent_tag]
