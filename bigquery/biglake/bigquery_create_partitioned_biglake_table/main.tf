@@ -25,7 +25,6 @@
 
 # [START bigquery_create_partitioned_biglake_table]
 # This creates a bucket in the US region named "my-bucket" with a pseudorandom suffix.
-
 resource "random_id" "bucket_name_suffix" {
   byte_length = 8
 }
@@ -125,5 +124,4 @@ resource "google_bigquery_table" "default" {
     google_storage_bucket_object.default
   ]
 }
-
 # [END bigquery_create_partitioned_biglake_table]
