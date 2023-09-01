@@ -15,16 +15,17 @@
 */
 
 /**
-* This sample creates an Cloud Storage BigLake Table with a partitioning
-* scheme.
+* This Terraform code sample creates a BigLake table in 
+* Google Cloud Storage with a partitioned schema.
+* For more information, see
 * https://cloud.google.com/bigquery/docs/create-cloud-storage-table-biglake
+* and
+* https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table
 */
 
 # [START bigquery_create_partitioned_biglake_table]
-# Create a bucket where the table is stored.
-# A pre-existing bucket with files maybe used.
+# This creates a bucket in the US region named "my-bucket" with a pseudorandom suffix.
 
-# Cloud Storage bucket name must be unique
 resource "random_id" "bucket_name_suffix" {
   byte_length = 8
 }
@@ -36,63 +37,61 @@ resource "google_storage_bucket" "default" {
 }
 
 resource "google_storage_bucket_object" "default" {
-  /*
-    The hive partitoned table defined in google_bigquery_table.hive_table
-    requires that the partitions locations exist when the table is created, in order to do so
-    we have to create this fake message, without it the deployment of the table fails with:
-
-     > Cannot query hive partitioned data for table messages without any associated files
-
-    */
+  # This creates a fake message to create partition locations on the table.
+  # Otherwise, the table deployment fails.
   name    = "publish/dt=2000-01-01/hr=00/min=00/fake_message.json"
   content = "{\"column1\": \"XXX\"}"
   bucket  = google_storage_bucket.default.name
 }
 
-# Project information is obtained by provider.
+# This queries the provider for project information.
 data "google_project" "project" {}
 
-# Create a connection to use to access bucket.
+# This creates a connection in the US region named "my-connection". 
+# This connection is used to access the bucket.
 resource "google_bigquery_connection" "default" {
   connection_id = "my-connection"
   location      = "US"
   cloud_resource {}
 }
 
-# Grant the Connection access to the bucket.
+# This grants the previous connection IAM role access to the bucket.
 resource "google_project_iam_member" "default" {
   role    = "roles/storage.objectViewer"
   project = data.google_project.project.id
   member  = "serviceAccount:${google_bigquery_connection.default.cloud_resource[0].service_account_id}"
 }
 
-## If you are using schema autodetect, uncomment the following to set up
-## a delay to give IAM changes time to propagate.
-#resource "time_sleep" "wait_7_min" {
-#depends_on = [google_project_iam_member.default]
-#create_duration = "7m"
-#}
+# This makes the script wait for seven minutes before proceeding.
+# This lets IAM permissions propagate.
+resource "time_sleep" "wait_7_min" {
+  depends_on      = [google_project_iam_member.default]
+  create_duration = "7m"
+}
 
+# This defines a Google BigQuery dataset with
+# default expiration times for partitions and tables, a
+# description, a location, and a maximum time travel.
 resource "google_bigquery_dataset" "default" {
-  dataset_id                      = "mydataset"
+  dataset_id                      = "my_dataset"
   default_partition_expiration_ms = 2592000000  # 30 days
   default_table_expiration_ms     = 31536000000 # 365 days
-  description                     = "dataset description"
+  description                     = "My dataset description"
   location                        = "US"
   max_time_travel_hours           = 96 # 4 days
 
+  # This defines a map of labels for the bucket resource,
+  # including the labels "billing_group" and "pii".
   labels = {
     billing_group = "accounting",
     pii           = "sensitive"
   }
 }
 
-
-## This creates a table using the connection id.
+# This creates a BigQuery table named "my_table" in the dataset "default".
+# The table has a single column named "column1", which is of type STRING
+# and is nullable.
 resource "google_bigquery_table" "default" {
-  ## If you are using schema autodetect, uncomment the following to
-  ## set up a dependency on the prior delay.
-  # depends_on = [time_sleep.wait_7_min]
   dataset_id = google_bigquery_dataset.default.dataset_id
   table_id   = "my_table"
   schema     = <<EOF
@@ -105,29 +104,24 @@ resource "google_bigquery_table" "default" {
 ]
   EOF
   external_data_configuration {
-    # Autodetect determines whether schema autodetect is active or inactive.
+    # This defines an external data configuration for the BigQuery table 
+    # that reads Parquet data from the publish directory of the default
+    # Google Cloud Storage bucket.
     autodetect    = false
     source_format = "PARQUET"
     source_uris   = ["gs://${google_storage_bucket.default.name}/publish/*"]
-    # [`hive_parititioning_options`](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table.html#hive_partitioning_options) may be specified for partitioned tables.
+    # This configures Hive partitioning for the BigQuery table,
+    # partitioning the data by date and time.
     hive_partitioning_options {
       mode                     = "CUSTOM"
       source_uri_prefix        = "gs://${google_storage_bucket.default.name}/publish/{dt:STRING}/{hr:STRING}/{min:STRING}"
       require_partition_filter = false
     }
-
-    # Specify either:
-    # `MANUAL` for manual metadata refresh
-    # `AUTOMATIC` for automatic metadata refresh.
-    # metadata_cache_mode = "MANUAL"
   }
   deletion_protection = false
 
-  # `max_staleness` must be specified as an interval literal,
-  # when `metadata_cache_mode` is `AUTOMATIC`, omitted otherwise.
-  # Interval literal: https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#interval_literals
-  # max_staleness = "0-0 0 10:0:0"
   depends_on = [
+    time_sleep.wait_7_min,
     google_storage_bucket_object.default
   ]
 }
