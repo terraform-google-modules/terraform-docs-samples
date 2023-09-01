@@ -15,7 +15,7 @@
 */
 
 /**
-* This Terraform code sample creates a BigLake table in 
+* This Terraform code sample creates a BigLake table in
 * Google Cloud Storage with an unpartitioned schema.
 * For more information, see
 * https://cloud.google.com/bigquery/docs/create-cloud-storage-table-biglake
@@ -38,7 +38,7 @@ resource "google_storage_bucket" "default" {
 # This queries the provider for project information.
 data "google_project" "project" {}
 
-# This creates a connection in the US region named "my-connection". 
+# This creates a connection in the US region named "my-connection".
 # This connection is used to access the bucket.
 resource "google_bigquery_connection" "default" {
   connection_id = "my-connection"
@@ -104,7 +104,7 @@ resource "google_bigquery_table" "default" {
     ]
     EOF
   external_data_configuration {
-    # This defines an external data configuration for the BigQuery table 
+    # This defines an external data configuration for the BigQuery table
     # that reads Parquet data from the publish directory of the default
     # Google Cloud Storage bucket.
     autodetect    = false
