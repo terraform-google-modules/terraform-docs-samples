@@ -15,9 +15,12 @@
 */
 
 /**
-* This sample creates an Cloud Storage BigLake Table on unpartitioned data.
-* scheme.
+* This Terraform code sample creates a BigLake table in 
+* Google Cloud Storage with an unpartitioned schema.
+* For more information, see
 * https://cloud.google.com/bigquery/docs/create-cloud-storage-table-biglake
+* and
+* https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table
 */
 
 # [START bigquery_create_biglake_unpartitioned_table]
