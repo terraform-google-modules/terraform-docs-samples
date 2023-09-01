@@ -24,8 +24,7 @@
 */
 
 # [START bigquery_create_biglake_unpartitioned_table]
-# Create a bucket where the table is stored.
-# A pre-existing bucket with files maybe used.
+# This creates a bucket in the US region named "my-bucket" with a pseudorandom suffix.
 
 # Cloud Storage bucket name must be unique
 resource "random_id" "bucket_name_suffix" {
