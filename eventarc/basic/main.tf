@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,119 +15,121 @@
  */
 
 # [START eventarc_basic_parent_tag]
-# [START eventarc_terraform_enableapis]
-# Used to retrieve project_number later
-data "google_project" "project" {
-  provider = google-beta
-}
-
+# [START eventarc_terraform_basic_enableapis]
 # Enable Cloud Run API
 resource "google_project_service" "run" {
-  provider           = google-beta
   service            = "run.googleapis.com"
   disable_on_destroy = false
 }
 
 # Enable Eventarc API
 resource "google_project_service" "eventarc" {
-  provider           = google-beta
   service            = "eventarc.googleapis.com"
   disable_on_destroy = false
 }
 
-# [END eventarc_terraform_enableapis]
+# Enable Pub/Sub API
+resource "google_project_service" "pubsub" {
+  service            = "pubsub.googleapis.com"
+  disable_on_destroy = false
+}
+# [END eventarc_terraform_basic_enableapis]
+
+
+# [START eventarc_terraform_basic_iam]
+# Used to retrieve project information later
+data "google_project" "project" {}
+
+# Create a decicated service account
+resource "google_service_account" "eventarc" {
+  account_id   = "eventarc-trigger-sa"
+  display_name = "Eventarc Trigger Service Account"
+}
+
+# Grant permission to receive Eventarc events
+resource "google_project_iam_member" "eventreceiver" {
+  project = data.google_project.project.id
+  role    = "roles/eventarc.eventReceiver"
+  member  = "serviceAccount:${google_service_account.eventarc.email}"
+}
+
+# Grant permission to invoke Cloud Run services
+resource "google_project_iam_member" "runinvoker" {
+  project = data.google_project.project.id
+  role    = "roles/run.invoker"
+  member  = "serviceAccount:${google_service_account.eventarc.email}"
+}
+# [END eventarc_terraform_basic_iam]
+
+
+# [START storage_terraform_eventarc_cloudrun]
+# Create a Cloud Storage bucket
+resource "google_storage_bucket" "default" {
+  name          = "trigger-cloudrun-${data.google_project.project.name}"
+  location      = google_cloud_run_v2_service.default.location
+  force_destroy = true
+
+  uniform_bucket_level_access = true
+}
+
+# Grant the Cloud Storage service account permission to publish pub/sub topics
+data "google_storage_project_service_account" "gcs_account" {}
+resource "google_project_iam_member" "pubsubpublisher" {
+  project = data.google_project.project.id
+  role    = "roles/pubsub.publisher"
+  member  = "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"
+}
+# [END storage_terraform_eventarc_cloudrun]
+
 
 # [START cloudrun_terraform_deploy_eventarc]
-
 # Deploy Cloud Run service
-resource "google_cloud_run_service" "default" {
-  provider = google-beta
-  name     = "cloudrun-hello-tf"
-  location = "us-east1"
+resource "google_cloud_run_v2_service" "default" {
+  name     = "hello-events"
+  location = "us-central1"
 
   template {
-    spec {
-      containers {
-        image = "gcr.io/cloudrun/hello"
-      }
+    containers {
+      # This container will log received events
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
-  }
-
-  traffic {
-    percent         = 100
-    latest_revision = true
+    service_account = google_service_account.eventarc.email
   }
 
   depends_on = [google_project_service.run]
 }
-
 # [END cloudrun_terraform_deploy_eventarc]
 
-# [START eventarc_terraform_pubsub]
 
-# Create a Pub/Sub trigger
-resource "google_eventarc_trigger" "trigger_pubsub_tf" {
-  provider = google-beta
-  name     = "trigger-pubsub-tf"
-  location = google_cloud_run_service.default.location
+# [START eventarc_terraform_cloudrun_trigger]
+# Create an Eventarc trigger, routing Storage events to Cloud Run
+resource "google_eventarc_trigger" "default" {
+  name     = "trigger-storage-cloudrun-tf"
+  location = google_cloud_run_v2_service.default.location
+
+  # Capture objects changed in the bucket
   matching_criteria {
     attribute = "type"
-    value     = "google.cloud.pubsub.topic.v1.messagePublished"
+    value     = "google.cloud.storage.object.v1.finalized"
   }
+  matching_criteria {
+    attribute = "bucket"
+    value     = google_storage_bucket.default.name
+  }
+
+  # Send events on to Cloud Run
   destination {
     cloud_run_service {
-      service = google_cloud_run_service.default.name
-      region  = google_cloud_run_service.default.location
+      service = google_cloud_run_v2_service.default.name
+      region  = google_cloud_run_v2_service.default.location
     }
   }
 
-  service_account = "${data.google_project.project.number}-compute@developer.gserviceaccount.com"
-
-  depends_on = [google_project_service.eventarc]
-}
-
-# [END eventarc_terraform_pubsub]
-# [START eventarc_terraform_auditlog_storage]
-
-# Give default Compute service account eventarc.eventReceiver role
-resource "google_project_iam_binding" "project" {
-  provider = google-beta
-  project  = data.google_project.project.id
-  role     = "roles/eventarc.eventReceiver"
-
-  members = [
-    "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
+  service_account = google_service_account.eventarc.email
+  depends_on = [
+    google_project_service.eventarc,
+    google_project_iam_member.pubsubpublisher
   ]
 }
-
-# Create an AuditLog for Cloud Storage trigger
-resource "google_eventarc_trigger" "trigger_auditlog_tf" {
-  provider = google-beta
-  name     = "trigger-auditlog-tf"
-  location = google_cloud_run_service.default.location
-  project  = data.google_project.project.id
-  matching_criteria {
-    attribute = "type"
-    value     = "google.cloud.audit.log.v1.written"
-  }
-  matching_criteria {
-    attribute = "serviceName"
-    value     = "storage.googleapis.com"
-  }
-  matching_criteria {
-    attribute = "methodName"
-    value     = "storage.objects.create"
-  }
-  destination {
-    cloud_run_service {
-      service = google_cloud_run_service.default.name
-      region  = google_cloud_run_service.default.location
-    }
-  }
-  service_account = "${data.google_project.project.number}-compute@developer.gserviceaccount.com"
-
-  depends_on = [google_project_service.eventarc]
-}
-
-# [END eventarc_terraform_auditlog_storage]
+# [END eventarc_terraform_trigger]
 # [END eventarc_basic_parent_tag]

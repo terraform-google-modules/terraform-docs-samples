@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,105 +15,131 @@
  */
 
 # [START eventarc_workflows_parent_tag]
-# [START eventarc_terraform_enableapis]
-# Used to retrieve project_number later
-data "google_project" "project" {
-  provider = google-beta
-}
-
+# [START eventarc_terraform_workflows_enableapis]
 # Enable Eventarc API
 resource "google_project_service" "eventarc" {
-  provider           = google-beta
   service            = "eventarc.googleapis.com"
-  disable_on_destroy = false
-}
-
-# Enable Pub/Sub API
-resource "google_project_service" "pubsub" {
-  provider           = google-beta
-  service            = "pubsub.googleapis.com"
   disable_on_destroy = false
 }
 
 # Enable Workflows API
 resource "google_project_service" "workflows" {
-  provider           = google-beta
   service            = "workflows.googleapis.com"
   disable_on_destroy = false
 }
 
-# [END eventarc_terraform_enableapis]
+# Enable Pub/Sub API
+resource "google_project_service" "pubsub" {
+  service            = "pubsub.googleapis.com"
+  disable_on_destroy = false
+}
+# [END eventarc_terraform_workflows_enableapis]
 
 # [START eventarc_workflows_create_serviceaccount]
+# Used to retrieve project information later
+data "google_project" "project" {}
 
 # Create a service account for Eventarc trigger and Workflows
-resource "google_service_account" "eventarc_workflows_service_account" {
-  provider     = google-beta
+resource "google_service_account" "eventarc" {
   account_id   = "eventarc-workflows-sa"
   display_name = "Eventarc Workflows Service Account"
 }
 
-# Grant the logWriter role to the service account
-resource "google_project_iam_binding" "project_binding_eventarc" {
-  provider = google-beta
-  project  = data.google_project.project.id
-  role     = "roles/logging.logWriter"
-
-  members = ["serviceAccount:${google_service_account.eventarc_workflows_service_account.email}"]
-
-  depends_on = [google_service_account.eventarc_workflows_service_account]
+# Grant permission to invoke workflows
+resource "google_project_iam_member" "workflowsinvoker" {
+  project = data.google_project.project.id
+  role    = "roles/workflows.invoker"
+  member  = "serviceAccount:${google_service_account.eventarc.email}"
 }
 
-# Grant the workflows.invoker role to the service account
-resource "google_project_iam_binding" "project_binding_workflows" {
-  provider = google-beta
-  project  = data.google_project.project.id
-  role     = "roles/workflows.invoker"
-
-  members = ["serviceAccount:${google_service_account.eventarc_workflows_service_account.email}"]
-
-  depends_on = [google_service_account.eventarc_workflows_service_account]
+# Grant permission to receive events
+resource "google_project_iam_member" "eventreceiver" {
+  project = data.google_project.project.id
+  role    = "roles/eventarc.eventReceiver"
+  member  = "serviceAccount:${google_service_account.eventarc.email}"
 }
-
 # [END eventarc_workflows_create_serviceaccount]
 
-# [START eventarc_workflows_deploy]
-# Define and deploy a workflow
-resource "google_workflows_workflow" "workflows_example" {
-  name            = "pubsub-workflow-tf"
-  provider        = google-beta
-  region          = "us-central1"
-  description     = "A sample workflow"
-  service_account = google_service_account.eventarc_workflows_service_account.email
-  # Imported main workflow template file
-  source_contents = templatefile("workflow.tftpl", {})
 
-  depends_on = [google_project_service.workflows,
-  google_service_account.eventarc_workflows_service_account]
+# [START storage_terraform_eventarc_workflows]
+# Create a Cloud Storage bucket
+resource "google_storage_bucket" "default" {
+  name          = "trigger-workflows-${data.google_project.project.name}"
+  location      = google_workflows_workflow.default.region
+  force_destroy = true
+
+  uniform_bucket_level_access = true
 }
 
+# Grant the Cloud Storage service account permission to publish Pub/Sub topics
+data "google_storage_project_service_account" "gcs_account" {}
+resource "google_project_iam_member" "pubsubpublisher" {
+  project = data.google_project.project.id
+  role    = "roles/pubsub.publisher"
+  member  = "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"
+}
+# [END storage_terraform_eventarc_workflows]
+
+
+# [START eventarc_workflows_deploy]
+# Create a workflow
+resource "google_workflows_workflow" "default" {
+  name        = "storage-workflow-tf"
+  region      = "us-central1"
+  description = "Workflow that returns information about storage events"
+
+  # Note that $$ is needed for Terraform
+  source_contents = <<EOF
+  main:
+    params: [event]
+    steps:
+      - log_event:
+          call: sys.log
+          args:
+            text: $${event}
+            severity: INFO
+      - gather_data:
+          assign:
+            - bucket: $${event.data.bucket}
+            - name: $${event.data.name}
+            - message: $${"Received event " + event.type + " - " + bucket + ", " + name}
+      - return_data:
+          return: $${message}
+  EOF
+
+  depends_on = [
+    google_project_service.workflows
+  ]
+}
 # [END eventarc_workflows_deploy]
 
-# [START eventarc_create_pubsub_trigger]
-# Create an Eventarc trigger routing Pub/Sub events to Workflows
-resource "google_eventarc_trigger" "trigger_pubsub_tf" {
-  name     = "trigger-pubsub-workflow-tf"
-  provider = google-beta
-  location = "us-central1"
+# [START eventarc_terraform_workflows_trigger]
+# Create an Eventarc trigger, routing Storage events to Workflows
+resource "google_eventarc_trigger" "default" {
+  name     = "trigger-storage-workflows-tf"
+  location = google_workflows_workflow.default.region
+
+  # Capture objects changed in the bucket
   matching_criteria {
     attribute = "type"
-    value     = "google.cloud.pubsub.topic.v1.messagePublished"
+    value     = "google.cloud.storage.object.v1.finalized"
   }
+  matching_criteria {
+    attribute = "bucket"
+    value     = google_storage_bucket.default.name
+  }
+
+  # Send events to Workflows
   destination {
-    workflow = google_workflows_workflow.workflows_example.id
+    workflow = google_workflows_workflow.default.id
   }
 
+  service_account = google_service_account.eventarc.email
 
-  service_account = google_service_account.eventarc_workflows_service_account.email
-
-  depends_on = [google_project_service.pubsub, google_project_service.eventarc,
-  google_service_account.eventarc_workflows_service_account]
+  depends_on = [
+    google_project_service.eventarc,
+    google_project_service.workflows,
+  ]
 }
-
-# [END eventarc_create_pubsub_trigger]
+# [END eventarc_terraform_workflows_trigger]
 # [END eventarc_workflows_parent_tag]
