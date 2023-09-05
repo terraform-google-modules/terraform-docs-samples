@@ -81,8 +81,7 @@ resource "google_bigquery_dataset" "default" {
 
 
 # This creates a BigQuery table named "my_table" in the dataset "default".
-# The table has a single column named "column1", which is of type STRING
-# and is nullable.
+# The table has three columns, named "country", "product", and "price", which are of types STRING, STRING, and INT64 respectively.
 resource "google_bigquery_table" "default" {
   depends_on = [time_sleep.wait_7_min]
   dataset_id = google_bigquery_dataset.default.dataset_id
