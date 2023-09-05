@@ -28,8 +28,8 @@ resource "google_sql_database_instance" "mysql_instance_psc" {
     }
     ip_configuration {
       psc_config {
-        psc_enabled = true
-        allowed_consumer_projects = ["allowed-consumer-project-name"]
+        psc_enabled               = true
+        allowed_consumer_projects = []
       }
       ipv4_enabled = false
     }
@@ -50,7 +50,7 @@ resource "google_sql_database_instance" "postgres_instance_psc" {
     }
     ip_configuration {
       psc_config {
-        psc_enabled = true
+        psc_enabled               = true
         allowed_consumer_projects = []
       }
       ipv4_enabled = false
