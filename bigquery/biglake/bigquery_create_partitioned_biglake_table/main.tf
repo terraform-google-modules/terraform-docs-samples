@@ -96,11 +96,11 @@ resource "google_bigquery_table" "default" {
   schema     = <<EOF
   [
     {
-        "name": "column1",
-        "type": "STRING",
-        "mode": "NULLABLE"
+      "name": "column1",
+      "type": "STRING",
+      "mode": "NULLABLE"
     }
-]
+  ]
   EOF
   external_data_configuration {
     # This defines an external data configuration for the BigQuery table
