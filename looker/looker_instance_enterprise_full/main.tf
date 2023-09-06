@@ -28,7 +28,7 @@ resource "google_looker_instance" "main" {
     allowed_email_domains = ["google.com"]
   }
   encryption_config {
-    kms_key_name = google_kms_crypto_key.main.name
+    kms_key_name = google_kms_crypto_key.main.id
   }
   maintenance_window {
     day_of_week = "THURSDAY"
