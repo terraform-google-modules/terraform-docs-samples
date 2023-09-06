@@ -86,22 +86,11 @@ resource "google_bigquery_table" "default" {
   depends_on = [time_sleep.wait_7_min]
   dataset_id = google_bigquery_dataset.default.dataset_id
   table_id   = "my_table"
-  schema     = <<EOF
-  [
-    {
-      "name": "country",
-      "type": "STRING"
-    },
-    {
-      "name": "product",
-      "type": "STRING"
-    },
-    {
-      "name": "price",
-      "type": "INT64"
-    }
-  ]
-  EOF
+  schema = jsonencode([
+    { "name" : "country", "type" : "STRING" },
+    { "name" : "product", "type" : "STRING" },
+    { "name" : "price", "type" : "INT64" }
+  ])
   external_data_configuration {
     # This defines an external data configuration for the BigQuery table
     # that reads Parquet data from the publish directory of the default
