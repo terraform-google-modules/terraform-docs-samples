@@ -21,47 +21,54 @@
 */
 
 # [START bigquery_create_object_table]
-resource "google_bigquery_connection" "default" {
+# This queries the provider for project information.
+data "google_project" "project" {}
+
+# This creates a connection in the US region named "my-connection".
+# This connection is used to access the bucket.
+resource "google_bigquery_connection" "connection" {
   connection_id = "my-connection-id"
   location      = "US"
   cloud_resource {}
 }
 
-data "google_project" "project" {}
-
-resource "google_project_iam_member" "default" {
+# This grants the previous connection IAM role access to the bucket.
+resource "google_project_iam_member" "iam-permission" {
   role    = "roles/storage.objectViewer"
   project = data.google_project.project.project_id
   member  = "serviceAccount:${google_bigquery_connection.default.cloud_resource[0].service_account_id}"
 }
 
-resource "google_bigquery_dataset" "default" {
+# This defines a Google BigQuery dataset.
+resource "google_bigquery_dataset" "dataset" {
   dataset_id = "my_dataset_id"
 }
 
-# Cloud Storage bucket name must be unique
+# This creates a bucket in the US region named "my-bucket" with a pseudorandom suffix.
 resource "random_id" "bucket_name_suffix" {
   byte_length = 8
 }
-resource "google_storage_bucket" "default" {
+resource "google_storage_bucket" "bucket" {
   name                        = "my-bucket-${random_id.bucket_name_suffix.hex}"
   location                    = "US"
   force_destroy               = true
   uniform_bucket_level_access = true
 }
 
-resource "google_bigquery_table" "default" {
+# This defines Google BigQuery Object Table with Manual metadata caching, and
+# storage defined by `source_uris`.
+resource "google_bigquery_table" "table" {
   deletion_protection = false
   table_id            = "my-table-id"
-  dataset_id          = google_bigquery_dataset.default.dataset_id
+  dataset_id          = google_bigquery_dataset.dataset.dataset_id
   external_data_configuration {
-    connection_id = google_bigquery_connection.default.name
+    connection_id = google_bigquery_connection.connection.name
     autodetect    = false
     # REQUIRED for object tables.
     object_metadata = "SIMPLE"
 
     source_uris = [
-      "gs://${google_storage_bucket.default.name}/*",
+      "gs://${google_storage_bucket.bucket.name}/*",
     ]
 
     # `MANUAL` for manual metadata refresh
@@ -78,7 +85,7 @@ resource "google_bigquery_table" "default" {
   # Without this dependency, Terraform may try to create the table when
   # the connection does not have the correct IAM Role resulting in failures.
   depends_on = [
-    google_project_iam_member.default
+    google_project_iam_member.iam-permission
   ]
 }
 # [END bigquery_create_object_table]
