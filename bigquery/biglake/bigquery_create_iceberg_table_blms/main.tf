@@ -21,9 +21,107 @@
 
 # [START bigquery_create_iceberg_blms]
 
-# ASSUME that there is a valid BLMS URI under:
-# blms://projects/myproject/locations/us-central1/catalogs/default/databases/db/tables/tbl
 
+# This queries the provider for project information.
+data "google_project" "project" {}
+
+# Create a Biglake Metastore Catalog named `my-catalog` in the `US`
+# A Catalog can contain many Databases.
+resource "google_biglake_catalog" "catalog" {
+  name     = "my-catalog"
+  location = "US"
+}
+
+# Create a Cloud Storage Bucket with a unique name in the `US`.
+# Generate a random unique suffix.
+resource "random_id" "bucket_name_suffix" {
+  byte_length = 8
+}
+resource "google_storage_bucket" "bucket" {
+  name                        = "my-bucket-${random_id.bucket_name_suffix.hex}"
+  location                    = "US"
+  force_destroy               = true
+  uniform_bucket_level_access = true
+}
+
+# Create a Cloud Storage Directory in `bucket` to store metadata.
+resource "google_storage_bucket_object" "metadata_directory" {
+  name    = "metadata/"
+  content = " "
+  bucket  = google_storage_bucket.bucket.name
+}
+
+# Create a Cloud Storage Directory in `bucket` to store data.
+resource "google_storage_bucket_object" "data_directory" {
+  name    = "data/"
+  content = " "
+  bucket  = google_storage_bucket.bucket.name
+}
+
+# Create a Biglake Metastore Database named `my-database` under `catalog` with
+# type `HIVE`, and the specified `hive_options`. A Database can contain many
+# tables.
+resource "google_biglake_database" "database" {
+  name    = "my-database"
+  catalog = google_biglake_catalog.catalog.id
+  type    = "HIVE"
+  hive_options {
+    location_uri = "gs://${google_storage_bucket.bucket.name}/${google_storage_bucket_object.metadata_directory.name}"
+    parameters = {
+      "owner" = "Alex"
+    }
+  }
+}
+
+# Create a Biglake Metastore Table name `my-table` under `table` with type
+# `HIVE` and the specified `hive_options`.
+resource "google_biglake_table" "table" {
+  name     = "my-table"
+  database = google_biglake_database.database.id
+  type     = "HIVE"
+  hive_options {
+    table_type = "MANAGED_TABLE"
+    storage_descriptor {
+      location_uri  = "gs://${google_storage_bucket.bucket.name}/${google_storage_bucket_object.data_folder.name}"
+      input_format  = "org.apache.hadoop.mapred.SequenceFileInputFormat"
+      output_format = "org.apache.hadoop.hive.ql.io.HiveSequenceFileOutputFormat"
+    }
+    parameters = {
+      "spark.sql.create.version"          = "3.1.3"
+      "spark.sql.sources.schema.numParts" = "1"
+      "transient_lastDdlTime"             = "1680894197"
+      "spark.sql.partitionProvider"       = "catalog"
+      "owner"                             = "Alex"
+      "spark.sql.sources.schema.part.0" = jsonencode({
+        "type" : "struct",
+        "fields" : [
+          { "name" : "id", "type" : "integer",
+            "nullable" : true,
+            "metadata" : {}
+          },
+          {
+            "name" : "name",
+            "type" : "string",
+            "nullable" : true,
+            "metadata" : {}
+          },
+          {
+            "name" : "age",
+            "type" : "integer",
+            "nullable" : true,
+            "metadata" : {}
+          }
+        ]
+      })
+      "spark.sql.sources.provider" = "iceberg"
+      "provider"                   = "iceberg"
+    }
+  }
+}
+
+# This defines a Google BigQuery dataset with
+# default expiration times for partitions and tables, a
+# description, a location, and a maximum time travel.
 resource "google_bigquery_dataset" "default" {
   dataset_id                      = "mydataset"
   default_partition_expiration_ms = 2592000000  # 30 days
@@ -38,6 +136,7 @@ resource "google_bigquery_dataset" "default" {
   }
 }
 
+# This defines a Google Bigquery BigLake table referring to the above table.
 resource "google_bigquery_table" "default" {
   deletion_protection = false
   table_id            = "my-table-id"
@@ -45,9 +144,8 @@ resource "google_bigquery_table" "default" {
   external_data_configuration {
     autodetect    = false
     source_format = "ICEBERG"
-    # KEY: Point to a BLMS URI.
     source_uris = [
-      "blms://projects/myproject/locations/us-central1/catalogs/default/databases/db/tables/tbl",
+      "blms://${data.google_biglake_table.table.name}"
     ]
   }
 }
