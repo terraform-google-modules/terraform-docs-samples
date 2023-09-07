@@ -131,5 +131,5 @@ resource "google_eventarc_trigger" "default" {
     google_project_iam_member.pubsubpublisher
   ]
 }
-# [END eventarc_terraform_trigger]
+# [END eventarc_terraform_cloudrun_trigger]
 # [END eventarc_basic_parent_tag]
