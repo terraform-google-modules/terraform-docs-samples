@@ -53,6 +53,7 @@ module "projects" {
     "dns.googleapis.com",
     "eventarc.googleapis.com",
     "iam.googleapis.com",
+    "looker.googleapis.com",
     "networkmanagement.googleapis.com",
     "notebooks.googleapis.com",
     "privateca.googleapis.com",
