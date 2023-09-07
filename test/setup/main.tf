@@ -55,6 +55,7 @@ module "projects" {
     "networkmanagement.googleapis.com",
     "notebooks.googleapis.com",
     "privateca.googleapis.com",
+    "pubsub.googleapis.com",
     "run.googleapis.com",
     "storage-api.googleapis.com",
     "servicedirectory.googleapis.com",
