@@ -40,7 +40,7 @@ resource "google_project_service" "pubsub" {
 # Used to retrieve project information later
 data "google_project" "project" {}
 
-# Create a decicated service account
+# Create a dedicated service account
 resource "google_service_account" "eventarc" {
   account_id   = "eventarc-trigger-sa"
   display_name = "Eventarc Trigger Service Account"
