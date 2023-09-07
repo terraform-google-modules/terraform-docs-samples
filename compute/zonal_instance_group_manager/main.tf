@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,6 @@ resource "google_compute_instance_template" "default" {
   machine_type   = "e2-medium"
   can_ip_forward = false
 
-  tags = ["tag1", "tag2"]
-
   disk {
     source_image = data.google_compute_image.default.id
   }
@@ -34,29 +32,20 @@ resource "google_compute_instance_template" "default" {
   network_interface {
     network = "default"
   }
-
-  metadata = {
-    name = "value"
-  }
-
-  service_account {
-    scopes = ["userinfo-email", "compute-ro", "storage-ro"]
-  }
 }
 
 # [START compute_zonal_instance_group_manager_simple_tag]
 resource "google_compute_instance_group_manager" "default" {
 
-  name = "my-igm"
+  name = "example-group"
+  base_instance_name = "test"
+  target_size = 3
   zone = "us-central1-f"
 
   version {
     instance_template = google_compute_instance_template.default.id
     name              = "primary"
   }
-
-  base_instance_name = "my-igms-instance"
 }
-
 # [END compute_zonal_instance_group_manager_simple_tag]
 # [END compute_zonal_instance_group_manager_parent_tag]
