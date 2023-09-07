@@ -37,10 +37,10 @@ resource "google_compute_instance_template" "default" {
 # [START compute_zonal_instance_group_manager_simple_tag]
 resource "google_compute_instance_group_manager" "default" {
 
-  name = "example-group"
+  name               = "example-group"
   base_instance_name = "test"
-  target_size = 3
-  zone = "us-central1-f"
+  target_size        = 3
+  zone               = "us-central1-f"
 
   version {
     instance_template = google_compute_instance_template.default.id
