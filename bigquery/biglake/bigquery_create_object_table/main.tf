@@ -24,7 +24,7 @@
 # This queries the provider for project information.
 data "google_project" "project" {}
 
-# This creates a connection in the US region named "my-connection".
+# This creates a connection in the US region named "my-connection-id".
 # This connection is used to access the bucket.
 resource "google_bigquery_connection" "connection" {
   connection_id = "my-connection-id"
@@ -36,7 +36,7 @@ resource "google_bigquery_connection" "connection" {
 resource "google_project_iam_member" "iam-permission" {
   role    = "roles/storage.objectViewer"
   project = data.google_project.project.project_id
-  member  = "serviceAccount:${google_bigquery_connection.default.cloud_resource[0].service_account_id}"
+  member  = "serviceAccount:${google_bigquery_connection.connection.cloud_resource[0].service_account_id}"
 }
 
 # This defines a Google BigQuery dataset.
