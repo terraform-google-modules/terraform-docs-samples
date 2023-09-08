@@ -15,11 +15,8 @@ implied.
  * limitations under the License.
  */
 
-# Cross-region internal application load balancer with managed instance 
-group backend
-
 # [START cloudloadbalancing_cross_region_int_app_lb_parent_tag]
-# VPC
+
 # [START cloudloadbalancing_cross_region_vpc_tag]
 resource "google_compute_network" "default" {
   auto_create_subnetworks = false
@@ -28,7 +25,6 @@ resource "google_compute_network" "default" {
 }
 # [END cloudloadbalancing_cross_region_vpc_tag]
 
-# backend subnet in us-west1
 # [START cloudloadbalancing_cross_region_subnet_a_tag]
 resource "google_compute_subnetwork" "subnet_a" {
   provider      = google-beta
@@ -39,7 +35,6 @@ resource "google_compute_subnetwork" "subnet_a" {
 }
 # [END cloudloadbalancing_cross_region_subnet_a_tag]
 
-# backend subnet in us-east1
 # [START cloudloadbalancing_cross_region_subnet_b_tag]
 resource "google_compute_subnetwork" "subnet_b" {
   provider      = google-beta
@@ -50,12 +45,11 @@ resource "google_compute_subnetwork" "subnet_b" {
 }
 # [END cloudloadbalancing_cross_region_subnet_b_tag]
 
-# proxy-only-subnet in us-east1
 # [START cloudloadbalancing_cross_region_proxy_subnet_b_tag]
 resource "google_compute_subnetwork" "proxy_subnet_b" {
   provider      = google-beta
   ip_cidr_range = "10.130.0.0/23"
-  name          = "proxyonly-subnet2"
+  name          = "proxy-only-subnet2"
   network       = google_compute_network.default.id
   purpose       = "GLOBAL_MANAGED_PROXY"
   region        = "us-east1"
@@ -66,12 +60,11 @@ resource "google_compute_subnetwork" "proxy_subnet_b" {
 }
 # [END cloudloadbalancing_cross_region_proxy_subnet_b_tag]
 
-# proxy-only-subnet in us-west1
 # [START cloudloadbalancing_cross_region_proxy_subnet_a_tag]
 resource "google_compute_subnetwork" "proxy_subnet_a" {
   provider      = google-beta
   ip_cidr_range = "10.129.0.0/23"
-  name          = "proxyonly-subnet1"
+  name          = "proxy-only-subnet1"
   network       = google_compute_network.default.id
   purpose       = "GLOBAL_MANAGED_PROXY"
   region        = "us-west1"
@@ -82,7 +75,6 @@ resource "google_compute_subnetwork" "proxy_subnet_a" {
 }
 # [END cloudloadbalancing_cross_region_proxy_subnet_a_tag]
 
-# forwarding-rule in subnet_a
 # [START cloudloadbalancing_cross_region_fwd_rule_a_tag]
 resource "google_compute_global_forwarding_rule" "fwd_rule_a" {
   provider              = google-beta
@@ -98,7 +90,6 @@ resource "google_compute_global_forwarding_rule" "fwd_rule_a" {
 }
 # [END cloudloadbalancing_cross_region_fwd_rule_a_tag]
 
-# forwarding-rule in subnet_b
 # [START cloudloadbalancing_cross_region_fwd_rule_b_tag]
 resource "google_compute_global_forwarding_rule" "fwd_rule_b" {
   provider              = google-beta
@@ -114,7 +105,6 @@ resource "google_compute_global_forwarding_rule" "fwd_rule_b" {
 }
 # [END cloudloadbalancing_cross_region_fwd_rule_b_tag]
 
-# Target HTTP proxy
 # [START cloudloadbalancing_cross_region_tgt_http_proxy_tag]
 resource "google_compute_target_http_proxy" "default" {
   name     = "gil7target-http-proxy"
@@ -123,7 +113,6 @@ resource "google_compute_target_http_proxy" "default" {
 }
 # [END cloudloadbalancing_cross_region_tgt_http_proxy_tag]
 
-# URL map
 # [START cloudloadbalancing_cross_region_url_map_tag]
 resource "google_compute_url_map" "default" {
   name            = "gl7-gilb-url-map"
@@ -132,7 +121,6 @@ resource "google_compute_url_map" "default" {
 }
 # [END cloudloadbalancing_cross_region_url_map_tag]
 
-# backend service
 # [START cloudloadbalancing_cross_region_bck_service_tag]
 resource "google_compute_backend_service" "default" {
   name                  = "gl7-gilb-backend-service"
@@ -156,7 +144,6 @@ google_compute_region_instance_group_manager.mig_b.instance_group
 }
 # [END cloudloadbalancing_cross_region_bck_service_tag]
 
-# instance template_a
 # [START cloudloadbalancing_cross_region_inst_template_a_tag]
 resource "google_compute_instance_template" "instance_template_a" {
   name         = "gil7-backendwest1-template"
@@ -211,7 +198,6 @@ resource "google_compute_instance_template" "instance_template_a" {
 }
 # [END cloudloadbalancing_cross_region_inst_template_a_tag]
 
-# instance template_b
 # [START cloudloadbalancing_cross_region_inst_template_b_tag]
 resource "google_compute_instance_template" "instance_template_b" {
   name         = "gil7-backendeast1-template"
@@ -266,7 +252,6 @@ resource "google_compute_instance_template" "instance_template_b" {
 }
 # [END cloudloadbalancing_cross_region_inst_template_b_tag]
 
-# health check
 # [START cloudloadbalancing_cross_region_health_ckh_tag]
 resource "google_compute_health_check" "default" {
   provider = google-beta
@@ -277,7 +262,6 @@ resource "google_compute_health_check" "default" {
 }
 # [END cloudloadbalancing_cross_region_health_ckh_tag]
 
-# MIG_a
 # [START cloudloadbalancing_cross_inst_grp_mgr_a_tag]
 resource "google_compute_region_instance_group_manager" "mig_a" {
   name     = "gl7-ilb-miga"
@@ -293,7 +277,6 @@ google_compute_instance_template.instance_template_a.id
 }
 # [END cloudloadbalancing_cross_inst_grp_mgr_a_tag]
 
-# MIG_b
 # [START cloudloadbalancing_cross_inst_grp_mgr_b_tag]
 resource "google_compute_region_instance_group_manager" "mig_b" {
   name     = "gl7-ilb-migb"
@@ -309,7 +292,6 @@ google_compute_instance_template.instance_template_b.id
 }
 # [END cloudloadbalancing_cross_inst_grp_mgr_b_tag]
 
-# allow all access from health check ranges
 # [START cloudloadbalancing_cross_firewall_tag]
 resource "google_compute_firewall" "fw_healthcheck" {
   name          = "gl7-ilb-fw-allow-hc"
@@ -323,7 +305,6 @@ resource "google_compute_firewall" "fw_healthcheck" {
 }
 # [END cloudloadbalancing_cross_firewall_tag]
 
-# allow http and ssh traffic
 # [START cloudloadbalancing_cross_firewall_backend_tag]
 resource "google_compute_firewall" "fw_ilb_to_backends" {
   name          = "fw-ilb-to-fw"
@@ -337,7 +318,6 @@ resource "google_compute_firewall" "fw_ilb_to_backends" {
 }
 # [END cloudloadbalancing_cross_firewall_backend_tag]
 
-# Allow http from proxy subnet to backends
 # [START cloudloadbalancing_cross_reg_firewall_proxy_tag]
 resource "google_compute_firewall" "fw_backends" {
   name          = "gl7-ilb-fw-allow-ilb-to-backends"
@@ -352,33 +332,4 @@ resource "google_compute_firewall" "fw_backends" {
 }
 # [END cloudloadbalancing_cross_reg_firewall_proxy_tag]
 
-# test instance
-# [START cloudloadbalancing_cross_vm_tst_tag]
-resource "google_compute_instance" "vm-test" {
-  name         = "test-vm"
-  provider     = google-beta
-  machine_type = "e2-small"
-  zone         = "us-west1-a"
-  network_interface {
-    network    = google_compute_network.default.id
-    subnetwork = google_compute_subnetwork.subnet_a.id
-    access_config {
-      # add external ip
-    }
-  }
-  boot_disk {
-    initialize_params {
-      image = "debian-cloud/debian-11"
-    }
-  }
-  # Without this, terraform thinks the image changes each time because
-  # bct-staging-images/debian-11 exands to
-  # debian-11--basic-gce-staging-bct-20230814-2318. Terraform thinks this 
-is a
-  # change, causing it to recreate the image.
-  lifecycle {
-    ignore_changes = [boot_disk]
-  }
-}
-# [END cloudloadbalancing_cross_vm_tst_tag]
 # [END cloudloadbalancing_cross_region_int_app_lb_parent_tag]
