@@ -119,7 +119,7 @@ resource "google_workflows_workflow" "default" {
 # [END eventarc_workflows_deploy]
 
 # [START eventarc_terraform_workflows_trigger]
-# Create an Eventarc trigger, routing Storage events to Workflows
+# Create an Eventarc trigger, routing Cloud Storage events to Workflows
 resource "google_eventarc_trigger" "default" {
   name     = "trigger-storage-workflows-tf"
   location = google_workflows_workflow.default.region

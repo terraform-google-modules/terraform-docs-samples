@@ -107,7 +107,7 @@ resource "google_cloud_run_v2_service" "default" {
 
 
 # [START eventarc_terraform_cloudrun_trigger]
-# Create an Eventarc trigger, routing Storage events to Cloud Run
+# Create an Eventarc trigger, routing Cloud Storage events to Cloud Run
 resource "google_eventarc_trigger" "default" {
   name     = "trigger-storage-cloudrun-tf"
   location = google_cloud_run_v2_service.default.location
@@ -122,7 +122,7 @@ resource "google_eventarc_trigger" "default" {
     value     = google_storage_bucket.default.name
   }
 
-  # Send events on to Cloud Run
+  # Send events to Cloud Run
   destination {
     cloud_run_service {
       service = google_cloud_run_v2_service.default.name
