@@ -15,18 +15,13 @@
  */
 
 # [START compute_zonal_instance_group_manager_parent_tag]
-data "google_compute_image" "default" {
-  family  = "debian-11"
-  project = "debian-cloud"
-}
-
 resource "google_compute_instance_template" "default" {
   name           = "my-instance-template"
   machine_type   = "e2-medium"
   can_ip_forward = false
 
   disk {
-    source_image = data.google_compute_image.default.id
+    source_image = "debian-cloud/debian-11"
   }
 
   network_interface {
