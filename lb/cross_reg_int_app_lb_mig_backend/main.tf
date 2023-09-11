@@ -130,14 +130,12 @@ resource "google_compute_backend_service" "default" {
   timeout_sec           = 10
   health_checks         = [google_compute_health_check.default.id]
   backend {
-    group           = 
-google_compute_region_instance_group_manager.mig_a.instance_group
+    group           = google_compute_region_instance_group_manager.mig_a.instance_group
     balancing_mode  = "UTILIZATION"
     capacity_scaler = 1.0
   }
   backend {
-    group           = 
-google_compute_region_instance_group_manager.mig_b.instance_group
+    group           = google_compute_region_instance_group_manager.mig_b.instance_group
     balancing_mode  = "UTILIZATION"
     capacity_scaler = 1.0
   }
@@ -268,8 +266,7 @@ resource "google_compute_region_instance_group_manager" "mig_a" {
   provider = google-beta
   region   = "us-west1"
   version {
-    instance_template = 
-google_compute_instance_template.instance_template_a.id
+    instance_template = google_compute_instance_template.instance_template_a.id
     name              = "primary"
   }
   base_instance_name = "vm"
@@ -283,8 +280,7 @@ resource "google_compute_region_instance_group_manager" "mig_b" {
   provider = google-beta
   region   = "us-east1"
   version {
-    instance_template = 
-google_compute_instance_template.instance_template_b.id
+    instance_template = google_compute_instance_template.instance_template_b.id
     name              = "primary"
   }
   base_instance_name = "vm"
