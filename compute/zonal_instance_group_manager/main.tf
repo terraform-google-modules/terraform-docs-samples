@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,48 +15,31 @@
  */
 
 # [START compute_zonal_instance_group_manager_parent_tag]
-data "google_compute_image" "default" {
-  family  = "debian-11"
-  project = "debian-cloud"
-}
-
 resource "google_compute_instance_template" "default" {
-  name           = "my-instance-template"
-  machine_type   = "e2-medium"
-  can_ip_forward = false
-
-  tags = ["tag1", "tag2"]
+  name         = "an-instance-template"
+  machine_type = "e2-medium"
 
   disk {
-    source_image = data.google_compute_image.default.id
+    source_image = "debian-cloud/debian-11"
   }
 
   network_interface {
     network = "default"
-  }
-
-  metadata = {
-    name = "value"
-  }
-
-  service_account {
-    scopes = ["userinfo-email", "compute-ro", "storage-ro"]
   }
 }
 
 # [START compute_zonal_instance_group_manager_simple_tag]
 resource "google_compute_instance_group_manager" "default" {
 
-  name = "my-igm"
-  zone = "us-central1-f"
+  name               = "example-group"
+  base_instance_name = "test"
+  target_size        = 3
+  zone               = "us-central1-f"
 
   version {
     instance_template = google_compute_instance_template.default.id
     name              = "primary"
   }
-
-  base_instance_name = "my-igms-instance"
 }
-
 # [END compute_zonal_instance_group_manager_simple_tag]
 # [END compute_zonal_instance_group_manager_parent_tag]
