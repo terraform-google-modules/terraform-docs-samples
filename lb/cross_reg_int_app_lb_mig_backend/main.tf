@@ -17,13 +17,13 @@ implied.
 
 # [START cloudloadbalancing_cross_region_int_app_lb_parent_tag]
 
-# [START cloudloadbalancing_cross_region_vpc_tag]
+# [START cloudloadbalancing_cross_reg_vpc_tag]
 resource "google_compute_network" "default" {
   auto_create_subnetworks = false
   name                    = "lb-network-crs-reg"
   provider                = google-beta
 }
-# [END cloudloadbalancing_cross_region_vpc_tag]
+# [END cloudloadbalancing_cross_reg_vpc_tag]
 
 # [START cloudloadbalancing_cross_region_subnet_a_tag]
 resource "google_compute_subnetwork" "subnet_a" {
