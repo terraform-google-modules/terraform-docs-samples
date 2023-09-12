@@ -90,6 +90,11 @@ resource "google_bigquery_dataset" "default" {
 # This creates a BigQuery table named "my_table" in the dataset "default".
 # The table has a single column named "column1", which is of type STRING
 # and is nullable.
+# The table has Automatic Metadata Caching enabled.
+# https://cloud.google.com/bigquery/docs/biglake-intro#metadata_caching_for_performance
+# `metadata_cache_mode` may be set to `MANUAL` and `max_staleness` ommitted to
+# use MANUAL Metadata refresh `metadata_cache_mode` and `max_staleness` may be
+# set to omitted to disable the feature.
 resource "google_bigquery_table" "default" {
   dataset_id = google_bigquery_dataset.default.dataset_id
   table_id   = "my_table"
@@ -108,7 +113,18 @@ resource "google_bigquery_table" "default" {
       source_uri_prefix        = "gs://${google_storage_bucket.default.name}/publish/{dt:STRING}/{hr:STRING}/{min:STRING}"
       require_partition_filter = false
     }
+    # This enables automatic metadata refresh.
+    # `MANUAL` for metadata refresh 
+    # Omit to disable metadata caching feature.
+    metadata_cache_mode = "AUTOMATIC"
   }
+  # `max_staleness` must be specified as an interval literal,
+  # when `metadata_cache_mode` is `AUTOMATIC`, omitted otherwise.
+  # Interval literal: https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#interval_literals
+  # This configures the metadata refresh interval for automatic metadata referesh.
+  # Omit if not using automatic metadata refresh
+  max_staleness = "0-0 0 10:0:0"
+
   deletion_protection = false
 
   depends_on = [
