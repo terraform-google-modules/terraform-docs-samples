@@ -17,7 +17,7 @@
 
 # [START cloud_sql_enterprise_instance]
 resource "google_sql_database_instance" "main" {
-  name             = "enterprise-postgres-instance"
+  name             = "enterprise-instance"
   region           = "us-central1"
   database_version = "POSTGRES_15"
   settings {
