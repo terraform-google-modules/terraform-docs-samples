@@ -106,6 +106,7 @@ resource "google_bigquery_table" "default" {
     autodetect    = false
     source_format = "PARQUET"
     source_uris   = ["gs://${google_storage_bucket.default.name}/publish/*"]
+    connection_id = google_bigquery_connection.default.name
     # This configures Hive partitioning for the BigQuery table,
     # partitioning the data by date and time.
     hive_partitioning_options {
