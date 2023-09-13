@@ -14,21 +14,9 @@
  * limitations under the License.
  */
 
-# [START cloud_sql_enterprise_plus_instance]
-resource "google_sql_database_instance" "enterprise_plus_instance" {
-  name             = "enterprise-plus-mysql-instance"
-  region           = "us-central1"
-  database_version = "POSTGRES_15"
-  settings {
-    tier    = "db-perf-optimized-N-96"
-    edition = "ENTERPRISE_PLUS"
-  }
-  deletion_protection = false
-}
-# [END cloud_sql_enterprise_plus_instance]
 
 # [START cloud_sql_enterprise_instance]
-resource "google_sql_database_instance" "enterprise_instance" {
+resource "google_sql_database_instance" "main" {
   name             = "enterprise-postgres-instance"
   region           = "us-central1"
   database_version = "POSTGRES_15"
