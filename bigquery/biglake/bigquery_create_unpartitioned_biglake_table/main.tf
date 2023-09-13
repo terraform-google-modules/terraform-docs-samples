@@ -106,7 +106,7 @@ resource "google_bigquery_table" "default" {
     connection_id = google_bigquery_connection.default.name
     source_uris   = ["gs://${google_storage_bucket.default.name}/data/*"]
     # This enables automatic metadata refresh.
-    # `MANUAL` for metadata refresh 
+    # `MANUAL` for metadata refresh
     # Omit to disable metadata caching feature.
     metadata_cache_mode = "AUTOMATIC"
   }

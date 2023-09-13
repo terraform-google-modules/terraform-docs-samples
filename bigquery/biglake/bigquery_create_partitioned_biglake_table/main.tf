@@ -115,7 +115,7 @@ resource "google_bigquery_table" "default" {
       require_partition_filter = false
     }
     # This enables automatic metadata refresh.
-    # `MANUAL` for metadata refresh 
+    # `MANUAL` for metadata refresh
     # Omit to disable metadata caching feature.
     metadata_cache_mode = "AUTOMATIC"
   }
