@@ -14,32 +14,9 @@
  * limitations under the License.
  */
 
-# [START cloud_sql_mysql_instance_psc]
-resource "google_sql_database_instance" "mysql_instance_psc" {
-  name             = "psc-enabled-mysql-instance"
-  region           = "us-central1"
-  database_version = "MYSQL_8_0"
-  settings {
-    tier              = "db-f1-micro"
-    availability_type = "REGIONAL"
-    backup_configuration {
-      enabled            = true
-      binary_log_enabled = true
-    }
-    ip_configuration {
-      psc_config {
-        psc_enabled               = true
-        allowed_consumer_projects = []
-      }
-      ipv4_enabled = false
-    }
-  }
-}
-# [END cloud_sql_mysql_instance_psc]
-
 # [START cloud_sql_postgres_instance_psc]
 resource "google_sql_database_instance" "postgres_instance_psc" {
-  name             = "psc-enabled-postgres-instance"
+  name             = "postgres-instance"
   region           = "us-central1"
   database_version = "POSTGRES_14"
   settings {
