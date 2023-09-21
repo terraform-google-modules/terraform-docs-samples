@@ -36,3 +36,24 @@ resource "google_sql_database_instance" "main" {
   }
 }
 # [END cloud_sql_mysql_instance_psc]
+
+# [START cloud_sql_mysql_instance_psc_endpoint]
+resource "google_compute_address" "main" {
+  name         = "psc-compute-address-${google_sql_database_instance.main.name}"
+  address_type = "INTERNAL"
+  subnetwork   = "default"     # Replace value with the name of the subnet here.
+  address      = "10.128.0.43" # Replace value with the IP address to reserve.
+}
+
+data "google_sql_database_instance" "main" {
+  name = resource.google_sql_database_instance.main.name
+}
+
+resource "google_compute_forwarding_rule" "main" {
+  name                  = "psc-forwarding-rule-${google_sql_database_instance.main.name}"
+  network               = "default"
+  ip_address            = google_compute_address.main.self_link
+  load_balancing_scheme = ""
+  target                = data.google_sql_database_instance.main.psc_service_attachment_link
+}
+# [END cloud_sql_mysql_instance_psc_endpoint]
