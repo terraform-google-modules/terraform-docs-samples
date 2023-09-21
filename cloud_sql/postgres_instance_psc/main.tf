@@ -15,7 +15,7 @@
  */
 
 # [START cloud_sql_postgres_instance_psc]
-resource "google_sql_database_instance" "postgres_instance_psc" {
+resource "google_sql_database_instance" "main" {
   name             = "postgres-instance"
   region           = "us-central1"
   database_version = "POSTGRES_14"
