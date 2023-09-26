@@ -38,8 +38,8 @@ resource "google_sql_database_instance" "main" {
 # [END cloud_sql_mysql_instance_psc]
 
 # [START cloud_sql_mysql_instance_psc_endpoint]
-resource "google_compute_address" "main" {
-  name         = "psc-compute-address-${google_sql_database_instance.main.name}"
+resource "google_compute_address" "default" {
+  name         = "psc-compute-address-${google_sql_database_instance.default.name}"
   address_type = "INTERNAL"
   subnetwork   = "default"     # Replace value with the name of the subnet here.
   address      = "10.128.0.43" # Replace value with the IP address to reserve.
