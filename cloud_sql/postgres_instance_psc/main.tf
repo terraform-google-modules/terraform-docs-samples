@@ -48,7 +48,7 @@ data "google_sql_database_instance" "default" {
   name = resource.google_sql_database_instance.default.name
 }
 
-resource "google_compute_forwarding_rule" "main" {
+resource "google_compute_forwarding_rule" "default" {
   name                  = "psc-forwarding-rule-${google_sql_database_instance.default.name}"
   network               = "default"
   ip_address            = google_compute_address.default.self_link
