@@ -45,8 +45,8 @@ resource "google_compute_address" "main" {
   address      = "10.128.0.43" # Replace value with the IP address to reserve.
 }
 
-data "google_sql_database_instance" "main" {
-  name = resource.google_sql_database_instance.main.name
+data "google_sql_database_instance" "default" {
+  name = resource.google_sql_database_instance.default.name
 }
 
 resource "google_compute_forwarding_rule" "main" {
