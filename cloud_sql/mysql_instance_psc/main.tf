@@ -15,7 +15,7 @@
  */
 
 # [START cloud_sql_mysql_instance_psc]
-resource "google_sql_database_instance" "main" {
+resource "google_sql_database_instance" "default" {
   name             = "mysql-instance"
   region           = "us-central1"
   database_version = "MYSQL_8_0"
