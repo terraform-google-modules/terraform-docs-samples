@@ -33,7 +33,7 @@ resource "google_compute_subnetwork" "default" {
 resource "google_network_connectivity_service_connection_policy" "default" {
   name          = "my-service-connection-policy"
   location      = "us-central1"
-  service_class = "my-service-class" # Replace `my-service-class` with the name of a valid service class
+  service_class = "gcp-memorystore-redis"
   description   = "Description"
   network       = google_compute_network.default.id
   psc_config {
