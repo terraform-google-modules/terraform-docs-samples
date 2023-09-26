@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-# [START network_connectivity_create_service_connection_policy]
+# [START networkconnectivity_create_service_connection_policy]
 # Create a VPC network
 resource "google_compute_network" "default" {
   name                    = "consumer-network"
@@ -41,5 +41,5 @@ resource "google_network_connectivity_service_connection_policy" "default" {
     limit       = 2
   }
 }
-# [END network_connectivity_create_service_connection_policy]
+# [END networkconnectivity_create_service_connection_policy]
 
