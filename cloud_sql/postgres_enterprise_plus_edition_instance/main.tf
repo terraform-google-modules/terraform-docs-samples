@@ -16,7 +16,7 @@
 
 # [START cloud_sql_enterprise_plus_instance]
 resource "google_sql_database_instance" "default" {
-  name             = "enterprise_plus_instance"
+  name             = "enterprise-plus-instance"
   region           = "us-central1"
   database_version = "POSTGRES_15"
   settings {
