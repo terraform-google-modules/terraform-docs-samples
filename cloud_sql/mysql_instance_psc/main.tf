@@ -40,6 +40,7 @@ resource "google_sql_database_instance" "default" {
 # [START cloud_sql_mysql_instance_psc_endpoint]
 resource "google_compute_address" "default" {
   name         = "psc-compute-address-${google_sql_database_instance.default.name}"
+  region       = "us-central1"
   address_type = "INTERNAL"
   subnetwork   = "default"     # Replace value with the name of the subnet here.
   address      = "10.128.0.43" # Replace value with the IP address to reserve.
@@ -51,6 +52,7 @@ data "google_sql_database_instance" "default" {
 
 resource "google_compute_forwarding_rule" "default" {
   name                  = "psc-forwarding-rule-${google_sql_database_instance.default.name}"
+  region                = "us-central1"
   network               = "default"
   ip_address            = google_compute_address.default.self_link
   load_balancing_scheme = ""
