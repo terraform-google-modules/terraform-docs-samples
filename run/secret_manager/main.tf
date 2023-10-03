@@ -24,7 +24,7 @@
 resource "google_secret_manager_secret" "default" {
   secret_id = "my-secret"
   replication {
-    automatic = true
+    auto {}
   }
 }
 
