@@ -16,6 +16,16 @@
 
 # Project data
 # [START cloudrun_connect_cloud_sql_parent_tag]
+
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 5.0.0"
+    }
+  }
+}
+
 data "google_project" "project" {
 }
 
