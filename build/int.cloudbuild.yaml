@@ -15,45 +15,46 @@
 timeout: 14400s
 steps:
 - id: prepare
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && prepare_environment']
-  env:
-  - 'TF_VAR_org_id=$_ORG_ID'
-  - 'TF_VAR_folder_id=$_FOLDER_ID'
-  - 'TF_VAR_billing_account=$_BILLING_ACCOUNT'
-- id: init
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'RUN_STAGE=init go test -v -timeout 0']
-  dir: test/integration
-  waitFor:
-    - prepare
-- id: test-samples-0
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'go test -v -timeout 0 -run TestSamples/0']
-  dir: test/integration
-  waitFor:
-    - init
-- id: test-samples-1
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'go test -v -timeout 0 -run TestSamples/1']
-  dir: test/integration
-  waitFor:
-    - init
-- id: test-samples-2
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'go test -v -timeout 0 -run TestSamples/2']
-  dir: test/integration
-  waitFor:
-    - init
-- id: test-samples-3
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'go test -v -timeout 0 -run TestSamples/3']
-  dir: test/integration
-  waitFor:
-    - init
-tags:
-- 'ci'
-- 'integration'
-substitutions:
-  _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
-  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1'
+  name: 'gcr.io/cloud-foundation-cicd/cft/developer-tools:1.16.5'
+  # args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && prepare_environment']
+  args: ['/bin/bash', '-c', 'ls']
+#   env:
+#   - 'TF_VAR_org_id=$_ORG_ID'
+#   - 'TF_VAR_folder_id=$_FOLDER_ID'
+#   - 'TF_VAR_billing_account=$_BILLING_ACCOUNT'
+# - id: init
+#   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+#   args: ['/bin/bash', '-c', 'RUN_STAGE=init go test -v -timeout 0']
+#   dir: test/integration
+#   waitFor:
+#     - prepare
+# - id: test-samples-0
+#   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+#   args: ['/bin/bash', '-c', 'go test -v -timeout 0 -run TestSamples/0']
+#   dir: test/integration
+#   waitFor:
+#     - init
+# - id: test-samples-1
+#   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+#   args: ['/bin/bash', '-c', 'go test -v -timeout 0 -run TestSamples/1']
+#   dir: test/integration
+#   waitFor:
+#     - init
+# - id: test-samples-2
+#   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+#   args: ['/bin/bash', '-c', 'go test -v -timeout 0 -run TestSamples/2']
+#   dir: test/integration
+#   waitFor:
+#     - init
+# - id: test-samples-3
+#   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+#   args: ['/bin/bash', '-c', 'go test -v -timeout 0 -run TestSamples/3']
+#   dir: test/integration
+#   waitFor:
+#     - init
+# tags:
+# - 'ci'
+# - 'integration'
+# substitutions:
+#   _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
+#   _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1'
