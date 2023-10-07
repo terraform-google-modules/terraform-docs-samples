@@ -16,6 +16,12 @@
 
 # Cloud Run service replicated across multiple GCP regions
 
+# [START cloudrun_multiregion_variables]
+locals {
+  run_regions = ["us-central1", "europe-west1"]
+}
+# [END cloudrun_multiregion_variables]
+
 # [START cloudrun_multiple_regions_parent_tag]
 resource "google_project_service" "compute_api" {
   provider                   = google-beta
@@ -30,18 +36,6 @@ resource "google_project_service" "run_api" {
   disable_dependent_services = false
   disable_on_destroy         = false
 }
-
-# [START cloudrun_multiregion_variables]
-variable "domain_name" {
-  type    = string
-  default = "example.com"
-}
-
-variable "run_regions" {
-  type    = list(string)
-  default = ["us-central1", "europe-west1"]
-}
-# [END cloudrun_multiregion_variables]
 
 # [START cloudrun_multiregion_addr]
 resource "google_compute_global_address" "lb_default" {
@@ -102,11 +96,10 @@ resource "google_compute_managed_ssl_certificate" "lb_default" {
   name     = "myservice-ssl-cert"
 
   managed {
-    domains = [var.domain_name]
+    domains = ["example.com"]
   }
 }
 # [END cloudrun_multiregion_cert]
-
 # [START cloudrun_multiregion_proxy_https]
 resource "google_compute_target_https_proxy" "lb_default" {
   provider = google-beta
@@ -136,10 +129,10 @@ resource "google_compute_global_forwarding_rule" "lb_default" {
 # [START cloudrun_multiregion_neg]
 resource "google_compute_region_network_endpoint_group" "lb_default" {
   provider              = google-beta
-  count                 = length(var.run_regions)
+  count                 = length(local.run_regions)
   name                  = "myservice-neg"
   network_endpoint_type = "SERVERLESS"
-  region                = var.run_regions[count.index]
+  region                = local.run_regions[count.index]
   cloud_run {
     service = google_cloud_run_v2_service.run_default[count.index].name
   }
@@ -155,9 +148,9 @@ output "load_balancer_ip_addr" {
 # [START cloudrun_multiregion_service]
 resource "google_cloud_run_v2_service" "run_default" {
   provider = google-beta
-  count    = length(var.run_regions)
-  name     = "myservice-run-app-${var.run_regions[count.index]}"
-  location = var.run_regions[count.index]
+  count    = length(local.run_regions)
+  name     = "myservice-run-app-${local.run_regions[count.index]}"
+  location = local.run_regions[count.index]
 
   template {
     containers {
@@ -175,7 +168,7 @@ resource "google_cloud_run_v2_service" "run_default" {
 # [START cloudrun_multiregion_service_iam]
 resource "google_cloud_run_service_iam_member" "run_allow_unauthenticated" {
   provider = google-beta
-  count    = length(var.run_regions)
+  count    = length(local.run_regions)
   location = google_cloud_run_v2_service.run_default[count.index].location
   service  = google_cloud_run_v2_service.run_default[count.index].name
   role     = "roles/run.invoker"

@@ -16,6 +16,16 @@
 
 # Project data
 # [START cloudrun_connect_cloud_sql_parent_tag]
+
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 5.0.0"
+    }
+  }
+}
+
 data "google_project" "project" {
 }
 
@@ -66,7 +76,7 @@ resource "google_sql_database_instance" "default" {
 resource "google_secret_manager_secret" "dbuser" {
   secret_id = "dbusersecret"
   replication {
-    automatic = true
+    auto {}
   }
   depends_on = [google_project_service.secretmanager_api]
 }
@@ -93,7 +103,7 @@ resource "google_secret_manager_secret_iam_member" "secretaccess_compute_dbuser"
 resource "google_secret_manager_secret" "dbpass" {
   secret_id = "dbpasssecret"
   replication {
-    automatic = true
+    auto {}
   }
   depends_on = [google_project_service.secretmanager_api]
 }
@@ -119,7 +129,7 @@ resource "google_secret_manager_secret_iam_member" "secretaccess_compute_dbpass"
 resource "google_secret_manager_secret" "dbname" {
   secret_id = "dbnamesecret"
   replication {
-    automatic = true
+    auto {}
   }
   depends_on = [google_project_service.secretmanager_api]
 }

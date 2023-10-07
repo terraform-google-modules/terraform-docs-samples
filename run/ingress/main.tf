@@ -36,7 +36,7 @@ resource "google_cloud_run_v2_service" "default" {
 
   template {
     containers {
-      image = "gcr.io/cloudrun/hello" #public image for your service
+      image = "us-docker.pkg.dev/cloudrun/container/hello" #public image for your service
     }
   }
   # [END cloudrun_service_ingress]

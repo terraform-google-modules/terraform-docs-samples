@@ -24,7 +24,7 @@ resource "google_cloud_run_v2_service" "renderer" {
     containers {
       # Replace with the URL of your Secure Services > Renderer image.
       #   gcr.io/<PROJECT_ID>/renderer
-      image = "gcr.io/cloudrun/hello"
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
     service_account = google_service_account.renderer.email
   }
@@ -40,7 +40,7 @@ resource "google_cloud_run_v2_service" "editor" {
     containers {
       # Replace with the URL of your Secure Services > Editor image.
       #   gcr.io/<PROJECT_ID>/editor
-      image = "gcr.io/cloudrun/hello"
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
       env {
         name  = "EDITOR_UPSTREAM_RENDER_URL"
         value = google_cloud_run_v2_service.renderer.uri

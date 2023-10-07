@@ -24,7 +24,7 @@ resource "google_project_service" "cloudrun_api" {
   disable_on_destroy = false
 }
 
-#[START cloud_run_jobs_task_timeout_create]
+#[START cloudrun_jobs_task_timeout_create]
 resource "google_cloud_run_v2_job" "default" {
   name         = "cloud-run-job-timeout"
   location     = "us-central1"
@@ -40,4 +40,4 @@ resource "google_cloud_run_v2_job" "default" {
     }
   }
 }
-#[END cloud_run_jobs_task_timeout_create]
+#[END cloudrun_jobs_task_timeout_create]

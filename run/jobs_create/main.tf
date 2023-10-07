@@ -25,7 +25,7 @@ resource "google_project_service" "cloudrun_api" {
 }
 
 # Create basic Cloud Run Job using sample container image
-#[START cloud_run_jobs_create]
+#[START cloudrun_jobs_create]
 resource "google_cloud_run_v2_job" "default" {
   provider     = google-beta
   name         = "cloud-run-job"
@@ -40,4 +40,4 @@ resource "google_cloud_run_v2_job" "default" {
     }
   }
 }
-#[END cloud_run_jobs_create]
+#[END cloudrun_jobs_create]
