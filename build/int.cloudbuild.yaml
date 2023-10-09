@@ -19,7 +19,7 @@ steps:
   entrypoint: bash
   args: 
     - -c
-    - | 
+    - |
       git fetch --unshallow
       git diff origin/${_BASE_BRANCH}..origin/${_HEAD_BRANCH} --name-only > _changed_files
       sed 's/\/.*/\//' _changed_files > _changed_folders
