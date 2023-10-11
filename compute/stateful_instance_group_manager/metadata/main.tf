@@ -48,11 +48,11 @@ resource "google_compute_instance_group_manager" "default" {
 # [START compute_stateful_instance_group_manager_metadata_pic_parent_tag]
 resource "google_compute_per_instance_config" "default" {
   instance_group_manager = google_compute_instance_group_manager.default.name
-  zone = google_compute_instance_group_manager.default.zone
-  name = "node-12"
+  zone                   = google_compute_instance_group_manager.default.zone
+  name                   = "node-12"
   preserved_state {
     metadata = {
-      mode = "active"
+      mode    = "active"
       logging = "elaborate"
     }
   }
