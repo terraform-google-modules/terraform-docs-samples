@@ -17,7 +17,7 @@ steps:
 - id: prune unchanged directories
   name: gcr.io/cloud-builders/git
   entrypoint: bash
-  args: 
+  args:
     - -c
     - |
       git fetch --unshallow
