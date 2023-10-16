@@ -56,8 +56,9 @@ resource "google_project_iam_member" "default" {
 # This makes the script wait for seven minutes before proceeding.
 # This lets IAM permissions propagate.
 resource "time_sleep" "wait_7_min" {
-  depends_on      = [google_project_iam_member.default]
   create_duration = "7m"
+
+  depends_on = [google_project_iam_member.default]
 }
 
 # This defines a Google BigQuery dataset with
@@ -89,7 +90,6 @@ resource "google_bigquery_dataset" "default" {
 # use MANUAL Metadata refresh `metadata_cache_mode` and `max_staleness` may be
 # set to omitted to disable the feature.
 resource "google_bigquery_table" "default" {
-  depends_on = [time_sleep.wait_7_min]
   dataset_id = google_bigquery_dataset.default.dataset_id
   table_id   = "my_table"
   schema = jsonencode([
@@ -118,5 +118,7 @@ resource "google_bigquery_table" "default" {
   max_staleness = "0-0 0 10:0:0"
 
   deletion_protection = false
+
+  depends_on = [time_sleep.wait_7_min]
 }
 # [END bigquery_create_biglake_unpartitioned_table]

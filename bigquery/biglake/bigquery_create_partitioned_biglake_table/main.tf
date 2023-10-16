@@ -64,8 +64,9 @@ resource "google_project_iam_member" "default" {
 # This makes the script wait for seven minutes before proceeding.
 # This lets IAM permissions propagate.
 resource "time_sleep" "wait_7_min" {
-  depends_on      = [google_project_iam_member.default]
   create_duration = "7m"
+
+  depends_on      = [google_project_iam_member.default]
 }
 
 # This defines a Google BigQuery dataset with
