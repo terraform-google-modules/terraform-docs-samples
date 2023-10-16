@@ -13,15 +13,17 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+
 /**
- * This Terraform example creates an object table in BigQuery.
- * For more information, see
- * https://cloud.google.com/bigquery/docs/object-table-introduction
- * and
- * https://cloud.google.com/bigquery/docs/object-tables
- */
+* This Terraform example creates an object table in BigQuery.
+* For more information, see the following links:
+* - https://cloud.google.com/bigquery/docs/object-table-introduction
+* - https://cloud.google.com/bigquery/docs/object-tables
+* - https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table
+*/
 
 # [START bigquery_create_object_table]
+
 # This queries the provider for project information.
 data "google_project" "main" {}
 
@@ -64,7 +66,8 @@ resource "google_bigquery_table" "default" {
   external_data_configuration {
     connection_id = google_bigquery_connection.default.name
     autodetect    = false
-    # REQUIRED for object tables.
+    # `object_metadata is` required for object tables. For more information, see
+    # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table#object_metadata
     object_metadata = "SIMPLE"
     # This defines the source for the prior object table.
     source_uris = [
@@ -73,11 +76,6 @@ resource "google_bigquery_table" "default" {
 
     metadata_cache_mode = "MANUAL"
   }
-
-  # `max_staleness` must be specified as an interval literal,
-  # when `metadata_cache_mode` is `AUTOMATIC`, omitted otherwise.
-  # Interval literal: https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#interval_literals
-  # max_staleness = "0-0 0 10:0:0"
 
   # This ensures that the connection can access the bucket
   # before Terraform creates a table.
