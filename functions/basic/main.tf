@@ -74,8 +74,8 @@ data "google_cloud_run_service" "function_service" {
 }
 
 resource "google_cloud_run_service_iam_member" "member" {
-  location = data.google_cloud_run_service.run-service.location
-  service  = data.google_cloud_run_service.run-service.name
+  location = data.google_cloud_run_service.function_service.location
+  service  = data.google_cloud_run_service.function_service.name
   role     = "roles/run.invoker"
   member   = "allUsers"
 }
