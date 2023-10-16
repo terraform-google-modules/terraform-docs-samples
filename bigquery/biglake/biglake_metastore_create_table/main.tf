@@ -26,7 +26,7 @@
 # This creates a BigLake Metastore in the US region named "my-catalog".
 # BigLake Metastore catalogs can contain multiple databases.
 resource "google_biglake_catalog" "catalog" {
-  name     = "my-catalog"
+  name     = "my_catalog"
   location = "US"
 }
 
@@ -62,7 +62,7 @@ resource "google_storage_bucket_object" "data_directory" {
 # The database is created in the catalog specified by the
 # "google_biglake_catalog.catalog.id" variable.
 resource "google_biglake_database" "database" {
-  name    = "my-database"
+  name    = "my_database"
   catalog = google_biglake_catalog.catalog.id
   type    = "HIVE"
   hive_options {
@@ -84,7 +84,7 @@ resource "google_biglake_table" "table" {
   hive_options {
     table_type = "MANAGED_TABLE"
     storage_descriptor {
-      location_uri  = "gs://${google_storage_bucket.bucket.name}/${google_storage_bucket_object.data_folder.name}"
+      location_uri  = "gs://${google_storage_bucket.bucket.name}/${google_storage_bucket_object.data_directory.name}"
       input_format  = "org.apache.hadoop.mapred.SequenceFileInputFormat"
       output_format = "org.apache.hadoop.hive.ql.io.HiveSequenceFileOutputFormat"
     }
