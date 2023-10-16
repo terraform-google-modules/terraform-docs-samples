@@ -90,9 +90,7 @@ resource "google_bigquery_dataset" "default" {
 }
 
 # This creates a BigQuery Table with Partitioning and Automatic Metadata
-# Caching. See
-# https://cloud.google.com/bigquery/docs/biglake-intro#metadata_caching_for_performance
-# for more detail.
+# Caching.
 resource "google_bigquery_table" "default" {
   dataset_id = google_bigquery_dataset.default.dataset_id
   table_id   = "my_table"
