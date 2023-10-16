@@ -105,6 +105,7 @@ resource "google_bigquery_table" "default" {
     # Google Cloud Storage bucket.
     autodetect    = false
     source_format = "PARQUET"
+    connection_id = google_bigquery_connection.default.name
     source_uris   = ["gs://${google_storage_bucket.default.name}/publish/*"]
     connection_id = google_bigquery_connection.default.name
     # This configures Hive partitioning for the BigQuery table,

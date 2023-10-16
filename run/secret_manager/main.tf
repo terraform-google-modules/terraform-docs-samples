@@ -21,10 +21,20 @@
 */
 
 # [START cloudrun_secret_manager_secret]
+
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 5.0.0"
+    }
+  }
+}
+
 resource "google_secret_manager_secret" "default" {
   secret_id = "my-secret"
   replication {
-    automatic = true
+    auto {}
   }
 }
 
