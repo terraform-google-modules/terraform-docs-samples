@@ -24,7 +24,9 @@
 */
 
 # [START bigquery_create_partitioned_biglake_table]
-# This creates a bucket in the US region named "my-bucket" with a pseudorandom suffix.
+
+# This creates a bucket in the US region named "my-bucket" with a pseudorandom
+# suffix.
 resource "random_id" "bucket_name_suffix" {
   byte_length = 8
 }
@@ -46,8 +48,8 @@ resource "google_storage_bucket_object" "default" {
 # This queries the provider for project information.
 data "google_project" "project" {}
 
-# This creates a connection in the US region named "my-connection".
-# This connection is used to access the bucket.
+# This creates a connection in the US region named "my-connection". This
+# connection is used to access the bucket.
 resource "google_bigquery_connection" "default" {
   connection_id = "my-connection"
   location      = "US"
@@ -61,17 +63,16 @@ resource "google_project_iam_member" "default" {
   member  = "serviceAccount:${google_bigquery_connection.default.cloud_resource[0].service_account_id}"
 }
 
-# This makes the script wait for seven minutes before proceeding.
-# This lets IAM permissions propagate.
+# This makes the script wait for seven minutes before proceeding. This lets IAM
+# permissions propagate.
 resource "time_sleep" "wait_7_min" {
   create_duration = "7m"
 
-  depends_on      = [google_project_iam_member.default]
+  depends_on = [google_project_iam_member.default]
 }
 
-# This defines a Google BigQuery dataset with
-# default expiration times for partitions and tables, a
-# description, a location, and a maximum time travel.
+# This defines a Google BigQuery dataset with default expiration times for
+# partitions and tables, a description, a location, and a maximum time travel.
 resource "google_bigquery_dataset" "default" {
   dataset_id                      = "my_dataset"
   default_partition_expiration_ms = 2592000000  # 30 days
@@ -88,14 +89,10 @@ resource "google_bigquery_dataset" "default" {
   }
 }
 
-# This creates a BigQuery table named "my_table" in the dataset "default".
-# The table has a single column named "column1", which is of type STRING
-# and is nullable.
-# The table has Automatic Metadata Caching enabled.
+# This creates a BigQuery Table with Partitioning and Automatic Metadata
+# Caching. See
 # https://cloud.google.com/bigquery/docs/biglake-intro#metadata_caching_for_performance
-# `metadata_cache_mode` may be set to `MANUAL` and `max_staleness` ommitted to
-# use MANUAL Metadata refresh `metadata_cache_mode` and `max_staleness` may be
-# set to omitted to disable the feature.
+# for more detail.
 resource "google_bigquery_table" "default" {
   dataset_id = google_bigquery_dataset.default.dataset_id
   table_id   = "my_table"
@@ -108,7 +105,6 @@ resource "google_bigquery_table" "default" {
     source_format = "PARQUET"
     connection_id = google_bigquery_connection.default.name
     source_uris   = ["gs://${google_storage_bucket.default.name}/publish/*"]
-    connection_id = google_bigquery_connection.default.name
     # This configures Hive partitioning for the BigQuery table,
     # partitioning the data by date and time.
     hive_partitioning_options {
@@ -117,15 +113,13 @@ resource "google_bigquery_table" "default" {
       require_partition_filter = false
     }
     # This enables automatic metadata refresh.
-    # `MANUAL` for metadata refresh
-    # Omit to disable metadata caching feature.
     metadata_cache_mode = "AUTOMATIC"
   }
-  # `max_staleness` must be specified as an interval literal,
-  # when `metadata_cache_mode` is `AUTOMATIC`, omitted otherwise.
-  # Interval literal: https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#interval_literals
-  # This configures the metadata refresh interval for automatic metadata referesh.
-  # Omit if not using automatic metadata refresh
+
+
+  # `max_staleness` is required for automatic metadata caching and must be
+  # specified as an interval literal.
+  # https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#interval_literals
   max_staleness = "0-0 0 10:0:0"
 
   deletion_protection = false
