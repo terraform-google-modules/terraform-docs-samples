@@ -68,7 +68,13 @@ resource "google_cloudfunctions2_function" "default" {
   }
 }
 
+data "google_cloud_run_service" "function_service" {
+  name     = google_cloudfunctions2_function.default.name
+  location = google_cloudfunctions2_function.default.location
+}
+
 output "function_uri" {
   value = google_cloudfunctions2_function.default.service_config[0].uri
 }
 # [END functions_v2_basic]
+
