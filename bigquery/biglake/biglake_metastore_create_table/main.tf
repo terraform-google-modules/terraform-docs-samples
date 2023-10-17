@@ -30,9 +30,8 @@ resource "google_biglake_catalog" "catalog" {
   location = "US"
 }
 
-# Create a Cloud Storage Bucket with a unique name in the `US`.
-# This creates a bucket in the US region named "my-bucket" with a pseudorandom
-# suffix.
+# This creates a Cloud Storage Bucket in the `US` with a unique name in the
+# `US`.
 resource "random_id" "bucket_name_suffix" {
   byte_length = 8
 }
@@ -57,10 +56,9 @@ resource "google_storage_bucket_object" "data_directory" {
   bucket  = google_storage_bucket.bucket.name
 }
 
-# This creates a BigLake Metastore database with the name "my-database" and the
-# type "HIVE".
-# The database is created in the catalog specified by the
-# "google_biglake_catalog.catalog.id" variable.
+# This creates a BigLake Metastore database with the name "my_database" and type
+# "HIVE" in the catalog specified by the "google_biglake_catalog.catalog.id"
+# variable.
 resource "google_biglake_database" "database" {
   name    = "my_database"
   catalog = google_biglake_catalog.catalog.id
@@ -73,10 +71,9 @@ resource "google_biglake_database" "database" {
   }
 }
 
-# This creates a BigLake Metastore table with the name "my-table" and the type
-# "HIVE".
-# The database is created in the catalog specified by the
-# "google_biglake_catalog.catalog.id" variable.
+# This creates a BigLake Metastore table with the name "my_table" and type
+# "HIVE" in the catalog specified by the "google_biglake_catalog.catalog.id"
+# variable.
 resource "google_biglake_table" "table" {
   name     = "my-table"
   database = google_biglake_database.database.id
