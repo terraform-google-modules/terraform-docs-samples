@@ -18,7 +18,7 @@
 # Sample OS policy based on example - https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies#example-2
 
 # [START osconfig_os_policy_assignment]
-resource "google_os_config_os_policy_assignment" "my-os-policy-assignment" {
+resource "google_os_config_os_policy_assignment" "my_os_policy_assignment" {
 
   name        = "my-os-policy-assignment"
   location    = "us-west1-a"
