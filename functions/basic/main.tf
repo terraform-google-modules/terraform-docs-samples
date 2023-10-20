@@ -68,14 +68,9 @@ resource "google_cloudfunctions2_function" "default" {
   }
 }
 
-data "google_cloud_run_service" "function_service" {
-  name     = google_cloudfunctions2_function.default.name
-  location = google_cloudfunctions2_function.default.location
-}
-
 resource "google_cloud_run_service_iam_member" "member" {
-  location = data.google_cloud_run_service.function_service.location
-  service  = data.google_cloud_run_service.function_service.name
+  location = google_cloudfunctions2_function.default.location
+  service  = google_cloudfunctions2_function.default.name
   role     = "roles/run.invoker"
   member   = "allUsers"
 }
