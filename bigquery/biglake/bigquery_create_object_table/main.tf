@@ -25,7 +25,7 @@
 # [START bigquery_create_object_table]
 
 # This queries the provider for project information.
-data "google_project" "main" {}
+data "google_project" "default" {}
 
 # This creates a connection in the US region named "my-connection-id".
 # This connection is used to access the bucket.
@@ -38,7 +38,7 @@ resource "google_bigquery_connection" "default" {
 # This grants the previous connection IAM role access to the bucket.
 resource "google_project_iam_member" "default" {
   role    = "roles/storage.objectViewer"
-  project = data.google_project.main.project_id
+  project = data.google_project.default.project_id
   member  = "serviceAccount:${google_bigquery_connection.default.cloud_resource[0].service_account_id}"
 }
 
