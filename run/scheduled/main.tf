@@ -64,6 +64,13 @@ resource "google_service_account" "default" {
     google_project_service.iam_api
   ]
 }
+
+resource "google_cloud_run_service_iam_member" "default" {
+  location = google_cloud_run_v2_service.default.location
+  service  = google_cloud_run_v2_service.default.name
+  role     = "roles/run.invoker"
+  member   = "serviceAccount:${google_service_account.default.email}"
+}
 # [END cloudrun_service_scheduled_sa]
 
 # [START cloudrun_service_scheduled_job]
@@ -95,12 +102,4 @@ resource "google_cloud_scheduler_job" "default" {
 }
 # [END cloudrun_service_scheduled_job]
 
-# [START cloudrun_service_scheduled_iam]
-resource "google_cloud_run_service_iam_member" "default" {
-  location = google_cloud_run_v2_service.default.location
-  service  = google_cloud_run_v2_service.default.name
-  role     = "roles/run.invoker"
-  member   = "serviceAccount:${google_service_account.default.email}"
-}
-# [END cloudrun_service_scheduled_iam]
 # [END cloudrun_scheduled_parent_tag]
