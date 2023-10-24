@@ -45,7 +45,7 @@ resource "google_compute_instance_group_manager" "default" {
     name              = "primary"
   }
 }
-# [START compute_stateful_instance_group_manager_metadata_pic_parent_tag]
+# [START compute_stateful_instance_group_manager_metadata_pic]
 resource "google_compute_per_instance_config" "default" {
   instance_group_manager = google_compute_instance_group_manager.default.name
   zone                   = google_compute_instance_group_manager.default.zone
