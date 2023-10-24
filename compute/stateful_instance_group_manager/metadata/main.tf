@@ -57,5 +57,5 @@ resource "google_compute_per_instance_config" "default" {
     }
   }
 }
-# [END compute_stateful_instance_group_manager_metadata_pic_parent_tag]
+# [END compute_stateful_instance_group_manager_metadata_pic]
 # [END compute_stateful_instance_group_manager_metadata_parent_tag]
