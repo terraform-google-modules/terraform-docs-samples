@@ -76,7 +76,7 @@ resource "google_biglake_database" "default" {
 # variable.
 resource "google_biglake_table" "default" {
   name     = "my-table"
-  database = google_biglake_database.database.id
+  database = google_biglake_database.default.id
   type     = "HIVE"
   hive_options {
     table_type = "MANAGED_TABLE"
