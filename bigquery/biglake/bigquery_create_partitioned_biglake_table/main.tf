@@ -27,11 +27,11 @@
 
 # This creates a bucket in the US region named "my-bucket" with a pseudorandom
 # suffix.
-resource "random_id" "bucket_name_suffix" {
+resource "random_id" "default" {
   byte_length = 8
 }
 resource "google_storage_bucket" "default" {
-  name                        = "my-bucket-${random_id.bucket_name_suffix.hex}"
+  name                        = "my-bucket-${random_id.default.hex}"
   location                    = "US"
   force_destroy               = true
   uniform_bucket_level_access = true
@@ -46,7 +46,7 @@ resource "google_storage_bucket_object" "default" {
 }
 
 # This queries the provider for project information.
-data "google_project" "project" {}
+data "google_project" "default" {}
 
 # This creates a connection in the US region named "my-connection". This
 # connection is used to access the bucket.
@@ -59,13 +59,13 @@ resource "google_bigquery_connection" "default" {
 # This grants the previous connection IAM role access to the bucket.
 resource "google_project_iam_member" "default" {
   role    = "roles/storage.objectViewer"
-  project = data.google_project.project.id
+  project = data.google_project.default.id
   member  = "serviceAccount:${google_bigquery_connection.default.cloud_resource[0].service_account_id}"
 }
 
 # This makes the script wait for seven minutes before proceeding. This lets IAM
 # permissions propagate.
-resource "time_sleep" "wait_7_min" {
+resource "time_sleep" "default" {
   create_duration = "7m"
 
   depends_on = [google_project_iam_member.default]
@@ -123,7 +123,7 @@ resource "google_bigquery_table" "default" {
   deletion_protection = false
 
   depends_on = [
-    time_sleep.wait_7_min,
+    time_sleep.default,
     google_storage_bucket_object.default
   ]
 }

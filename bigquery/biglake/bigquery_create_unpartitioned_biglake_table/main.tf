@@ -25,11 +25,11 @@
 
 # [START bigquery_create_biglake_unpartitioned_table]
 # This creates a bucket in the US region named "my-bucket" with a pseudorandom suffix.
-resource "random_id" "bucket_name_suffix" {
+resource "random_id" "default" {
   byte_length = 8
 }
 resource "google_storage_bucket" "default" {
-  name                        = "my-bucket-${random_id.bucket_name_suffix.hex}"
+  name                        = "my-bucket-${random_id.default.hex}"
   location                    = "US"
   force_destroy               = true
   uniform_bucket_level_access = true
@@ -55,7 +55,7 @@ resource "google_project_iam_member" "default" {
 
 # This makes the script wait for seven minutes before proceeding.
 # This lets IAM permissions propagate.
-resource "time_sleep" "wait_7_min" {
+resource "time_sleep" "default" {
   create_duration = "7m"
 
   depends_on = [google_project_iam_member.default]
@@ -109,6 +109,6 @@ resource "google_bigquery_table" "default" {
 
   deletion_protection = false
 
-  depends_on = [time_sleep.wait_7_min]
+  depends_on = [time_sleep.default]
 }
 # [END bigquery_create_biglake_unpartitioned_table]
