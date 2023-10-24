@@ -68,6 +68,13 @@ resource "google_cloudfunctions2_function" "default" {
   }
 }
 
+resource "google_cloud_run_service_iam_member" "member" {
+  location = google_cloudfunctions2_function.default.location
+  service  = google_cloudfunctions2_function.default.name
+  role     = "roles/run.invoker"
+  member   = "allUsers"
+}
+
 output "function_uri" {
   value = google_cloudfunctions2_function.default.service_config[0].uri
 }
