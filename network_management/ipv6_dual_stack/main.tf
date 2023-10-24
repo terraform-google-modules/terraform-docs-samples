@@ -95,7 +95,7 @@ resource "google_compute_network" "default" {
   enable_ula_internal_ipv6 = true
 }
 
-resource "google_compute_firewall" "ipv6-allow-all" {
+resource "google_compute_firewall" "ipv6_allow_all" {
   name    = "example-allow-incoming-ipv6"
   network = google_compute_network.default.name
 
@@ -105,7 +105,7 @@ resource "google_compute_firewall" "ipv6-allow-all" {
   source_ranges = ["::/0"]
 }
 
-resource "google_compute_firewall" "ipv4-allow-all" {
+resource "google_compute_firewall" "ipv4_allow_all" {
   name    = "example-allow-incoming-ipv4"
   network = google_compute_network.default.name
 
