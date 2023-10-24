@@ -25,18 +25,18 @@
 
 # This creates a BigLake Metastore in the US region named "my-catalog".
 # BigLake Metastore catalogs can contain multiple databases.
-resource "google_biglake_catalog" "catalog" {
+resource "google_biglake_catalog" "default" {
   name     = "my_catalog"
   location = "US"
 }
 
 # This creates a Cloud Storage Bucket in the `US` with a unique name in the
 # `US`.
-resource "random_id" "bucket_name_suffix" {
+resource "random_id" "default" {
   byte_length = 8
 }
-resource "google_storage_bucket" "bucket" {
-  name                        = "my-bucket-${random_id.bucket_name_suffix.hex}"
+resource "google_storage_bucket" "default" {
+  name                        = "my-bucket-${random_id.default.hex}"
   location                    = "US"
   force_destroy               = true
   uniform_bucket_level_access = true
@@ -46,25 +46,25 @@ resource "google_storage_bucket" "bucket" {
 resource "google_storage_bucket_object" "metadata_directory" {
   name    = "metadata/"
   content = " "
-  bucket  = google_storage_bucket.bucket.name
+  bucket  = google_storage_bucket.default.name
 }
 
 # This creates a Google Cloud Storage object to store data.
 resource "google_storage_bucket_object" "data_directory" {
   name    = "data/"
   content = " "
-  bucket  = google_storage_bucket.bucket.name
+  bucket  = google_storage_bucket.default.name
 }
 
 # This creates a BigLake Metastore database with the name "my_database" and type
-# "HIVE" in the catalog specified by the "google_biglake_catalog.catalog.id"
+# "HIVE" in the catalog specified by the "google_biglake_catalog.default.id"
 # variable.
-resource "google_biglake_database" "database" {
+resource "google_biglake_database" "default" {
   name    = "my_database"
-  catalog = google_biglake_catalog.catalog.id
+  catalog = google_biglake_catalog.default.id
   type    = "HIVE"
   hive_options {
-    location_uri = "gs://${google_storage_bucket.bucket.name}/${google_storage_bucket_object.metadata_directory.name}"
+    location_uri = "gs://${google_storage_bucket.default.name}/${google_storage_bucket_object.metadata_directory.name}"
     parameters = {
       "owner" = "Alex"
     }
@@ -72,16 +72,16 @@ resource "google_biglake_database" "database" {
 }
 
 # This creates a BigLake Metastore table with the name "my_table" and type
-# "HIVE" in the catalog specified by the "google_biglake_catalog.catalog.id"
+# "HIVE" in the database specified by the "google_biglake_database.default.id"
 # variable.
-resource "google_biglake_table" "table" {
+resource "google_biglake_table" "default" {
   name     = "my-table"
   database = google_biglake_database.database.id
   type     = "HIVE"
   hive_options {
     table_type = "MANAGED_TABLE"
     storage_descriptor {
-      location_uri  = "gs://${google_storage_bucket.bucket.name}/${google_storage_bucket_object.data_directory.name}"
+      location_uri  = "gs://${google_storage_bucket.default.name}/${google_storage_bucket_object.data_directory.name}"
       input_format  = "org.apache.hadoop.mapred.SequenceFileInputFormat"
       output_format = "org.apache.hadoop.hive.ql.io.HiveSequenceFileOutputFormat"
     }
