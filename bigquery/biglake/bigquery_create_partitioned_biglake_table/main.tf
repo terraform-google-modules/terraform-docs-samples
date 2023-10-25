@@ -48,8 +48,8 @@ resource "google_storage_bucket_object" "default" {
 # This queries the provider for project information.
 data "google_project" "default" {}
 
-# This creates a connection in the US region named "my-connection". This
-# connection is used to access the bucket.
+# This creates a connection in the US region named "my-connection".
+# This connection is used to access the bucket.
 resource "google_bigquery_connection" "default" {
   connection_id = "my-connection"
   location      = "US"
@@ -89,8 +89,8 @@ resource "google_bigquery_dataset" "default" {
   }
 }
 
-# This creates a BigQuery Table with Partitioning and Automatic Metadata
-# Caching.
+# This creates a BigQuery table with partitioning and automatic metadata
+# caching.
 resource "google_bigquery_table" "default" {
   dataset_id = google_bigquery_dataset.default.dataset_id
   table_id   = "my_table"
@@ -115,9 +115,7 @@ resource "google_bigquery_table" "default" {
   }
 
 
-  # `max_staleness` is required for automatic metadata caching and must be
-  # specified as an interval literal.
-  # https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#interval_literals
+  # This sets the maximum staleness of the metadata cache to 10 hours.
   max_staleness = "0-0 0 10:0:0"
 
   deletion_protection = false

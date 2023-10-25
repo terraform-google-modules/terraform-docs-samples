@@ -81,7 +81,7 @@ resource "google_bigquery_dataset" "default" {
 }
 
 
-# This creates a BigQuery Table wiht Automatic Metadata Caching.
+# This creates a BigQuery Table with automatic metadata caching.
 resource "google_bigquery_table" "default" {
   dataset_id = google_bigquery_dataset.default.dataset_id
   table_id   = "my_table"
@@ -102,9 +102,7 @@ resource "google_bigquery_table" "default" {
     metadata_cache_mode = "AUTOMATIC"
   }
 
-  # `max_staleness` is required for automatic metadata caching and must be
-  # specified as an interval literal.
-  # https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical#interval_literals
+  # This sets the maxiumum staleness of the metadata cache to 10 hours.
   max_staleness = "0-0 0 10:0:0"
 
   deletion_protection = false
