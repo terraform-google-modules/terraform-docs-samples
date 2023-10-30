@@ -24,12 +24,14 @@
 */
 
 # [START bigquery_create_partitioned_biglake_table]
-# This creates a bucket in the US region named "my-bucket" with a pseudorandom suffix.
-resource "random_id" "bucket_name_suffix" {
+
+# This creates a bucket in the US region named "my-bucket" with a pseudorandom
+# suffix.
+resource "random_id" "default" {
   byte_length = 8
 }
 resource "google_storage_bucket" "default" {
-  name                        = "my-bucket-${random_id.bucket_name_suffix.hex}"
+  name                        = "my-bucket-${random_id.default.hex}"
   location                    = "US"
   force_destroy               = true
   uniform_bucket_level_access = true
@@ -44,7 +46,7 @@ resource "google_storage_bucket_object" "default" {
 }
 
 # This queries the provider for project information.
-data "google_project" "project" {}
+data "google_project" "default" {}
 
 # This creates a connection in the US region named "my-connection".
 # This connection is used to access the bucket.
@@ -57,20 +59,20 @@ resource "google_bigquery_connection" "default" {
 # This grants the previous connection IAM role access to the bucket.
 resource "google_project_iam_member" "default" {
   role    = "roles/storage.objectViewer"
-  project = data.google_project.project.id
+  project = data.google_project.default.id
   member  = "serviceAccount:${google_bigquery_connection.default.cloud_resource[0].service_account_id}"
 }
 
-# This makes the script wait for seven minutes before proceeding.
-# This lets IAM permissions propagate.
-resource "time_sleep" "wait_7_min" {
-  depends_on      = [google_project_iam_member.default]
+# This makes the script wait for seven minutes before proceeding. This lets IAM
+# permissions propagate.
+resource "time_sleep" "default" {
   create_duration = "7m"
+
+  depends_on = [google_project_iam_member.default]
 }
 
-# This defines a Google BigQuery dataset with
-# default expiration times for partitions and tables, a
-# description, a location, and a maximum time travel.
+# This defines a Google BigQuery dataset with default expiration times for
+# partitions and tables, a description, a location, and a maximum time travel.
 resource "google_bigquery_dataset" "default" {
   dataset_id                      = "my_dataset"
   default_partition_expiration_ms = 2592000000  # 30 days
@@ -87,9 +89,8 @@ resource "google_bigquery_dataset" "default" {
   }
 }
 
-# This creates a BigQuery table named "my_table" in the dataset "default".
-# The table has a single column named "column1", which is of type STRING
-# and is nullable.
+# This creates a BigQuery table with partitioning and automatic metadata
+# caching.
 resource "google_bigquery_table" "default" {
   dataset_id = google_bigquery_dataset.default.dataset_id
   table_id   = "my_table"
@@ -109,11 +110,18 @@ resource "google_bigquery_table" "default" {
       source_uri_prefix        = "gs://${google_storage_bucket.default.name}/publish/{dt:STRING}/{hr:STRING}/{min:STRING}"
       require_partition_filter = false
     }
+    # This enables automatic metadata refresh.
+    metadata_cache_mode = "AUTOMATIC"
   }
+
+
+  # This sets the maximum staleness of the metadata cache to 10 hours.
+  max_staleness = "0-0 0 10:0:0"
+
   deletion_protection = false
 
   depends_on = [
-    time_sleep.wait_7_min,
+    time_sleep.default,
     google_storage_bucket_object.default
   ]
 }
