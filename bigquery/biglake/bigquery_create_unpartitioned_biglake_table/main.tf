@@ -25,11 +25,11 @@
 
 # [START bigquery_create_biglake_unpartitioned_table]
 # This creates a bucket in the US region named "my-bucket" with a pseudorandom suffix.
-resource "random_id" "bucket_name_suffix" {
+resource "random_id" "default" {
   byte_length = 8
 }
 resource "google_storage_bucket" "default" {
-  name                        = "my-bucket-${random_id.bucket_name_suffix.hex}"
+  name                        = "my-bucket-${random_id.default.hex}"
   location                    = "US"
   force_destroy               = true
   uniform_bucket_level_access = true
@@ -55,9 +55,10 @@ resource "google_project_iam_member" "default" {
 
 # This makes the script wait for seven minutes before proceeding.
 # This lets IAM permissions propagate.
-resource "time_sleep" "wait_7_min" {
-  depends_on      = [google_project_iam_member.default]
+resource "time_sleep" "default" {
   create_duration = "7m"
+
+  depends_on = [google_project_iam_member.default]
 }
 
 # This defines a Google BigQuery dataset with
@@ -80,10 +81,8 @@ resource "google_bigquery_dataset" "default" {
 }
 
 
-# This creates a BigQuery table named "my_table" in the dataset "default".
-# The table has three columns, named "country", "product", and "price", which are of types STRING, STRING, and INT64 respectively.
+# This creates a BigQuery Table with automatic metadata caching.
 resource "google_bigquery_table" "default" {
-  depends_on = [time_sleep.wait_7_min]
   dataset_id = google_bigquery_dataset.default.dataset_id
   table_id   = "my_table"
   schema = jsonencode([
@@ -99,7 +98,15 @@ resource "google_bigquery_table" "default" {
     source_format = "PARQUET"
     connection_id = google_bigquery_connection.default.name
     source_uris   = ["gs://${google_storage_bucket.default.name}/data/*"]
+    # This enables automatic metadata refresh.
+    metadata_cache_mode = "AUTOMATIC"
   }
+
+  # This sets the maxiumum staleness of the metadata cache to 10 hours.
+  max_staleness = "0-0 0 10:0:0"
+
   deletion_protection = false
+
+  depends_on = [time_sleep.default]
 }
 # [END bigquery_create_biglake_unpartitioned_table]
