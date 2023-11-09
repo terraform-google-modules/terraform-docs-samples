@@ -21,7 +21,7 @@ steps:
     - -c
     - |
       # Do not prune if the flag is set
-      if [[ -n $_RUN_ALL_TESTS ]]; then
+      if [ -n $_RUN_ALL_TESTS ]; then
         exit 0 # do not prune
       fi
 
