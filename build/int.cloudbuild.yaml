@@ -20,6 +20,12 @@ steps:
   args:
     - -c
     - |
+      # Do not prune if the flag is set
+      if [[ -n $_RUN_ALL_TESTS ]]; then
+        exit 0 # do not prune
+      fi
+
+      # Gather list of changed folders in the pull request
       git fetch --unshallow
       git diff origin/${_BASE_BRANCH} --name-only > _changed_files
       sed 's/\/.*/\//' _changed_files > _changed_folders
