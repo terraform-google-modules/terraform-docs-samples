@@ -18,5 +18,5 @@
 /run/                   @terraform-google-modules/torus-dpe @terraform-google-modules/terraform-samples-reviewers
 /storage/               @terraform-google-modules/cloud-storage-dpe @terraform-google-modules/terraform-samples-reviewers
 /traffic_director/      @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
-/vertex_ai/             @terraform-google-modules/dee-data-ai @terraform-google-modules/terraform-samples-reviewers
+/vertex_ai/             aferlitsch, @davidcavazos, itseric, @terraform-google-modules/terraform-samples-reviewers
 /vpc/                   @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
