@@ -22,7 +22,7 @@ resource "google_os_config_os_policy_assignment" "my_os_policy_assignment" {
 
   name        = "my-os-policy-assignment"
   location    = "us-west1-a"
-  description = "A test os policy assignment"
+  description = "An OS policy assignment that verifies if the Apache web server is running on CentOS VMs."
 
   instance_filter {
     # filter to select VMs
@@ -75,7 +75,7 @@ resource "google_os_config_os_policy_assignment" "my_os_policy_assignment" {
     }
 
     allow_no_resource_group_match = false #OS policy compliance status
-    description                   = "A test os policy"
+    description                   = "A test OS policy"
   }
 
   rollout {
