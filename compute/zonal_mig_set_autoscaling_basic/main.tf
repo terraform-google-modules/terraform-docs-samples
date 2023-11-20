@@ -24,7 +24,7 @@
 # [START compute_zonal_mig_set_autoscaling_basic_parent_tag]
 # [START compute_zonal_mig_set_autoscaling]
 resource "google_compute_autoscaler" "default" {
-  name   = "exmple-autoscaler"
+  name   = "example-autoscaler"
   zone   = "us-central1-f"
   target = google_compute_instance_group_manager.default.id
 
