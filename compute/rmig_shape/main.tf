@@ -15,32 +15,17 @@
  */
 /**
  * Made to resemble:
- * gcloud compute instance-groups managed set-autoscaling example-managed-instance-group \
- *  --max-num-replicas 20 \
- *  --target-cpu-utilization 0.60 \
- *  --cool-down-period 90
+ * gcloud compute instance-groups managed create example-rmig \
+ *   --template example-template \
+ *   --size 30 \
+ *   --zones us-east1-b,us-east1-c \
+ *   --target-distribution-shape balanced \
+ *   --instance-redistribution-type NONE
  */
 
-# [START compute_zonal_mig_set_autoscaling_basic_parent_tag]
-# [START compute_zonal_mig_set_autoscaling]
-resource "google_compute_autoscaler" "default" {
-  name   = "example-autoscaler"
-  zone   = "us-central1-f"
-  target = google_compute_instance_group_manager.default.id
-
-  autoscaling_policy {
-    max_replicas    = 20
-    min_replicas    = 0
-    cooldown_period = 90
-
-    cpu_utilization {
-      target = 0.60
-    }
-  }
-}
-# [END compute_zonal_mig_set_autoscaling]
-
+# [START compute_region_igm_shape_parent_tag]
 resource "google_compute_instance_template" "default" {
+  name         = "example-template"
   machine_type = "e2-medium"
   disk {
     source_image = "debian-cloud/debian-11"
@@ -50,13 +35,23 @@ resource "google_compute_instance_template" "default" {
   }
 }
 
-resource "google_compute_instance_group_manager" "default" {
-  name               = "example-managed-instance-group"
-  zone               = "us-central1-f"
+# [START compute_region_igm_shape]
+resource "google_compute_region_instance_group_manager" "default" {
+  name                             = "example-rmig"
+  region                           = "us-east1"
+  distribution_policy_zones        = ["us-east1-b", "us-east1-c"]
+  distribution_policy_target_shape = "BALANCED"
+  update_policy {
+    type                         = "PROACTIVE"
+    minimal_action               = "REFRESH"
+    instance_redistribution_type = "NONE"
+    max_unavailable_fixed        = 3
+  }
+  target_size        = 30
   base_instance_name = "instance"
-
   version {
     instance_template = google_compute_instance_template.default.id
   }
 }
-# [END compute_zonal_mig_set_autoscaling_basic_parent_tag]
+# [END compute_region_igm_shape]
+# [END compute_region_igm_shape_parent_tag]
