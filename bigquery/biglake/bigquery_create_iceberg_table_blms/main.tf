@@ -82,7 +82,7 @@ resource "google_biglake_table" "table" {
   hive_options {
     table_type = "MANAGED_TABLE"
     storage_descriptor {
-      location_uri  = "gs://${google_storage_bucket.bucket.name}/${google_storage_bucket_object.data_folder.name}"
+      location_uri  = "gs://${google_storage_bucket.bucket.name}/${google_storage_bucket_object.data_directory.name}"
       input_format  = "org.apache.hadoop.mapred.SequenceFileInputFormat"
       output_format = "org.apache.hadoop.hive.ql.io.HiveSequenceFileOutputFormat"
     }
@@ -145,7 +145,7 @@ resource "google_bigquery_table" "default" {
     autodetect    = false
     source_format = "ICEBERG"
     source_uris = [
-      "blms://${data.google_biglake_table.table.name}"
+      "blms://${google_biglake_table.table.name}"
     ]
   }
 }
