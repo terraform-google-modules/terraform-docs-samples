@@ -25,10 +25,10 @@
 # This queries the provider for project information.
 data "google_project" "project" {}
 
-# Create a Biglake Metastore Catalog named `my-catalog` in the `US`
+# Create a Biglake Metastore Catalog named `my_catalog` in the `US`
 # A Catalog can contain many Databases.
 resource "google_biglake_catalog" "catalog" {
-  name     = "my-catalog"
+  name     = "my_catalog"
   location = "US"
 }
 
@@ -58,11 +58,11 @@ resource "google_storage_bucket_object" "data_directory" {
   bucket  = google_storage_bucket.bucket.name
 }
 
-# Create a Biglake Metastore Database named `my-database` under `catalog` with
+# Create a Biglake Metastore Database named `my_database` under `catalog` with
 # type `HIVE`, and the specified `hive_options`. A Database can contain many
 # tables.
 resource "google_biglake_database" "database" {
-  name    = "my-database"
+  name    = "my_database"
   catalog = google_biglake_catalog.catalog.id
   type    = "HIVE"
   hive_options {
@@ -145,7 +145,7 @@ resource "google_bigquery_table" "default" {
     autodetect    = false
     source_format = "ICEBERG"
     source_uris = [
-      "blms://${google_biglake_table.table.name}"
+      "blms://${google_biglake_table.table.id}"
     ]
   }
 }
