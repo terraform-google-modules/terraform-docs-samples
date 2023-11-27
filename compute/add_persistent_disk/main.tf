@@ -50,9 +50,16 @@ resource "google_compute_instance" "test_node" {
   network_interface {
     network = "default"
     access_config {
-      // Ephemeral IP
+      # Ephemeral IP
     }
   }
+
+  # Ignore changes for persistant disk attachments
+  lifecycle {
+    ignore_changes = [attached_disk]
+  }
+
+
 }
 # [END compute_attach_persistent_disk]
 # [END compute_add_persistent_disk_parent_tag]
