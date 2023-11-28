@@ -26,7 +26,7 @@ resource "google_sql_database_instance" "postgres_instance" {
       # valid client certificates. Please check the API reference for other SSL enforcement options:
       # https://cloud.google.com/sql/docs/postgres/admin-api/rest/v1beta4/instances#ipconfiguration
       require_ssl = "true"
-      ssl_mode = "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
+      ssl_mode    = "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
     }
   }
   # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
