@@ -15,7 +15,7 @@
  */
 
 # [START cloud_sql_mysql_enterprise_plus_instance_pvp]
-resource "google_sql_database_instance" "mysql_pvp_enterprise_plus_instance_name" {
+resource "google_sql_database_instance" "default" {
   name             = "mysql-pvp-enterprise-plus-instance-name"
   region           = "us-central1"
   database_version = "MYSQL_8_0"
