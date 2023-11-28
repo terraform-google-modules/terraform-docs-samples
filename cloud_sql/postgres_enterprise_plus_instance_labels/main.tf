@@ -15,7 +15,7 @@
  */
 
 # [START cloud_sql_postgres_enterprise_plus_instance_labels]
-resource "google_sql_database_instance" "postgres_enterprise_plus_instance_labels" {
+resource "google_sql_database_instance" "default" {
   name             = "postgres-enterprise-plus-instance-labels"
   region           = "us-central1"
   database_version = "POSTGRES_15"
