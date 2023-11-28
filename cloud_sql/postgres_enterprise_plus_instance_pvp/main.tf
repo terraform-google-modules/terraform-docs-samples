@@ -15,7 +15,7 @@
  */
 
 # [START cloud_sql_postgres_enterprise_plus_instance_pvp]
-resource "google_sql_database_instance" "postgres_pvp_enterprise_plus_instance_name" {
+resource "google_sql_database_instance" "default" {
   name             = "postgres-pvp-enterprise-plus-instance-name"
   region           = "asia-northeast1"
   database_version = "POSTGRES_15"
