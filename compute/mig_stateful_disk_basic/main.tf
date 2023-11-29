@@ -18,7 +18,7 @@
  * gcloud compute instance-groups managed create igm-stateful-disk-basic \
  *  --template example-tempalte \
  *  --size 1 \
- *  --stateful-disk device-name=bootdisk,auto-delete=NEVER
+ *  --stateful-disk device-name=example-disk,auto-delete=NEVER
  */
 
 # [START compute_zonal_mig_stateful_disk_basic_parent_tag]
@@ -26,7 +26,7 @@ resource "google_compute_instance_template" "default" {
   name         = "example-template"
   machine_type = "e2-medium"
   disk {
-    device_name  = "bootdisk"
+    device_name  = "example-disk"
     source_image = "debian-cloud/debian-11"
   }
   network_interface {
@@ -46,7 +46,7 @@ resource "google_compute_instance_group_manager" "default" {
   }
 
   stateful_disk {
-    device_name = "bootdisk"
+    device_name = "example-disk"
     delete_rule = "NEVER"
   }
 
