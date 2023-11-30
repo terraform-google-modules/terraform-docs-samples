@@ -75,7 +75,7 @@ resource "google_os_config_os_policy_assignment" "my_os_policy_assignment" {
     }
 
     allow_no_resource_group_match = false #OS policy compliance status
-    description                   = "A test OS policy"
+    description                   = "An OS policy that verifies if the Apache web server is running on Linux VMs."
   }
 
   rollout {
