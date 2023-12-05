@@ -13,43 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * Made to resemble:
- * gcloud compute instance-groups managed create igm-stateful-disk-basic \
- *  --template example-tempalte \
- *  --size 1 \
- *  --stateful-disk device-name=example-disk,auto-delete=NEVER
+ * gcloud compute instance-groups managed [create-instance|instance-configs update] example-cluster \
+ *  --instance node-12 \
+ *  --stateful-metadata mode=active,logging=elaborate
  */
 
-# [START compute_zonal_mig_stateful_disk_basic_parent_tag]
+# [START compute_stateful_instance_group_manager_metadata_parent_tag]
 resource "google_compute_instance_template" "default" {
-  name         = "example-template"
   machine_type = "e2-medium"
+
   disk {
-    device_name  = "example-disk"
     source_image = "debian-cloud/debian-11"
   }
+
   network_interface {
     network = "default"
   }
 }
 
-# [START compute_zonal_mig_stateful_disk_basic]
 resource "google_compute_instance_group_manager" "default" {
-  name               = "igm-stateful-disk-basic"
-  zone               = "us-central1-f"
-  base_instance_name = "instance"
+  name               = "example-cluster"
+  base_instance_name = "test"
   target_size        = 1
+  zone               = "europe-west4-a"
 
   version {
     instance_template = google_compute_instance_template.default.id
+    name              = "primary"
   }
-
-  stateful_disk {
-    device_name = "example-disk"
-    delete_rule = "NEVER"
-  }
-
 }
-# [END compute_zonal_mig_stateful_disk_basic]
-# [END compute_zonal_mig_stateful_disk_basic_parent_tag]
+# [START compute_stateful_instance_group_manager_metadata_pic]
+resource "google_compute_per_instance_config" "default" {
+  instance_group_manager = google_compute_instance_group_manager.default.name
+  zone                   = google_compute_instance_group_manager.default.zone
+  name                   = "node-12"
+  preserved_state {
+    metadata = {
+      mode    = "active"
+      logging = "elaborate"
+    }
+  }
+}
+# [END compute_stateful_instance_group_manager_metadata_pic]
+# [END compute_stateful_instance_group_manager_metadata_parent_tag]
