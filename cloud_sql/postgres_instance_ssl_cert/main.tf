@@ -18,7 +18,7 @@
 resource "google_sql_database_instance" "postgres_instance" {
   name             = "postgres-instance"
   region           = "asia-northeast1"
-  database_version = "postgres_14"
+  database_version = "POSTGRES_14"
   settings {
     tier = "db-custom-2-7680"
     ip_configuration {
