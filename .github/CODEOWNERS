@@ -1,22 +1,22 @@
 # Overall sample owners
 
-*                       @terraform-google-modules/terraform-samples-git-admins @terraform-google-modules/terraform-samples-reviewers
-/.github/               @terraform-google-modules/terraform-samples-git-admins
-/bigquery/              @terraform-google-modules/bigquery-terraform-swe @terraform-google-modules/terraform-samples-reviewers
-/cloud_sql/             @terraform-google-modules/infra-db-sdk @terraform-google-modules/terraform-samples-reviewers
-/cloudvpn/              @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
-/composer/              @terraform-google-modules/cloud-dpes-composer @terraform-google-modules/terraform-samples-reviewers
-/compute/               @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
-/dns/                   @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
-/eventarc/              @terraform-google-modules/torus-dpe @terraform-google-modules/terraform-samples-reviewers
-/functions/             @terraform-google-modules/torus-dpe @terraform-google-modules/terraform-samples-reviewers
-/lb/                    @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
-/looker/		@terraform-google-modules/cloud-looker-docs @terraform-google-modules/terraform-samples-reviewers
-/media_cdn/             @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
-/network_connectivity/  @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
-/privateca/             @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
-/run/                   @terraform-google-modules/torus-dpe @terraform-google-modules/terraform-samples-reviewers
-/storage/               @terraform-google-modules/cloud-storage-dpe @terraform-google-modules/terraform-samples-reviewers
-/traffic_director/      @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
-/vertex_ai/             @terraform-google-modules/dee-data-ai @terraform-google-modules/terraform-samples-reviewers
-/vpc/                   @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+-                       @terraform-google-modules/terraform-samples-git-admins @terraform-google-modules/terraform-samples-reviewers
+  /.github/ @terraform-google-modules/terraform-samples-git-admins
+  /bigquery/ @terraform-google-modules/bigquery-terraform-swe @terraform-google-modules/terraform-samples-reviewers
+  /cloud_sql/ @terraform-google-modules/infra-db-sdk @terraform-google-modules/terraform-samples-reviewers
+  /cloudvpn/ @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+  /composer/ @terraform-google-modules/cloud-dpes-composer @terraform-google-modules/terraform-samples-reviewers
+  /compute/ @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+  /dns/ @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+  /eventarc/ @terraform-google-modules/torus-dpe @terraform-google-modules/terraform-samples-reviewers
+  /functions/ @terraform-google-modules/torus-dpe @terraform-google-modules/terraform-samples-reviewers
+  /lb/ @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+  /looker/ @terraform-google-modules/cloud-looker-docs @terraform-google-modules/terraform-samples-reviewers
+  /media_cdn/ @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+  /network_connectivity/ @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+  /privateca/ @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+  /run/ @terraform-google-modules/torus-dpe @terraform-google-modules/terraform-samples-reviewers
+  /storage/ @terraform-google-modules/cloud-storage-dpe @terraform-google-modules/terraform-samples-reviewers
+  /traffic_director/ @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+  /vertex_ai/ @terraform-google-modules/dee-data-ai @terraform-google-modules/terraform-samples-reviewers
+  /vpc/ @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
