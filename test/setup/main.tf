@@ -69,6 +69,7 @@ module "projects" {
     "secretmanager.googleapis.com",
     "sqladmin.googleapis.com",
     "workflows.googleapis.com",
-    "osconfig.googleapis.com"
+    "osconfig.googleapis.com",
+    "connectors.googleapis.com"
   ]
 }

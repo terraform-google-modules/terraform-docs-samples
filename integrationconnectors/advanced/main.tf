@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-data "google_project" "test_project" {
+data "google_project" "default" {
 }
 
 resource "google_secret_manager_secret" "default" {
-  secret_id = "<%= ctx[:vars]['secret_id'] %>"
+  secret_id = "my-example-secrect"
   replication {
     user_managed {
       replicas {
@@ -29,26 +29,27 @@ resource "google_secret_manager_secret" "default" {
 }
 
 
-resource "google_secret_manager_secret_version" "secret-version-basic" {
+resource "google_secret_manager_secret_version" "default" {
   secret      = google_secret_manager_secret.default.id
   secret_data = "dummypassword"
 }
 
-resource "google_secret_manager_secret_iam_member" "secret_iam" {
+resource "google_secret_manager_secret_iam_member" "default" {
   secret_id  = google_secret_manager_secret.default.id
   role       = "roles/secretmanager.admin"
-  member     = "serviceAccount:${data.google_project.test_project.number}-compute@developer.gserviceaccount.com"
-  depends_on = [google_secret_manager_secret_version.secret-version-basic]
+  member     = "serviceAccount:${data.google_project.default.number}-compute@developer.gserviceaccount.com"
+  depends_on = [google_secret_manager_secret_version.default]
 }
 
 
-# [START integrationconnectors_example]
+# [START integrationconnectors_connection_example]
 resource "google_integration_connectors_connection" "testconnection" {
   name              = "test-connection"
   description       = "tf updated description"
   location          = "us-central1"
-  service_account   = "${data.google_project.test_project.number}-compute@developer.gserviceaccount.com"
-  connector_version = "projects/${data.google_project.test_project.project_id}/locations/global/providers/zendesk/connectors/zendesk/versions/1"
+  service_account   = "${data.google_project.default.number}-compute@developer.gserviceaccount.com"
+  connector_version = "projects/${data.google_project.default.project_id}/locations/global/providers/zendesk/connectors/zendesk/versions/1"
+  // These show all the different types of config variables, not necessary that each resource will use everything.
   config_variable {
     key           = "proxy_enabled"
     boolean_value = false
@@ -69,12 +70,13 @@ resource "google_integration_connectors_connection" "testconnection" {
   config_variable {
     key = "sample_secret_value"
     secret_value {
-      secret_version = google_secret_manager_secret_version.secret-version-basic.name
+      secret_version = google_secret_manager_secret_version.default.name
     }
   }
 
   suspended = false
   auth_config {
+    // These show all the different types of additional variables, not necessary that each resource will use everything.
     additional_variable {
       key          = "sample_string"
       string_value = "sampleString"
@@ -90,7 +92,7 @@ resource "google_integration_connectors_connection" "testconnection" {
     additional_variable {
       key = "sample_secret_value"
       secret_value {
-        secret_version = google_secret_manager_secret_version.secret-version-basic.name
+        secret_version = google_secret_manager_secret_version.default.name
       }
     }
     additional_variable {
@@ -105,7 +107,7 @@ resource "google_integration_connectors_connection" "testconnection" {
     user_password {
       username = "user@xyz.com"
       password {
-        secret_version = google_secret_manager_secret_version.secret-version-basic.name
+        secret_version = google_secret_manager_secret_version.default.name
       }
     }
   }
@@ -132,6 +134,7 @@ resource "google_integration_connectors_connection" "testconnection" {
     foo = "bar"
   }
   ssl_config {
+    // These show all the different types of additional variables, not necessary that each resource will use everything.
     additional_variable {
       key          = "sample_string"
       string_value = "sampleString"
@@ -147,7 +150,7 @@ resource "google_integration_connectors_connection" "testconnection" {
     additional_variable {
       key = "sample_secret_value"
       secret_value {
-        secret_version = google_secret_manager_secret_version.secret-version-basic.name
+        secret_version = google_secret_manager_secret_version.default.name
       }
     }
     additional_variable {
@@ -159,16 +162,16 @@ resource "google_integration_connectors_connection" "testconnection" {
     }
     client_cert_type = "PEM"
     client_certificate {
-      secret_version = google_secret_manager_secret_version.secret-version-basic.name
+      secret_version = google_secret_manager_secret_version.default.name
     }
     client_private_key {
-      secret_version = google_secret_manager_secret_version.secret-version-basic.name
+      secret_version = google_secret_manager_secret_version.default.name
     }
     client_private_key_pass {
-      secret_version = google_secret_manager_secret_version.secret-version-basic.name
+      secret_version = google_secret_manager_secret_version.default.name
     }
     private_server_certificate {
-      secret_version = google_secret_manager_secret_version.secret-version-basic.name
+      secret_version = google_secret_manager_secret_version.default.name
     }
     server_cert_type = "PEM"
     trust_model      = "PRIVATE"
@@ -178,6 +181,7 @@ resource "google_integration_connectors_connection" "testconnection" {
 
   eventing_enablement_type = "EVENTING_AND_CONNECTION"
   eventing_config {
+    // These show all the different types of additional variables, not necessary that each resource will use everything.
     additional_variable {
       key          = "sample_string"
       string_value = "sampleString"
@@ -193,7 +197,7 @@ resource "google_integration_connectors_connection" "testconnection" {
     additional_variable {
       key = "sample_secret_value"
       secret_value {
-        secret_version = google_secret_manager_secret_version.secret-version-basic.name
+        secret_version = google_secret_manager_secret_version.default.name
       }
     }
     additional_variable {
@@ -216,9 +220,10 @@ resource "google_integration_connectors_connection" "testconnection" {
       user_password {
         username = "user@xyz.com"
         password {
-          secret_version = google_secret_manager_secret_version.secret-version-basic.name
+          secret_version = google_secret_manager_secret_version.default.name
         }
       }
+      // These show all the different types of additional variables, not necessary that each resource will use everything.
       additional_variable {
         key          = "sample_string"
         string_value = "sampleString"
@@ -234,7 +239,7 @@ resource "google_integration_connectors_connection" "testconnection" {
       additional_variable {
         key = "sample_secret_value"
         secret_value {
-          secret_version = google_secret_manager_secret_version.secret-version-basic.name
+          secret_version = google_secret_manager_secret_version.default.name
         }
       }
       additional_variable {
@@ -248,4 +253,4 @@ resource "google_integration_connectors_connection" "testconnection" {
     enrichment_enabled = true
   }
 }
-# [END integrationconnectors_example]
+# [END integrationconnectors_connection_example]
