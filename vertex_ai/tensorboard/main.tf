@@ -16,7 +16,7 @@
 
 
 # [START aiplatform_create_tensorboard_sample]
-resource "google_vertex_ai_tensorboard" "default" {
+resource "google_vertex_ai_tensorboard" "tensorboard" {
   display_name = "vertex-ai-tensorboard-sample-name"
   region       = "us-central1"
 }
