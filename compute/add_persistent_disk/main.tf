@@ -54,7 +54,7 @@ resource "google_compute_instance" "test_node" {
     }
   }
 
-  # Ignore changes for persistant disk attachments
+  # Ignore changes for persistent disk attachments
   lifecycle {
     ignore_changes = [attached_disk]
   }
