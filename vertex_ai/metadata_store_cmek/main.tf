@@ -25,7 +25,7 @@ resource "google_vertex_ai_metadata_store" "default" {
     kms_key_name = google_kms_crypto_key.default.id
   }
 
-  depends_on = [google_project_iam_member.service_account_access]
+  depends_on = [google_project_iam_member.default]
 }
 
 resource "random_id" "default" {
