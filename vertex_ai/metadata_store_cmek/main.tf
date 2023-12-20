@@ -42,13 +42,13 @@ resource "google_kms_crypto_key" "default" {
   key_ring = google_kms_key_ring.default.id
 }
 
-# Enable the service account to encrypt/decrypt Cloud KMS keys
-data "google_project" "project" {
+data "google_project" "default" {
 }
 
-resource "google_project_iam_member" "service_account_access" {
-  project = data.google_project.project.project_id
+# Enable the service account to encrypt/decrypt Cloud KMS keys
+resource "google_project_iam_member" "default" {
+  project = data.google_project.default.project_id
   role    = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-  member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+  member  = "serviceAccount:service-${data.google_project.default.number}@gcp-sa-aiplatform.iam.gserviceaccount.com"
 }
 # [END aiplatform_create_metadata_store_cmek]
