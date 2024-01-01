@@ -16,7 +16,7 @@
 /**
  * Made to resemble:
  * gcloud compute instance-groups managed create igm-stateful-disk-basic \
- *  --template example-tempalte \
+ *  --template example-template \
  *  --size 1 \
  *  --stateful-disk device-name=example-disk,auto-delete=NEVER
  */
