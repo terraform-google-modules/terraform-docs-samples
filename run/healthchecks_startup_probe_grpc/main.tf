@@ -15,7 +15,7 @@
  */
 
 # Enable Cloud Run API
-resource "google_project_service" "cloudrun_api" {
+resource "google_project_service" "default" {
   service            = "run.googleapis.com"
   disable_on_destroy = false
 }
