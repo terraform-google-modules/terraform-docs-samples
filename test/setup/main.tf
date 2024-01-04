@@ -27,12 +27,13 @@ module "projects" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 14.0"
 
-  name                    = "ci-tf-samples-${count.index}"
-  random_project_id       = true
-  org_id                  = var.org_id
-  folder_id               = var.folder_id
-  billing_account         = var.billing_account
-  default_service_account = "keep"
+  name                      = "ci-tf-samples-${count.index}"
+  random_project_id         = true
+  random_project_id_length  = 8
+  org_id                    = var.org_id
+  folder_id                 = var.folder_id
+  billing_account           = var.billing_account
+  default_service_account   = "keep"
   // flask_google_cloud_quickstart, instance_virtual_display_enabled etc requires default network
   auto_create_network = true
 
