@@ -252,5 +252,6 @@ resource "google_integration_connectors_connection" "testconnection" {
     }
     enrichment_enabled = true
   }
+  depends_on = [google_secret_manager_secret_iam_member.default]
 }
 # [END integrationconnectors_connection_example]

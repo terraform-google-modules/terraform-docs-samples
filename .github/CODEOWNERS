@@ -20,3 +20,4 @@
 /traffic_director/      @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /vertex_ai/             @terraform-google-modules/dee-data-ai @terraform-google-modules/terraform-samples-reviewers
 /vpc/                   @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+/integrationconnectors/ @googlecloudplatform/connectors-eng-team @terraform-google-modules/terraform-samples-reviewers
