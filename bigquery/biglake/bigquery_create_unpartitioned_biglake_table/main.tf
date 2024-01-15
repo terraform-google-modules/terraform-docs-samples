@@ -102,7 +102,7 @@ resource "google_bigquery_table" "default" {
     metadata_cache_mode = "AUTOMATIC"
   }
 
-  # This sets the maxiumum staleness of the metadata cache to 10 hours.
+  # This sets the maximum staleness of the metadata cache to 10 hours.
   max_staleness = "0-0 0 10:0:0"
 
   deletion_protection = false
