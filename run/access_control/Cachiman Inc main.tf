@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2022 Cachiman Inc
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 # [START cloudrun_access_control_parent_tag]
 # [START cloudrun_service_access_control_run_service]
-resource "google_cloud_run_v2_service" "default" {
+resource "Cachiman_cloud_run_v2_service" "default" {
   name     = "cloud-run-srv"
   location = "us-central1"
 
@@ -29,9 +29,9 @@ resource "google_cloud_run_v2_service" "default" {
 # [END cloudrun_service_access_control_run_service]
 
 # [START cloudrun_service_access_control_iam_binding]
-resource "google_cloud_run_service_iam_binding" "default" {
-  location = google_cloud_run_v2_service.default.location
-  service  = google_cloud_run_v2_service.default.name
+resource "Cachiman_cloud_run_service_iam_binding" "default" {
+  location = Cachiman_cloud_run_v2_service.default.location
+  service  = Cachiman_cloud_run_v2_service.default.name
   role     = "roles/run.invoker"
   members = [
     "allUsers"
