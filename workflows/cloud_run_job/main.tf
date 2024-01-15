@@ -168,7 +168,7 @@ resource "google_workflows_workflow" "default" {
                   - project_id: $${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
                   - event_bucket: $${event.data.bucket}
                   - event_file: $${event.data.name}
-                  - target_bucket: "input-${data.google_project.project.name}-${random_id.bucket_name_suffix.hex}"
+                  - target_bucket: "${google_storage_bucket.default.name}"
                   - job_name: parallel-job
                   - job_location: us-central1
           - check_input_file:
