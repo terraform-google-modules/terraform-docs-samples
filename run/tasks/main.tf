@@ -17,7 +17,7 @@
 # [START cloudrun_tasks_parent_tag]
 # [START cloudrun_service_tasks_service]
 resource "google_cloud_run_v2_service" "default" {
-  name     = "cloud-run-service-name"
+  name     = "cloud-run-task-service"
   location = "us-central1"
 
   template {
