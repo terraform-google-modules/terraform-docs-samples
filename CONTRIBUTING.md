@@ -168,6 +168,9 @@ Run `make -s docker_test_sample SAMPLE=${SAMPLE_NAME}` to test a sample
 noninteractively. This will initialize, apply, verify and destroy the
 specified sample.
 
+`SAMPLE_NAME` is the name of the lowest most containing folder. For example, to test the sample in `/storage/new_bucket/main.tf`, use `SAMPLE=new_bucket`. (See [TestSample](/test/integration/sample_test.go) for implementation, [logic discussion](https://github.com/terraform-google-modules/terraform-docs-samples/issues/501#issuecomment-1894850047)).
+
+
 Example:
 ```
 make -s docker_test_sample SAMPLE=storage_new_bucket
