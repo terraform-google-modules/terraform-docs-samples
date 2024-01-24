@@ -39,6 +39,9 @@ steps:
         fi
       done
 
+      echo Identified Folders
+      echo $_changed_folders
+
       # Prune unrelated tests
       for d in */; do
           if ! grep -q "^$d" _changed_folders && [[ "$d" != "test/" ]]; then
