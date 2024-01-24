@@ -39,15 +39,18 @@ steps:
         fi
       done
 
-      echo Identified Folders
-      echo $_changed_folders
-
       # Prune unrelated tests
       for d in */; do
           if ! grep -q "^$d" _changed_folders && [[ "$d" != "test/" ]]; then
             rm -rf $d;
           fi
       done
+
+      # Report remaining folders
+      echo Folders in scope for tests:
+      for d in */; do echo $d; done
+
+
 - id: prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && prepare_environment']
