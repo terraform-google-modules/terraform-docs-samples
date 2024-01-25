@@ -29,12 +29,9 @@
 resource "google_compute_instance_template" "default" {
   name         = "gpu-template"
   machine_type = "n1-standard-2"
-
   disk {
     source_image = "debian-cloud/debian-11"
-    disk_size_gb = 250
   }
-
   network_interface {
     network = "default"
   }
@@ -43,9 +40,7 @@ resource "google_compute_instance_template" "default" {
     count = 1
   }
   scheduling {
-    automatic_restart   = true
     on_host_maintenance = "TERMINATE"
   }
-
 }
 # [END compute_template_gpu]
