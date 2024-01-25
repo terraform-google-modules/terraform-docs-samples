@@ -1,5 +1,5 @@
 /**
- * Copyright 2023 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ resource "google_workbench_instance" "default" {
 }
 # [END aiplatform_workbench_basic_gpu_instance]
 
-# [START aiplatform_workbench_basic_metadata]
+# [START aiplatform_workbench_metadata]
 resource "google_workbench_instance" "default" {
   name     = "workbench-instance-example"
   location = "us-central1-a"
@@ -45,42 +45,19 @@ resource "google_workbench_instance" "default" {
       project = "deeplearning-platform-release"
       family  = "tf-latest-gpu"
     }
+    # [START aiplatform_workbench_create_metadata]
     metadata = {
       key = "value"
     }
-  }
-}
-# [END aiplatform_workbench_basic_metadata]
-
-# [START aiplatform_workbench_updated_metadata]
-resource "google_workbench_instance" "default" {
-  name     = "workbench-instance-example"
-  location = "us-central1-a"
-
-  gce_setup {
-    machine_type = "n1-standard-1"
-    vm_image {
-      project = "deeplearning-platform-release"
-      family  = "tf-latest-gpu"
-    }
+    # [END aiplatform_workbench_create_metadata]
+    # [START aiplatform_workbench_updated_metadata]
     metadata = {
       key = "updated_value"
     }
+    # [END aiplatform_workbench_updated_metadata]
+    # [START aiplatform_workbench_removed_metadata]
+    # [END aiplatform_workbench_removed_metadata]
   }
 }
-# [END aiplatform_workbench_updated_metadata]
-
-# [START aiplatform_workbench_removed_metadata]
-resource "google_workbench_instance" "default" {
-  name     = "workbench-instance-example"
-  location = "us-central1-a"
-
-  gce_setup {
-    machine_type = "n1-standard-1"
-    vm_image {
-      project = "deeplearning-platform-release"
-      family  = "tf-latest-gpu"
-    }
-  }
-}
-# [END aiplatform_workbench_removed_metadata]
+# [END aiplatform_workbench_basic_metadata]
+# [END aiplatform_workbench_metadata]
