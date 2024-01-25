@@ -59,5 +59,4 @@ resource "google_workbench_instance" "default" {
     # [END aiplatform_workbench_removed_metadata]
   }
 }
-# [END aiplatform_workbench_basic_metadata]
 # [END aiplatform_workbench_metadata]
