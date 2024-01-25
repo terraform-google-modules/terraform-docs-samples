@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,21 @@
  */
 
 
-# [START aiplatform_create_metadata_store_sample]
-resource "google_vertex_ai_metadata_store" "default" {
-  name        = "${random_id.default.hex}-example-store"
-  description = "Example metadata store"
-  provider    = google-beta
-  region      = "us-central1"
-}
+# [START aiplatform_workbench_basic_gpu_instance]
+resource "google_workbench_instance" "default" {
+  name     = "workbench-instance-example"
+  location = "us-central1-a"
 
-resource "random_id" "default" {
-  byte_length = 8
+  gce_setup {
+    machine_type = "n1-standard-1"
+    accelerator_configs {
+      type       = "NVIDIA_TESLA_T4"
+      core_count = 1
+    }
+    vm_image {
+      project = "deeplearning-platform-release"
+      family  = "tf-latest-gpu"
+    }
+  }
 }
-# [END aiplatform_create_metadata_store_sample]
+# [END aiplatform_workbench_basic_gpu_instance]

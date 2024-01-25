@@ -20,7 +20,7 @@ provider "google" {
 }
 
 # [START aiplatform_create_endpoint_sample]
-# Endpoin name must be unique for the project
+# Endpoint name must be unique for the project
 resource "random_id" "endpoint_id" {
   byte_length = 4
 }
