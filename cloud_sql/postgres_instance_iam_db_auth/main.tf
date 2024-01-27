@@ -32,9 +32,11 @@ resource "google_sql_database_instance" "postgres_iam_db_instance_name" {
   # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
   deletion_protection = false
 }
+# [END cloud_sql_postgres_instance_iam_db_auth_create_instance]
 
 # Specify the email address of the IAM user to add to the instance
-# This resource does not create a new IAM user account; this account must already exist
+# This resource does not create a new IAM user account; this account must
+# already exist
 
 resource "google_sql_user" "iam_user" {
   name     = "test-user@example.com"
@@ -42,7 +44,8 @@ resource "google_sql_user" "iam_user" {
   type     = "CLOUD_IAM_USER"
 }
 # Specify the email address of the IAM service account to add to the instance
-# This resource does not create a new IAM service account; this service account must already exist
+# This resource does not create a new IAM service account; this service account
+# must already exist
 
 resource "google_sql_user" "iam_service_account_user" {
   # Note: for PostgreSQL only, Google Cloud requires that you omit the ".gserviceaccount.com" suffix

@@ -34,11 +34,19 @@ resource "google_sql_database_instance" "mysql_iam_db_instance_name" {
 }
 # [END cloud_sql_mysql_instance_iam_db_auth_create_instance]
 
+# Specify the email address of the IAM user to add to the instance
+# This resource does not create a new IAM user account; this account must
+# already exist
+
 resource "google_sql_user" "iam_user" {
   name     = "test-user@example.com"
   instance = google_sql_database_instance.mysql_iam_db_instance_name.name
   type     = "CLOUD_IAM_USER"
 }
+
+# Specify the email address of the IAM service account to add to the instance
+# This resource does not create a new IAM service account; this service account
+# must already exist
 
 resource "google_sql_user" "iam_service_account_user" {
   name     = "test-account@${data.google_project.project.project_id}.iam.gserviceaccount.com"
