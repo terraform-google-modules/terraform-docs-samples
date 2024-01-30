@@ -44,13 +44,13 @@ resource "google_compute_instance_template" "foobar" {
   network_interface {
     network = "default"
 
-    # secret default
+    # default access config, defining external IP configuration
     access_config {
       network_tier = "PREMIUM"
     }
   }
 
-  # secret default
+  # To avoid embedding secret keys or user credentials in the instances, Google recommends that you use custom service accounts with the following access scopes.
   service_account {
     scopes = [
       "https://www.googleapis.com/auth/devstorage.read_only",
@@ -66,7 +66,8 @@ resource "google_compute_instance_template" "foobar" {
 # [END compute_template_create]
 
 resource "google_compute_target_pool" "foobar" {
-  name = "my-target-pool"
+  name   = "my-target-pool"
+  region = "us-central1"
 }
 
 resource "google_compute_region_instance_group_manager" "foobar" {
