@@ -17,7 +17,7 @@
 # [START cloud_sql_postgres_instance_iam_db_auth]
 # [START cloud_sql_postgres_instance_iam_db_auth_create_instance]
 # [START cloud_sql_postgres_instance_iam_db_auth_add_users]
-resource "google_sql_database_instance" "postgres_iam_db_instance_name" {
+resource "google_sql_database_instance" "default" {
   name             = "postgres-db-auth-instance-name-test"
   region           = "us-west4"
   database_version = "POSTGRES_14"
@@ -28,8 +28,9 @@ resource "google_sql_database_instance" "postgres_iam_db_instance_name" {
       value = "on"
     }
   }
-  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
-  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
+  # set `deletion_protection` to true, will ensure that one cannot accidentally
+  # delete this instance by use of Terraform whereas
+  # `deletion_protection_enabled` flag protects this instance at the GCP level.
   deletion_protection = false
 }
 # [END cloud_sql_postgres_instance_iam_db_auth_create_instance]
@@ -40,18 +41,27 @@ resource "google_sql_database_instance" "postgres_iam_db_instance_name" {
 
 resource "google_sql_user" "iam_user" {
   name     = "test-user@example.com"
-  instance = google_sql_database_instance.postgres_iam_db_instance_name.name
+  instance = google_sql_database_instance.default.name
   type     = "CLOUD_IAM_USER"
 }
+
 # Specify the email address of the IAM service account to add to the instance
 # This resource does not create a new IAM service account; this service account
 # must already exist
 
+# Create a new IAM service account
+
+resource "google_service_account" "default" {
+  account_id   = "cloud-sql-postgres-sa"
+  display_name = "Cloud SQL for Postgres Service Account"
+}
+
 resource "google_sql_user" "iam_service_account_user" {
-  # Note: for PostgreSQL only, Google Cloud requires that you omit the ".gserviceaccount.com" suffix
+  # Note: for PostgreSQL only, Google Cloud requires that you omit the
+  # ".gserviceaccount.com" suffix
   # from the service account email due to length limits on database usernames.
-  name     = "test-account@${data.google_project.project.project_id}.iam"
-  instance = google_sql_database_instance.postgres_iam_db_instance_name.name
+  name     = trimsuffix(google_service_account.default.email, ".gserviceaccount.com")
+  instance = google_sql_database_instance.default.name
   type     = "CLOUD_IAM_SERVICE_ACCOUNT"
 }
 # [END cloud_sql_postgres_instance_iam_db_auth_add_users]
@@ -65,7 +75,7 @@ resource "google_project_iam_binding" "cloud_sql_user" {
   role    = "roles/cloudsql.instanceUser"
   members = [
     "user:test-user@example.com",
-    "serviceAccount:test-account@${data.google_project.project.project_id}.iam.gserviceaccount.com"
+    "serviceAccount:${google_service_account.default.email}"
   ]
 }
 
@@ -74,7 +84,7 @@ resource "google_project_iam_binding" "cloud_sql_client" {
   role    = "roles/cloudsql.client"
   members = [
     "user:test-user@example.com",
-    "serviceAccount:test-account@${data.google_project.project.project_id}.iam.gserviceaccount.com"
+    "serviceAccount:${google_service_account.default.email}"
   ]
 }
 # [END cloud_sql_postgres_instance_iam_db_grant_roles]
