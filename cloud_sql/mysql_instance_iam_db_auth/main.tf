@@ -40,7 +40,7 @@ resource "google_sql_database_instance" "default" {
 # already exist
 
 resource "google_sql_user" "iam_user" {
-  name     = "severinet@google.com"
+  name     = "test-user@example.com"
   instance = google_sql_database_instance.default.name
   type     = "CLOUD_IAM_USER"
 }
@@ -69,7 +69,7 @@ resource "google_project_iam_binding" "cloud_sql_user" {
   project = data.google_project.project.project_id
   role    = "roles/cloudsql.instanceUser"
   members = [
-    "user:severinet@google.com",
+    "user:test-user@example.com",
     "serviceAccount:${google_service_account.default.email}"
   ]
 }
@@ -78,7 +78,7 @@ resource "google_project_iam_binding" "cloud_sql_client" {
   project = data.google_project.project.project_id
   role    = "roles/cloudsql.client"
   members = [
-    "user:severinet@google.com",
+    "user:test-user@example.com",
     "serviceAccount:${google_service_account.default.email}"
   ]
 }
