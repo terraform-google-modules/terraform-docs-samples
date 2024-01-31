@@ -55,7 +55,7 @@ resource "google_service_account" "default" {
 # Specify the email address of the IAM service account to add to the instance
 
 resource "google_sql_user" "iam_service_account_user" {
-  name     = google_service_account.sa.email
+  name     = google_service_account.default.email
   instance = google_sql_database_instance.default.name
   type     = "CLOUD_IAM_SERVICE_ACCOUNT"
 }
