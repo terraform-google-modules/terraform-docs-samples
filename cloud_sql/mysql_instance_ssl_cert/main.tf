@@ -22,7 +22,11 @@ resource "google_sql_database_instance" "mysql_instance" {
   settings {
     tier = "db-f1-micro"
     ip_configuration {
+      # The following SSL enforcement options only allow connections encrypted with SSL/TLS and with
+      # valid client certificates. Please check the API reference for other SSL enforcement options:
+      # https://cloud.google.com/sql/docs/postgres/admin-api/rest/v1beta4/instances#ipconfiguration
       require_ssl = "true"
+      ssl_mode    = "TRUSTED_CLIENT_CERTIFICATE_REQUIRED"
     }
   }
   # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
