@@ -13,23 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/**
+ * Made to resemble
+ * gcloud compute instance-templates create preemptible-template \
+ * --preemptible
+*/
 
-
-# [START aiplatform_workbench_basic_gpu_instance]
-resource "google_workbench_instance" "default" {
-  name     = "workbench-instance-example"
-  location = "us-central1-a"
-
-  gce_setup {
-    machine_type = "n1-standard-1"
-    accelerator_configs {
-      type       = "NVIDIA_TESLA_T4"
-      core_count = 1
-    }
-    vm_image {
-      project = "deeplearning-platform-release"
-      family  = "tf-latest-gpu"
-    }
+# [START compute_template_preemptible]
+resource "google_compute_instance_template" "default" {
+  name         = "preemptible-template"
+  machine_type = "n1-standard-1"
+  disk {
+    source_image = "debian-cloud/debian-11"
+  }
+  network_interface {
+    network = "default"
+  }
+  scheduling {
+    preemptible       = "true"
+    automatic_restart = "false"
   }
 }
-# [END aiplatform_workbench_basic_gpu_instance]
+# [END compute_template_preemptible]

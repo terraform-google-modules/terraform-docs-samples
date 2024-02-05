@@ -14,22 +14,10 @@
  * limitations under the License.
  */
 
-
-# [START aiplatform_workbench_basic_gpu_instance]
-resource "google_workbench_instance" "default" {
-  name     = "workbench-instance-example"
-  location = "us-central1-a"
-
-  gce_setup {
-    machine_type = "n1-standard-1"
-    accelerator_configs {
-      type       = "NVIDIA_TESLA_T4"
-      core_count = 1
-    }
-    vm_image {
-      project = "deeplearning-platform-release"
-      family  = "tf-latest-gpu"
-    }
-  }
+# [START aiplatform_enable_vertex_ai_api]
+# Enable Vertex AI API
+resource "google_project_service" "default" {
+  service            = "aiplatform.googleapis.com"
+  disable_on_destroy = false
 }
-# [END aiplatform_workbench_basic_gpu_instance]
+# [END aiplatform_enable_vertex_ai_api]
