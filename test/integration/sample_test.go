@@ -83,11 +83,18 @@ func TestSamples(t *testing.T) {
 					tft.WithRetryableTerraformErrors(retryErrors, 10, time.Minute),
 				)
 				
+				sampleTest.DefineVerify(func(a *assert.Assertions) {})
+
+				a := assert.New(sampleTest.t)
+				utils.RunStage("init", func() { sampleTest.Init(a) })
+
 				// run discovered tests in parallel upto GOMAXPROCS
 				t.Parallel()
-				
-				sampleTest.DefineVerify(func(a *assert.Assertions) {})
-				sampleTest.Test()
+
+				defer utils.RunStage("teardown", func() { sampleTest.Teardown(a) })
+				utils.RunStage("apply", func() { sampleTest.Apply(a) })
+				utils.RunStage("verify", func() { sampleTest.Verify(a) })
+
 				t.Logf("Test %s completed in %s project", sampleName, tg.projectID)
 			})
 		}
