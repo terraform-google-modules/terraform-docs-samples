@@ -84,20 +84,13 @@ func TestSamples(t *testing.T) {
 				)
 
 				sampleTest.DefineInit(func(a *assert.Assertions) {
-					terraform.Init(b.t, b.GetTFOptions())
+					sampleTest.DefaultInit(a)
 
 					// run tests in parallel upto GOMAXPROCS
-					b.t.Parallel()
-
-					terraform.Validate(b.t, terraform.WithDefaultRetryableErrors(b.t, &terraform.Options{
-						TerraformDir: b.tfDir,
-						Logger:       b.logger,
-						NoColor:      true,
-					}))
+					sampleTest.t.Parallel()
 				})
 				sampleTest.DefineVerify(func(a *assert.Assertions) {})
 				sampleTest.Test()
-
 				t.Logf("Test %s completed in %s project", sampleName, tg.projectID)
 			})
 		}
