@@ -75,6 +75,8 @@ func TestSamples(t *testing.T) {
 			sampleName := filepath.Base(samplePath)
 			testName := fmt.Sprintf("%d/%s", tg.group, sampleName)
 			t.Run(testName, func(t *testing.T) {
+				t.Parallel()
+
 				utils.SetEnv(t, "GOOGLE_PROJECT", tg.projectID)
 				t.Logf("Test %s running %s project", sampleName, tg.projectID)
 				sampleTest := tft.NewTFBlueprintTest(t,
@@ -82,13 +84,6 @@ func TestSamples(t *testing.T) {
 					tft.WithSetupPath(setupPath),
 					tft.WithRetryableTerraformErrors(retryErrors, 10, time.Minute),
 				)
-
-				sampleTest.DefineInit(func(a *assert.Assertions) {
-					sampleTest.DefaultInit(a)
-
-					// run tests in parallel upto GOMAXPROCS
-					sampleTest.t.Parallel()
-				})
 				sampleTest.DefineVerify(func(a *assert.Assertions) {})
 				sampleTest.Test()
 				t.Logf("Test %s completed in %s project", sampleName, tg.projectID)
