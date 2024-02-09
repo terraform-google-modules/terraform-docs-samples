@@ -87,7 +87,7 @@ func TestSamples(t *testing.T) {
 					sampleTest.DefaultInit(a)
 
 					// run tests in parallel upto GOMAXPROCS
-					sampleTest.t.Parallel()
+					b.t.Parallel()
 				})
 				sampleTest.DefineVerify(func(a *assert.Assertions) {})
 				sampleTest.Test()
