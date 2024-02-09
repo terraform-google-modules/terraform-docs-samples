@@ -82,6 +82,10 @@ func TestSamples(t *testing.T) {
 					tft.WithSetupPath(setupPath),
 					tft.WithRetryableTerraformErrors(retryErrors, 10, time.Minute),
 				)
+				
+				// run discovered tests in parallel upto GOMAXPROCS
+				t.Parallel()
+				
 				sampleTest.DefineVerify(func(a *assert.Assertions) {})
 				sampleTest.Test()
 				t.Logf("Test %s completed in %s project", sampleName, tg.projectID)
