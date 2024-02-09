@@ -82,18 +82,21 @@ func TestSamples(t *testing.T) {
 					tft.WithSetupPath(setupPath),
 					tft.WithRetryableTerraformErrors(retryErrors, 10, time.Minute),
 				)
-				
+
+				sampleTest.DefineInit(func(a *assert.Assertions) {
+					terraform.Init(b.t, b.GetTFOptions())
+
+					// run tests in parallel upto GOMAXPROCS
+					b.t.Parallel()
+
+					terraform.Validate(b.t, terraform.WithDefaultRetryableErrors(b.t, &terraform.Options{
+						TerraformDir: b.tfDir,
+						Logger:       b.logger,
+						NoColor:      true,
+					}))
+				})
 				sampleTest.DefineVerify(func(a *assert.Assertions) {})
-
-				a := assert.New(sampleTest.t)
-				utils.RunStage("init", func() { sampleTest.Init(a) })
-
-				// run discovered tests in parallel upto GOMAXPROCS
-				t.Parallel()
-
-				defer utils.RunStage("teardown", func() { sampleTest.Teardown(a) })
-				utils.RunStage("apply", func() { sampleTest.Apply(a) })
-				utils.RunStage("verify", func() { sampleTest.Verify(a) })
+				sampleTest.Test()
 
 				t.Logf("Test %s completed in %s project", sampleName, tg.projectID)
 			})
