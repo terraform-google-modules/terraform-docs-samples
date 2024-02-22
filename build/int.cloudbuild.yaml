@@ -25,7 +25,7 @@ steps:
         echo "_PERIODIC is true, running all tests."
         exit 0
       fi
-      
+
       git fetch --unshallow
       git diff origin/${_BASE_BRANCH} --name-only > _changed_files
       sed 's/\/.*/\//' _changed_files > _changed_folders
