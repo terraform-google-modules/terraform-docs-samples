@@ -71,6 +71,7 @@ module "projects" {
     "sqladmin.googleapis.com",
     "workflows.googleapis.com",
     "osconfig.googleapis.com",
-    "connectors.googleapis.com"
+    "connectors.googleapis.com",
+    "bigqueryreservation.googleapis.com"
   ]
 }
