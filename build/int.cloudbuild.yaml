@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2022-2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,6 +20,12 @@ steps:
   args:
     - -c
     - |
+      # If this is a periodic tests, skip the pruning and run all tests
+      if [[ "$_PERIODIC" == "true" ]]; then
+        echo "_PERIODIC is true, running all tests."
+        exit 0
+      fi
+      
       git fetch --unshallow
       git diff origin/${_BASE_BRANCH} --name-only > _changed_files
       sed 's/\/.*/\//' _changed_files > _changed_folders
