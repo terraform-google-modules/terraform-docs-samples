@@ -3,7 +3,7 @@ module github.com/terraform-google-modules/terraform-docs-samples/test/integrati
 go 1.21
 
 require (
-	github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.12.1
+	github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.13.0
 	github.com/stretchr/testify v1.8.4
 )
 
