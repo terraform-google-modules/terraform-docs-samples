@@ -23,7 +23,6 @@
  *  --global
  */
 
-# [START compute_health_check_parent_tag]
 # [START compute_health_check_tag]
 resource "google_compute_http_health_check" "default" {
   name                = "example-check"
