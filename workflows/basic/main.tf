@@ -79,6 +79,6 @@ resource "google_workflows_workflow" "default" {
       return: $${wikiResult.body[1]}
 EOF
 
-  depends_on = [google_project_service.workflows]
+  depends_on = [google_project_service.default]
 }
 # [END workflows_terraform_workflow_deploy]
