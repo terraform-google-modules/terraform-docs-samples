@@ -20,6 +20,7 @@ steps:
   args:
     - -c
     - |
+      set -e
       # If this is a periodic tests, skip the pruning and run all tests
       if [[ "$_PERIODIC" == "true" ]]; then
         echo "_PERIODIC is true, running all tests."
