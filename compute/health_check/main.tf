@@ -34,4 +34,3 @@ resource "google_compute_http_health_check" "default" {
   port                = "80"
 }
 # [END compute_health_check_tag]
-# [END compute_health_check_parent_tag]
