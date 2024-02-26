@@ -15,16 +15,6 @@
  */
 /**
  * Made to resemble:
- * gcloud compute health-checks create http example-check --port 80 \
- *  --check-interval 30s \
- *  --healthy-threshold 1 \
- *  --timeout 10s \
- *  --unhealthy-threshold 3 \
- *  --global
- * gcloud compute firewall-rules create allow-health-check \
- *   --allow tcp:80 \
- *   --source-ranges 130.211.0.0/22,35.191.0.0/16 \
- *   --network default
  * gcloud compute instance-groups managed create igm-with-hc \
  *   --size 3 \
  *   --template an-instance-template \
@@ -45,7 +35,6 @@ resource "google_compute_instance_template" "default" {
   }
 }
 
-# [START compute_zonal_instance_group_manager_hc_health_check_tag]
 resource "google_compute_http_health_check" "default" {
   name                = "example-check"
   timeout_sec         = 10
@@ -54,9 +43,7 @@ resource "google_compute_http_health_check" "default" {
   unhealthy_threshold = 3
   port                = "80"
 }
-# [END compute_zonal_instance_group_manager_hc_health_check_tag]
 
-# [START compute_zonal_instance_group_manager_hc_firewall_rule_tag]
 resource "google_compute_firewall" "default" {
   name          = "allow-health-check"
   network       = "default"
@@ -66,7 +53,6 @@ resource "google_compute_firewall" "default" {
     ports    = ["80"]
   }
 }
-# [END compute_zonal_instance_group_manager_hc_firewall_rule_tag]
 
 # [START compute_zonal_instance_group_manager_hc_igm_tag]
 resource "google_compute_instance_group_manager" "default" {
