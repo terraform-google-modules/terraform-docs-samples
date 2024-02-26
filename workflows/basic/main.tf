@@ -38,7 +38,7 @@ resource "google_service_account" "workflows_service_account" {
 
 # [START workflows_terraform_workflow_deploy]
 # Create a workflow
-resource "google_workflows_workflow" "workflows_example" {
+resource "google_workflows_workflow" "default" {
   name            = "sample-workflow"
   region          = "us-central1"
   description     = "A sample workflow"
