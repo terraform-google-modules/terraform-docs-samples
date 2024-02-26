@@ -30,7 +30,7 @@ resource "google_project_service" "default" {
 
 # [START workflows_terraform_serviceaccount_create]
 # Create a dedicated service account
-resource "google_service_account" "workflows_service_account" {
+resource "google_service_account" "default" {
   account_id   = "sample-workflows-sa"
   display_name = "Sample Workflows Service Account"
 }
