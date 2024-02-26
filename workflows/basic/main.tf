@@ -22,7 +22,7 @@ before running the code snippet.
 
 # [START workflows_terraform_api_enable]
 # Enable Workflows API
-resource "google_project_service" "workflows" {
+resource "google_project_service" "default" {
   service            = "workflows.googleapis.com"
   disable_on_destroy = false
 }
