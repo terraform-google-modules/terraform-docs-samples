@@ -21,7 +21,6 @@
  *   --network default
  */
 
-# [START compute_firewall_rule_for_health_check_parent_tag]
 
 # [START compute_firewall_rule_for_health_check_tag]
 resource "google_compute_firewall" "default" {
