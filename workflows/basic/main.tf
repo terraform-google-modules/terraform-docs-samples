@@ -42,7 +42,7 @@ resource "google_workflows_workflow" "default" {
   name            = "sample-workflow"
   region          = "us-central1"
   description     = "A sample workflow"
-  service_account = google_service_account.workflows_service_account.id
+  service_account = google_service_account.default.id
   labels = {
     env = "test"
   }
