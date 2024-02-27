@@ -10,6 +10,7 @@
 /dns/                   @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /eventarc/              @terraform-google-modules/torus-dpe @terraform-google-modules/terraform-samples-reviewers
 /functions/             @terraform-google-modules/torus-dpe @terraform-google-modules/terraform-samples-reviewers
+/gke/                   @terraform-google-modules/eks-team @terraform-google-modules/terraform-samples-reviewers
 /lb/                    @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /looker/		@terraform-google-modules/cloud-looker-docs @terraform-google-modules/terraform-samples-reviewers
 /media_cdn/             @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
