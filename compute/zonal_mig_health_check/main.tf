@@ -41,7 +41,7 @@ resource "google_compute_http_health_check" "default" {
   check_interval_sec  = 30
   healthy_threshold   = 1
   unhealthy_threshold = 3
-  port                = "80"
+  port                = 80
 }
 
 resource "google_compute_firewall" "default" {
@@ -50,7 +50,7 @@ resource "google_compute_firewall" "default" {
   source_ranges = ["130.211.0.0/22", "35.191.0.0/16"]
   allow {
     protocol = "tcp"
-    ports    = ["80"]
+    ports    = [80]
   }
 }
 
