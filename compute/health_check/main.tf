@@ -30,6 +30,6 @@ resource "google_compute_http_health_check" "default" {
   check_interval_sec  = 30
   healthy_threshold   = 1
   unhealthy_threshold = 3
-  port                = "80"
+  port                = 80
 }
 # [END compute_health_check_tag]

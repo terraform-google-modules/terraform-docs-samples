@@ -29,7 +29,7 @@ resource "google_compute_firewall" "default" {
   source_ranges = ["130.211.0.0/22", "35.191.0.0/16"]
   allow {
     protocol = "tcp"
-    ports    = ["80"]
+    ports    = [80]
   }
 }
 # [END compute_firewall_rule_for_health_check_tag]
