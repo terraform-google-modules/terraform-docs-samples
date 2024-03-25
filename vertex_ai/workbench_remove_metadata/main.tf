@@ -22,10 +22,6 @@ resource "google_workbench_instance" "default" {
 
   gce_setup {
     machine_type = "n1-standard-1"
-    vm_image {
-      project = "deeplearning-platform-release"
-      family  = "tf-latest-gpu"
-    }
     metadata = {
     }
   }

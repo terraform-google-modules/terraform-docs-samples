@@ -26,10 +26,6 @@ resource "google_workbench_instance" "default" {
       type       = "NVIDIA_TESLA_T4"
       core_count = 1
     }
-    vm_image {
-      project = "deeplearning-platform-release"
-      family  = "tf-latest-gpu"
-    }
   }
 }
 # [END aiplatform_workbench_basic_gpu_instance]
