@@ -24,7 +24,7 @@ resource "google_service_account" "default" {
 resource "google_container_cluster" "default" {
   name               = "gke-standard-zonal-arm-cluster"
   location           = "us-central1-a"
-  node_locations     = ["us-central1-b", "us-central1-b"]
+  node_locations     = ["us-central1-a", "us-central1-b"]
   initial_node_count = 2
 
   node_config {
