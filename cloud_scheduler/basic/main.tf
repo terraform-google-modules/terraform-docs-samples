@@ -19,7 +19,7 @@ See https://cloud.google.com/scheduler/docs/schedule-run-cron-job-terraform
 before running the code snippet.
 */
 
-# [START scheduler_terraform_basic_enableapis]
+# [START cloudscheduler_terraform_basic_enableapis]
 # Enable Cloud Scheduler API
 resource "google_project_service" "scheduler" {
   service            = "cloudscheduler.googleapis.com"
@@ -30,24 +30,24 @@ resource "google_project_service" "pubsub" {
   service            = "pubsub.googleapis.com"
   disable_on_destroy = false
 }
-# [END scheduler_terraform_basic_enableapis]
+# [END cloudscheduler_terraform_basic_enableapis]
 
-# [START scheduler_terraform_basic_pubsub_topic]
+# [START cloudscheduler_terraform_basic_pubsub_topic]
 # Create Pub/Sub topic
 resource "google_pubsub_topic" "default" {
   name = "pubsub_topic"
 }
-# [END scheduler_terraform_basic_pubsub_topic]
+# [END cloudscheduler_terraform_basic_pubsub_topic]
 
-# [START scheduler_terraform_basic_pubsub_subscription]
+# [START cloudscheduler_terraform_basic_pubsub_subscription]
 # Create Pub/Sub subscription
 resource "google_pubsub_subscription" "default" {
   name  = "pubsub_subscription"
   topic = google_pubsub_topic.default.name
 }
-# [END scheduler_terraform_basic_pubsub_subscription]
+# [END cloudscheduler_terraform_basic_pubsub_subscription]
 
-# [START scheduler_terraform_basic_job]
+# [START cloudscheduler_terraform_basic_job]
 # Create a cron job using Cloud Scheduler
 resource "google_cloud_scheduler_job" "default" {
   name        = "test-job"
@@ -60,4 +60,4 @@ resource "google_cloud_scheduler_job" "default" {
     data       = base64encode("Hello world!")
   }
 }
-# [END scheduler_terraform_basic_job]
+# [END cloudscheduler_terraform_basic_job]
