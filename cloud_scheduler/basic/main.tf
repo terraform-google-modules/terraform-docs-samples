@@ -52,7 +52,7 @@ resource "google_pubsub_subscription" "default" {
 resource "google_cloud_scheduler_job" "default" {
   name        = "test-job"
   description = "test job"
-  schedule    = "*/2 * * * *"
+  schedule    = "30 16 * * 7"
   region      = "us-central1"
 
   pubsub_target {
