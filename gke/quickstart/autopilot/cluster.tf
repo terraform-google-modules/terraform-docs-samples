@@ -46,9 +46,8 @@ resource "google_compute_subnetwork" "default" {
 resource "google_container_cluster" "default" {
   name = "example-autopilot-cluster"
 
-  location                 = "us-central1"
-  enable_autopilot         = true
-  enable_l4_ilb_subsetting = true
+  location         = "us-central1"
+  enable_autopilot = true
 
   network    = google_compute_network.default.id
   subnetwork = google_compute_subnetwork.default.id
