@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-# [START gke_quickstart_autopilot_app]
+# [START gke_quickstart_autopilot_service]
 # Retrieve the access token for configuring the Kubernetes provider
 data "google_client_config" "default" {}
 
@@ -30,41 +30,6 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(data.google_container_cluster.default.master_auth[0].cluster_ca_certificate)
 }
 
-resource "kubernetes_deployment_v1" "default" {
-  metadata {
-    name = "example-hello-app-deployment"
-  }
-
-  spec {
-    selector {
-      match_labels = {
-        app = "hello-app"
-      }
-    }
-
-    template {
-      metadata {
-        labels = {
-          app = "hello-app"
-        }
-      }
-
-      spec {
-        container {
-          image = "us-docker.pkg.dev/google-samples/containers/gke/hello-app:2.0"
-          name  = "hello-app-container"
-
-          port {
-            container_port = 8080
-            name           = "hello-app-svc"
-          }
-        }
-      }
-    }
-  }
-}
-
-# Expose the hello-app using a loadblancer
 resource "kubernetes_service_v1" "default" {
   metadata {
     name = "example-hello-app-loadbalancer"
@@ -75,17 +40,17 @@ resource "kubernetes_service_v1" "default" {
 
   spec {
     selector = {
-      app = kubernetes_deployment_v1.default.spec[0].selector[0].match_labels.app
+      app = "hello-app"
     }
 
     ip_family_policy = "RequireDualStack"
 
     port {
       port        = 80
-      target_port = kubernetes_deployment_v1.default.spec[0].template[0].spec[0].container[0].port[0].name
+      target_port = 8080
     }
 
     type = "LoadBalancer"
   }
 }
-# [END gke_quickstart_autopilot_app]
+# [END gke_quickstart_autopilot_service]
