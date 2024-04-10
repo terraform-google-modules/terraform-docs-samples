@@ -104,4 +104,28 @@ resource "kubernetes_deployment_v1" "default" {
     }
   }
 }
+
+resource "kubernetes_service_v1" "default" {
+  metadata {
+    name = "example-hello-app-loadbalancer"
+    annotations = {
+      "cloud.google.com/load-balancer-type" = "Internal" # Remove to create an external loadbalance
+    }
+  }
+
+  spec {
+    selector = {
+      app = kubernetes_deployment_v1.default.spec[0].selector[0].match_labels.app
+    }
+
+    ip_family_policy = "RequireDualStack"
+
+    port {
+      port        = 80
+      target_port = kubernetes_deployment_v1.default.spec[0].template[0].spec[0].container[0].port[0].name
+    }
+
+    type = "LoadBalancer"
+  }
+}
 # [END gke_quickstart_autopilot_app]
