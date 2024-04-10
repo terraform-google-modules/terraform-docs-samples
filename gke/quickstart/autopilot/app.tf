@@ -109,7 +109,7 @@ resource "kubernetes_service_v1" "default" {
   metadata {
     name = "example-hello-app-loadbalancer"
     annotations = {
-      "cloud.google.com/load-balancer-type" = "Internal" # Remove to create an external loadbalance
+      "networking.gke.io/load-balancer-type" = "Internal" # Remove to create an external loadbalance
     }
   }
 
@@ -127,5 +127,14 @@ resource "kubernetes_service_v1" "default" {
 
     type = "LoadBalancer"
   }
+
+  depends_on = [time_sleep.wait_service_cleanup]
+}
+
+# Provide time for Service cleanup
+resource "time_sleep" "wait_service_cleanup" {
+  depends_on = [google_container_cluster.default]
+
+  destroy_duration = "180s"
 }
 # [END gke_quickstart_autopilot_app]
