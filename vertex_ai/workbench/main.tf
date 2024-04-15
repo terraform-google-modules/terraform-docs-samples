@@ -27,8 +27,8 @@ resource "google_workbench_instance" "default" {
       core_count = 1
     }
     vm_image {
-      project = "deeplearning-platform-release"
-      family  = "tf-latest-gpu"
+      project = "cloud-notebooks-managed"
+      family  = "workbench-instances"
     }
   }
 }
