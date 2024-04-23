@@ -14,7 +14,6 @@
 * limitations under the License.
 */
 
-# [START gke_standard_regional_node_pool]
 resource "google_service_account" "default" {
   account_id   = "service-account-id"
   display_name = "Service Account"
@@ -32,12 +31,10 @@ resource "google_container_cluster" "default" {
   deletion_protection = false
 }
 
+# [START gke_standard_regional_node_pool]
 resource "google_container_node_pool" "default" {
-  name     = "gke-standard-regional-node-pool"
-  location = "us-central1"
-
-  cluster    = google_container_cluster.default.name
-  node_count = 1
+  name    = "gke-standard-regional-node-pool"
+  cluster = google_container_cluster.default.name
 
   node_config {
     service_account = google_service_account.default.email
