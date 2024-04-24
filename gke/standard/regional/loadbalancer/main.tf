@@ -100,7 +100,7 @@ resource "kubernetes_deployment_v1" "default" {
         }
 
         security_context {
-          run_as_non_root = false
+          run_as_non_root = true
 
           seccomp_profile {
             type = "RuntimeDefault"
