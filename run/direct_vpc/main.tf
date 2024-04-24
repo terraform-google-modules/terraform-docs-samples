@@ -18,7 +18,7 @@
 
 # [START cloudrun_service_direct_vpc]
 resource "google_cloud_run_v2_service" "default" {
-  name     = "cloudrun-service-containers"
+  name     = "cloudrun-service"
   location = "us-central1"
 
   template {
