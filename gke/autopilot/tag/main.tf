@@ -30,14 +30,14 @@ resource "google_container_cluster" "default" {
 # [START gke_autopilot_tag]
 resource "google_tags_tag_key" "default" {
   parent      = "projects/${data.google_project.default.project_id}"
-  short_name  = "default_key"
-  description = "Default tag key."
+  short_name  = "env"
+  description = "Environment tag key"
 }
 
 resource "google_tags_tag_value" "default" {
   parent      = "tagKeys/${google_tags_tag_key.default.name}"
-  short_name  = "default_value"
-  description = "Default tag value."
+  short_name  = "dev"
+  description = "Development environment tag value."
 }
 
 resource "google_tags_location_tag_binding" "default" {
