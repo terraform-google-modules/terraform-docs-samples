@@ -55,6 +55,7 @@ module "projects" {
     "dns.googleapis.com",
     "eventarc.googleapis.com",
     "iam.googleapis.com",
+    "integrations.googleapis.com",
     "looker.googleapis.com",
     "networkconnectivity.googleapis.com",
     "networkmanagement.googleapis.com",
