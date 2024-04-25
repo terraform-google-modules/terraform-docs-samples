@@ -14,8 +14,7 @@
 * limitations under the License.
 */
 
-data "google_project" "default" {}
-
+# [START gke_autopilot_tag]
 resource "google_container_cluster" "default" {
   name     = "gke-autopilot-tag"
   location = "us-central1"
@@ -27,7 +26,8 @@ resource "google_container_cluster" "default" {
   deletion_protection = false
 }
 
-# [START gke_autopilot_tag]
+data "google_project" "default" {}
+
 resource "google_tags_tag_key" "default" {
   parent      = "projects/${data.google_project.default.project_id}"
   short_name  = "env"
