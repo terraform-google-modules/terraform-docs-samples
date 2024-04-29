@@ -14,7 +14,21 @@
 * limitations under the License.
 */
 
-# [START gke_quickstart_autopilot_app]
+# [START gke_standard_regional_loadbalancer]
+# [START gke_standard_regional_loadbalancer_cluster]
+resource "google_container_cluster" "default" {
+  name               = "gke-standard-regional-cluster"
+  location           = "us-central1"
+  initial_node_count = 1
+
+  enable_l4_ilb_subsetting = true
+
+  # Set `deletion_protection` to `true` will ensure that one cannot
+  # accidentally delete this instance by use of Terraform.
+  deletion_protection = false
+}
+# [END gke_standard_regional_loadbalancer_cluster]
+
 data "google_client_config" "default" {}
 
 provider "kubernetes" {
@@ -28,6 +42,7 @@ provider "kubernetes" {
   ]
 }
 
+# [START gke_standard_regional_loadbalancer_workload]
 resource "kubernetes_deployment_v1" "default" {
   metadata {
     name = "example-hello-app-deployment"
@@ -104,12 +119,14 @@ resource "kubernetes_deployment_v1" "default" {
     }
   }
 }
+# [END gke_standard_regional_loadbalancer_workload]
 
+# [START gke_standard_regional_loadbalancer_service]
 resource "kubernetes_service_v1" "default" {
   metadata {
     name = "example-hello-app-loadbalancer"
     annotations = {
-      "networking.gke.io/load-balancer-type" = "Internal" # Remove to create an external loadbalance
+      "networking.gke.io/load-balancer-type" = "Internal"
     }
   }
 
@@ -117,8 +134,6 @@ resource "kubernetes_service_v1" "default" {
     selector = {
       app = kubernetes_deployment_v1.default.spec[0].selector[0].match_labels.app
     }
-
-    ip_family_policy = "RequireDualStack"
 
     port {
       port        = 80
@@ -137,4 +152,5 @@ resource "time_sleep" "wait_service_cleanup" {
 
   destroy_duration = "180s"
 }
-# [END gke_quickstart_autopilot_app]
+# [END gke_standard_regional_loadbalancer_service]
+# [END gke_standard_regional_loadbalancer]
