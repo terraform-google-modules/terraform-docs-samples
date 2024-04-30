@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-timeout: 14400s
+timeout: 21600s
 steps:
 - id: prune unchanged directories
   name: gcr.io/cloud-builders/git
