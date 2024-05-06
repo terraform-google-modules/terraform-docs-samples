@@ -14,6 +14,7 @@
 * limitations under the License.
 */
 
+# [START gke_standard_regional_windows]
 # [START gke_standard_regional_windows_cluster]
 resource "google_container_cluster" "default" {
   name     = "gke-standard-regional-cluster"
@@ -38,3 +39,4 @@ resource "google_container_node_pool" "default" {
   }
 }
 # [END gke_standard_regional_windows_node_pool]
+# [END gke_standard_regional_windows]
