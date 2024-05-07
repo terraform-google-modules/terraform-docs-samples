@@ -129,6 +129,10 @@ resource "kubernetes_service_v1" "default" {
   }
 
   depends_on = [time_sleep.wait_service_cleanup]
+
+  timeouts {
+    create = "20m"
+  }
 }
 
 # Provide time for Service cleanup
