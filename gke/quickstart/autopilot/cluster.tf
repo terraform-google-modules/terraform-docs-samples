@@ -29,7 +29,7 @@ resource "google_compute_subnetwork" "default" {
   region        = "us-central1"
 
   stack_type       = "IPV4_IPV6"
-  ipv6_access_type = "INTERNAL" # Change to "EXTERNAL" if using an external loadbalance
+  ipv6_access_type = "INTERNAL" # Change to "EXTERNAL" if creating an external loadbalancer
 
   network = google_compute_network.default.id
   secondary_ip_range {
