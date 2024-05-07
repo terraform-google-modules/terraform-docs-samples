@@ -108,9 +108,9 @@ resource "kubernetes_deployment_v1" "default" {
 resource "kubernetes_service_v1" "default" {
   metadata {
     name = "example-hello-app-loadbalancer"
-    # annotations = {
-    #   "networking.gke.io/load-balancer-type" = "Internal" # Remove to create an external loadbalance
-    # }
+    annotations = {
+      "networking.gke.io/load-balancer-type" = "Internal" # Remove to create an external loadbalance
+    }
   }
 
   spec {
