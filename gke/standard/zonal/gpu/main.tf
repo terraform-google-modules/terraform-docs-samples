@@ -16,7 +16,7 @@
 
 # [START gke_standard_zonal_gpu]
 resource "google_container_cluster" "default" {
-  name               = "gke-standard-regional-gpu"
+  name               = "gke-standard-zonal-gpu"
   location           = "us-central1-a"
   initial_node_count = 1
 
