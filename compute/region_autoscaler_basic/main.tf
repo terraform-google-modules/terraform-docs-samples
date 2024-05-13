@@ -53,13 +53,7 @@ resource "google_compute_instance_template" "foobar" {
   # To avoid embedding secret keys or user credentials in the instances, Google recommends that you use custom service accounts with the following access scopes.
   service_account {
     scopes = [
-      "https://www.googleapis.com/auth/devstorage.read_only",
-      "https://www.googleapis.com/auth/logging.write",
-      "https://www.googleapis.com/auth/monitoring.write",
-      "https://www.googleapis.com/auth/pubsub",
-      "https://www.googleapis.com/auth/service.management.readonly",
-      "https://www.googleapis.com/auth/servicecontrol",
-      "https://www.googleapis.com/auth/trace.append",
+      "https://www.googleapis.com/auth/cloud-platform"
     ]
   }
 }
