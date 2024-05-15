@@ -18,7 +18,7 @@ data "google_client_config" "default" {}
 
 resource "google_container_cluster" "default" {
   name     = "gke-autopilot-cluster"
-  location = "us-central1-a"
+  location = "us-central1"
 
   enable_autopilot = true
 
