@@ -56,7 +56,7 @@ resource "google_container_cluster" "default" {
 
 # [START gke_standard_zonal_reservation_any_node_pool]
 resource "google_container_node_pool" "any-node_pool" {
-  name     = "gke-standard-regional-any-node-pool"
+  name     = "gke-standard-zonal-any-node-pool"
   cluster  = google_container_cluster.default.name
   location = google_container_cluster.default.location
 
@@ -90,7 +90,7 @@ resource "google_compute_reservation" "specific-reservation" {
 
 # [START gke_standard_zonal_reservation_specific_node_pool]
 resource "google_container_node_pool" "specific-node-pool" {
-  name     = "gke-standard-regional-specific-node-pool"
+  name     = "gke-standard-zonal-specific-node-pool"
   cluster  = google_container_cluster.default.name
   location = google_container_cluster.default.location
 

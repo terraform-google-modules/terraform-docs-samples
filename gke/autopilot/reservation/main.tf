@@ -18,7 +18,7 @@ data "google_client_config" "default" {}
 
 resource "google_container_cluster" "default" {
   name     = "gke-autopilot-cluster"
-  location = "us-central1"
+  location = "us-central1-a"
 
   enable_autopilot = true
 
@@ -27,7 +27,7 @@ resource "google_container_cluster" "default" {
   deletion_protection = false
 }
 
-# [START gke_autopilot_reservation_specific]
+# [START gke_autopilot_reservation_specific_reservation]
 resource "google_compute_reservation" "specific_pod" {
   name = "specific-reservation-pod"
   zone = "us-central1-a"
@@ -47,9 +47,9 @@ resource "google_compute_reservation" "specific_pod" {
 
   specific_reservation_required = true
 }
-# [END gke_autopilot_reservation_specific]
+# [END gke_autopilot_reservation_specific_reservation]
 
-# [START gke_autopilot_reservation_specific]
+# [START gke_autopilot_reservation_specific_cluster]
 resource "google_compute_reservation" "specific_accelerator" {
   name = "specific-reservation-accelerator"
   zone = "us-central1-a"
@@ -70,7 +70,7 @@ resource "google_compute_reservation" "specific_accelerator" {
 
   specific_reservation_required = true
 }
-# [END gke_autopilot_reservation_specific]
+# [END gke_autopilot_reservation_specific_cluster]
 
 provider "kubernetes" {
   host                   = "https://${google_container_cluster.default.endpoint}"
