@@ -18,7 +18,6 @@ data "google_project" "default" {
 }
 
 # [START application_integration_edit_region]
-
 resource "random_id" "default" {
   byte_length = 8
 }
