@@ -203,7 +203,7 @@ resource "google_integrations_auth_config" "auth_config_service_account" {
       scope           = "https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/adexchange.buyer https://www.googleapis.com/auth/admob.readonly"
     }
   }
-  depends_on = [google_integrations_client.client, google_project_iam_member.service_account, google_project_iam_member.api ]
+  depends_on = [google_integrations_client.client, google_project_iam_member.service_account, google_project_iam_member.api]
 }
 # [END application_integration_create_auth_config_service_account]
 
