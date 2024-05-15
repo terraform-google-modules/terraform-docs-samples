@@ -19,7 +19,6 @@ provider "google" {
 }
 
 # [START application_integration_create_auth_config_auth_token]
-
 resource "google_integrations_client" "client" {
   location = "us-central1"
 }
@@ -37,11 +36,9 @@ resource "google_integrations_auth_config" "auth_config_auth_token" {
   }
   depends_on = [google_integrations_client.client]
 }
-
 # [END application_integration_create_auth_config_auth_token]
 
 # [START application_integration_create_auth_config_certificate]
-
 resource "google_integrations_auth_config" "auth_config_certificate" {
   location     = "us-central1"
   display_name = "tf-certificate"
@@ -95,16 +92,14 @@ aGKkSvfVA5jRYwLysDwMCHwO0bOR1u3itos5AgsFAoGAKEGms1kuQ5/HyFgSmg9G
 wBUzu+5Y08/A37rvyXsR6GjmlZJvULEopJNUNCOOpITNQikXK63sIFry7/59eGv5
 UwKadZbfwbVF5ipu59UxfVE3lipf/mYePDqMkHVWv/8p+OnnJt9uKnyW8VSOu5uk
 82QF30zbIWDTUjrcugVAs+E=
------END PRIVATE KEY-----     
+-----END PRIVATE KEY-----
 EOT
   }
   depends_on = [google_integrations_client.client]
 }
-
 # [END application_integration_create_auth_config_certificate]
 
 # [START application_integration_create_auth_config_jwt]
-
 resource "google_integrations_auth_config" "auth_config_jwt" {
   location     = "us-central1"
   display_name = "tf-jwt"
@@ -122,7 +117,6 @@ resource "google_integrations_auth_config" "auth_config_jwt" {
 # [END application_integration_create_auth_config_jwt]
 
 # [START application_integration_create_auth_config_oauth2_authorization_code]
-
 resource "google_integrations_auth_config" "auth_config_oauth2_authorization_code" {
   location     = "us-central1"
   display_name = "tf-oauth2-authorization-code"
@@ -139,11 +133,9 @@ resource "google_integrations_auth_config" "auth_config_oauth2_authorization_cod
   }
   depends_on = [google_integrations_client.client]
 }
-
 # [END application_integration_create_auth_config_oauth2_authorization_code]
 
 # [START application_integration_create_auth_config_oauth2_client_credentials]
-
 resource "google_integrations_auth_config" "auth_config_oauth2_client_credentials" {
   location     = "us-central1"
   display_name = "tf-oauth2-client-credentials"
@@ -174,11 +166,9 @@ resource "google_integrations_auth_config" "auth_config_oauth2_client_credential
   }
   depends_on = [google_integrations_client.client]
 }
-
 # [END application_integration_create_auth_config_oauth2_client_credentials]
 
 # [START application_integration_create_auth_config_service_account]
-
 resource "random_id" "default" {
   byte_length = 8
 }
@@ -201,11 +191,9 @@ resource "google_integrations_auth_config" "auth_config_service_account" {
   }
   depends_on = [google_integrations_client.client]
 }
-# [START application_integration_create_auth_config_service_account]
-
+# [END application_integration_create_auth_config_service_account]
 
 # [START application_integration_create_auth_config_oidc_token]
-
 resource "google_integrations_auth_config" "auth_config_oidc_token" {
   location     = "us-central1"
   display_name = "tf-oidc-token"
@@ -219,5 +207,4 @@ resource "google_integrations_auth_config" "auth_config_oidc_token" {
   }
   depends_on = [google_integrations_client.client]
 }
-
 # [END application_integration_create_auth_config_oidc_token]
