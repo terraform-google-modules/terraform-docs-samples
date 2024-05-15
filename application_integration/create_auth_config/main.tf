@@ -192,6 +192,12 @@ resource "google_integrations_auth_config" "auth_config_service_account" {
 # [END application_integration_create_auth_config_service_account]
 
 # [START application_integration_create_auth_config_oidc_token]
+resource "google_project_iam_member" "default" {
+  project = data.google_project.default.project_id
+  role    = "roles/iam.serviceAccountTokenCreator"
+  member  = "serviceAccount:${google_service_account.default.email}"
+}
+
 resource "google_integrations_auth_config" "auth_config_oidc_token" {
   location     = "us-central1"
   display_name = "tf-oidc-token"
