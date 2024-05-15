@@ -16,6 +16,8 @@
 
 provider "google" {}
 
+data "google_project" "default" {}
+
 # [START application_integration_create_auth_config_auth_token]
 resource "google_integrations_client" "client" {
   location = "us-central1"
