@@ -211,6 +211,6 @@ resource "google_integrations_auth_config" "auth_config_oidc_token" {
       audience              = "https://us-central1-project.cloudfunctions.net/functionA 1234987819200.apps.googleusercontent.com"
     }
   }
-  depends_on = [google_integrations_client.client]
+  depends_on = [google_integrations_client.client, google_project_iam_member.default]
 }
 # [END application_integration_create_auth_config_oidc_token]
