@@ -169,10 +169,16 @@ resource "google_integrations_auth_config" "auth_config_oauth2_client_credential
 # [START application_integration_service_account_role]
 data "google_project" "default" {}
 
-resource "google_project_iam_member" "default" {
+resource "google_project_iam_member" "api" {
   project = data.google_project.default.project_id
   role    = "roles/iam.serviceAccountTokenCreator"
   member  = "serviceAccount:service-${data.google_project.default.number}@gcp-sa-integrations.iam.gserviceaccount.com"
+}
+
+resource "google_project_iam_member" "service_account" {
+  project = data.google_project.default.project_id
+  role    = "roles/iam.serviceAccountTokenCreator"
+  member  = "serviceAccount:${google_service_account.default.email}"
 }
 # [END application_integration_service_account_role]
 
@@ -197,7 +203,7 @@ resource "google_integrations_auth_config" "auth_config_service_account" {
       scope           = "https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/adexchange.buyer https://www.googleapis.com/auth/admob.readonly"
     }
   }
-  depends_on = [google_integrations_client.client]
+  depends_on = [google_integrations_client.client, google_project_iam_member.service_account, google_project_iam_member.api ]
 }
 # [END application_integration_create_auth_config_service_account]
 
@@ -213,6 +219,6 @@ resource "google_integrations_auth_config" "auth_config_oidc_token" {
       audience              = "https://us-central1-project.cloudfunctions.net/functionA 1234987819200.apps.googleusercontent.com"
     }
   }
-  depends_on = [google_integrations_client.client, google_project_iam_member.default]
+  depends_on = [google_integrations_client.client, google_project_iam_member.service_account, google_project_iam_member.api]
 }
 # [END application_integration_create_auth_config_oidc_token]
