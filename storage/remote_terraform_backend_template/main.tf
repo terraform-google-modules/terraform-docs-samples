@@ -14,12 +14,12 @@
 
 # [START storage_remote_terraform_backend_template]
 # [START storage_bucket_tf_with_versioning_pap_uap_no_destroy]
-resource "random_id" "terraform_remote_backend_bucket_random_prefix" {
+resource "random_id" "default" {
   byte_length = 8
 }
 
-resource "google_storage_bucket" "terraform_remote_backend" {
-  name     = "${random_id.terraform_remote_backend_bucket_random_prefix.hex}-terraform-remote-backend"
+resource "google_storage_bucket" "default" {
+  name     = "${random_id.default.hex}-terraform-remote-backend"
   location = "US"
 
   force_destroy               = false
@@ -33,7 +33,7 @@ resource "google_storage_bucket" "terraform_remote_backend" {
 # [END storage_bucket_tf_with_versioning_pap_uap_no_destroy]
 
 # [START storage_remote_backend_local_file]
-resource "local_file" "backend_configuration_file" {
+resource "local_file" "default" {
   file_permission = "0644"
   filename        = "${path.module}/backend.tf"
 
@@ -43,7 +43,7 @@ resource "local_file" "backend_configuration_file" {
   content = <<-EOT
   terraform {
     backend "gcs" {
-      bucket = "${google_storage_bucket.terraform_remote_backend.name}"
+      bucket = "${google_storage_bucket.default.name}"
     }
   }
   EOT
