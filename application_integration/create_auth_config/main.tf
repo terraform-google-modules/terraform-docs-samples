@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-provider "google" {
-  project = "default"
-}
+provider "google" {}
 
 # [START application_integration_create_auth_config_auth_token]
 resource "google_integrations_client" "client" {
