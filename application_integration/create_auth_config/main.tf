@@ -16,8 +16,6 @@
 
 provider "google" {}
 
-data "google_project" "default" {}
-
 # [START application_integration_create_auth_config_auth_token]
 resource "google_integrations_client" "client" {
   location = "us-central1"
@@ -168,6 +166,16 @@ resource "google_integrations_auth_config" "auth_config_oauth2_client_credential
 }
 # [END application_integration_create_auth_config_oauth2_client_credentials]
 
+# [START application_integration_service_account_role]
+data "google_project" "default" {}
+
+resource "google_project_iam_member" "default" {
+  project = data.google_project.default.project_id
+  role    = "roles/iam.serviceAccountTokenCreator"
+  member  = "serviceAccount:service-${data.google_project.default.number}@gcp-sa-integrations.iam.gserviceaccount.com"
+}
+# [END application_integration_service_account_role]
+
 # [START application_integration_create_auth_config_service_account]
 resource "random_id" "default" {
   byte_length = 8
@@ -194,12 +202,6 @@ resource "google_integrations_auth_config" "auth_config_service_account" {
 # [END application_integration_create_auth_config_service_account]
 
 # [START application_integration_create_auth_config_oidc_token]
-resource "google_project_iam_member" "default" {
-  project = data.google_project.default.project_id
-  role    = "roles/iam.serviceAccountTokenCreator"
-  member  = "serviceAccount:${google_service_account.default.email}"
-}
-
 resource "google_integrations_auth_config" "auth_config_oidc_token" {
   location     = "us-central1"
   display_name = "tf-oidc-token"
