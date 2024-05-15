@@ -15,3 +15,16 @@ To run this example, do the following:
  3. Migrate Terraform state to the remote Cloud Storage backend:
 
     terraform init -migrate-state
+
+
+
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Inputs
+
+No inputs.
+
+## Outputs
+
+No outputs.
+
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
