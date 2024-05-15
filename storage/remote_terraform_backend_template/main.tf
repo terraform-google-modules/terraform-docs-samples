@@ -13,23 +13,6 @@
 # limitations under the License.
 
 # [START storage_remote_terraform_backend_template]
-# In this example, we show how to provision a Cloud Storage bucket and then
-# generate a Terraform backend configuration file.
-# To run this example, do the following:
-#
-# 1. Initialize Terraform with a local backend:
-#
-#    terraform init
-#
-# 2. Provision resources and create a Cloud Storage bucket for the Terraform
-#    remote backend:
-#
-#    terraform apply
-#
-# 3. Migrate Terraform state to the remote Cloud Storage backend:
-#
-#    terraform init -migrate-state
-
 # [START storage_bucket_tf_with_versioning_pap_uap_no_destroy]
 resource "random_id" "terraform_remote_backend_bucket_random_prefix" {
   byte_length = 8
@@ -50,7 +33,6 @@ resource "google_storage_bucket" "terraform_remote_backend" {
 # [END storage_bucket_tf_with_versioning_pap_uap_no_destroy]
 
 # [START storage_remote_backend_local_file]
-# Create a
 resource "local_file" "backend_configuration_file" {
   file_permission = "0644"
   filename        = "${path.module}/backend.tf"
