@@ -14,20 +14,24 @@
  * limitations under the License.
  */
 
+# Example configuration of a Cloud Run service with direct VPC
 
-# [START aiplatform_workbench_deleted_metadata]
-resource "google_workbench_instance" "default" {
-  name     = "workbench-instance-example"
-  location = "us-central1-a"
+# [START cloudrun_service_direct_vpc]
+resource "google_cloud_run_v2_service" "default" {
+  name     = "cloudrun-service"
+  location = "us-central1"
 
-  gce_setup {
-    machine_type = "n1-standard-1"
-    vm_image {
-      project = "cloud-notebooks-managed"
-      family  = "workbench-instances"
+  template {
+    containers {
+      image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
-    metadata = {
+    vpc_access {
+      network_interfaces {
+        network    = "default"
+        subnetwork = "default"
+        tags       = ["tag1", "tag2", "tag3"]
+      }
     }
   }
 }
-# [END aiplatform_workbench_deleted_metadata]
+# [END cloudrun_service_direct_vpc]

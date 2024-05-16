@@ -23,8 +23,8 @@ resource "google_workbench_instance" "default" {
   gce_setup {
     machine_type = "n1-standard-1"
     vm_image {
-      project = "deeplearning-platform-release"
-      family  = "tf-latest-gpu"
+      project = "cloud-notebooks-managed"
+      family  = "workbench-instances"
     }
     metadata = {
       disable-mixer = "false"
