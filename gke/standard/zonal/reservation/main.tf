@@ -15,7 +15,7 @@
 */
 
 # [START gke_standard_zonal_reservation_any_reservation]
-resource "google_compute_reservation" "any-reservation" {
+resource "google_compute_reservation" "any_reservation" {
   name = "any-reservation"
   zone = "us-central1-a"
 
@@ -45,7 +45,7 @@ resource "google_container_cluster" "default" {
   }
 
   depends_on = [
-    google_compute_reservation.any-reservation
+    google_compute_reservation.any_reservation
   ]
 
   # Set `deletion_protection` to `true` will ensure that one cannot
@@ -55,7 +55,7 @@ resource "google_container_cluster" "default" {
 # [END gke_standard_zonal_reservation_any_cluster]
 
 # [START gke_standard_zonal_reservation_any_node_pool]
-resource "google_container_node_pool" "any-node_pool" {
+resource "google_container_node_pool" "any_node_pool" {
   name     = "gke-standard-zonal-any-node-pool"
   cluster  = google_container_cluster.default.name
   location = google_container_cluster.default.location
@@ -72,7 +72,7 @@ resource "google_container_node_pool" "any-node_pool" {
 # [END gke_standard_zonal_reservation_any_node_pool]
 
 # [START gke_standard_zonal_reservation_specific_reservation]
-resource "google_compute_reservation" "specific-reservation" {
+resource "google_compute_reservation" "specific_reservation" {
   name = "specific-reservation"
   zone = "us-central1-a"
 
@@ -89,7 +89,7 @@ resource "google_compute_reservation" "specific-reservation" {
 # [END gke_standard_zonal_reservation_specific_reservation]
 
 # [START gke_standard_zonal_reservation_specific_node_pool]
-resource "google_container_node_pool" "specific-node-pool" {
+resource "google_container_node_pool" "specific_node_pool" {
   name     = "gke-standard-zonal-specific-node-pool"
   cluster  = google_container_cluster.default.name
   location = google_container_cluster.default.location
@@ -101,12 +101,12 @@ resource "google_container_node_pool" "specific-node-pool" {
     reservation_affinity {
       consume_reservation_type = "SPECIFIC_RESERVATION"
       key                      = "compute.googleapis.com/reservation-name"
-      values                   = [google_compute_reservation.specific-reservation.name]
+      values                   = [google_compute_reservation.specific_reservation.name]
     }
   }
 
   depends_on = [
-    google_compute_reservation.specific-reservation
+    google_compute_reservation.specific_reservation
   ]
 }
 # [END gke_standard_zonal_reservation_specific_node_pool]
