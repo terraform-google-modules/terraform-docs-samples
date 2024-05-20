@@ -22,8 +22,8 @@ resource "google_container_cluster" "default" {
 
   node_config {
     guest_accelerator {
-      type               = "nvidia-tesla-t4"
-      count              = 1
+      type  = "nvidia-tesla-t4"
+      count = 1
       gpu_driver_installation_config {
         gpu_driver_version = "LATEST"
       }
