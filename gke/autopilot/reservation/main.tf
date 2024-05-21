@@ -99,7 +99,7 @@ resource "kubernetes_pod_v1" "default_pod" {
 
     container {
       name  = "my-container"
-      image = "k8s.gcr.io/pause"
+      image = "registry.k8s.io/pause"
 
       resources {
         requests = {
@@ -152,7 +152,7 @@ resource "kubernetes_pod_v1" "default_accelerator" {
 
     container {
       name  = "my-container"
-      image = "k8s.gcr.io/pause"
+      image = "registry.k8s.io/pause"
 
       resources {
         requests = {
