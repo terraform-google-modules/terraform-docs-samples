@@ -16,11 +16,11 @@
 
 # [START gke_standard_secondary_boot_disk]
 resource "google_container_cluster" "cluster" {
-  name               = "default-cluster"
-  location           = "us-central1-a"
-  initial_node_count = 1
+  name                = "default-cluster"
+  location            = "us-central1-a"
+  initial_node_count  = 1
   deletion_protection = false
-  min_master_version = "1.28"
+  min_master_version  = "1.28"
 }
 
 resource "google_container_node_pool" "np" {
@@ -31,13 +31,13 @@ resource "google_container_node_pool" "np" {
 
   node_config {
     machine_type = "n1-standard-8"
-    image_type = "COS_CONTAINERD"
-	gcfs_config {
-  		enabled = true
-	}
+    image_type   = "COS_CONTAINERD"
+    gcfs_config {
+      enabled = true
+    }
     secondary_boot_disks {
       disk_image = ""
-      mode = "CONTAINER_IMAGE_CACHE"
+      mode       = "CONTAINER_IMAGE_CACHE"
     }
   }
 }
