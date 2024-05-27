@@ -16,13 +16,13 @@
 
 /**
  * Made to resemble
- * gcloud compute instance-groups managed create mig-daof \
+ * gcloud compute instance-groups managed create rmig-daof \
  *   --template=template \
  *   --size=3 \
- *   --zone=us-central1-f \
- *   --default-action-on-vm-failure=do_nothing
+ *   --region=us-central1 \
+ *   --default-action-on-vm-failure=repair
  */
-# [START compute_zonal_instance_group_manager_parent_tag]
+# [START compute_regional_instance_group_manager_daof_parent_tag]
 resource "google_compute_instance_template" "default" {
   name         = "template"
   machine_type = "e2-medium"
@@ -35,12 +35,12 @@ resource "google_compute_instance_template" "default" {
     network = "default"
   }
 }
-# [START compute_zonal_instance_group_manager_simple_tag]
-resource "google_compute_instance_group_manager" "default" {
-  name               = "mig-daof"
+# [START compute_regional_instance_group_manager_daof_tag]
+resource "google_compute_region_instance_group_manager" "default" {
+  name               = "rmig-daof"
   base_instance_name = "test"
   target_size        = 3
-  zone               = "us-central1-f"
+  region               = "us-central1"
 
   version {
     instance_template = google_compute_instance_template.default.id
@@ -48,8 +48,8 @@ resource "google_compute_instance_group_manager" "default" {
   }
 
   instance_lifecycle_policy {
-    default_action_on_failure = "DO_NOTHING"
+    default_action_on_failure = "REPAIR"
   }
 }
-# [END compute_zonal_instance_group_manager_simple_tag]
-# [END compute_zonal_instance_group_manager_parent_tag]
+# [END compute_regional_instance_group_manager_daof_tag]
+# [END compute_regional_instance_group_manager_daof_parent_tag]
