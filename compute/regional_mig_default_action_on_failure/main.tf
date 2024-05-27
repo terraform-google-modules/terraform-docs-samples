@@ -1,5 +1,5 @@
 /**
- * Copyright 202 4Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,16 @@
  */
 
 /**
- * Made to resemble:
- * gcloud compute instance-groups managed all-instances-config update mig-aic \
- *   --metadata="key1"="value1","key2"="value2" \
- *   --labels="key3"="value3","key4"="value4"
+ * Made to resemble
+ * gcloud compute instance-groups managed create rmig-daof \
+ *   --template=daof-template \
+ *   --size=3 \
+ *   --region=us-central1 \
+ *   --default-action-on-vm-failure=repair
  */
-
-# [START compute_zonal_instance_group_manager_aic_parent_tag]
+# [START compute_zonal_instance_group_manager_daof_tag]
 resource "google_compute_instance_template" "default" {
-  name         = "some-instance-template"
+  name         = "daof-template"
   machine_type = "e2-medium"
 
   disk {
@@ -34,28 +35,21 @@ resource "google_compute_instance_template" "default" {
     network = "default"
   }
 }
-# [START compute_zonal_instance_group_manager_aic_tag]
-resource "google_compute_instance_group_manager" "default" {
-
-  name               = "mig-aic"
+# [START compute_regional_instance_group_manager_daof_tag]
+resource "google_compute_region_instance_group_manager" "default" {
+  name               = "rmig-daof"
   base_instance_name = "test"
-  zone               = "us-central1-f"
+  target_size        = 3
+  region             = "us-central1"
 
   version {
     instance_template = google_compute_instance_template.default.id
     name              = "primary"
   }
 
-  all_instances_config {
-    metadata = {
-      key1 = "value1",
-      key2 = "value2"
-    }
-    labels = {
-      key3 = "value3",
-      key4 = "value4"
-    }
+  instance_lifecycle_policy {
+    default_action_on_failure = "DO_NOTHING"
   }
 }
-# [END compute_zonal_instance_group_manager_aic_tag]
-# [END compute_zonal_instance_group_manager_aic_parent_tag]
+# [END compute_regional_instance_group_manager_daof_tag]
+# [END compute_regional_instance_group_manager_daof_parent_tag]
