@@ -45,7 +45,7 @@ resource "google_compute_instance_group_manager" "default" {
     instance_template = google_compute_instance_template.default.id
     name              = "primary"
   }
-  
+
   all_instances_config {
     metadata = {
       key1 = "value1",
