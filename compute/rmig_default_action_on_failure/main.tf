@@ -40,7 +40,7 @@ resource "google_compute_region_instance_group_manager" "default" {
   name               = "rmig-daof"
   base_instance_name = "test"
   target_size        = 3
-  region               = "us-central1"
+  region              = "us-central1"
 
   version {
     instance_template = google_compute_instance_template.default.id
