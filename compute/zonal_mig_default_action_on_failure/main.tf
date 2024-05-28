@@ -22,7 +22,7 @@
  *   --zone=us-central1-f \
  *   --default-action-on-vm-failure=do_nothing
  */
-# [START compute_zonal_instance_group_manager_parent_tag]
+# [START compute_zonal_instance_group_manager_daof_parent_tag]
 resource "google_compute_instance_template" "default" {
   name         = "template"
   machine_type = "e2-medium"
@@ -35,7 +35,7 @@ resource "google_compute_instance_template" "default" {
     network = "default"
   }
 }
-# [START compute_zonal_instance_group_manager_simple_tag]
+# [START compute_zonal_instance_group_manager_daof_tag]
 resource "google_compute_instance_group_manager" "default" {
   name               = "mig-daof"
   base_instance_name = "test"
@@ -51,5 +51,5 @@ resource "google_compute_instance_group_manager" "default" {
     default_action_on_failure = "DO_NOTHING"
   }
 }
-# [END compute_zonal_instance_group_manager_simple_tag]
-# [END compute_zonal_instance_group_manager_parent_tag]
+# [END compute_zonal_instance_group_manager_daof_tag]
+# [END compute_zonal_instance_group_manager_daof_parent_tag]
