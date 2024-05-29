@@ -29,11 +29,11 @@ resource "google_container_cluster" "default" {
 resource "google_container_node_pool" "default" {
   name               = "default"
   location           = "us-central1-a"
-  cluster            = google_container_cluster.cluster.name
+  cluster            = google_container_cluster.default.name
   initial_node_count = 1
 
   node_config {
-    machine_type = "n1-standard-1"
+    machine_type = "e2-medium"
     image_type   = "COS_CONTAINERD"
     gcfs_config {
       enabled = true
