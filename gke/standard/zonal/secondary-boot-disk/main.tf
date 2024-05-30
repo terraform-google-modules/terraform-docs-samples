@@ -14,16 +14,16 @@
 * limitations under the License.
 */
 
-# [START gke_standard_secondary_boot_disk_zonal]
+# [START gke_standard_zonal_secondary_boot_disk]
 resource "google_container_cluster" "default" {
   name               = "default"
   location           = "us-central1-a"
   initial_node_count = 1
+  # Set `min_master_version` because secondary_boot_disks require GKE 1.28.3-gke.106700 or later
+  min_master_version = "1.28"
   # Set `deletion_protection` to `true` will ensure that one cannot
   # accidentally delete this instance by use of Terraform.
-  # Set `min_master_version` because secondary_boot_disks require GKE 1.28.3-gke.106700 or later.
   deletion_protection = false
-  min_master_version  = "1.28"
 }
 
 resource "google_container_node_pool" "default" {
@@ -44,4 +44,4 @@ resource "google_container_node_pool" "default" {
     }
   }
 }
-# [END gke_standard_secondary_boot_disk_zonal]
+# [END gke_standard_zonal_secondary_boot_disk]
