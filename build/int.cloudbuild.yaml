@@ -27,6 +27,9 @@ steps:
         exit 0
       fi
 
+      echo $_BASE_BRANCH
+      echo ${_BASE_BRANCH}
+
       git fetch --unshallow
       git diff origin/${_BASE_BRANCH} --name-only > _changed_files
       sed 's/\/.*/\//' _changed_files > _changed_folders
