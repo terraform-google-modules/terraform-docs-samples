@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START managed_kafka_create_cluste_parent]
 # [START managed_kafka_create_cluster]
 resource "google_managed_kafka_cluster" "default" {
   cluster_id = "my-cluster-id"
@@ -34,7 +35,9 @@ resource "google_managed_kafka_cluster" "default" {
 
   provider = google-beta
 }
+# [END managed_kafka_create_cluster]
 
+# [START managed_kafka_enable_service]
 resource "google_project_service" "managedkafka" {
   project = data.google_project.project.project_id
   service = "managedkafka.googleapis.com"
@@ -42,8 +45,9 @@ resource "google_project_service" "managedkafka" {
 
   provider = google-beta
 }
+# [END managed_kafka_enable_service]
 
 data "google_project" "project" {
   provider = google-beta
 }
-# [END managed_kafka_create_cluster]
+# [END managed_kafka_create_cluster_parent]
