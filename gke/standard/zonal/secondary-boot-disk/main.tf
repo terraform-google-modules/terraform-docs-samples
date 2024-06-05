@@ -28,8 +28,8 @@ resource "google_container_cluster" "default" {
 # [END gke_standard_zonal_secondary_boot_disk_cluster]
 
 # [START gke_standard_zonal_secondary_boot_disk_container]
-resource "google_container_node_pool" "secondary_boot_disk_container" {
-  name               = "secondary_boot_disk_container"
+resource "google_container_node_pool" "secondary-boot-disk-container" {
+  name               = "secondary-boot-disk-container"
   location           = "us-central1-a"
   cluster            = google_container_cluster.default.name
   initial_node_count = 1
@@ -49,8 +49,8 @@ resource "google_container_node_pool" "secondary_boot_disk_container" {
 # [END gke_standard_zonal_secondary_boot_disk_container]
 
 # [START gke_standard_zonal_secondary_boot_disk_data]
-resource "google_container_node_pool" "secondary_boot_disk_data" {
-  name               = "secondary_boot_disk_data"
+resource "google_container_node_pool" "secondary-boot-disk-data" {
+  name               = "secondary-boot-disk-data"
   location           = "us-central1-a"
   cluster            = google_container_cluster.default.name
   initial_node_count = 1
