@@ -17,9 +17,9 @@
 # [START managedkafka_create_topic_parent]
 resource "google_managed_kafka_cluster" "default" {
   cluster_id = "my-cluster-id"
-  location = "us-central1"
+  location   = "us-central1"
   capacity_config {
-    vcpu_count = 3
+    vcpu_count   = 3
     memory_bytes = 3221225472
   }
   gcp_config {
@@ -35,10 +35,10 @@ resource "google_managed_kafka_cluster" "default" {
 
 # [START managedkafka_create_topic]
 resource "google_managed_kafka_topic" "default" {
-  topic_id = "my-topic-id"
-  cluster = google_managed_kafka_cluster.default.cluster_id
-  location = "us-central1"
-  partition_count = 2
+  topic_id           = "my-topic-id"
+  cluster            = google_managed_kafka_cluster.default.cluster_id
+  location           = "us-central1"
+  partition_count    = 2
   replication_factor = 3
 
   provider = google-beta
