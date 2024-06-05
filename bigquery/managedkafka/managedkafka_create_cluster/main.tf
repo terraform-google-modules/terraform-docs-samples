@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-# [START managed_kafka_create_cluste_parent]
-# [START managed_kafka_create_cluster]
+# [START managedkafka_create_cluste_parent]
+# [START managedkafka_create_cluster]
 resource "google_managed_kafka_cluster" "default" {
   cluster_id = "my-cluster-id"
-  location = "us-central1"
+  location   = "us-central1"
   capacity_config {
-    vcpu_count = 3
+    vcpu_count   = 3
     memory_bytes = 3221225472
   }
   gcp_config {
@@ -35,19 +35,19 @@ resource "google_managed_kafka_cluster" "default" {
 
   provider = google-beta
 }
-# [END managed_kafka_create_cluster]
+# [END managedkafka_create_cluster]
 
-# [START managed_kafka_enable_service]
+# [START managedkafka_enable_service]
 resource "google_project_service" "managedkafka" {
-  project = data.google_project.project.project_id
-  service = "managedkafka.googleapis.com"
+  project            = data.google_project.project.project_id
+  service            = "managedkafka.googleapis.com"
   disable_on_destroy = false
 
   provider = google-beta
 }
-# [END managed_kafka_enable_service]
+# [END managedkafka_enable_service]
 
 data "google_project" "project" {
   provider = google-beta
 }
-# [END managed_kafka_create_cluster_parent]
+# [END managedkafka_create_cluster_parent]
