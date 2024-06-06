@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-# [START managedkafka_create_cluste_parent]
+# [START managedkafka_create_cluster_parent]
 # [START managedkafka_create_cluster]
 resource "google_managed_kafka_cluster" "default" {
   cluster_id = "my-cluster-id"
