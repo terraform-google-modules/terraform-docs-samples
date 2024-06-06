@@ -37,16 +37,6 @@ resource "google_managed_kafka_cluster" "default" {
 }
 # [END managedkafka_create_cluster]
 
-# [START managedkafka_enable_service]
-resource "google_project_service" "managedkafka" {
-  project            = data.google_project.project.project_id
-  service            = "managedkafka.googleapis.com"
-  disable_on_destroy = false
-
-  provider = google-beta
-}
-# [END managedkafka_enable_service]
-
 data "google_project" "project" {
   provider = google-beta
 }
