@@ -16,11 +16,21 @@
 
 provider "google" {}
 
-# [START application_integration_create_auth_config_auth_token]
 resource "google_integrations_client" "client" {
   location = "us-central1"
 }
 
+# [START application_integration_auth_config_sa]
+resource "random_id" "default" {
+  byte_length = 8
+}
+resource "google_service_account" "default" {
+  account_id   = "sa-${random_id.default.hex}"
+  display_name = "Service Account"
+}
+# [END application_integration_auth_config_sa]
+
+# [START application_integration_create_auth_config_auth_token]
 resource "google_integrations_auth_config" "auth_config_auth_token" {
   location     = "us-central1"
   display_name = "tf-auth-token"
@@ -165,3 +175,20 @@ resource "google_integrations_auth_config" "auth_config_oauth2_client_credential
   depends_on = [google_integrations_client.client]
 }
 # [END application_integration_create_auth_config_oauth2_client_credentials]
+
+# [START application_integration_create_auth_config_oidc_token]
+
+resource "google_integrations_auth_config" "auth_config_oidc_token" {
+  location     = "us-central1"
+  display_name = "tf-oidc-token"
+  description  = "Test auth config created via terraform"
+  decrypted_credential {
+    credential_type = "OIDC_TOKEN"
+    oidc_token {
+      service_account_email = google_service_account.default.email
+      audience              = "https://us-central1-project.cloudfunctions.net/functionA 1234987819200.apps.googleusercontent.com"
+    }
+  }
+  depends_on = [google_integrations_client.client]
+}
+# [END application_integration_create_auth_config_oidc_token]
