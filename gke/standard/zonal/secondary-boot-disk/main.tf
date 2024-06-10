@@ -21,8 +21,8 @@ resource "google_container_cluster" "default" {
   initial_node_count = 1
   # Set `min_master_version` because secondary_boot_disks require GKE 1.28.3-gke.106700 or later.
   min_master_version = "1.28"
-  # Set `deletion_protection` to `true` so that one cannot
-  # accidentally delete this instance using Terraform.
+  # Setting `deletion_protection` to `true` would prevent
+  # accidental deletion of this instance using Terraform.
   deletion_protection = false
 }
 # [END gke_standard_zonal_secondary_boot_disk_cluster]
