@@ -15,6 +15,7 @@
  */
 
 provider "google" {}
+data "google_project" "default" {}
 
 resource "google_integrations_client" "client" {
   location = "us-central1"
@@ -27,6 +28,11 @@ resource "random_id" "default" {
 resource "google_service_account" "default" {
   account_id   = "sa-${random_id.default.hex}"
   display_name = "Service Account"
+}
+resource "google_project_iam_member" "default" {
+  project = data.google_project.default.project_id
+  role    = "roles/iam.serviceAccountTokenCreator"
+  member  = "serviceAccount:service-${data.google_project.default.number}@gcp-sa-integrations.iam.gserviceaccount.com"
 }
 # [END application_integration_auth_config_sa]
 
