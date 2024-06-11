@@ -34,6 +34,11 @@ resource "google_project_iam_member" "default" {
   role    = "roles/iam.serviceAccountTokenCreator"
   member  = "serviceAccount:service-${data.google_project.default.number}@gcp-sa-integrations.iam.gserviceaccount.com"
 }
+resource "google_project_iam_member" "default" {
+  project = data.google_project.default.project_id
+  role    = "roles/iam.serviceAccountTokenCreator"
+  member  = "serviceAccount:${google_service_account.default.email}"
+}
 # [END application_integration_auth_config_sa]
 
 # [START application_integration_create_auth_config_auth_token]
