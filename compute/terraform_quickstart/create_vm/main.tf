@@ -15,10 +15,6 @@
  */
 
 # [START compute_instances_create]
-
-# Create a VM instance from a public image
-# in the `default` VPC network and subnet
-
 resource "google_compute_instance" "default" {
   name         = "my-vm"
   machine_type = "n1-standard-1"
