@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-# [START compute_instances_create]
+# [START compute_instances_quickstart]
 resource "google_compute_instance" "default" {
   name         = "my-vm"
   machine_type = "n1-standard-1"
@@ -31,4 +31,4 @@ resource "google_compute_instance" "default" {
     access_config {}
   }
 }
-# [END compute_instances_create]
+# [END compute_instances_quickstart]
