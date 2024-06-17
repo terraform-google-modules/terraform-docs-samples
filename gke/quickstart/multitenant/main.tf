@@ -31,14 +31,6 @@ resource "google_service_account" "default" {
   display_name                 = each.key
   create_ignore_already_exists = true
 }
-# [START gke_quickstart_multitenant_enable]
-resource "google_project_service" "gkee" {
-  for_each           = toset(["anthos.googleapis.com", "gkehub.googleapis.com", "anthospolicycontroller.googleapis.com"])
-  project            = data.google_project.default.project_id
-  service            = each.value
-  disable_on_destroy = false
-}
-# [END gke_quickstart_multitenant_enable]
 # [START gke_quickstart_multitenant_fleet]
 resource "google_gke_hub_feature" "policycontroller" {
   name     = "policycontroller"
@@ -60,17 +52,11 @@ resource "google_gke_hub_feature" "policycontroller" {
       }
     }
   }
-  depends_on = [
-    google_project_service.gkee["anthospolicycontroller.googleapis.com"]
-  ]
 }
 resource "google_gke_hub_scope" "default" {
   for_each = local.teams
   project  = data.google_project.default.project_id
   scope_id = "${each.key}-team"
-  depends_on = [
-    google_project_service.gkee["gkehub.googleapis.com"]
-  ]
 }
 resource "google_gke_hub_namespace" "default" {
   for_each           = local.teams
@@ -96,7 +82,6 @@ resource "google_container_cluster" "default" {
     vulnerability_mode = "VULNERABILITY_ENTERPRISE"
   }
   depends_on = [
-    google_project_service.gkee,
     google_gke_hub_feature.policycontroller
   ]
   # Set `deletion_protection` to `true` will ensure that one cannot
