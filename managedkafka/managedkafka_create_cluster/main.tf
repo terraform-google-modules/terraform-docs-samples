@@ -38,4 +38,3 @@ data "google_project" "default" {
   provider = google-beta
 }
 # [END managedkafka_create_cluster_parent]
-
