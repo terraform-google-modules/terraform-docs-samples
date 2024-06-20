@@ -25,3 +25,4 @@
 /vertex_ai/             @terraform-google-modules/dee-data-ai @terraform-google-modules/terraform-samples-reviewers
 /vpc/                   @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /workflows/             @terraform-google-modules/torus-dpe @terraform-google-modules/terraform-samples-reviewers
+/managedkafka/          @terraform-google-modules/managedkafka-dev-team @terraform-google-modules/terraform-samples-reviewers
