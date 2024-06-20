@@ -39,6 +39,8 @@ module "projects" {
 
   activate_apis = [
     "aiplatform.googleapis.com",
+    "anthos.googleapis.com",
+    "anthospolicycontroller.googleapis.com",
     "artifactregistry.googleapis.com",
     "biglake.googleapis.com",
     "bigquery.googleapis.com",
@@ -54,6 +56,7 @@ module "projects" {
     "container.googleapis.com",
     "dns.googleapis.com",
     "eventarc.googleapis.com",
+    "gkehub.googleapis.com",
     "iam.googleapis.com",
     "integrations.googleapis.com",
     "looker.googleapis.com",
