@@ -21,8 +21,9 @@ locals {
     "backend",
   ])
 }
-data "google_project" "default" {
-}
+
+data "google_project" "default" {}
+
 resource "google_service_account" "default" {
   for_each = local.teams
 
@@ -31,35 +32,55 @@ resource "google_service_account" "default" {
   display_name                 = each.key
   create_ignore_already_exists = true
 }
-# [START gke_quickstart_multitenant_fleet]
-resource "google_gke_hub_feature" "policycontroller" {
-  name     = "policycontroller"
-  location = "global"
-  project  = data.google_project.default.project_id
 
-  fleet_default_member_config {
-    policycontroller {
-      policy_controller_hub_config {
-        install_spec = "INSTALL_SPEC_ENABLED"
-        policy_content {
-          bundles {
-            bundle = "pss-baseline-v2022"
-          }
-          template_library {
-            installation = "ALL"
-          }
-        }
-      }
-    }
-  }
+resource "google_project_iam_member" "viewer" {
+  for_each = google_service_account.default
+
+  project = data.google_project.default.project_id
+  role    = "roles/gkehub.viewer"
+  member  = "serviceAccount:${each.value.email}"
 }
+
+resource "google_project_iam_member" "gatewayeditor" {
+  for_each = google_service_account.default
+
+  project = data.google_project.default.project_id
+  role    = "roles/gkehub.gatewayEditor"
+  member  = "serviceAccount:${each.value.email}"
+}
+# [START gke_quickstart_multitenant_fleet]
+# resource "google_gke_hub_feature" "policycontroller" {
+#   name     = "policycontroller"
+#   location = "global"
+#   project  = data.google_project.default.project_id
+
+#   fleet_default_member_config {
+#     policycontroller {
+#       policy_controller_hub_config {
+#         install_spec = "INSTALL_SPEC_ENABLED"
+#         policy_content {
+#           bundles {
+#             bundle = "pss-baseline-v2022"
+#           }
+#           template_library {
+#             installation = "ALL"
+#           }
+#         }
+#       }
+#     }
+#   }
+# }
+
 resource "google_gke_hub_scope" "default" {
   for_each = local.teams
+
   project  = data.google_project.default.project_id
   scope_id = "${each.key}-team"
 }
+
 resource "google_gke_hub_namespace" "default" {
-  for_each           = local.teams
+  for_each = local.teams
+
   scope_namespace_id = google_gke_hub_scope.default[each.key].scope_id
   scope_id           = google_gke_hub_scope.default[each.key].scope_id
   scope              = google_gke_hub_scope.default[each.key].name
@@ -82,14 +103,17 @@ resource "google_container_cluster" "default" {
     vulnerability_mode = "VULNERABILITY_ENTERPRISE"
   }
   depends_on = [
-    google_gke_hub_feature.policycontroller
+    #google_gke_hub_feature.policycontroller,
+    google_gke_hub_namespace.default
   ]
   # Set `deletion_protection` to `true` will ensure that one cannot
   # accidentally delete this instance by use of Terraform.
   deletion_protection = false
 }
+
 resource "google_gke_hub_membership_binding" "default" {
-  for_each              = google_gke_hub_scope.default
+  for_each = google_gke_hub_scope.default
+
   project               = data.google_project.default.project_id
   membership_binding_id = each.value.scope_id
   scope                 = each.value.name
@@ -99,7 +123,8 @@ resource "google_gke_hub_membership_binding" "default" {
 # [END gke_quickstart_multitenant_cluster]
 # [START gke_quickstart_multitenant_rbac]
 resource "google_gke_hub_scope_rbac_role_binding" "default" {
-  for_each                   = local.teams
+  for_each = local.teams
+
   project                    = data.google_project.default.project_id
   scope_rbac_role_binding_id = each.key
   scope_id                   = google_gke_hub_scope.default[each.key].scope_id
@@ -107,6 +132,28 @@ resource "google_gke_hub_scope_rbac_role_binding" "default" {
   role {
     predefined_role = "EDIT"
   }
+  depends_on = [google_gke_hub_scope.default]
 }
 # [END gke_quickstart_multitenant_rbac]
+
+module "gcloud" {
+  source  = "terraform-google-modules/gcloud/google//modules/kubectl-fleet-wrapper"
+  version = "~> 3.4"
+
+  for_each = local.teams
+
+  # Uncomment to enable the apps using the respective team's service accounts
+  # impersonate_service_account = google_service_account.default[each.value].email
+
+  membership_name       = google_container_cluster.default.fleet[0].membership_id
+  membership_project_id = data.google_project.default.project_id
+  membership_location   = google_container_cluster.default.fleet[0].membership_location
+
+  kubectl_create_command  = "kubectl apply -f ${each.value}.yaml"
+  kubectl_destroy_command = "kubectl delete -f ${each.value}.yaml"
+
+  create_cmd_triggers = {
+    policy_sha1 = sha1(file("${each.value}.yaml"))
+  }
+}
 # [END gke_quickstart_multitenant]

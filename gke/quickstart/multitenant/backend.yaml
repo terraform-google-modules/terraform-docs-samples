@@ -1,0 +1,98 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-configmap
+  namespace: backend-team
+  labels:
+    app: backend
+data:
+  backend.go: |
+    package main
+
+    import (
+            "fmt"
+            "log"
+            "net/http"
+            "os"
+    )
+
+    func main() {
+            mux := http.NewServeMux()
+            mux.HandleFunc("/", backend)
+
+            port := "8080"
+
+            log.Printf("Server listening on port %s", port)
+            log.Fatal(http.ListenAndServe(":"+port, mux))
+    }
+
+    func backend(w http.ResponseWriter, r *http.Request) {
+            log.Printf("Serving request: %s", r.URL.Path)
+            host, _ := os.Hostname()
+            fmt.Fprintf(w, "Backend!\n")
+            fmt.Fprintf(w, "Hostname: %s\n", host)
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backendweb
+  namespace: backend-team
+  labels:
+    app: backend
+spec:
+  selector:
+    matchLabels:
+      app: backend
+      tier: web
+  template:
+    metadata:
+      labels:
+        app: backend
+        tier: web
+    spec:
+      containers:
+      - name: backend-container
+        image: golang:1.22
+        command: ["go"]
+        args: ["run", "."]
+        workingDir: "/tmp/backend"
+        volumeMounts:
+          - name: backend-configmap
+            mountPath: /tmp/backend/
+            readOnly: true
+      volumes:
+        - name: backend-configmap
+          configMap: { name: backend-configmap }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backendweb
+  namespace: backend-team
+  labels:
+    app: backend
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal" # Remove to create an external loadbalancer
+spec:
+  selector:
+    app: backend
+    tier: web
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: LoadBalancer
