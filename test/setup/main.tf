@@ -53,6 +53,7 @@ module "projects" {
     "cloudresourcemanager.googleapis.com",
     "cloudscheduler.googleapis.com",
     "cloudtasks.googleapis.com",
+    "connectgateway.googleapis.com",
     "container.googleapis.com",
     "dns.googleapis.com",
     "eventarc.googleapis.com",
