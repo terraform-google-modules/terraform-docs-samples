@@ -53,6 +53,7 @@ module "projects" {
     "cloudresourcemanager.googleapis.com",
     "cloudscheduler.googleapis.com",
     "cloudtasks.googleapis.com",
+    "connectgateway.googleapis.com",
     "container.googleapis.com",
     "dns.googleapis.com",
     "eventarc.googleapis.com",
@@ -77,6 +78,7 @@ module "projects" {
     "workflows.googleapis.com",
     "osconfig.googleapis.com",
     "connectors.googleapis.com",
-    "bigqueryreservation.googleapis.com"
+    "bigqueryreservation.googleapis.com",
+    "managedkafka.googleapis.com"
   ]
 }
