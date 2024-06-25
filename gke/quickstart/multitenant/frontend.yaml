@@ -65,21 +65,23 @@ data:
       fmt.Fprintf(w, "Frontend!\n")
       fmt.Fprintf(w, "Hostname: %s\n", host)
 
-      db, err := sql.Open("mysql", "user:password@/dbname")
+      // Open database using cloud-sql-proxy sidecar
+      db, err := sql.Open("mysql", "multitenant-app@tcp/multitenant-app")
       if err != nil {
-        fmt.Printf("Error: %v\n", err)
+        fmt.Fprint(w, "Error: %v\n", err)
         return
       }
 
-      var name string
-      err = db.QueryRow("SELECT name FROM metadata").Scan(&name)
+      // Retrieve color from the database
+      var color string
+      err = db.QueryRow("SELECT metadata_value FROM metadata WHERE metadata_key='color'").Scan(&color)
       switch {
       case err == sql.ErrNoRows:
-        fmt.Printf("Error: name not found in database")
+        fmt.Fprintf(w, "Error: color not found in database\n")
       case err != nil:
-        fmt.Printf("Error: %v\n", err)
+        fmt.Fprintf(w, "Error: %v\n", err)
       default:
-        fmt.Printf("Welcome: %s\n", name)
+        fmt.Fprintf(w, "Got Color: %s\n", color)
       }
     }
 
@@ -112,6 +114,20 @@ spec:
           - name: frontend-configmap
             mountPath: /tmp/frontend/
             readOnly: true
+      - name: cloud-sql-proxy
+        image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.11.4
+        args:
+          - "--structured-logs"
+          - "--port=3306"
+          - "$(CONNECTION_NAME_KEY)"
+        securityContext:
+          runAsNonRoot: true
+        env:
+        - name: CONNECTION_NAME_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: database-configmap
+              key: CONNECTION_NAME
       volumes:
         - name: frontend-configmap
           configMap: { name: frontend-configmap }
