@@ -24,6 +24,10 @@ locals {
   ])
 }
 
+// Creates team specific service accounts which can be used to apply app manifests:
+// gcloud config set auth/impersonate_service_account ${TEAM}@${PROJECT_ID}.iam.gserviceaccount.com
+// gcloud container fleet memberships get-credentials gke-enterprise-cluster --location us-central1 --project ${PROJECT_ID}
+// kubectl apply -f {TEAM}.yaml
 resource "google_service_account" "default" {
   for_each = local.teams
 
@@ -196,37 +200,3 @@ resource "kubernetes_config_map" "default" {
 }
 # [END gke_quickstart_multitenant_database]
 # [END gke_quickstart_multitenant]
-
-// Included for automated testing
-resource "time_sleep" "wait_5_minutes" {
-  depends_on = [
-    google_container_cluster.default,
-    google_gke_hub_namespace.default
-  ]
-
-  create_duration = "5m"
-}
-
-module "gcloud" {
-  source  = "terraform-google-modules/gcloud/google//modules/kubectl-fleet-wrapper"
-  version = "~> 3.4"
-
-  for_each = local.teams
-
-  # Uncomment to instantiate the apps using the respective team's service accounts
-  # impersonate_service_account = google_service_account.default[each.value].email
-
-  membership_name       = google_container_cluster.default.fleet[0].membership_id
-  membership_project_id = data.google_project.default.project_id
-  membership_location   = google_container_cluster.default.fleet[0].membership_location
-
-  kubectl_create_command  = "kubectl apply -f ${each.value}.yaml"
-  kubectl_destroy_command = "kubectl delete -f ${each.value}.yaml"
-
-  create_cmd_triggers = {
-    policy_sha1 = sha1(file("${each.value}.yaml"))
-  }
-
-  module_depends_on = [time_sleep.wait_5_minutes]
-}
-
