@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# [START gke_quickstart_multitenant_backend]
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -166,3 +167,4 @@ spec:
   - port: 80
     targetPort: 8080
   type: LoadBalancer
+# [END gke_quickstart_multitenant_backend]
