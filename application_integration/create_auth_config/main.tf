@@ -16,11 +16,28 @@
 
 provider "google" {}
 
-# [START application_integration_create_auth_config_auth_token]
+data "google_project" "default" {}
+
 resource "google_integrations_client" "client" {
   location = "us-central1"
 }
 
+# [START application_integration_auth_config_sa]
+resource "random_id" "default" {
+  byte_length = 8
+}
+resource "google_service_account" "default" {
+  account_id   = "sa-${random_id.default.hex}"
+  display_name = "Service Account"
+}
+resource "google_project_iam_member" "service_stac" {
+  project = data.google_project.default.project_id
+  role    = "roles/iam.serviceAccountTokenCreator"
+  member  = "serviceAccount:service-${data.google_project.default.number}@gcp-sa-integrations.iam.gserviceaccount.com"
+}
+# [END application_integration_auth_config_sa]
+
+# [START application_integration_create_auth_config_auth_token]
 resource "google_integrations_auth_config" "auth_config_auth_token" {
   location     = "us-central1"
   display_name = "tf-auth-token"
@@ -165,3 +182,20 @@ resource "google_integrations_auth_config" "auth_config_oauth2_client_credential
   depends_on = [google_integrations_client.client]
 }
 # [END application_integration_create_auth_config_oauth2_client_credentials]
+
+# [START application_integration_create_auth_config_service_account]
+
+resource "google_integrations_auth_config" "auth_config_sa" {
+  location     = "us-central1"
+  display_name = "tf-service-account"
+  description  = "Test auth config created via terraform"
+  decrypted_credential {
+    credential_type = "SERVICE_ACCOUNT"
+    service_account_credentials {
+      service_account = google_service_account.default.email
+      scope           = "https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/adexchange.buyer https://www.googleapis.com/auth/admob.readonly"
+    }
+  }
+  depends_on = [google_integrations_client.client]
+}
+# [END application_integration_create_auth_config_service_account]
