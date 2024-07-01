@@ -16,12 +16,12 @@ To run this example, do the following:
 
     terraform init -migrate-state
 
-
-
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
-No inputs.
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| terraform\_state\_bucket\_force\_destroy | Set this to true to enable destroying the Terraform remote state Cloud Storage bucket | `bool` | `false` | no |
 
 ## Outputs
 
