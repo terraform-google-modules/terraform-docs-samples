@@ -22,7 +22,7 @@ resource "google_storage_bucket" "default" {
   name     = "${random_id.default.hex}-terraform-remote-backend"
   location = "US"
 
-  force_destroy               = var.terraform_state_bucket_force_destroy
+  force_destroy               = false
   public_access_prevention    = "enforced"
   uniform_bucket_level_access = true
 
@@ -30,13 +30,6 @@ resource "google_storage_bucket" "default" {
     enabled = true
   }
 }
-
-variable "terraform_state_bucket_force_destroy" {
-  description = "Set this to true to enable destroying the Terraform remote state Cloud Storage bucket"
-  default     = false
-  type        = bool
-}
-
 # [END storage_bucket_tf_with_versioning_pap_uap_no_destroy]
 
 # [START storage_remote_backend_local_file]
