@@ -29,8 +29,10 @@ resource "google_bigquery_reservation" "default" {
 }
 # [END bigquery_create_reservation]
 
+data "google_project" "project" {}
+
 resource "google_bigquery_reservation_assignment" "default" {
-  assignee    = "projects/my-project"
+  assignee    = "projects/${data.google_project.project.project_id}"
   job_type    = "QUERY"
   reservation = google_bigquery_reservation.default.id
 }
