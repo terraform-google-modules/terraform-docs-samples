@@ -25,7 +25,7 @@ locals {
 module "projects" {
   count   = local.num_projects
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 14.0"
+  version = "~> 15.0"
 
   name                     = "ci-tf-samples-${count.index}"
   random_project_id        = true
@@ -39,6 +39,8 @@ module "projects" {
 
   activate_apis = [
     "aiplatform.googleapis.com",
+    "anthos.googleapis.com",
+    "anthospolicycontroller.googleapis.com",
     "artifactregistry.googleapis.com",
     "biglake.googleapis.com",
     "bigquery.googleapis.com",
@@ -51,10 +53,13 @@ module "projects" {
     "cloudresourcemanager.googleapis.com",
     "cloudscheduler.googleapis.com",
     "cloudtasks.googleapis.com",
+    "connectgateway.googleapis.com",
     "container.googleapis.com",
     "dns.googleapis.com",
     "eventarc.googleapis.com",
+    "gkehub.googleapis.com",
     "iam.googleapis.com",
+    "integrations.googleapis.com",
     "looker.googleapis.com",
     "networkconnectivity.googleapis.com",
     "networkmanagement.googleapis.com",
@@ -73,6 +78,7 @@ module "projects" {
     "workflows.googleapis.com",
     "osconfig.googleapis.com",
     "connectors.googleapis.com",
-    "bigqueryreservation.googleapis.com"
+    "bigqueryreservation.googleapis.com",
+    "managedkafka.googleapis.com"
   ]
 }

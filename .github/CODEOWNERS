@@ -2,7 +2,10 @@
 
 *                       @terraform-google-modules/terraform-samples-git-admins @terraform-google-modules/terraform-samples-reviewers
 /.github/               @terraform-google-modules/terraform-samples-git-admins
+/test/                  @terraform-google-modules/terraform-samples-git-admins @terraform-google-modules/cft-admins
+/build/                 @terraform-google-modules/terraform-samples-git-admins @terraform-google-modules/cft-admins
 /bigquery/              @terraform-google-modules/bigquery-terraform-swe @terraform-google-modules/terraform-samples-reviewers
+/cloud_scheduler/       @terraform-google-modules/terraform-samples-reviewers
 /cloud_sql/             @terraform-google-modules/infra-db-sdk @terraform-google-modules/terraform-samples-reviewers
 /cloudvpn/              @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /composer/              @terraform-google-modules/cloud-dpes-composer @terraform-google-modules/terraform-samples-reviewers
@@ -22,3 +25,4 @@
 /vertex_ai/             @terraform-google-modules/dee-data-ai @terraform-google-modules/terraform-samples-reviewers
 /vpc/                   @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /workflows/             @terraform-google-modules/torus-dpe @terraform-google-modules/terraform-samples-reviewers
+/managedkafka/          @terraform-google-modules/managedkafka-dev-team @terraform-google-modules/terraform-samples-reviewers

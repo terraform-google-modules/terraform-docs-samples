@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-timeout: 14400s
+timeout: 21600s
 steps:
 - id: prune unchanged directories
   name: gcr.io/cloud-builders/git
@@ -20,6 +20,7 @@ steps:
   args:
     - -c
     - |
+      set -e
       # If this is a periodic tests, skip the pruning and run all tests
       if [[ "$_PERIODIC" == "true" ]]; then
         echo "_PERIODIC is true, running all tests."
@@ -29,11 +30,26 @@ steps:
       git fetch --unshallow
       git diff origin/${_BASE_BRANCH} --name-only > _changed_files
       sed 's/\/.*/\//' _changed_files > _changed_folders
+
+      # Do not prune if changing tests themselves
+      _INFRA_FOLDERS="build test .github"
+      for d in _changed_folders; do
+        if [[ "${_INFRA_FOLDERS}" =~ "$d" ]]; then
+          echo "Infrastructure folders have changed; no tests will be pruned."
+          exit 0 # do not prune
+        fi
+      done
+
       for d in */; do
           if ! grep -q "^$d" _changed_folders && [[ "$d" != "test/" ]]; then
             rm -rf $d;
           fi
       done
+
+      # Report remaining folders
+      echo Folders in scope for tests:
+      for d in */; do echo $d; done
+
 - id: prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && prepare_environment']
@@ -76,4 +92,4 @@ tags:
 - 'integration'
 substitutions:
   _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
-  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.19'
+  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.21'
