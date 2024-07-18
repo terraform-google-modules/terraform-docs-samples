@@ -16,9 +16,9 @@
 
 # [START cloud_sql_postgres_instance_iam_group_auth_create_instance]
 resource "google_sql_database_instance" "default" {
-  name             = "postgres-iam-group-auth-instance-name-test"
+  name             = "postgres-iam-group-auth-instance-name"
   region           = "us-west4"
-  database_version = "POSTGRES_14"
+  database_version = "POSTGRES_16"
   settings {
     tier = "db-custom-2-7680"
     database_flags {
