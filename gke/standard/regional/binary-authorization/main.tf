@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-# [START gke_standard_regional_binary-authorization-enforce]
+# [START gke_standard_regional_binauthz_enforce]
 resource "google_container_cluster" "enforce" {
   name               = "gke-standard-regional-binauthz-enforce"
   location           = "us-west1"
@@ -28,4 +28,4 @@ resource "google_container_cluster" "enforce" {
   # accidentally delete this instance by use of Terraform.
   deletion_protection = false
 }
-# [END gke_standard_regional_binary-authorization-enforce]
+# [END gke_standard_regional_binauthz_enforce]
