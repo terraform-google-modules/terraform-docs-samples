@@ -175,6 +175,8 @@ resource "google_project_iam_member" "cloudsql" {
   project = data.google_project.default.project_id
   role    = "roles/cloudsql.client"
   member  = "serviceAccount:${data.google_project.default.project_id}.svc.id.goog[${each.value}-team/default]"
+
+  depends_on = [google_container_cluster.default]
 }
 
 data "google_client_config" "default" {}
