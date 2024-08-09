@@ -69,7 +69,7 @@ resource "google_compute_instance" "custom_subnet" {
   }
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-10"
+      image = "debian-cloud/debian-12"
     }
   }
 }

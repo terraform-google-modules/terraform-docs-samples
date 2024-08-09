@@ -1,0 +1,170 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# [START gke_quickstart_multitenant_backend]
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-configmap
+  namespace: backend-team
+  labels:
+    app: backend
+data:
+  go.mod: |
+    module multitenant
+
+    go 1.22
+
+    require github.com/go-sql-driver/mysql v1.8.1
+
+    require filippo.io/edwards25519 v1.1.0 // indirect
+
+  go.sum: |
+    filippo.io/edwards25519 v1.1.0 h1:FNf4tywRC1HmFuKW5xopWpigGjJKiJSV0Cqo0cJWDaA=
+    filippo.io/edwards25519 v1.1.0/go.mod h1:BxyFTGdWcka3PhytdK4V28tE5sGfRvvvRV7EaN4VDT4=
+    github.com/go-sql-driver/mysql v1.8.1 h1:LedoTUt/eveggdHS9qUFC1EFSa8bU2+1pZjSRpvNJ1Y=
+    github.com/go-sql-driver/mysql v1.8.1/go.mod h1:wEBSXgmK//2ZFJyE+qWnIsVGmvmEKlqwuVSjsCm7DZg=
+
+  backend.go: |
+    package main
+
+    import (
+      "database/sql"
+      "fmt"
+      "log"
+      "math/rand"
+      "net/http"
+      "os"
+
+      _ "github.com/go-sql-driver/mysql"
+    )
+
+    func main() {
+      mux := http.NewServeMux()
+      mux.HandleFunc("/", frontend)
+
+      port := "8080"
+
+      log.Printf("Server listening on port %s", port)
+      log.Fatal(http.ListenAndServe(":"+port, mux))
+    }
+
+    func frontend(w http.ResponseWriter, r *http.Request) {
+      log.Printf("Serving request: %s", r.URL.Path)
+
+      host, _ := os.Hostname()
+      fmt.Fprintf(w, "Backend!\n")
+      fmt.Fprintf(w, "Hostname: %s\n", host)
+
+      // Open database using cloud-sql-proxy sidecar
+      db, err := sql.Open("mysql", "multitenant-app@tcp/multitenant-app")
+      if err != nil {
+        fmt.Fprintf(w, "Error: %v\n", err)
+        return
+      }
+
+      // Create metadata Table if not exists
+      _, err = db.Exec("CREATE TABLE IF NOT EXISTS metadata (metadata_key varchar(255) NOT NULL, metadata_value varchar(255) NOT NULL, PRIMARY KEY (metadata_key))")
+      if err != nil {
+        fmt.Fprintf(w, "Error: %v\n", err)
+        return
+      }
+
+      // Pick random primary color
+      var color string
+      randInt := rand.Intn(3) + 1
+      switch {
+      case randInt == 1:
+        color = "red"
+      case randInt == 2:
+        color = "green"
+      case randInt == 3:
+        color = "blue"
+      }
+
+      // Set color in database
+      _, err = db.Exec(fmt.Sprintf("REPLACE INTO metadata (metadata_key, metadata_value) VALUES ('color', '%s')", color))
+      if err != nil {
+        fmt.Fprintf(w, "Error: %v\n", err)
+        return
+      }
+
+      fmt.Fprintf(w, "Set Color: %s\n", color)
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backendweb
+  namespace: backend-team
+  labels:
+    app: backend
+spec:
+  selector:
+    matchLabels:
+      app: backend
+      tier: web
+  template:
+    metadata:
+      labels:
+        app: backend
+        tier: web
+    spec:
+      containers:
+      - name: backend-container
+        image: golang:1.22
+        command: ["go"]
+        args: ["run", "."]
+        workingDir: "/tmp/backend"
+        volumeMounts:
+          - name: backend-configmap
+            mountPath: /tmp/backend/
+            readOnly: true
+      - name: cloud-sql-proxy
+        image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.11.4
+        args:
+          - "--structured-logs"
+          - "--port=3306"
+          - "$(CONNECTION_NAME_KEY)"
+        securityContext:
+          runAsNonRoot: true
+        env:
+        - name: CONNECTION_NAME_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: database-configmap
+              key: CONNECTION_NAME
+      volumes:
+        - name: backend-configmap
+          configMap: { name: backend-configmap }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backendweb
+  namespace: backend-team
+  labels:
+    app: backend
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal" # Remove to create an external loadbalancer
+spec:
+  selector:
+    app: backend
+    tier: web
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: LoadBalancer
+# [END gke_quickstart_multitenant_backend]

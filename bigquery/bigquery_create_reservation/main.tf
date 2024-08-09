@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START bigquery_create_reservation_assignment]
 # [START bigquery_create_reservation]
 resource "google_bigquery_reservation" "default" {
   name              = "my-reservation"
@@ -27,3 +28,12 @@ resource "google_bigquery_reservation" "default" {
   }
 }
 # [END bigquery_create_reservation]
+
+data "google_project" "project" {}
+
+resource "google_bigquery_reservation_assignment" "default" {
+  assignee    = "projects/${data.google_project.project.project_id}"
+  job_type    = "QUERY"
+  reservation = google_bigquery_reservation.default.id
+}
+# [END bigquery_create_reservation_assignment]
