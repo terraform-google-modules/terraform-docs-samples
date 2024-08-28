@@ -15,13 +15,15 @@
 */
 
 # [START bigquery_tags_tag_key]
+data "google_project" "default" {}
+
 resource "google_tags_tag_key" "env_tag_key" {
-  parent     = "projects/myproject1-381000"
+  parent     = "projects/${data.google_project.default.project_id}"
   short_name = "env"
 }
 
 resource "google_tags_tag_key" "department_tag_key" {
-  parent     = "projects/myproject1-381000"
+  parent     = "projects/${data.google_project.default.project_id}"
   short_name = "department"
 }
 # [END bigquery_tags_tag_key]
