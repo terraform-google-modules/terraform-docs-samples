@@ -22,7 +22,7 @@ resource "google_sql_database_instance" "mysql_instance" {
   settings {
     tier = "db-f1-micro"
     ip_configuration {
-      require_ssl = "true"
+      ssl_mode = "ENCRYPTED_ONLY"
     }
   }
   # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
@@ -46,7 +46,7 @@ resource "google_sql_database_instance" "postgres_instance" {
   settings {
     tier = "db-custom-2-7680"
     ip_configuration {
-      require_ssl = "true"
+      ssl_mode = "ENCRYPTED_ONLY"
     }
   }
   # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
@@ -71,7 +71,7 @@ resource "google_sql_database_instance" "sqlserver_instance" {
   settings {
     tier = "db-custom-2-7680"
     ip_configuration {
-      require_ssl = "true"
+      ssl_mode = "ENCRYPTED_ONLY"
     }
   }
   # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
