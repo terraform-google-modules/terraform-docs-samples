@@ -16,6 +16,7 @@
 
 # [START bigquery_create_dataset_attach_tag]
 
+# Create tag keys and values
 data "google_project" "default" {}
 
 resource "google_tags_tag_key" "env_tag_key" {
@@ -38,6 +39,7 @@ resource "google_tags_tag_value" "department_tag_value" {
   short_name = "sales"
 }
 
+# Create a dataset
 resource "google_bigquery_dataset" "default" {
   dataset_id                      = "my_dataset"
   default_partition_expiration_ms = 2592000000  # 30 days
@@ -46,11 +48,10 @@ resource "google_bigquery_dataset" "default" {
   location                        = "US"
   max_time_travel_hours           = 96 # 4 days
 
-  # Create a dataset with resource_tags
+  # Attach tags to the dataset
   resource_tags = {
     "${google_tags_tag_key.env_tag_key.namespaced_name}" : "${google_tags_tag_value.env_tag_value.short_name}",
     "${google_tags_tag_key.department_tag_key.namespaced_name}" : "${google_tags_tag_value.department_tag_value.short_name}"
   }
 }
 # [END bigquery_create_dataset_attach_tag]
-
