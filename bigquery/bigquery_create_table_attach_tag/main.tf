@@ -58,8 +58,8 @@ resource "google_bigquery_table" "default" {
 
   # Attach tags to the table
   resource_tags = {
-    "${google_tags_tag_key.env_tag_key.namespaced_name}" : "${google_tags_tag_value.env_tag_value.short_name}",
-    "${google_tags_tag_key.department_tag_key.namespaced_name}" : "${google_tags_tag_value.department_tag_value.short_name}"
+    (google_tags_tag_key.env_tag_key.namespaced_name): google_tags_tag_value.env_tag_value.short_name,
+    (google_tags_tag_key.department_tag_key.namespaced_name): google_tags_tag_value.department_tag_value.short_name
   }
 }
 # [END bigquery_create_table_attach_tag]
