@@ -22,7 +22,7 @@
  *    --zone=europe-west4-a
  */
 
-# [START:compute_resize_request_basic_parent_tag]
+# [START compute_resize_request_basic_parent_tag]
 resource "google_compute_instance_template" "default" {
   machine_type = "a2-ultragpu-8g"
 
@@ -55,7 +55,7 @@ resource "google_compute_instance_group_manager" "default" {
   }
 }
 
-# [START` compute_resize_request_basic_tag]
+# [START compute_resize_request_basic_tag]
 resource "google_compute_resize_request" "default" {
   provider               = google-beta
   instance_group_manager = google_compute_instance_group_manager.default.name
