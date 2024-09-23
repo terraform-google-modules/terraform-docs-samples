@@ -15,7 +15,7 @@
  */
 /**
  * Made to resemble:
- * gcloud compute instance-groups managed resize-requests create igmforrr \
+ * gcloud compute instance-groups managed resize-requests create igm \
  *    --resize-request=myresizerequest \
  *    --resize-by=3 \
  *    --requested-run-duration=1800 \
@@ -42,7 +42,7 @@ resource "google_compute_instance_template" "default" {
 }
 
 resource "google_compute_instance_group_manager" "default" {
-  name               = "igmforrr"
+  name               = "igm"
   base_instance_name = "test"
   zone               = "europe-west4-a"
 
