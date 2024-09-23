@@ -16,7 +16,7 @@
 /**
  * Made to resemble:
  * gcloud compute instance-groups managed resize-requests create igm \
- *    --resize-request=myresizerequest \
+ *    --resize-request=rr \
  *    --resize-by=3 \
  *    --requested-run-duration=1800 \
  *    --zone=europe-west4-a
@@ -60,7 +60,7 @@ resource "google_compute_resize_request" "default" {
   provider               = google-beta
   instance_group_manager = google_compute_instance_group_manager.default.name
   zone                   = google_compute_instance_group_manager.default.zone
-  name                   = "myresizerequest"
+  name                   = "rr"
   resize_by              = 3
   requested_run_duration {
     seconds = 1800
