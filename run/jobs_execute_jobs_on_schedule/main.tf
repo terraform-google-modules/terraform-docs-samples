@@ -67,8 +67,8 @@ resource "google_project_iam_binding" "token_creator_binding" {
 
 # Cloud Run Job
 resource "google_cloud_run_v2_job" "default" {
-  name         = "cloud-run-job"
-  location     = "us-central1"
+  name     = "cloud-run-job"
+  location = "us-central1"
 
   deletion_protection = false # set to "true" in production
 
