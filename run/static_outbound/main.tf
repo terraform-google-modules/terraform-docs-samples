@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-provider "google-beta" {
-  region = "us-central1"
-}
-
 # Enable Compute Engine API
 # [START cloudrun_static_outbound_parent_tag]
 resource "google_project_service" "compute_engine_api" {
@@ -34,14 +30,12 @@ resource "google_project_service" "cloudrun_api" {
 # Example of setting up a Cloud Run service with a static outbound IP
 # [START cloudrun_service_static_network]
 resource "google_compute_network" "default" {
-  provider = google-beta
-  name     = "cr-static-ip-network"
+  name = "cr-static-ip-network"
 }
 # [END cloudrun_service_static_network]
 
 # [START cloudrun_service_static_subnet]
 resource "google_compute_subnetwork" "default" {
-  provider      = google-beta
   name          = "cr-static-ip"
   ip_cidr_range = "10.124.0.0/28"
   network       = google_compute_network.default.id
@@ -51,15 +45,14 @@ resource "google_compute_subnetwork" "default" {
 
 # [START cloudrun_service_static_vpc_conn]
 resource "google_project_service" "vpc" {
-  provider           = google-beta
   service            = "vpcaccess.googleapis.com"
   disable_on_destroy = false
 }
 
 resource "google_vpc_access_connector" "default" {
-  provider = google-beta
-  name     = "cr-conn"
-  region   = "us-central1"
+  name          = "cr-conn"
+  region        = "us-central1"
+  min_instances = 2
 
   subnet {
     name = google_compute_subnetwork.default.name
@@ -75,27 +68,24 @@ resource "google_vpc_access_connector" "default" {
 
 # [START cloudrun_service_static_router]
 resource "google_compute_router" "default" {
-  provider = google-beta
-  name     = "cr-static-ip-router"
-  network  = google_compute_network.default.name
-  region   = google_compute_subnetwork.default.region
+  name    = "cr-static-ip-router"
+  network = google_compute_network.default.name
+  region  = google_compute_subnetwork.default.region
 }
 # [END cloudrun_service_static_router]
 
 # [START cloudrun_service_static_addr]
 resource "google_compute_address" "default" {
-  provider = google-beta
-  name     = "cr-static-ip-addr"
-  region   = google_compute_subnetwork.default.region
+  name   = "cr-static-ip-addr"
+  region = google_compute_subnetwork.default.region
 }
 # [END cloudrun_service_static_addr]
 
 # [START cloudrun_service_static_nat]
 resource "google_compute_router_nat" "default" {
-  provider = google-beta
-  name     = "cr-static-nat"
-  router   = google_compute_router.default.name
-  region   = google_compute_subnetwork.default.region
+  name   = "cr-static-nat"
+  router = google_compute_router.default.name
+  region = google_compute_subnetwork.default.region
 
   nat_ip_allocate_option = "MANUAL_ONLY"
   nat_ips                = [google_compute_address.default.self_link]
@@ -110,7 +100,6 @@ resource "google_compute_router_nat" "default" {
 
 # [START cloudrun_service_static_service]
 resource "google_cloud_run_v2_service" "default" {
-  provider = google-beta
   name     = "cr-static-ip-service"
   location = google_compute_subnetwork.default.region
 
