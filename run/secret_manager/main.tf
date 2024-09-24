@@ -61,7 +61,7 @@ resource "google_secret_manager_secret_iam_member" "default" {
 
 # [START cloudrun_secret_manager_mounted]
 resource "google_cloud_run_v2_service" "mounted_secret" {
-  name     = "cloudrun-srv-mounted-secret"
+  name     = "service-with-mounted-secret"
   location = "us-central1"
   ingress  = "INGRESS_TRAFFIC_ALL"
 
@@ -94,7 +94,7 @@ resource "google_cloud_run_v2_service" "mounted_secret" {
 
 # [START cloudrun_secret_manager_env_variable]
 resource "google_cloud_run_v2_service" "env_variable_secret" {
-  name     = "cloudrun-srv-env-var-secret"
+  name     = "service-with-env-var-secret"
   location = "us-central1"
   ingress  = "INGRESS_TRAFFIC_ALL"
 

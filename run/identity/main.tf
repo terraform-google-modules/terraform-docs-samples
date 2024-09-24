@@ -23,7 +23,7 @@ resource "google_service_account" "cloudrun_service_identity" {
 
 # [START cloudrun_service_identity_run_service]
 resource "google_cloud_run_v2_service" "default" {
-  name     = "cloud-run-srv"
+  name     = "id-service"
   location = "us-central1"
 
   deletion_protection = false # set to "true" in production

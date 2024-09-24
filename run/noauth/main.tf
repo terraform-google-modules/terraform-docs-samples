@@ -19,7 +19,7 @@
 # [START cloudrun_noauth_parent_tag]
 # [START cloudrun_service_noauth]
 resource "google_cloud_run_v2_service" "default" {
-  name     = "cloudrun-srv"
+  name     = "my-public-service"
   location = "us-central1"
 
   deletion_protection = false # set to "true" in production
