@@ -27,10 +27,10 @@ resource "google_project_service" "cloudrun_api" {
 # Create basic Cloud Run Job using sample container image
 #[START cloudrun_jobs_create]
 resource "google_cloud_run_v2_job" "default" {
-  provider     = google-beta
   name         = "cloud-run-job"
   location     = "us-central1"
-  launch_stage = "BETA"
+
+  deletion_protection = false # set to "true" in production
 
   template {
     template {

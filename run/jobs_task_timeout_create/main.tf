@@ -28,7 +28,8 @@ resource "google_project_service" "cloudrun_api" {
 resource "google_cloud_run_v2_job" "default" {
   name         = "cloud-run-job-timeout"
   location     = "us-central1"
-  launch_stage = "BETA"
+
+  deletion_protection = false # set to "true" in production
 
   template {
     template {
