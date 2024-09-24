@@ -19,6 +19,8 @@ resource "google_cloud_run_v2_service" "default" {
   name     = "cloudrun-srv"
   location = "us-central1"
 
+  deletion_protection = false # set to "true" in production
+
   template {
     containers {
       # image or tag must be different from previous revision

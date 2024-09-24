@@ -65,6 +65,8 @@ resource "google_cloud_run_v2_service" "mounted_secret" {
   location = "us-central1"
   ingress  = "INGRESS_TRAFFIC_ALL"
 
+  deletion_protection = false # set to "true" in production
+
   template {
     volumes {
       name = "my-service-volume"
@@ -95,6 +97,8 @@ resource "google_cloud_run_v2_service" "env_variable_secret" {
   name     = "cloudrun-srv-env-var-secret"
   location = "us-central1"
   ingress  = "INGRESS_TRAFFIC_ALL"
+
+  deletion_protection = false # set to "true" in production
 
   template {
     containers {

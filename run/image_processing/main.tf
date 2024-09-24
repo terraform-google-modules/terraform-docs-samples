@@ -91,9 +91,11 @@ output "blurred_bucket_name" {
 resource "google_cloud_run_v2_service" "default" {
   name     = "pubsub-tutorial"
   location = "us-central1"
+
+  deletion_protection = false # set to "true" in production
+
   template {
     containers {
-
       # Replace with newly created image gcr.io/<project_id>/pubsub
       image = "us-docker.pkg.dev/cloudrun/container/hello"
       env {

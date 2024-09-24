@@ -114,6 +114,8 @@ resource "google_cloud_run_v2_service" "default" {
   name     = "cr-static-ip-service"
   location = google_compute_subnetwork.default.region
 
+  deletion_protection = false # set to "true" in production
+
   template {
     containers {
       # Replace with the URL of your container
