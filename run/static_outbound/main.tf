@@ -53,6 +53,7 @@ resource "google_vpc_access_connector" "default" {
   name          = "cr-conn"
   region        = "us-central1"
   min_instances = 2
+  max_instances = 3
 
   subnet {
     name = google_compute_subnetwork.default.name

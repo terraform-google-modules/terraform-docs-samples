@@ -37,6 +37,7 @@ resource "google_vpc_access_connector" "connector" {
   network       = google_compute_network.default.name
   depends_on    = [google_project_service.vpcaccess_api]
   min_instances = 2
+  max_instances = 3
 }
 
 # Cloud Router
