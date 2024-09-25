@@ -17,9 +17,11 @@
 # [START cloudrun_secure_services_parent_tag]
 # [START cloudrun_secure_services_backend]
 resource "google_cloud_run_v2_service" "renderer" {
-  provider = google-beta
   name     = "renderer"
   location = "us-central1"
+
+  deletion_protection = false # set to "true" in production
+
   template {
     containers {
       # Replace with the URL of your Secure Services > Renderer image.
@@ -33,7 +35,6 @@ resource "google_cloud_run_v2_service" "renderer" {
 
 # [START cloudrun_secure_services_frontend]
 resource "google_cloud_run_v2_service" "editor" {
-  provider = google-beta
   name     = "editor"
   location = "us-central1"
   template {
@@ -54,7 +55,6 @@ resource "google_cloud_run_v2_service" "editor" {
 
 # [START cloudrun_secure_services_backend_identity]
 resource "google_service_account" "renderer" {
-  provider     = google-beta
   account_id   = "renderer-identity"
   display_name = "Service identity of the Renderer (Backend) service."
 }
@@ -62,7 +62,6 @@ resource "google_service_account" "renderer" {
 
 # [START cloudrun_secure_services_frontend_identity]
 resource "google_service_account" "editor" {
-  provider     = google-beta
   account_id   = "editor-identity"
   display_name = "Service identity of the Editor (Frontend) service."
 }
@@ -70,7 +69,6 @@ resource "google_service_account" "editor" {
 
 # [START cloudrun_secure_services_backend_invoker_access]
 resource "google_cloud_run_service_iam_member" "editor_invokes_renderer" {
-  provider = google-beta
   location = google_cloud_run_v2_service.renderer.location
   service  = google_cloud_run_v2_service.renderer.name
   role     = "roles/run.invoker"
@@ -80,7 +78,6 @@ resource "google_cloud_run_service_iam_member" "editor_invokes_renderer" {
 
 # [START cloudrun_secure_services_frontend_access]
 data "google_iam_policy" "noauth" {
-  provider = google-beta
   binding {
     role = "roles/run.invoker"
     members = [
@@ -90,7 +87,6 @@ data "google_iam_policy" "noauth" {
 }
 
 resource "google_cloud_run_service_iam_policy" "noauth" {
-  provider = google-beta
   location = google_cloud_run_v2_service.editor.location
   project  = google_cloud_run_v2_service.editor.project
   service  = google_cloud_run_v2_service.editor.name
