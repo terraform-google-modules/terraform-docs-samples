@@ -63,6 +63,8 @@ resource "google_cloud_run_v2_service" "gcr_service" {
   name     = "mygcrservice"
   location = "us-west1"
 
+  deletion_protection = false # set to "true" in production
+
   template {
     containers {
       image = "us-docker.pkg.dev/cloudrun/container/hello"
