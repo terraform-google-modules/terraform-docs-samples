@@ -17,7 +17,7 @@
 # [START cloudrun_custom_domain_mapping_parent_tag]
 # [START cloudrun_custom_domain_mapping_run_service]
 resource "google_cloud_run_v2_service" "default" {
-  name     = "cloud-run-srv"
+  name     = "custom-domain"
   location = "us-central1"
   template {
     containers {
