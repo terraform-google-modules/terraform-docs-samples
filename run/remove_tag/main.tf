@@ -19,6 +19,8 @@ resource "google_cloud_run_v2_service" "default" {
   name     = "my-service"
   location = "us-central1"
 
+  deletion_protection = false # set to true to prevent destruction of the resource
+
   template {}
 
   # Define the traffic split for each revision
