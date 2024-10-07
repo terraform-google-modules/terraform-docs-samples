@@ -23,9 +23,10 @@ resource "random_id" "bucket_prefix" {
 }
 
 resource "google_storage_bucket" "static_website" {
-  name          = "${random_id.bucket_prefix.hex}-static-website-bucket"
-  location      = "US"
-  storage_class = "STANDARD"
+  name                        = "${random_id.bucket_prefix.hex}-static-website-bucket"
+  location                    = "US"
+  storage_class               = "STANDARD"
+  uniform_bucket_level_access = true
   website {
     main_page_suffix = "index.html"
     not_found_page   = "404.html"
@@ -34,11 +35,11 @@ resource "google_storage_bucket" "static_website" {
 # [END storage_static_website_create_bucket_tf]
 
 # [START storage_static_website_make_bucket_public_tf]
-# Make bucket public by granting allUsers READER access
-resource "google_storage_bucket_access_control" "public_rule" {
-  bucket = google_storage_bucket.static_website.id
-  role   = "READER"
-  entity = "allUsers"
+# Make bucket public by granting allUsers storage.objectViewer access
+resource "google_storage_bucket_iam_member" "public_rule" {
+  bucket = google_storage_bucket.static_website.name
+  role   = "roles/storage.objectViewer"
+  member = "allUsers"
 }
 # [END storage_static_website_make_bucket_public_tf]
 

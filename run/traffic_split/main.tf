@@ -16,28 +16,30 @@
 
 # [START cloudrun_service_traffic_split]
 resource "google_cloud_run_v2_service" "default" {
-  name     = "cloudrun-srv"
+  name     = "my-service"
   location = "us-central1"
+
+  deletion_protection = false # set to true to prevent destruction of the resource
 
   template {
     containers {
       image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
-    revision = "cloudrun-srv-green"
+    revision = "green"
   }
 
   # Define the traffic split for each revision
   # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#traffic
   traffic {
     percent  = 25
-    revision = "cloudrun-srv-green"
+    revision = "green"
     type     = "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"
   }
 
   traffic {
     percent = 75
     # This revision needs to already exist
-    revision = "cloudrun-srv-blue"
+    revision = "blue"
     type     = "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"
   }
 }

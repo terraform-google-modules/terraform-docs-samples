@@ -26,9 +26,10 @@ resource "google_project_service" "cloudrun_api" {
 
 #[START cloudrun_jobs_task_timeout_create]
 resource "google_cloud_run_v2_job" "default" {
-  name         = "cloud-run-job-timeout"
-  location     = "us-central1"
-  launch_stage = "BETA"
+  name     = "cloud-run-job-timeout"
+  location = "us-central1"
+
+  deletion_protection = false # set to "true" in production
 
   template {
     template {
