@@ -18,7 +18,6 @@
 # [START vpc_serverless_connector_enable_api]
 resource "google_project_service" "vpcaccess_api" {
   service            = "vpcaccess.googleapis.com"
-  provider           = google-beta
   disable_on_destroy = false
 }
 # [END vpc_serverless_connector_enable_api]
@@ -27,33 +26,30 @@ resource "google_project_service" "vpcaccess_api" {
 # VPC
 resource "google_compute_network" "default" {
   name                    = "cloudrun-network"
-  provider                = google-beta
   auto_create_subnetworks = false
 }
 
 # VPC access connector
 resource "google_vpc_access_connector" "connector" {
-  name           = "vpcconn"
-  provider       = google-beta
-  region         = "us-west1"
-  ip_cidr_range  = "10.8.0.0/28"
-  max_throughput = 300
-  network        = google_compute_network.default.name
-  depends_on     = [google_project_service.vpcaccess_api]
+  name          = "vpcconn"
+  region        = "us-west1"
+  ip_cidr_range = "10.8.0.0/28"
+  network       = google_compute_network.default.name
+  depends_on    = [google_project_service.vpcaccess_api]
+  min_instances = 2
+  max_instances = 3
 }
 
 # Cloud Router
 resource "google_compute_router" "router" {
-  name     = "router"
-  provider = google-beta
-  region   = "us-west1"
-  network  = google_compute_network.default.id
+  name    = "router"
+  region  = "us-west1"
+  network = google_compute_network.default.id
 }
 
 # NAT configuration
 resource "google_compute_router_nat" "router_nat" {
   name                               = "nat"
-  provider                           = google-beta
   region                             = "us-west1"
   router                             = google_compute_router.router.name
   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
@@ -65,8 +61,9 @@ resource "google_compute_router_nat" "router_nat" {
 # Cloud Run service
 resource "google_cloud_run_v2_service" "gcr_service" {
   name     = "mygcrservice"
-  provider = google-beta
   location = "us-west1"
+
+  deletion_protection = false # set to "true" in production
 
   template {
     containers {

@@ -152,6 +152,8 @@ resource "google_cloud_run_v2_service" "run_default" {
   name     = "myservice-run-app-${local.run_regions[count.index]}"
   location = local.run_regions[count.index]
 
+  deletion_protection = false # set to "true" in production
+
   template {
     containers {
       image = "us-docker.pkg.dev/cloudrun/container/hello"

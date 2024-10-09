@@ -67,11 +67,10 @@ resource "google_project_iam_binding" "token_creator_binding" {
 
 # Cloud Run Job
 resource "google_cloud_run_v2_job" "default" {
-  provider     = google-beta
-  name         = "cloud-run-job"
-  location     = "us-central1"
-  launch_stage = "BETA"
-  project      = data.google_project.project.project_id
+  name     = "cloud-run-job"
+  location = "us-central1"
+
+  deletion_protection = false # set to "true" in production
 
   template {
     template {
