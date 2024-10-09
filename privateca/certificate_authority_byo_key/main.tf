@@ -32,6 +32,7 @@ resource "google_kms_crypto_key_iam_binding" "privateca_sa_keyuser_signerverifie
 resource "google_kms_crypto_key_iam_binding" "privateca_sa_keyuser_viewer" {
   crypto_key_id = "projects/keys-project/locations/us-central1/keyRings/key-ring/cryptoKeys/crypto-key"
   role          = "roles/viewer"
+
   members = [
     "serviceAccount:${google_project_service_identity.privateca_sa.email}",
   ]

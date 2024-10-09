@@ -21,6 +21,7 @@ resource "google_privateca_certificate_authority" "root_ca" {
   location                               = "us-central1"
   deletion_protection                    = false # set to true to prevent destruction of the resource
   ignore_active_certificates_on_deletion = true
+
   config {
     subject_config {
       subject {

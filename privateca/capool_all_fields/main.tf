@@ -19,6 +19,7 @@ resource "google_privateca_ca_pool" "default" {
   name     = "ca-pool-all-fields"
   location = "us-central1"
   tier     = "ENTERPRISE"
+
   publishing_options {
     publish_ca_cert = false
     publish_crl     = true

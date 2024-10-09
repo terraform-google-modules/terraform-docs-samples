@@ -40,6 +40,7 @@ resource "google_privateca_ca_pool" "default" {
   name     = "my-ca-pool"
   location = "us-central1"
   tier     = "ENTERPRISE"
+
   publishing_options {
     publish_ca_cert = true
     publish_crl     = true
@@ -47,6 +48,7 @@ resource "google_privateca_ca_pool" "default" {
   labels = {
     foo = "bar"
   }
+
   issuance_policy {
     baseline_values {
       ca_options {
@@ -69,6 +71,7 @@ resource "google_privateca_certificate_authority" "test_ca" {
   certificate_authority_id = "my-authority"
   location                 = "us-central1"
   pool                     = google_privateca_ca_pool.default.name
+
   config {
     subject_config {
       subject {
