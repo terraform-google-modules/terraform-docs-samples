@@ -46,7 +46,6 @@ steps:
       # Remove leaf folders without changes or non-tf resources
       for d in `find . -type d -name 'test' -prune -o -links 2 -printf '%P\n'`; do
           if ! grep -q "^$d" _changed_folders && ! [ -n "$(find $d -maxdepth 1 -not -name '*.tf' -type f -print -quit)" ]; then
-            echo [ -n "$(find $d -maxdepth 1 -not -name '*.tf' -type f -print -quit)" ]
             rm -rf $d
           fi
       done
