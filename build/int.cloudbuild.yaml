@@ -35,7 +35,7 @@ steps:
       cat _changed_folders
 
       # Do not prune if changing tests themselves
-      _INFRA_FOLDERS="build/ test/"
+      _INFRA_FOLDERS="build test .github"
       for d in _changed_folders; do
         if [[ "${_INFRA_FOLDERS}" =~ "$d" ]]; then
           echo "Infrastructure folders have changed; no tests will be pruned."
