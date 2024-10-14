@@ -30,7 +30,7 @@ resource "google_privateca_ca_pool" "default" {
 
 
 # sub ca pool to use in privateca subordinate samples
-resource "google_privateca_ca_pool" "default" {
+resource "google_privateca_ca_pool" "subpool" {
   count = local.num_projects
 
   project  = local.project_ids[count.index]
