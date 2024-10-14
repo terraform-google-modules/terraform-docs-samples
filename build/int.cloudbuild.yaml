@@ -35,7 +35,7 @@ steps:
       cat _changed_folders
 
       # Do not prune if changing tests themselves
-      _INFRA_FOLDERS="build/ test/ .github/" # TODO: fix build/, remove github?
+      _INFRA_FOLDERS="build/ test/"
       for d in _changed_folders; do
         if [[ "${_INFRA_FOLDERS}" =~ "$d" ]]; then
           echo "Infrastructure folders have changed; no tests will be pruned."
@@ -46,7 +46,7 @@ steps:
       # Remove leaf folders without changes
       # TODO: Handle intermeidate folders that also contain .tf
       for d in `find . -type d -name 'test' -prune -o -links 2 -printf '%P\n'`; do
-          if ! grep -q "^$d" _changed_folders; then
+          if ! grep -q "^$d" _changed_folders && [ -n "$(find . -maxdepth 1 -name '*.tf' -type f -print -quit) $d" ]; then
             rm -rf $d;
           fi
       done
