@@ -39,7 +39,7 @@ steps:
       while read d; do
         echo "${d%/}"
         echo "$_INFRA_FOLDERS"
-        if [[ "${_INFRA_FOLDERS}" =~ "${d%/}" ]]; then
+        if [[ "build test .github" =~ "${d%/}" ]]; then
           echo "Infrastructure folder ${d%/} has changed; no tests will be pruned."
           exit 0 # do not prune
         fi
