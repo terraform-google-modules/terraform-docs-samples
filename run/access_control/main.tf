@@ -17,8 +17,10 @@
 # [START cloudrun_access_control_parent_tag]
 # [START cloudrun_service_access_control_run_service]
 resource "google_cloud_run_v2_service" "default" {
-  name     = "cloud-run-srv"
+  name     = "public-service"
   location = "us-central1"
+
+  deletion_protection = false # set to "true" in production
 
   template {
     containers {

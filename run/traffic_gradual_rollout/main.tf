@@ -16,8 +16,10 @@
 
 # [START cloudrun_service_traffic_gradual_rollout]
 resource "google_cloud_run_v2_service" "default" {
-  name     = "cloudrun-srv"
+  name     = "my-service"
   location = "us-central1"
+
+  deletion_protection = false # set to true to prevent destruction of the resource
 
   template {
     containers {
@@ -31,7 +33,7 @@ resource "google_cloud_run_v2_service" "default" {
   traffic {
     percent = 100
     # This revision needs to already exist
-    revision = "cloudrun-srv-green"
+    revision = "green"
     type     = "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"
   }
 

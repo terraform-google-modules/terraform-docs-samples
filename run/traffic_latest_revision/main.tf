@@ -17,8 +17,10 @@
 # [START cloudrun_traffic_latest_revision_parent_tag]
 # [START cloudrun_service_traffic_latest]
 resource "google_cloud_run_v2_service" "default" {
-  name     = "cloudrun-srv"
+  name     = "my-service"
   location = "us-central1"
+
+  deletion_protection = false # set to true to prevent destruction of the resource
 
   template {}
 

@@ -28,6 +28,9 @@ resource "google_project_service" "cloudrun_api" {
 resource "google_cloud_run_v2_service" "default" {
   name     = "pubsub-tutorial"
   location = "us-central1"
+
+  deletion_protection = false # set to true to prevent destruction of the resource
+
   template {
     containers {
       image = "us-docker.pkg.dev/cloudrun/container/hello" # Replace with newly created image gcr.io/<project_id>/pubsub

@@ -27,6 +27,8 @@ resource "google_cloud_run_v2_service" "default" {
   name     = "graphviz-example"
   location = "us-central1"
 
+  deletion_protection = false # set to "true" in production
+
   template {
     containers {
       # Replace with the URL of your graphviz image

@@ -30,6 +30,8 @@ resource "google_cloud_run_v2_service" "default" {
   name     = "ingress-service"
   location = "us-central1"
 
+  deletion_protection = false # set to "true" in production
+
   # For valid annotation values and descriptions, see
   # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/cloud_run_v2_service#ingress
   ingress = "INGRESS_TRAFFIC_INTERNAL_ONLY"
