@@ -16,8 +16,10 @@
 
 # [START cloudrun_service_add_tag]
 resource "google_cloud_run_v2_service" "default" {
-  name     = "cloudrun-srv"
+  name     = "my-service"
   location = "us-central1"
+
+  deletion_protection = false # set to true to prevent destruction of the resource
 
   template {}
 
@@ -26,14 +28,14 @@ resource "google_cloud_run_v2_service" "default" {
   traffic {
     percent = 100
     # This revision needs to already exist
-    revision = "cloudrun-srv-green"
+    revision = "green"
     type     = "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"
   }
 
   traffic {
     # Deploy new revision with 0% traffic
     percent  = 0
-    revision = "cloudrun-srv-blue"
+    revision = "blue"
     tag      = "tag-name"
     type     = "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"
   }

@@ -54,6 +54,7 @@ resource "google_project_iam_member" "gatewayeditor" {
 }
 # [END gke_quickstart_multitenant_teams]
 # [START gke_quickstart_multitenant_fleet]
+# [START gke_enterprise_policycontroller_fleet]
 resource "google_gke_hub_feature" "policycontroller" {
   name     = "policycontroller"
   location = "global"
@@ -75,6 +76,7 @@ resource "google_gke_hub_feature" "policycontroller" {
     }
   }
 }
+# [END gke_enterprise_policycontroller_fleet]
 
 resource "google_gke_hub_scope" "default" {
   for_each = local.teams
