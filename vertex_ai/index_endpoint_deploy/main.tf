@@ -20,14 +20,14 @@ provider "google" {
   region = "us-central1"
 }
 
-resource "google_vertex_ai_index_endpoint_deployed_index" "deployed_index" {
-  depends_on        = [google_vertex_ai_index_endpoint.index_endpoint]
-  index_endpoint    = google_vertex_ai_index_endpoint.index_endpoint.id
+resource "google_vertex_ai_index_endpoint_deployed_index" "default" {
+  depends_on        = [google_vertex_ai_index_endpoint.default]
+  index_endpoint    = google_vertex_ai_index_endpoint.default.id
   index             = google_vertex_ai_index.default.id
   deployed_index_id = "deployed_index_id"
 }
 
-resource "google_vertex_ai_index_endpoint" "index_endpoint" {
+resource "google_vertex_ai_index_endpoint" "default" {
   display_name            = "sample-endpoint"
   description             = "A sample index endpoint with a public endpoint"
   region                  = "us-central1"
@@ -35,13 +35,13 @@ resource "google_vertex_ai_index_endpoint" "index_endpoint" {
 }
 
 # Cloud Storage bucket name must be unique
-resource "random_id" "bucket_name_suffix" {
+resource "random_id" "default" {
   byte_length = 8
 }
 
 # Create a Cloud Storage bucket
 resource "google_storage_bucket" "bucket" {
-  name                        = "vertex-ai-index-bucket-${random_id.bucket_name_suffix.hex}"
+  name                        = "vertex-ai-index-bucket-${random_id.default.hex}"
   location                    = "us-central1"
   uniform_bucket_level_access = true
 }

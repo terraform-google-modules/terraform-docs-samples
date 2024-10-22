@@ -17,13 +17,13 @@
 
 # [START aiplatform_create_streaming_index_sample]
 # Cloud Storage bucket name must be unique
-resource "random_id" "bucket_name_suffix" {
+resource "random_id" "default" {
   byte_length = 8
 }
 
 # Create a Cloud Storage bucket
 resource "google_storage_bucket" "bucket" {
-  name                        = "vertex-ai-index-bucket-${random_id.bucket_name_suffix.hex}"
+  name                        = "vertex-ai-index-bucket-${random_id.default.hex}"
   location                    = "us-central1"
   uniform_bucket_level_access = true
 }
