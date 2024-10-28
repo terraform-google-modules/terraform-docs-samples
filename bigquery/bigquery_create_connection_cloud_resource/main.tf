@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-# [START bigquery_create_cloud_resource_connection]
+# [START bigquery_create_connection_cloud_resource]
 ## This creates a cloud resource connection.
 ## Note: The cloud resource nested object has only one output field - serviceAccountId.
 resource "google_bigquery_connection" "connection" {
@@ -23,4 +23,4 @@ resource "google_bigquery_connection" "connection" {
   location      = "US"
   cloud_resource {}
 }
-# [END bigquery_create_cloud_resource_connection]
+# [END bigquery_create_connection_cloud_resource]
