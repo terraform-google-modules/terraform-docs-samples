@@ -16,7 +16,6 @@
 
 # [START managedkafka_create_topic_parent]
 resource "google_managed_kafka_cluster" "default" {
-  provider   = google-beta
   cluster_id = "my-cluster-id"
   location   = "us-central1"
   capacity_config {
@@ -34,7 +33,6 @@ resource "google_managed_kafka_cluster" "default" {
 
 # [START managedkafka_create_topic]
 resource "google_managed_kafka_topic" "default" {
-  provider           = google-beta
   topic_id           = "my-topic-id"
   cluster            = google_managed_kafka_cluster.default.cluster_id
   location           = "us-central1"
@@ -44,6 +42,5 @@ resource "google_managed_kafka_topic" "default" {
 # [END managedkafka_create_topic]
 
 data "google_project" "default" {
-  provider = google-beta
 }
 # [END managedkafka_create_topic_parent]
