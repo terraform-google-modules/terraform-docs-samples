@@ -41,6 +41,8 @@ resource "google_service_networking_connection" "default" {
   network                 = google_compute_network.default.id
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.default.name]
+  # Workaround to allow `terraform destroy`, see https://github.com/hashicorp/terraform-provider-google/issues/18729
+  deletion_policy = "ABANDON"
 }
 
 resource "google_compute_global_address" "default" {
