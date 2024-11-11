@@ -14,6 +14,85 @@
 * limitations under the License.
 */
 
+resource "google_service_account" "default" {
+  provider = google-beta
+  account_id   = "tf-test-my-custom-1"
+  display_name = "Custom SA for VM Instance"
+}
+
+resource "google_compute_instance" "default" {
+  provider = google-beta
+  name         = "tf-test-compute-instance-1"
+  machine_type = "n2-standard-2"
+  zone         = "us-central1-a"
+  tags = ["foo", "bar"]
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+      labels = {
+        my_label = "value"
+      }
+    }
+  }
+  // Local SSD disk
+  scratch_disk {
+    interface = "NVME"
+  }
+  network_interface {
+    network = "default"
+    access_config {
+      // Ephemeral public IP
+    }
+  }
+  service_account {
+    # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
+    email  = google_service_account.default.email
+    scopes = ["cloud-platform"]
+  }
+}
+resource "google_backup_dr_backup_vault" "my-backup-vault" {
+    provider = google-beta
+    location ="us-central1"
+    backup_vault_id    = "tf-test-bv-1"
+    description = "This is a second backup vault built by Terraform."
+    backup_minimum_enforced_retention_duration = "100000s"
+    labels = {
+      foo = "bar1"
+      bar = "baz1"
+    }
+    annotations = {
+      annotations1 = "bar1"
+      annotations2 = "baz1"
+    }
+    force_update = "true"
+    force_delete = "true"
+    allow_missing = "true" 
+}
+
+resource "google_backup_dr_backup_plan" "foo" {
+  provider = google-beta
+  location       = "us-central1"
+  backup_plan_id = "tf-test-bp-test-1"
+  resource_type  = "compute.googleapis.com/Instance"
+  backup_vault   = google_backup_dr_backup_vault.my-backup-vault.name
+
+  backup_rules {
+    rule_id                = "rule-1"
+    backup_retention_days  = 2
+
+    standard_schedule {
+      recurrence_type     = "HOURLY"
+      hourly_frequency    = 6
+      time_zone           = "UTC"
+
+      backup_window {
+        start_hour_of_day = 12
+        end_hour_of_day   = 18
+      }
+    }
+  }
+}
+
 # [START backupdr_create_backupplanassociation]
 
 // Before creating a backup plan association, you need to create backup plan(google_backup_dr_backup_plan)
