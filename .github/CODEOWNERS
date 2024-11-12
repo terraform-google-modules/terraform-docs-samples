@@ -16,10 +16,10 @@
 /lb/                    @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /looker/		@terraform-google-modules/cloud-looker-docs @terraform-google-modules/terraform-samples-reviewers
 /media_cdn/             @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
-/network_connectivity/  @terraform-google-modules/dee-infra     
+/network_connectivity/  @terraform-google-modules/dee-infra
 /privateca/             @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /storage/               @terraform-google-modules/cloud-storage-dpe @terraform-google-modules/terraform-samples-reviewers
 /traffic_director/      @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /vpc/                   @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /managedkafka/          @terraform-google-modules/managedkafka-dev-team @terraform-google-modules/terraform-samples-reviewers
-/backupdr/              @terraform-google-modules/dee-GCBDR  @terraform-google-modules/terraform-samples-reviewers
+/backupdr/              @terraform-google-modules/GCBDR  @terraform-google-modules/terraform-samples-reviewers
