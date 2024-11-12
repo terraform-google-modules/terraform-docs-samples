@@ -50,7 +50,7 @@ resource "google_compute_instance" "default" {
     scopes = ["cloud-platform"]
   }
 }
-resource "google_backup_dr_backup_vault" "my-backup-vault" {
+resource "google_backup_dr_backup_vault" "default" {
     provider = google-beta
     location ="us-central1"
     backup_vault_id    = "tf-test-bv-1"
@@ -69,12 +69,12 @@ resource "google_backup_dr_backup_vault" "my-backup-vault" {
     allow_missing = "true" 
 }
 
-resource "google_backup_dr_backup_plan" "foo" {
+resource "google_backup_dr_backup_plan" "default" {
   provider = google-beta
   location       = "us-central1"
   backup_plan_id = "tf-test-bp-test-1"
   resource_type  = "compute.googleapis.com/Instance"
-  backup_vault   = google_backup_dr_backup_vault.my-backup-vault.name
+  backup_vault   = google_backup_dr_backup_vault.default.name
 
   backup_rules {
     rule_id                = "rule-1"
@@ -103,6 +103,6 @@ resource "google_backup_dr_backup_plan_association" "default" {
   backup_plan_association_id = "tf-test-bpa-test"
   resource =   google_compute_instance.default.id
   resource_type= "compute.googleapis.com/Instance"
-  backup_plan = google_backup_dr_backup_plan.foo.name
+  backup_plan = google_backup_dr_backup_plan.default.name
 }
 # [END backupdr_create_backupplanassociation]
