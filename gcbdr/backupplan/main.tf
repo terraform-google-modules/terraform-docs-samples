@@ -16,46 +16,54 @@
 # [START backupdr_create_backupvault]
 
 resource "google_backup_dr_backup_vault" "default" {
-    provider = google-beta
-    location ="us-central1"
-    backup_vault_id    = "bv-1"
-    description = "This is a second backup vault built by Terraform."
-    backup_minimum_enforced_retention_duration = "100000s"
-    labels = {
-      foo = "bar1"
-      bar = "baz1"
-    }
-    annotations = {
-      annotations1 = "bar1"
-      annotations2 = "baz1"
-    }
-    force_update = "true"
-    force_delete = "true"
-    allow_missing = "true" 
+  provider                                   = google-beta
+  location                                   = "us-central1"
+  backup_vault_id                            = "bv-1"
+  description                                = "This is a second backup vault built by Terraform."
+  backup_minimum_enforced_retention_duration = "100000s"
+
+  labels = {
+    foo = "bar1"
+    bar = "baz1"
+  }
+
+  annotations = {
+    annotations1 = "bar1"
+    annotations2 = "baz1"
+  }
+
+  force_update  = "true"
+  force_delete  = "true"
+  allow_missing = "true"
 }
+
 # [END backupdr_create_backupvault]
 
 # [START backupdr_create_backupplan]
 
-// Before creating a backup plan, you need to create backup vault(google_backup_dr_backup_vault). 
+# Before creating a backup plan, you need to create backup vault (google_backup_dr_backup_vault).
 resource "google_backup_dr_backup_plan" "default" {
-  provider = google-beta  
-  location = "us-central1" 
-  backup_plan_id = "bp-test"
-  resource_type= "compute.googleapis.com/Instance"
-  backup_vault = google_backup_dr_backup_vault.default.name
+  provider         = google-beta
+  location         = "us-central1"
+  backup_plan_id   = "bp-test"
+  resource_type    = "compute.googleapis.com/Instance"
+  backup_vault     = google_backup_dr_backup_vault.default.name
+
   backup_rules {
-	rule_id = "rule-1"
-	backup_retention_days = 5
-	standard_schedule {
-	  recurrence_type = "HOURLY"
-	   hourly_frequency = 6
-	    time_zone = "UTC"
-	     backup_window{
-		start_hour_of_day = 0
-		end_hour_of_day = 24
+    rule_id               = "rule-1"
+    backup_retention_days = 5
+
+    standard_schedule {
+      recurrence_type  = "HOURLY"
+      hourly_frequency = 6
+      time_zone        = "UTC"
+
+      backup_window {
+        start_hour_of_day = 0
+        end_hour_of_day   = 24
       }
     }
   }
 }
+
 # [END backupdr_create_backupplan]
