@@ -43,11 +43,11 @@ resource "google_backup_dr_backup_vault" "default" {
 
 # Before creating a backup plan, you need to create backup vault (google_backup_dr_backup_vault).
 resource "google_backup_dr_backup_plan" "default" {
-  provider         = google-beta
-  location         = "us-central1"
-  backup_plan_id   = "bp-test"
-  resource_type    = "compute.googleapis.com/Instance"
-  backup_vault     = google_backup_dr_backup_vault.default.name
+  provider       = google-beta
+  location       = "us-central1"
+  backup_plan_id = "bp-test"
+  resource_type  = "compute.googleapis.com/Instance"
+  backup_vault   = google_backup_dr_backup_vault.default.name
 
   backup_rules {
     rule_id               = "rule-1"
