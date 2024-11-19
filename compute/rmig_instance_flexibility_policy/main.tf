@@ -38,11 +38,11 @@ resource "google_compute_instance_template" "default" {
 
 # [START compute_region_igm_instance_flexibility_policy]
 resource "google_compute_region_instance_group_manager" "default" {
-  name                      = "flex-igm"
-  base_instance_name        = "tf-test-flex-igm"
-  region                    = "us-central1"
+  name               = "flex-igm"
+  base_instance_name = "tf-test-flex-igm"
+  region             = "us-central1"
 
-  target_size = 3
+  target_size                      = 3
   distribution_policy_target_shape = "ANY_SINGLE_ZONE"
 
   version {
@@ -51,19 +51,19 @@ resource "google_compute_region_instance_group_manager" "default" {
 
   instance_flexibility_policy {
     instance_selections {
-      name = "best-choice"
-      rank = 1
-      machine_types = [ "n1-standard-1", "n1-standard-2" ]
+      name          = "best-choice"
+      rank          = 1
+      machine_types = ["n1-standard-1", "n1-standard-2"]
     }
     instance_selections {
-      name = "still-ok"
-      rank = 2
-      machine_types = [ "n2-standard-1" ]
+      name          = "still-ok"
+      rank          = 2
+      machine_types = ["n2-standard-1"]
     }
     instance_selections {
-      name = "if-nothing-else"
-      rank = 3
-      machine_types = [ "e2-standard-2" ]
+      name          = "if-nothing-else"
+      rank          = 3
+      machine_types = ["e2-standard-2"]
     }
   }
 
