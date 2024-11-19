@@ -18,7 +18,7 @@
 # [START gke_standard_regional_labels_cluster]
 resource "google_container_cluster" "default" {
   name               = "gke-standard-regional-labels"
-  location           = "us-west1"
+  location           = "us-central1"
   initial_node_count = 2
 
   resource_labels = {
