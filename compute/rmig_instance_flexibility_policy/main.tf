@@ -24,6 +24,16 @@
 * --instance-selection "rank=3,name=if-nothing-else,machine-type=e2-standard-2"
 */
 
+
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 6.12.0"
+    }
+  }
+}
+
 # [START compute_region_igm_instance_flexibility_policy_parent_tag]
 resource "google_compute_instance_template" "default" {
   name         = "example-template"
