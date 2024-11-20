@@ -22,4 +22,4 @@
 /traffic_director/      @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /vpc/                   @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /managedkafka/          @terraform-google-modules/managedkafka-dev-team @terraform-google-modules/terraform-samples-reviewers
-/backupdr/              terraform-google-modules/gcbdr-samples-team @terraform-google-modules/terraform-samples-reviewers
+/backupdr/              @terraform-google-modules/gcbdr-samples-team @terraform-google-modules/terraform-samples-reviewers
