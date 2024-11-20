@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-# [START backupdr_create_backupvault]
+# [START gcbdr_create_backupvault]
 
 resource "google_backup_dr_backup_vault" "default" {
   provider                                   = google-beta
@@ -38,4 +38,4 @@ resource "google_backup_dr_backup_vault" "default" {
   allow_missing = "true"
 }
 
-# [END backupdr_create_backupvault]
+# [END gcbdr_create_backupvault]

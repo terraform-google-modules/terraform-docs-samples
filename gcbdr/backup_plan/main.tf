@@ -13,7 +13,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-# [START backupdr_create_backupvault]
+# [START gcbdr_create_backupvault]
 
 resource "google_backup_dr_backup_vault" "default" {
   provider                                   = google-beta
@@ -37,9 +37,9 @@ resource "google_backup_dr_backup_vault" "default" {
   allow_missing = "true"
 }
 
-# [END backupdr_create_backupvault]
+# [END gcbdr_create_backupvault]
 
-# [START backupdr_create_backupplan]
+# [START gcbdr_create_backupplan]
 
 # Before creating a backup plan, you need to create backup vault (google_backup_dr_backup_vault).
 resource "google_backup_dr_backup_plan" "default" {
@@ -66,4 +66,4 @@ resource "google_backup_dr_backup_plan" "default" {
   }
 }
 
-# [END backupdr_create_backupplan]
+# [END gcbdr_create_backupplan]

@@ -101,7 +101,7 @@ resource "google_backup_dr_backup_plan" "default" {
   }
 }
 
-# [START backupdr_create_backupplanassociation]
+# [START gcbdr_create_backupplanassociation]
 
 # Before creating a backup plan association, you need to create backup plan (google_backup_dr_backup_plan)
 # and compute instance (google_compute_instance).
@@ -114,4 +114,4 @@ resource "google_backup_dr_backup_plan_association" "default" {
   backup_plan                = google_backup_dr_backup_plan.default.name
 }
 
-# [END backupdr_create_backupplanassociation]
+# [END gcbdr_create_backupplanassociation]
