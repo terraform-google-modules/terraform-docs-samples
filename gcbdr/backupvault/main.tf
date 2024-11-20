@@ -20,7 +20,7 @@ resource "google_backup_dr_backup_vault" "default" {
   provider                                   = google-beta
   location                                   = "us-central1"
   backup_vault_id                            = "bv-1"
-  description                                = "This is a second backup vault built by Terraform."
+  description                                = "This vault is provisioned by Terraform."
   backup_minimum_enforced_retention_duration = "100000s"
 
   labels = {
