@@ -42,6 +42,7 @@ module "projects" {
     "anthos.googleapis.com",
     "anthospolicycontroller.googleapis.com",
     "artifactregistry.googleapis.com",
+    "backupdr.googleapis.com",
     "biglake.googleapis.com",
     "bigquery.googleapis.com",
     "bigqueryconnection.googleapis.com",
