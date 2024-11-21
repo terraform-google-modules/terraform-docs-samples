@@ -15,13 +15,11 @@
 */
 
 resource "google_service_account" "default" {
-  provider     = google-beta
   account_id   = "my-serviceaccount"
   display_name = "Custom SA for VM Instance"
 }
 
 resource "google_compute_instance" "default" {
-  provider     = google-beta
   name         = "my-instance"
   machine_type = "n2-standard-2"
   zone         = "us-central1-a"
