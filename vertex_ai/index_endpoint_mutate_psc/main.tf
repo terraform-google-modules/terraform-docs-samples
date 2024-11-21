@@ -24,7 +24,7 @@ resource "google_vertex_ai_index_endpoint_deployed_index" "default" {
   depends_on        = [google_vertex_ai_index_endpoint.default]
   index_endpoint    = google_vertex_ai_index_endpoint.default.id
   index             = google_vertex_ai_index.default.id
-  deployed_index_id = "deployed_index_id"
+  deployed_index_id = "deployed_index_for_mutate_psc"
   # This example assumes the deployed index endpoint's resources configuration
   # differs from the values specified below. Terraform will mutate the deployed
   # index endpoint's resource configuration to match.
