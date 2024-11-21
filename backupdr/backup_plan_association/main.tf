@@ -16,7 +16,7 @@
 
 resource "google_service_account" "default" {
   provider     = google-beta
-  account_id   = "my-sa"
+  account_id   = "my-serviceaccount"
   display_name = "Custom SA for VM Instance"
 }
 
