@@ -14,12 +14,12 @@
 * limitations under the License.
 */
 
-# [START gcbdr_create_backupvault]
+# [START backupdr_create_backupvault]
 
 resource "google_backup_dr_backup_vault" "default" {
   provider                                   = google-beta
   location                                   = "us-central1"
-  backup_vault_id                            = "bv-1"
+  backup_vault_id                            = "my-vault"
   description                                = "This vault is provisioned by Terraform."
   backup_minimum_enforced_retention_duration = "100000s"
 
@@ -38,4 +38,4 @@ resource "google_backup_dr_backup_vault" "default" {
   allow_missing = "true"
 }
 
-# [END gcbdr_create_backupvault]
+# [END backupdr_create_backupvault]

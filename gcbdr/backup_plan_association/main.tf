@@ -16,13 +16,13 @@
 
 resource "google_service_account" "default" {
   provider     = google-beta
-  account_id   = "tf-test-my-custom-1"
+  account_id   = "my-sa"
   display_name = "Custom SA for VM Instance"
 }
 
 resource "google_compute_instance" "default" {
   provider     = google-beta
-  name         = "tf-test-compute-instance-1"
+  name         = "my-instance"
   machine_type = "n2-standard-2"
   zone         = "us-central1-a"
   tags         = ["foo", "bar"]
@@ -58,7 +58,7 @@ resource "google_compute_instance" "default" {
 resource "google_backup_dr_backup_vault" "default" {
   provider                                   = google-beta
   location                                   = "us-central1"
-  backup_vault_id                            = "tf-test-bv-1"
+  backup_vault_id                            = "my-vault"
   description                                = "This is a second backup vault built by Terraform."
   backup_minimum_enforced_retention_duration = "100000s"
 
@@ -80,7 +80,7 @@ resource "google_backup_dr_backup_vault" "default" {
 resource "google_backup_dr_backup_plan" "default" {
   provider       = google-beta
   location       = "us-central1"
-  backup_plan_id = "tf-test-bp-test-1"
+  backup_plan_id = "my-bp"
   resource_type  = "compute.googleapis.com/Instance"
   backup_vault   = google_backup_dr_backup_vault.default.name
 
@@ -101,17 +101,17 @@ resource "google_backup_dr_backup_plan" "default" {
   }
 }
 
-# [START gcbdr_create_backupplanassociation]
+# [START backupdr_create_backupplanassociation]
 
 # Before creating a backup plan association, you need to create backup plan (google_backup_dr_backup_plan)
 # and compute instance (google_compute_instance).
 resource "google_backup_dr_backup_plan_association" "default" {
   provider                   = google-beta
   location                   = "us-central1"
-  backup_plan_association_id = "tf-test-bpa-test"
+  backup_plan_association_id = "my-bpa"
   resource                   = google_compute_instance.default.id
   resource_type              = "compute.googleapis.com/Instance"
   backup_plan                = google_backup_dr_backup_plan.default.name
 }
 
-# [END gcbdr_create_backupplanassociation]
+# [END backupdr_create_backupplanassociation]

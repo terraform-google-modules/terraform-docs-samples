@@ -13,12 +13,12 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-# [START gcbdr_create_backupvault]
+# [START backupdr_create_backupvault]
 
 resource "google_backup_dr_backup_vault" "default" {
   provider                                   = google-beta
   location                                   = "us-central1"
-  backup_vault_id                            = "bv-1"
+  backup_vault_id                            = "my-vault"
   description                                = "This is a second backup vault built by Terraform."
   backup_minimum_enforced_retention_duration = "100000s"
 
@@ -37,15 +37,15 @@ resource "google_backup_dr_backup_vault" "default" {
   allow_missing = "true"
 }
 
-# [END gcbdr_create_backupvault]
+# [END backupdr_create_backupvault]
 
-# [START gcbdr_create_backupplan]
+# [START backupdr_create_backupplan]
 
 # Before creating a backup plan, you need to create backup vault (google_backup_dr_backup_vault).
 resource "google_backup_dr_backup_plan" "default" {
   provider       = google-beta
   location       = "us-central1"
-  backup_plan_id = "bp-test"
+  backup_plan_id = "my-bp"
   resource_type  = "compute.googleapis.com/Instance"
   backup_vault   = google_backup_dr_backup_vault.default.name
 
@@ -66,4 +66,4 @@ resource "google_backup_dr_backup_plan" "default" {
   }
 }
 
-# [END gcbdr_create_backupplan]
+# [END backupdr_create_backupplan]
