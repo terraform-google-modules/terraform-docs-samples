@@ -18,7 +18,7 @@
 # google_network_management_vpc_flow_logs_config.vpc_fl_config will be created
 resource "google_network_management_vpc_flow_logs_config" "vpc_fl_config" {
   aggregation_interval    = "INTERVAL_10_MIN"
-  description             = "VPC Flow Logs over a VPN Gateway."
+  description             = "VPC Flow Logs over an Interconnect Attachment."
   flow_sampling           = 0.7
   interconnect_attachment = "projects/example_project/regions/us-central1/interconnectAttachments/example_interconnect"
   location                = "global"
