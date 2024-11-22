@@ -73,8 +73,11 @@ resource "google_privateca_certificate_authority" "sub_ca" {
     x509_config {
       ca_options {
         is_ca = true
-        # Force the sub CA to only issue leaf certs
-        max_issuer_path_length = 0
+        # Force the sub CA to only issue leaf certs.
+        # Use e.g.
+        #    max_issuer_path_length = 1
+        # if you need to chain more subordinates.
+        zero_max_issuer_path_length = true
       }
       key_usage {
         base_key_usage {
