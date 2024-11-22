@@ -26,12 +26,26 @@ resource "google_managed_kafka_cluster" "default" {
   gcp_config {
     access_config {
       network_configs {
-        subnet = "projects/${data.google_project.default.number}/regions/us-central1/subnetworks/default"
+        subnet = google_compute_subnetwork.default.id
       }
     }
   }
 }
 # [END managedkafka_create_cluster]
+
+# [START managedkafka_subnetwork]
+resource "google_compute_subnetwork" "default" {
+  name          = "test-subnetwork"
+  ip_cidr_range = "10.2.0.0/16"
+  region        = "us-central1"
+  network       = google_compute_network.default.id
+}
+
+resource "google_compute_network" "default" {
+  name                    = "test-network"
+  auto_create_subnetworks = false
+}
+# [END managedkafka_subnetwork]
 
 data "google_project" "default" {
 }
