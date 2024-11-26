@@ -13,15 +13,17 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-# [START bigquery_create_dataset_external]
+# [START bigquery_create_spanner_external_dataset]
 resource "google_bigquery_dataset" "default" {
   dataset_id    = "my_external_dataset"
-  friendly_name = "my_external_dataset"
+  friendly_name = "My external dataset"
   description   = "This is a test description."
   location      = "US"
   external_dataset_reference {
-    external_source = "google-cloudspanner:/projects/my_project/instances/my_instance/databases/my_database"
-    connection      = ""
+    # The full identifier of your Spanner database
+    external_source = "google-cloudspanner:/projects/mkomorowski-test/instances/test/databases/hacker-news"
+    # Must be empty
+    connection = ""
   }
 }
-# [END bigquery_create_dataset_external]
+# [END bigquery_create_spanner_external_dataset]
