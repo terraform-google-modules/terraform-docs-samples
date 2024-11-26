@@ -48,7 +48,7 @@ resource "google_compute_network" "default" {
 
 # [START managedkafka_create_topic]
 resource "google_managed_kafka_topic" "default" {
-  project            = data.google_project.default.project_id
+  project            = data.google_project.default.project_id # Replace this with your project ID in quotes
   topic_id           = "my-topic-id"
   cluster            = google_managed_kafka_cluster.default.cluster_id
   location           = "us-central1"
