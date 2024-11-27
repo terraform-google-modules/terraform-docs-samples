@@ -21,7 +21,7 @@ resource "google_bigquery_dataset" "default" {
   location      = "US"
   external_dataset_reference {
     # The full identifier of your Spanner database
-    external_source = "google-cloudspanner:/projects/mkomorowski-test/instances/test/databases/hacker-news"
+    external_source = "google-cloudspanner:/projects/my_project/instances/my_instance/databases/my_database"
     # Must be empty
     connection = ""
   }
