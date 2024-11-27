@@ -20,9 +20,9 @@ resource "google_bigquery_dataset" "default" {
   description   = "This is a test description."
   location      = "US"
   external_dataset_reference {
-    # The full identifier of your Spanner database
+    # The full identifier of your Spanner database.
     external_source = "google-cloudspanner:/projects/my_project/instances/my_instance/databases/my_database"
-    # Must be empty
+    # Must be empty for a Spanner external dataset.
     connection = ""
   }
 }
