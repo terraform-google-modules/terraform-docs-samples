@@ -38,7 +38,7 @@ resource "google_compute_disk" "secondary-disk" {
 }
 # [END secondary_disk_setup_for_async_replication]
 
-/*
+
 # [START setup_to_start_asynchronous_replication]
 resource "google_compute_disk_async_replication" "replication" {
   primary_disk = google_compute_disk.primary-disk.id
@@ -46,5 +46,5 @@ resource "google_compute_disk_async_replication" "replication" {
     disk = google_compute_disk.secondary-disk.id
   }
 }
-# [END setup_to_start_asynchronous_replication]*/
+# [END setup_to_start_asynchronous_replication]
 
