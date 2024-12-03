@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+ 
+# [START compute_disk_async_replication_parent_tag]
 # [START primary_disk_setup_for_async_replication]
 resource "google_compute_disk" "primary-disk" {
   name = "primary-disk"
@@ -47,4 +48,4 @@ resource "google_compute_disk_async_replication" "replication" {
   }
 }
 # [END setup_to_start_asynchronous_replication]
-
+# [END compute_disk_async_replication_parent_tag]
