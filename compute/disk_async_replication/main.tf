@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,39 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 # [START compute_disk_async_replication_parent_tag]
-# [START primary_disk_setup_for_async_replication]
-resource "google_compute_disk" "primary-disk" {
+# [START compute_disk_primary]
+resource "google_compute_disk" "primary_disk" {
   name = "primary-disk"
   type = "pd-ssd"
   zone = "europe-west4-a"
 
   physical_block_size_bytes = 4096
 }
-# [END primary_disk_setup_for_async_replication]
+# [END compute_disk_primary]
 
-# [START secondary_disk_setup_for_async_replication]
-resource "google_compute_disk" "secondary-disk" {
+# [START compute_disk_secondary]
+resource "google_compute_disk" "secondary_disk" {
   name = "secondary-disk"
   type = "pd-ssd"
   zone = "europe-west3-a"
 
   async_primary_disk {
-    disk = google_compute_disk.primary-disk.id
+    disk = google_compute_disk.primary_disk.id
   }
 
   physical_block_size_bytes = 4096
 }
-# [END secondary_disk_setup_for_async_replication]
+# [END compute_disk_secondary]
 
 
-# [START setup_to_start_asynchronous_replication]
-resource "google_compute_disk_async_replication" "replication" {
-  primary_disk = google_compute_disk.primary-disk.id
+# [START compute_disk_async_replication]
+resource "google_compute_disk_async_replication" "default" {
+  primary_disk = google_compute_disk.primary_disk.id
   secondary_disk {
-    disk = google_compute_disk.secondary-disk.id
+    disk = google_compute_disk.secondary_disk.id
   }
 }
-# [END setup_to_start_asynchronous_replication]
+# [END compute_disk_async_replication]
 # [END compute_disk_async_replication_parent_tag]
