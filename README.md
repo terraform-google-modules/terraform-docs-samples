@@ -22,7 +22,7 @@ authenticates Terraform, letting you get started with less setup.
 
 1. Clone this repository:
 
-   git clone https://github.com/GoogleCloudPlatform/terraform-docs-samples.git
+   git clone [https://github.com/terraform-google-modules/terraform-docs-samples.git](https://github.com/terraform-google-modules/terraform-docs-samples.git)
 
 ## How to run a sample
 
