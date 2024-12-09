@@ -15,11 +15,40 @@
 */
 
 # [START vpcflowlogs_interconnect_attachment_basic]
-resource "google_network_management_vpc_flow_logs_config" "vpc_fl_config" {
+resource "google_network_management_vpc_flow_logs_config" "vpc_flow_logs_config" {
   provider                = google-beta
-  interconnect_attachment = "projects/example_project/regions/us-central1/interconnectAttachments/example_interconnect"
+  interconnect_attachment = "projects/${data.google_project.project.project_id}/regions/us-east4/interconnectAttachments/${google_compute_interconnect_attachment.attachment.name}"
   location                = "global"
-  project                 = "example_project"
-  vpc_flow_logs_config_id = "example-config-id"
+  project                 = data.google_project.project.project_id
+  vpc_flow_logs_config_id = "vpcflowlogs-config"
+}
+
+data "google_project" "project" {
+  provider = google-beta
+}
+
+#Create an Interconnect Attachment
+resource "google_compute_network" "network" {
+  provider = google-beta
+  name     = "vpcflowlogs-network"
+}
+
+resource "google_compute_router" "router" {
+  provider = google-beta
+  name     = "vpcflowlogs-router"
+  network  = google_compute_network.network.name
+  bgp {
+    asn = 16550
+  }
+}
+
+resource "google_compute_interconnect_attachment" "attachment" {
+  provider                 = google-beta
+  name                     = "vpcflowlogs-attachment"
+  project                  = data.google_project.project.project_id
+  router                   = google_compute_router.router.id
+  edge_availability_domain = "AVAILABILITY_DOMAIN_1"
+  type                     = "PARTNER"
+  mtu                      = 1500
 }
 # [END vpcflowlogs_interconnect_attachment_basic]

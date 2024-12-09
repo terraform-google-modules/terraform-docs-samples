@@ -15,11 +15,81 @@
 */
 
 # [START vpcflowlogs_vpn_tunnel_basic]
-resource "google_network_management_vpc_flow_logs_config" "vpc_fl_config" {
-  location                = "global"
-  project                 = "example_project"
+resource "google_network_management_vpc_flow_logs_config" "vpc_flow_logs_config" {
   provider                = google-beta
-  vpc_flow_logs_config_id = "example-config-id"
-  vpn_tunnel              = "projects/example_project/regions/us-central1/vpnTunnels/example_vpn_tunnel"
+  vpn_tunnel = "projects/${data.google_project.project.project_id}/regions/us-east4/vpnTunnels/${google_compute_vpn_tunnel.tunnel.name}"
+  location                = "global"
+  project                 = data.google_project.project.project_id
+  vpc_flow_logs_config_id = "vpcflowlogs-config"
+}
+
+data "google_project" "project" {
+  provider = google-beta
+}
+
+# Create a VPN Tunnel
+resource "google_compute_vpn_tunnel" "tunnel" {
+  provider           = google-beta
+  name               = "vpcflowlogs-tunnel"
+  peer_ip            = "15.0.0.120"
+  shared_secret      = "a secret message"
+  target_vpn_gateway = google_compute_vpn_gateway.gatway.id
+
+  depends_on = [
+    google_compute_forwarding_rule.fr_esp,
+    google_compute_forwarding_rule.fr_udp500,
+    google_compute_forwarding_rule.fr_udp4500,
+  ]
+}
+
+resource "google_compute_vpn_gateway" "gatway" {
+  provider = google-beta
+  name     = "vpcflowlogs-gateway"
+  network  = google_compute_network.network.id
+}
+
+resource "google_compute_network" "network" {
+  provider = google-beta
+  name     = "vpcflowlogs-network"
+}
+
+resource "google_compute_address" "vpn_static_ip" {
+  provider = google-beta
+  name     = "vpcflowlogs-vpn-static-ip"
+}
+
+resource "google_compute_forwarding_rule" "fr_esp" {
+  provider    = google-beta
+  name        = "vpcflowlogs-fr-esp"
+  ip_protocol = "ESP"
+  ip_address  = google_compute_address.vpn_static_ip.address
+  target      = google_compute_vpn_gateway.gatway.id
+}
+
+resource "google_compute_forwarding_rule" "fr_udp500" {
+  provider    = google-beta
+  name        = "vpcflowlogs-fr-udp500"
+  ip_protocol = "UDP"
+  port_range  = "500"
+  ip_address  = google_compute_address.vpn_static_ip.address
+  target      = google_compute_vpn_gateway.gatway.id
+}
+
+resource "google_compute_forwarding_rule" "fr_udp4500" {
+  provider    = google-beta
+  name        = "vpcflowlogs-fr-udp4500"
+  ip_protocol = "UDP"
+  port_range  = "4500"
+  ip_address  = google_compute_address.vpn_static_ip.address
+  target      = google_compute_vpn_gateway.gatway.id
+}
+
+resource "google_compute_route" "route" {
+  provider            = google-beta
+  name                = "vpcflowlogs-route"
+  network             = google_compute_network.network.name
+  dest_range          = "15.0.0.0/24"
+  priority            = 1000
+  next_hop_vpn_tunnel = google_compute_vpn_tunnel.tunnel.id
 }
 # [END vpcflowlogs_vpn_tunnel_basic]
