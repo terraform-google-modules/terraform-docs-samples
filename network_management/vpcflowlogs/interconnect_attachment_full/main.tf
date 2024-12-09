@@ -14,8 +14,7 @@
 * limitations under the License.
 */
 
-# [START vpcflowlogs_create_vpc_flow_logs_config_over_interconnect_attachment_with_parameters]
-# google_network_management_vpc_flow_logs_config.vpc_fl_config will be created
+# [START vpcflowlogs_interconnect_attachment_full]
 resource "google_network_management_vpc_flow_logs_config" "vpc_fl_config" {
   aggregation_interval    = "INTERVAL_10_MIN"
   description             = "VPC Flow Logs over an Interconnect Attachment."
@@ -28,4 +27,4 @@ resource "google_network_management_vpc_flow_logs_config" "vpc_fl_config" {
   state                   = "ENABLED"
   vpc_flow_logs_config_id = "example-config-id"
 }
-# [END vpcflowlogs_create_vpc_flow_logs_config_over_interconnect_attachment_with_parameters]
+# [END vpcflowlogs_interconnect_attachment_full]

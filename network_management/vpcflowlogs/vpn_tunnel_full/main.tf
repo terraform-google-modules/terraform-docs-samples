@@ -14,9 +14,7 @@
 * limitations under the License.
 */
 
-# [START vpcflowlogs_create_vpc_flow_logs_config_over_vpn_tunnel_with_parameters]
-
-# google_network_management_vpc_flow_logs_config.vpc_fl_config will be created
+# [START vpcflowlogs_vpn_tunnel_full]
 resource "google_network_management_vpc_flow_logs_config" "vpc_fl_config" {
   aggregation_interval    = "INTERVAL_10_MIN"
   description             = "VPC Flow Logs over a VPN Gateway."
@@ -29,4 +27,4 @@ resource "google_network_management_vpc_flow_logs_config" "vpc_fl_config" {
   vpc_flow_logs_config_id = "example-config-id"
   vpn_tunnel              = "projects/example_project/regions/us-central1/vpnTunnels/example_vpn_tunnel"
 }
-# [END vpcflowlogs_create_vpc_flow_logs_config_over_vpn_tunnel_with_parameters]
+# [END vpcflowlogs_vpn_tunnel_full]

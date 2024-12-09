@@ -14,13 +14,12 @@
 * limitations under the License.
 */
 
-# [START vpcflowlogs_create_basic_vpc_flow_logs_config_over_interconnect_attachment]
-# google_network_management_vpc_flow_logs_config.vpc_fl_config will be created
+# [START vpcflowlogs_vpn_tunnel_basic]
 resource "google_network_management_vpc_flow_logs_config" "vpc_fl_config" {
-  interconnect_attachment = "projects/example_project/regions/us-central1/interconnectAttachments/example_interconnect"
   location                = "global"
   project                 = "example_project"
   provider                = google-beta
   vpc_flow_logs_config_id = "example-config-id"
+  vpn_tunnel              = "projects/example_project/regions/us-central1/vpnTunnels/example_vpn_tunnel"
 }
-# [END vpcflowlogs_create_basic_vpc_flow_logs_config_over_interconnect_attachment]
+# [END vpcflowlogs_vpn_tunnel_basic]
