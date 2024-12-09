@@ -17,7 +17,7 @@
 # [START vpcflowlogs_vpn_tunnel_full]
 resource "google_network_management_vpc_flow_logs_config" "vpc_flow_logs_config" {
   provider                = google-beta
-  vpn_tunnel = "projects/${data.google_project.project.project_id}/regions/us-east4/vpnTunnels/${google_compute_vpn_tunnel.tunnel.name}"
+  vpn_tunnel              = "projects/${data.google_project.project.project_id}/regions/us-east4/vpnTunnels/${google_compute_vpn_tunnel.tunnel.name}"
   location                = "global"
   project                 = data.google_project.project.project_id
   vpc_flow_logs_config_id = "vpcflowlogs-config"
