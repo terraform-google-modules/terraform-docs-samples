@@ -20,7 +20,7 @@
 * --region us-central1 \
 * --size 3 \
 * --template example-template \
-* --target-distribution-shape=any-single-zone \
+* --target-distribution-shape any-single-zone \
 * --instance-redistribution-type none \
 * --instance-selection-machine-types "machine-type=n1-standard-16,n2-standard-16,e2-standard-16"
 */
@@ -34,7 +34,7 @@ terraform {
   }
 }
 
-# [START compute_region_igm_instance_flexibility_policy_parent_tag]
+# [START compute_rmig_instance_flexibility_policy_without_preference_parent_tag]
 resource "google_compute_instance_template" "default" {
   name         = "example-template"
   machine_type = "e2-medium"
@@ -46,7 +46,7 @@ resource "google_compute_instance_template" "default" {
   }
 }
 
-# [START compute_region_igm_instance_flexibility_policy]
+# [START compute_rmig_instance_flexibility_policy_without_preference]
 resource "google_compute_region_instance_group_manager" "default" {
   name               = "flex-igm"
   base_instance_name = "tf-test-flex-igm"
@@ -74,5 +74,5 @@ resource "google_compute_region_instance_group_manager" "default" {
     max_unavailable_fixed        = 6
   }
 }
-# [END compute_region_igm_instance_flexibility_policy]
-# [END compute_region_igm_instance_flexibility_policy_parent_tag]
+# [END compute_rmig_instance_flexibility_policy_without_preference]
+# [END compute_rmig_instance_flexibility_policy_without_preference_parent_tag]
