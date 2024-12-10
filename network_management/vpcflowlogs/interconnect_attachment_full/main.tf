@@ -14,47 +14,43 @@
 * limitations under the License.
 */
 
-# [START vpcflowlogs_interconnect_attachment_full]
+# [START vpcflowlogs_interconnect_attachment_full_parent_tag]
+# [START vpcflowlogs_interconnect_attachment_full_vpcflow]
 resource "google_network_management_vpc_flow_logs_config" "vpc_flow_logs_config" {
-  provider                = google-beta
-  interconnect_attachment = "projects/${data.google_project.project.project_id}/regions/us-east4/interconnectAttachments/${google_compute_interconnect_attachment.attachment.name}"
-  location                = "global"
-  project                 = data.google_project.project.project_id
+  provider = google-beta
+
   vpc_flow_logs_config_id = "vpcflowlogs-config"
+  location                = "global"
+  interconnect_attachment = google_compute_interconnect_attachment.attachment.id
   aggregation_interval    = "INTERVAL_10_MIN"
   description             = "VPC Flow Logs over an Interconnect Attachment."
   flow_sampling           = 0.7
   metadata                = "INCLUDE_ALL_METADATA"
   state                   = "ENABLED"
-
 }
+# [END vpcflowlogs_interconnect_attachment_full_vpcflow]
 
-data "google_project" "project" {
-  provider = google-beta
-}
-
-#Create an Interconnect Attachment
+# [START vpcflowlogs_interconnect_attachment_full_network]
 resource "google_compute_network" "network" {
-  provider = google-beta
-  name     = "vpcflowlogs-network"
+  name = "vpcflowlogs-network"
 }
 
 resource "google_compute_router" "router" {
-  provider = google-beta
-  name     = "vpcflowlogs-router"
-  network  = google_compute_network.network.name
+  name    = "vpcflowlogs-router"
+  region  = "us-central1"
+  network = google_compute_network.network.name
   bgp {
     asn = 16550
   }
 }
 
 resource "google_compute_interconnect_attachment" "attachment" {
-  provider                 = google-beta
   name                     = "vpcflowlogs-attachment"
-  project                  = data.google_project.project.project_id
+  region                   = "us-central1"
   router                   = google_compute_router.router.id
   edge_availability_domain = "AVAILABILITY_DOMAIN_1"
   type                     = "PARTNER"
   mtu                      = 1500
 }
-# [END vpcflowlogs_interconnect_attachment_full]
+# [END vpcflowlogs_interconnect_attachment_full_network]
+# [END vpcflowlogs_interconnect_attachment_full_parent_tag]
