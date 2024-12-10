@@ -40,16 +40,16 @@ resource "google_compute_vpn_tunnel" "tunnel" {
 }
 
 resource "google_compute_vpn_gateway" "gatway" {
-  name     = "vpcflowlogs-gateway"
-  network  = google_compute_network.network.id
+  name    = "vpcflowlogs-gateway"
+  network = google_compute_network.network.id
 }
 
 resource "google_compute_network" "network" {
-  name     = "vpcflowlogs-network"
+  name = "vpcflowlogs-network"
 }
 
 resource "google_compute_address" "vpn_static_ip" {
-  name     = "vpcflowlogs-vpn-static-ip"
+  name = "vpcflowlogs-vpn-static-ip"
 }
 
 resource "google_compute_forwarding_rule" "fr_esp" {
