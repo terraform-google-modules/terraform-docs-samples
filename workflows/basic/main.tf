@@ -43,6 +43,9 @@ resource "google_workflows_workflow" "default" {
   region          = "us-central1"
   description     = "A sample workflow"
   service_account = google_service_account.default.id
+
+  deletion_protection = false # set to "true" in production
+
   labels = {
     env = "test"
   }
