@@ -93,6 +93,8 @@ resource "google_workflows_workflow" "default" {
   region      = "us-central1"
   description = "Workflow that returns information about storage events"
 
+  deletion_protection = false # set to "true" in production
+
   # Note that $$ is needed for Terraform
   source_contents = <<EOF
   main:
