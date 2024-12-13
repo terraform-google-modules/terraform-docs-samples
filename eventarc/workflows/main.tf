@@ -96,9 +96,9 @@ resource "google_project_iam_member" "pubsubpublisher" {
 # [START eventarc_workflows_deploy]
 # Create a workflow
 resource "google_workflows_workflow" "default" {
-  name        = "storage-workflow-tf"
-  region      = "us-central1"
-  description = "Workflow that returns information about storage events"
+  name            = "storage-workflow-tf"
+  region          = "us-central1"
+  description     = "Workflow that returns information about storage events"
   service_account = google_service_account.eventarc.email
 
   deletion_protection = false # set to "true" in production
