@@ -42,9 +42,16 @@ steps:
         fi
       done < _changed_folders
 
+      # Remove base folders without changes
+      for d in *; do
+          if ! grep -q "^$d$" _changed_folders && [[ "$d" != "test" ]]; then
+            rm -rf $d;
+          fi
+      done
+
       # Remove leaf folders without changes or non-tf resources
       for d in `find . -type d -name 'test' -prune -o -links 2 -printf '%P\n'`; do
-          if ! grep -q "^$d" _changed_folders && ! [ -n "$(find $d -maxdepth 1 -not -name '*.tf' -type f -print -quit)" ]; then
+          if ! grep -q "^$d" _changed_folders && ! [ -n "$(find $d -maxdepth 1 -not -name '*.tf' -and -not -name 'test.yaml' -type f -print -quit)" ]; then
             rm -rf $d
           fi
       done
