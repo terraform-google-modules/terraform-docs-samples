@@ -45,13 +45,6 @@ resource "google_service_account" "eventarc" {
   display_name = "Eventarc trigger service account"
 }
 
-# Grant permission to receive Eventarc events
-resource "google_project_iam_member" "eventreceiver" {
-  project = data.google_project.project.id
-  role    = "roles/eventarc.eventReceiver"
-  member  = "serviceAccount:${google_service_account.eventarc.email}"
-}
-
 # Grant permission to invoke Cloud Run services
 resource "google_project_iam_member" "runinvoker" {
   project = data.google_project.project.id
