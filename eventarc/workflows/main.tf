@@ -16,15 +16,15 @@
 
 # [START eventarc_workflows_parent_tag]
 # [START eventarc_terraform_workflows_enableapis]
-# Enable Eventarc API
-resource "google_project_service" "eventarc" {
-  service            = "eventarc.googleapis.com"
-  disable_on_destroy = false
-}
-
 # Enable Workflows API
 resource "google_project_service" "workflows" {
   service            = "workflows.googleapis.com"
+  disable_on_destroy = false
+}
+
+# Enable Eventarc API
+resource "google_project_service" "eventarc" {
+  service            = "eventarc.googleapis.com"
   disable_on_destroy = false
 }
 
@@ -45,7 +45,7 @@ resource "google_service_account" "eventarc" {
   display_name = "Eventarc Workflows Service Account"
 }
 
-# Grant permission to invoke workflows
+# Grant permission to invoke Workflows
 resource "google_project_iam_member" "workflowsinvoker" {
   project = data.google_project.project.id
   role    = "roles/workflows.invoker"
@@ -56,6 +56,13 @@ resource "google_project_iam_member" "workflowsinvoker" {
 resource "google_project_iam_member" "eventreceiver" {
   project = data.google_project.project.id
   role    = "roles/eventarc.eventReceiver"
+  member  = "serviceAccount:${google_service_account.eventarc.email}"
+}
+
+# Grant permission to write logs
+resource "google_project_iam_member" "logwriter" {
+  project = data.google_project.project.id
+  role    = "roles/logging.logWriter"
   member  = "serviceAccount:${google_service_account.eventarc.email}"
 }
 # [END eventarc_workflows_create_serviceaccount]
@@ -89,9 +96,10 @@ resource "google_project_iam_member" "pubsubpublisher" {
 # [START eventarc_workflows_deploy]
 # Create a workflow
 resource "google_workflows_workflow" "default" {
-  name        = "storage-workflow-tf"
-  region      = "us-central1"
-  description = "Workflow that returns information about storage events"
+  name            = "storage-workflow-tf"
+  region          = "us-central1"
+  description     = "Workflow that returns information about storage events"
+  service_account = google_service_account.eventarc.email
 
   deletion_protection = false # set to "true" in production
 
