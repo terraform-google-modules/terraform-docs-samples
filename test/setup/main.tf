@@ -56,6 +56,7 @@ module "projects" {
     "cloudtasks.googleapis.com",
     "connectgateway.googleapis.com",
     "container.googleapis.com",
+    "developerconnect.googleapis.com",
     "dns.googleapis.com",
     "eventarc.googleapis.com",
     "gkehub.googleapis.com",
