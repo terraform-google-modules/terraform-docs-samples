@@ -48,9 +48,9 @@ resource "google_integrations_client" "example" {
   run_as_service_account     = google_service_account.default.email
   cloud_kms_config {
     kms_location   = "us-east1"
-    kms_ring       = google_kms_key_ring.default.id
-    key            = google_kms_crypto_key.default.id
-    key_version    = google_kms_crypto_key_version.default.id
+    kms_ring       = basename(google_kms_key_ring.default.id)
+    key            = basename(google_kms_crypto_key.default.id)
+    key_version    = basename(google_kms_crypto_key_version.default.id)
     kms_project_id = data.google_project.default.project_id
   }
 }
