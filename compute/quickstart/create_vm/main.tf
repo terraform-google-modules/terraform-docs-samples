@@ -18,7 +18,7 @@
 provider "google" {
   project = "fiery-outpost-445408-c6"
   region  = "asia-southeast3"
-  credentials = file("D:\장진호\terraform\gcp-key-json-file\fiery-outpost-445408-c6-53d7148b215c.json")
+  credentials = file("D:\\장진호\\terraform\\gcp-key-json-file\\fiery-outpost-445408-c6-53d7148b215c.json")
 }
 resource "google_compute_instance" "default" {
   name         = "my-vm"
