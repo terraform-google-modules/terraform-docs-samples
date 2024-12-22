@@ -18,6 +18,7 @@
 resource "google_compute_instance" "default" {
   name         = "my-vm"
   machine_type = "n1-standard-1"
+  # 나에게 맞는 region을 지정정
   zone         = "asia-southeast3-b"
 
   boot_disk {
