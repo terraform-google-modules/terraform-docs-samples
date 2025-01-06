@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-# [START cloudrun_service_add_tag]
+# [START cloudrun_service_add_tag2]
 resource "google_cloud_run_v2_service" "default" {
   name     = "my-service"
   location = "us-central1"
@@ -40,4 +40,4 @@ resource "google_cloud_run_v2_service" "default" {
     type     = "TRAFFIC_TARGET_ALLOCATION_TYPE_REVISION"
   }
 }
-# [END cloudrun_service_add_tag]
+# [END cloudrun_service_add_tag2]
