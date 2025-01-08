@@ -28,7 +28,7 @@ resource "google_project_service" "default" {
 }
 
 resource "google_container_cluster" "default" {
-  name     = "gke-autopilot-mesh"
+  name     = "gke-autopilot-policycontroller"
   location = "us-central1"
 
   enable_autopilot = true
