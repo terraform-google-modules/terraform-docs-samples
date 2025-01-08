@@ -15,23 +15,6 @@
 */
 
 # [START gke_enterprise_config_sync_oci]
-data "google_project" "default" {}
-
-resource "google_container_cluster" "default" {
-  name     = "gke-autopilot-basic"
-  location = "us-central1"
-
-  fleet {
-    project = data.google_project.default.project_id
-  }
-
-  enable_autopilot = true
-
-  # Set `deletion_protection` to `true` will ensure that one cannot
-  # accidentally delete this instance by use of Terraform.
-  deletion_protection = false
-}
-
 resource "google_gke_hub_feature" "configmanagement_feature_member" {
   name     = "configmanagement"
   location = "global"
