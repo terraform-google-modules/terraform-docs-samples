@@ -23,7 +23,6 @@ resource "google_sql_database_instance" "default" {
     tier = "db-custom-4-26624"
     backup_configuration {
       enabled                        = true
-      binary_log_enabled             = true
       start_time                     = "20:55"
       transaction_log_retention_days = "3"
     }
