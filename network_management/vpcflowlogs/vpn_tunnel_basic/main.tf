@@ -17,8 +17,6 @@
 # [START vpcflowlogs_vpn_tunnel_basic_parent_tag]
 # [START vpcflowlogs_vpn_tunnel_basic_vpcflow]
 resource "google_network_management_vpc_flow_logs_config" "vpc_flow_logs_config" {
-  provider = google-beta
-
   vpc_flow_logs_config_id = "vpcflowlogs-config"
   location                = "global"
   vpn_tunnel              = google_compute_vpn_tunnel.tunnel.id
