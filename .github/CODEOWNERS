@@ -7,7 +7,7 @@
 /build/                 @terraform-google-modules/terraform-samples-git-admins @terraform-google-modules/cft-admins @terraform-google-modules/cloud-samples-infra
 
 /bigquery/              @terraform-google-modules/bigquery-terraform-swe @terraform-google-modules/terraform-samples-reviewers
-/cloud_sql/             @terraform-google-modules/infra-db-sdk @terraform-google-modules/terraform-samples-reviewers
+/cloud_sql/             @terraform-google-modules/terraform-samples-reviewers
 /cloudvpn/              @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /composer/              @terraform-google-modules/cloud-dpes-composer @terraform-google-modules/terraform-samples-reviewers
 /compute/               @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
