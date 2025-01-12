@@ -17,8 +17,6 @@
 # [START vpcflowlogs_interconnect_attachment_full_parent_tag]
 # [START vpcflowlogs_interconnect_attachment_full_vpcflow]
 resource "google_network_management_vpc_flow_logs_config" "vpc_flow_logs_config" {
-  provider = google-beta
-
   vpc_flow_logs_config_id = "vpcflowlogs-config"
   location                = "global"
   interconnect_attachment = google_compute_interconnect_attachment.attachment.id
