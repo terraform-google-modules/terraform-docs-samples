@@ -41,7 +41,7 @@ resource "google_network_security_mirroring_endpoint_group" "default" {
   mirroring_deployment_group  = google_network_security_mirroring_deployment_group.default.id
 }
 
-resource "google_network_security_mirroring_endpoint_group_association" "endpoint_group_association" {
+resource "google_network_security_mirroring_endpoint_group_association" "default" {
   provider                                = google-beta
   mirroring_endpoint_group_association_id = "mirroring-endpoint-group-association"
   location                                = "global"
