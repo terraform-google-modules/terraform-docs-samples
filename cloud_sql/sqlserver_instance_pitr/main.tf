@@ -19,6 +19,7 @@ resource "google_sql_database_instance" "default" {
   name             = "sqlserver-instance-pitr"
   region           = "asia-northeast1"
   database_version = "SQLSERVER_2019_ENTERPRISE"
+  root_password    = "INSERT-PASSWORD-HERE"
   settings {
     tier = "db-custom-4-26624"
     backup_configuration {
