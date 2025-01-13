@@ -64,6 +64,7 @@ module "projects" {
     "looker.googleapis.com",
     "networkconnectivity.googleapis.com",
     "networkmanagement.googleapis.com",
+    "networksecurity.googleapis.com",
     "notebooks.googleapis.com",
     "privateca.googleapis.com",
     "pubsub.googleapis.com",
