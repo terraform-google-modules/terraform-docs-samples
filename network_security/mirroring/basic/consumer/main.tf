@@ -27,18 +27,18 @@ resource "google_compute_network" "consumer_network" {
   auto_create_subnetworks = false
 }
 
-resource "google_network_security_mirroring_deployment_group" "deployment_group" {
+resource "google_network_security_mirroring_deployment_group" "default" {
   provider                      = google-beta
   mirroring_deployment_group_id = "mirroring-deployment-group"
   location                      = "global"
   network                       = google_compute_network.producer_network.id
 }
 
-resource "google_network_security_mirroring_endpoint_group" "endpoint_group" {
+resource "google_network_security_mirroring_endpoint_group" "default" {
   provider                    = google-beta
   mirroring_endpoint_group_id = "mirroring-endpoint-group"
   location                    = "global"
-  mirroring_deployment_group  = google_network_security_mirroring_deployment_group.deployment_group.id
+  mirroring_deployment_group  = google_network_security_mirroring_deployment_group.default.id
 }
 
 resource "google_network_security_mirroring_endpoint_group_association" "endpoint_group_association" {
@@ -46,6 +46,6 @@ resource "google_network_security_mirroring_endpoint_group_association" "endpoin
   mirroring_endpoint_group_association_id = "mirroring-endpoint-group-association"
   location                                = "global"
   network                                 = google_compute_network.consumer_network.id
-  mirroring_endpoint_group                = google_network_security_mirroring_endpoint_group.endpoint_group.id
+  mirroring_endpoint_group                = google_network_security_mirroring_endpoint_group.default.id
 }
 # [END networksecurity_mirroring_basic_consumer]

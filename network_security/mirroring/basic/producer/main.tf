@@ -15,21 +15,21 @@
 */
 
 # [START networksecurity_mirroring_basic_producer]
-resource "google_compute_network" "network" {
+resource "google_compute_network" "default" {
   provider                = google-beta
   name                    = "producer-network"
   auto_create_subnetworks = false
 }
 
-resource "google_compute_subnetwork" "subnetwork" {
+resource "google_compute_subnetwork" "default" {
   provider      = google-beta
   name          = "producer-subnet"
   region        = "us-central1"
   ip_cidr_range = "10.1.0.0/16"
-  network       = google_compute_network.network.name
+  network       = google_compute_network.default.name
 }
 
-resource "google_compute_region_health_check" "health_check" {
+resource "google_compute_region_health_check" "default" {
   provider = google-beta
   name     = "deploymnet-hc"
   region   = "us-central1"
@@ -38,40 +38,40 @@ resource "google_compute_region_health_check" "health_check" {
   }
 }
 
-resource "google_compute_region_backend_service" "backend_service" {
+resource "google_compute_region_backend_service" "default" {
   provider              = google-beta
   name                  = "deployment-svc"
   region                = "us-central1"
-  health_checks         = [google_compute_region_health_check.health_check.id]
+  health_checks         = [google_compute_region_health_check.default.id]
   protocol              = "UDP"
   load_balancing_scheme = "INTERNAL"
 }
 
-resource "google_compute_forwarding_rule" "forwarding_rule" {
+resource "google_compute_forwarding_rule" "default" {
   provider               = google-beta
   name                   = "deployment-fr"
   region                 = "us-central1"
-  network                = google_compute_network.network.name
-  subnetwork             = google_compute_subnetwork.subnetwork.name
-  backend_service        = google_compute_region_backend_service.backend_service.id
+  network                = google_compute_network.default.name
+  subnetwork             = google_compute_subnetwork.default.name
+  backend_service        = google_compute_region_backend_service.default.id
   load_balancing_scheme  = "INTERNAL"
   ports                  = [6081]
   ip_protocol            = "UDP"
   is_mirroring_collector = true
 }
 
-resource "google_network_security_mirroring_deployment_group" "deployment_group" {
+resource "google_network_security_mirroring_deployment_group" "default" {
   provider                      = google-beta
   mirroring_deployment_group_id = "mirroring-deployment-group"
   location                      = "global"
-  network                       = google_compute_network.network.id
+  network                       = google_compute_network.default.id
 }
 
-resource "google_network_security_mirroring_deployment" "deployment" {
+resource "google_network_security_mirroring_deployment" "default" {
   provider                   = google-beta
   mirroring_deployment_id    = "mirroring-deployment"
   location                   = "us-central1-a"
-  forwarding_rule            = google_compute_forwarding_rule.forwarding_rule.id
-  mirroring_deployment_group = google_network_security_mirroring_deployment_group.deployment_group.id
+  forwarding_rule            = google_compute_forwarding_rule.default.id
+  mirroring_deployment_group = google_network_security_mirroring_deployment_group.default.id
 }
 # [END networksecurity_mirroring_basic_producer]
