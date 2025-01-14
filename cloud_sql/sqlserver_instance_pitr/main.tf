@@ -15,21 +15,43 @@
  */
 
 # [START cloud_sql_sqlserver_instance_pitr]
+# Creates a SQL SERVER Enterprise Plus edition instance. Unless specified otherwise, PITR is enabled by default.
 resource "google_sql_database_instance" "default" {
-  name             = "sqlserver-instance-pitr"
+  name             = "sqlserver-enterprise-plus-instance-pitr"
   region           = "asia-northeast1"
   database_version = "SQLSERVER_2019_ENTERPRISE"
-  root_password    = "INSERT-PASSWORD-HERE"
   settings {
-    tier = "db-custom-4-26624"
+    tier = "db-perf-optimized-N-2"
+    edition = "ENTERPRISE_PLUS"
     backup_configuration {
       enabled                        = true
-      start_time                     = "20:55"
-      transaction_log_retention_days = "3"
     }
   }
-  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
-  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
+  # Setting the `deletion_protection` flag to true ensures you can't accidentally delete the instance
+  # using Terraform. Setting the `deletion_protection_enabled` flag to true protects the instance at the
+  # Google Cloud level.
   deletion_protection = false
 }
 # [END cloud_sql_sqlserver_instance_pitr]
+
+# [START cloud_sql_sqlserver_instance_update_pitr]
+# Enables PITR on a SQL SERVER Enterprise edition instance. Unless specified otherwise, when creating an Enterprise edition
+# instance, PITR is disabled by default.
+resource "google_sql_database_instance" "default" {
+  name             = "sqlserver-enterprise-instance-pitr"
+  region           = "asia-northeast1"
+  database_version = "SQLSERVER_2019_ENTERPRISE"
+  settings {
+    tier = "db-custom-4-26624"
+    edition = "ENTERPRISE_PLUS"
+    backup_configuration {
+      enabled                        = true
+      point_in_time_recovery_enabled = true
+    }
+  }
+  # Setting the `deletion_protection` flag to true ensures you can't accidentally delete the instance
+  # using Terraform. Setting the `deletion_protection_enabled` flag to true protects the instance at the
+  # Google Cloud level.
+  deletion_protection = false
+}
+# [END cloud_sql_sqlserver_instance_update_pitr]
