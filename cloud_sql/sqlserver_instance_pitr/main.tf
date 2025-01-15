@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-# [START cloud_sql_sqlserver_instance_pitr]
+# [START cloud_sql_sqlserver_instance_enterprise_plus_pitr]
 # Creates a SQL SERVER Enterprise Plus edition instance. Unless specified otherwise, PITR is enabled by default.
 resource "google_sql_database_instance" "default" {
   name             = "sqlserver-enterprise-plus-instance-pitr"
