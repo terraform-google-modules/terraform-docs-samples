@@ -34,7 +34,7 @@ resource "google_sql_database_instance" "default" {
 }
 # [END cloud_sql_sqlserver_instance_pitr]
 
-# [START cloud_sql_sqlserver_instance_update_pitr]
+# [START cloud_sql_sqlserver_instance_enterprise_pitr]
 # Creates a SQL SERVER Enterprise edition instance with PITR enabled. Unless specified otherwise,
 # PITR is disabled by default.
 resource "google_sql_database_instance" "default" {
