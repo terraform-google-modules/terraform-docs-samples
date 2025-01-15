@@ -24,7 +24,7 @@ resource "google_sql_database_instance" "default" {
     tier = "db-perf-optimized-N-2"
     edition = "ENTERPRISE_PLUS"
     backup_configuration {
-      enabled                        = true
+      enabled = true
     }
   }
   # Setting the `deletion_protection` flag to true ensures you can't accidentally delete the instance
