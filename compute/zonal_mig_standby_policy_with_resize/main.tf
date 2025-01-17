@@ -13,11 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /** Made to resemble
  * gcloud compute instance-groups managed update standby-mig \
  * --standby-policy-mode=scale-out-pool \
  * --standby-policy-initial-delay=50 \
- * --target-size=3\
+ * --target-size=1 \
+ * --suspended-size=1 \
+ * --stopped-size=2 \
  * --zone=us-central1-f
  */
 
@@ -30,9 +33,9 @@ terraform {
   }
 }
 
-# [START compute_zonal_instance_group_manager_standby_policy_parent_tag]
+# [START compute_zonal_mig_standby_policy_with_resize_parent_tag]
 resource "google_compute_instance_template" "default" {
-  name         = "an-instance-template"
+  name         = "standby-mig-instance-template"
   machine_type = "e2-medium"
 
   disk {
@@ -44,12 +47,14 @@ resource "google_compute_instance_template" "default" {
   }
 }
 
-# [START compute_zonal_instance_group_manager_standby_policy_tag]
+# [START compute_zonal_mig_standby_policy_with_resize_tag]
 resource "google_compute_instance_group_manager" "default" {
-  name               = "standby-mig"
-  base_instance_name = "test"
-  target_size        = 3
-  zone               = "us-central1-f"
+  name                  = "standby-mig"
+  base_instance_name    = "test"
+  target_size           = 1
+  target_suspended_size = 1
+  target_stopped_size   = 2
+  zone                  = "us-central1-f"
 
   version {
     instance_template = google_compute_instance_template.default.id
@@ -60,5 +65,5 @@ resource "google_compute_instance_group_manager" "default" {
     mode              = "SCALE_OUT_POOL"
   }
 }
-# [END compute_zonal_instance_group_manager_standby_policy_tag]
-# [END compute_zonal_instance_group_manager_standby_policy_parent_tag]
+# [END compute_zonal_mig_standby_policy_with_resize_tag]
+# [END compute_zonal_mig_standby_policy_with_resize_parent_tag]
