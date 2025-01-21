@@ -15,32 +15,41 @@
 */
 
 # [START networksecurity_mirroring_basic_consumer]
+# [START networksecurity_mirroring_cons_new_producer_network_tf]
 resource "google_compute_network" "producer_network" {
   provider                = google-beta
   name                    = "producer-network"
   auto_create_subnetworks = false
 }
+# [END networksecurity_mirroring_cons_new_producer_network_tf]
 
+# [START networksecurity_mirroring_cons_new_consumer_network_tf]
 resource "google_compute_network" "consumer_network" {
   provider                = google-beta
   name                    = "consumer-network"
   auto_create_subnetworks = false
 }
+# [END networksecurity_mirroring_cons_new_consumer_network_tf]
 
+# [START networksecurity_mirroring_cons_new_deployment_group_tf]
 resource "google_network_security_mirroring_deployment_group" "default" {
   provider                      = google-beta
   mirroring_deployment_group_id = "mirroring-deployment-group"
   location                      = "global"
   network                       = google_compute_network.producer_network.id
 }
+# [END networksecurity_mirroring_cons_new_deployment_group_tf]
 
+# [START networksecurity_mirroring_cons_new_endpoint_group_tf]
 resource "google_network_security_mirroring_endpoint_group" "default" {
   provider                    = google-beta
   mirroring_endpoint_group_id = "mirroring-endpoint-group"
   location                    = "global"
   mirroring_deployment_group  = google_network_security_mirroring_deployment_group.default.id
 }
+# [END networksecurity_mirroring_cons_new_endpoint_group_tf]
 
+# [START networksecurity_mirroring_cons_new_endpoint_group_association_tf]
 resource "google_network_security_mirroring_endpoint_group_association" "default" {
   provider                                = google-beta
   mirroring_endpoint_group_association_id = "mirroring-endpoint-group-association"
@@ -48,4 +57,5 @@ resource "google_network_security_mirroring_endpoint_group_association" "default
   network                                 = google_compute_network.consumer_network.id
   mirroring_endpoint_group                = google_network_security_mirroring_endpoint_group.default.id
 }
+# [END networksecurity_mirroring_cons_new_endpoint_group_association_tf]
 # [END networksecurity_mirroring_basic_consumer]
