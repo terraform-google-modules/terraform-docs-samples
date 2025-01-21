@@ -15,12 +15,15 @@
 */
 
 # [START networksecurity_mirroring_basic_producer]
+# [START networksecurity_mirroring_create_network_tf]
 resource "google_compute_network" "default" {
   provider                = google-beta
   name                    = "producer-network"
   auto_create_subnetworks = false
 }
+# [END networksecurity_mirroring_create_network_tf]
 
+# [START networksecurity_mirroring_create_subnetwork_tf]
 resource "google_compute_subnetwork" "default" {
   provider      = google-beta
   name          = "producer-subnet"
@@ -28,7 +31,9 @@ resource "google_compute_subnetwork" "default" {
   ip_cidr_range = "10.1.0.0/16"
   network       = google_compute_network.default.name
 }
+# [END networksecurity_mirroring_create_subnetwork_tf]
 
+# [START networksecurity_mirroring_create_health_check_tf]
 resource "google_compute_region_health_check" "default" {
   provider = google-beta
   name     = "deploymnet-hc"
@@ -37,7 +42,9 @@ resource "google_compute_region_health_check" "default" {
     port = 80
   }
 }
+# [END networksecurity_mirroring_create_health_check_tf]
 
+# [START networksecurity_mirroring_create_backend_service_tf]
 resource "google_compute_region_backend_service" "default" {
   provider              = google-beta
   name                  = "deployment-svc"
@@ -46,7 +53,9 @@ resource "google_compute_region_backend_service" "default" {
   protocol              = "UDP"
   load_balancing_scheme = "INTERNAL"
 }
+# [END networksecurity_mirroring_create_backend_service_tf]
 
+# [START networksecurity_mirroring_create_forwarding_rule_tf]
 resource "google_compute_forwarding_rule" "default" {
   provider               = google-beta
   name                   = "deployment-fr"
@@ -59,14 +68,18 @@ resource "google_compute_forwarding_rule" "default" {
   ip_protocol            = "UDP"
   is_mirroring_collector = true
 }
+# [END networksecurity_mirroring_create_forwarding_rule_tf]
 
+# [START networksecurity_mirroring_create_deployment_group_tf]
 resource "google_network_security_mirroring_deployment_group" "default" {
   provider                      = google-beta
   mirroring_deployment_group_id = "mirroring-deployment-group"
   location                      = "global"
   network                       = google_compute_network.default.id
 }
+# [END networksecurity_mirroring_create_deployment_group_tf]
 
+# [START networksecurity_mirroring_create_deployment_tf]
 resource "google_network_security_mirroring_deployment" "default" {
   provider                   = google-beta
   mirroring_deployment_id    = "mirroring-deployment"
@@ -74,4 +87,5 @@ resource "google_network_security_mirroring_deployment" "default" {
   forwarding_rule            = google_compute_forwarding_rule.default.id
   mirroring_deployment_group = google_network_security_mirroring_deployment_group.default.id
 }
+# [END networksecurity_mirroring_create_deployment_tf]
 # [END networksecurity_mirroring_basic_producer]
