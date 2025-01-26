@@ -29,7 +29,7 @@ resource "google_sql_database_instance" "default" {
     ip_configuration {
       psc_config {
         psc_enabled               = true
-        allowed_consumer_projects = []
+        allowed_consumer_projects = [] # Add consumer project IDs here.
       }
       ipv4_enabled = false
     }
