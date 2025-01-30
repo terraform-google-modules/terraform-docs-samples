@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 # [START cloud_sql_postgres_instance_psa_psc]
 
-# [START vpc_postgres_instance_private_ip_network]
+# [START vpc_postgres_instance_psa_psc_network]
 resource "google_compute_network" "peering_network" {
   name                    = "private-network"
   auto_create_subnetworks = "false"
 }
-# [END vpc_postgres_instance_private_ip_network]
+# [END vpc_postgres_instance_psa_psc_network]
 
-# [START vpc_postgres_instance_private_ip_address]
+# [START vpc_postgres_instance_psa_psc_address]
 resource "google_compute_global_address" "private_ip_address" {
   name          = "private-ip-address"
   purpose       = "VPC_PEERING"
@@ -31,21 +31,21 @@ resource "google_compute_global_address" "private_ip_address" {
   prefix_length = 16
   network       = google_compute_network.peering_network.id
 }
-# [END vpc_postgres_instance_private_ip_address]
+# [END vpc_postgres_instance_psa_psc_address]
 
-# [START vpc_postgres_instance_private_ip_service_connection]
+# [START vpc_postgres_instance_psa_psc_service_connection]
 resource "google_service_networking_connection" "default" {
   network                 = google_compute_network.peering_network.id
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.private_ip_address.name]
 }
-# [END vpc_postgres_instance_private_ip_service_connection]
+# [END vpc_postgres_instance_psa_psc_service_connection]
 
 # [START cloud_sql_postgres_instance_psa_psc_instance]
 resource "google_sql_database_instance" "default" {
   name             = "postgres-instance"
   region           = "us-central1"
-  database_version = "POSTGRES_14"
+  database_version = "POSTGRES_17"
 
   depends_on = [google_service_networking_connection.default]
 
@@ -64,20 +64,22 @@ resource "google_sql_database_instance" "default" {
       private_network = google_compute_network.peering_network.id
     }
   }
+  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
+  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
   deletion_protection = false # Set to "true" to prevent destruction of the resource
 }
 # [END cloud_sql_postgres_instance_psa_psc_instance]
 
-# [START cloud_sql_postgres_instance_private_ip_routes]
+# [START cloud_sql_postgres_instance_psa_psc_routes]
 resource "google_compute_network_peering_routes_config" "peering_routes" {
   peering              = google_service_networking_connection.default.peering
   network              = google_compute_network.peering_network.name
   import_custom_routes = true
   export_custom_routes = true
 }
-# [END cloud_sql_postgres_instance_private_ip_routes]
+# [END cloud_sql_postgres_instance_psa_psc_routes]
 
-# [START cloud_sql_postgres_instance_psc_endpoint]
+# [START cloud_sql_postgres_instance_psa_psc_endpoint]
 resource "google_compute_address" "default" {
   name         = "psc-compute-address"
   region       = "us-central1"
@@ -98,6 +100,6 @@ resource "google_compute_forwarding_rule" "default" {
   load_balancing_scheme = ""
   target                = data.google_sql_database_instance.default.psc_service_attachment_link
 }
-# [END cloud_sql_postgres_instance_psc_endpoint]
+# [END cloud_sql_postgres_instance_psa_psc_endpoint]
 
 # [END cloud_sql_postgres_instance_psa_psc]
