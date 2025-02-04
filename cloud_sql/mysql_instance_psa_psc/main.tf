@@ -16,14 +16,11 @@
 
 # [START cloud_sql_mysql_instance_psa_psc]
 
-# [START vpc_mysql_instance_psa_psc_network]
 resource "google_compute_network" "peering_network" {
   name                    = "private-network"
   auto_create_subnetworks = "false"
 }
-# [END vpc_mysql_instance_psa_psc_network]
 
-# [START vpc_mysql_instance_psa_psc_address]
 resource "google_compute_global_address" "private_ip_address" {
   name          = "private-ip-address"
   purpose       = "VPC_PEERING"
@@ -31,15 +28,12 @@ resource "google_compute_global_address" "private_ip_address" {
   prefix_length = 16
   network       = google_compute_network.peering_network.id
 }
-# [END vpc_mysql_instance_psa_psc_address]
 
-# [START vpc_mysql_instance_psa_psc_service_connection]
 resource "google_service_networking_connection" "default" {
   network                 = google_compute_network.peering_network.id
   service                 = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [google_compute_global_address.private_ip_address.name]
 }
-# [END vpc_mysql_instance_psa_psc_service_connection]
 
 # [START cloud_sql_mysql_instance_psa_psc_instance]
 resource "google_sql_database_instance" "default" {
@@ -66,16 +60,13 @@ resource "google_sql_database_instance" "default" {
 }
 # [END cloud_sql_mysql_instance_psa_psc_instance]
 
-# [START cloud_sql_mysql_instance_psa_psc_routes]
 resource "google_compute_network_peering_routes_config" "peering_routes" {
   peering              = google_service_networking_connection.default.peering
   network              = google_compute_network.peering_network.name
   import_custom_routes = true
   export_custom_routes = true
 }
-# [END cloud_sql_mysql_instance_psa_psc_routes]
 
-# [START cloud_sql_mysql_instance_psa_psc_endpoint]
 resource "google_compute_address" "default" {
   name         = "psc-compute-address-${google_sql_database_instance.default.name}"
   region       = "us-central1"
@@ -96,7 +87,6 @@ resource "google_compute_forwarding_rule" "default" {
   load_balancing_scheme = ""
   target                = data.google_sql_database_instance.default.psc_service_attachment_link
 }
-# [END cloud_sql_mysql_instance_psa_psc_endpoint]
 
 # [END cloud_sql_mysql_instance_psa_psc]
 
