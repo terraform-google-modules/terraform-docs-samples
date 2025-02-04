@@ -76,7 +76,7 @@ resource "google_compute_address" "default" {
   name         = "psc-compute-address"
   region       = "us-central1"
   address_type = "INTERNAL"
-  subnetwork   = "default"     # Replace value with the name of the subnet here.
+  subnetwork   = "default"      # Replace value with the name of the subnet here.
   address      = "192.168.0.42" # Replace value with the IP address to reserve.
 }
 
