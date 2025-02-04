@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-# [START cloud_sql_postgres_instance_psa_psc]
 // Create a Cloud SQL Postgres instance with both Private IP and Private Service Connect enabled.
+# [START cloud_sql_postgres_instance_psa_psc_parent_tag]
 
 resource "google_compute_network" "peering_network" {
   name                    = "private-network"
@@ -93,4 +93,4 @@ resource "google_compute_forwarding_rule" "default" {
   target                = data.google_sql_database_instance.default.psc_service_attachment_link
 }
 
-# [END cloud_sql_postgres_instance_psa_psc]
+# [END cloud_sql_postgres_instance_psa_psc_parent_tag]
