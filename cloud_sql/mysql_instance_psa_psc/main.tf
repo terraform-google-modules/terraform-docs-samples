@@ -73,7 +73,7 @@ resource "google_compute_address" "default" {
   region       = "us-central1"
   address_type = "INTERNAL"
   subnetwork   = "default"     # Replace value with the name of the subnet here.
-  address      = "10.128.0.43" # Replace value with the IP address to reserve.
+  address      = "192.168.0.43" # Replace value with the IP address to reserve.
 }
 
 data "google_sql_database_instance" "default" {
