@@ -15,6 +15,7 @@
  */
 
 # [START cloud_sql_mysql_instance_psa_psc]
+// Create a Cloud SQL MySQL instance with both Private IP and Private Service Connect enabled.
 
 resource "google_compute_network" "peering_network" {
   name                    = "private-network"
