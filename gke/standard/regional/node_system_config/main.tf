@@ -48,3 +48,32 @@ resource "google_container_cluster" "default" {
   deletion_protection = false
 }
 # [END gke_standard_regional_node_system_config]
+
+# [START gke_standard_regional_node_system_config_node_pool]
+resource "google_container_node_pool" "default" {
+  name    = "gke-standard-regional-node-pool"
+  cluster = google_container_cluster.default.name
+
+  node_config {
+    # Kubelet configuration
+    kubelet_config {
+      cpu_manager_policy = "static"
+    }
+
+    linux_node_config {
+      # Sysctl configuration
+      sysctls = {
+        "net.core.netdev_max_backlog" = "10000"
+      }
+
+      # Linux cgroup mode configuration
+      cgroup_mode = "CGROUP_MODE_V2"
+
+      # Linux huge page configuration
+      hugepages_config {
+        hugepage_size_2m = "1024"
+      }
+    }
+  }
+}
+# [END gke_standard_regional_node_system_config_node_pool]
