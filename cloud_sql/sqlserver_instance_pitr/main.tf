@@ -20,6 +20,7 @@ resource "google_sql_database_instance" "enterprise_plus" {
   name             = "sqlserver-enterprise-plus-instance-pitr"
   region           = "asia-northeast1"
   database_version = "SQLSERVER_2019_ENTERPRISE"
+  root_password    = "INSERT-PASSWORD-HERE"
   settings {
     tier    = "db-perf-optimized-N-2"
     edition = "ENTERPRISE_PLUS"
@@ -41,6 +42,7 @@ resource "google_sql_database_instance" "enterprise" {
   name             = "sqlserver-enterprise-instance-pitr"
   region           = "asia-northeast1"
   database_version = "SQLSERVER_2019_ENTERPRISE"
+  root_password    = "INSERT-PASSWORD-HERE"
   settings {
     tier    = "db-custom-4-26624"
     edition = "ENTERPRISE"
