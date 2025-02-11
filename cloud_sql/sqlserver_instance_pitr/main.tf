@@ -21,7 +21,7 @@ resource "google_sql_database_instance" "default" {
   region           = "asia-northeast1"
   database_version = "SQLSERVER_2019_ENTERPRISE"
   settings {
-    tier = "db-perf-optimized-N-2"
+    tier    = "db-perf-optimized-N-2"
     edition = "ENTERPRISE_PLUS"
     backup_configuration {
       enabled = true
@@ -42,7 +42,7 @@ resource "google_sql_database_instance" "default" {
   region           = "asia-northeast1"
   database_version = "SQLSERVER_2019_ENTERPRISE"
   settings {
-    tier = "db-custom-4-26624"
+    tier    = "db-custom-4-26624"
     edition = "ENTERPRISE_PLUS"
     backup_configuration {
       enabled                        = true
