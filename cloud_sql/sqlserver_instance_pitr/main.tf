@@ -22,7 +22,7 @@ resource "google_sql_database_instance" "enterprise_plus" {
   database_version = "SQLSERVER_2019_ENTERPRISE"
   settings {
     tier    = "db-perf-optimized-N-2"
-    edition = "ENTERPRISE"
+    edition = "ENTERPRISE_PLUS"
     backup_configuration {
       enabled = true
     }
@@ -43,7 +43,7 @@ resource "google_sql_database_instance" "enterprise" {
   database_version = "SQLSERVER_2019_ENTERPRISE"
   settings {
     tier    = "db-custom-4-26624"
-    edition = "ENTERPRISE_PLUS"
+    edition = "ENTERPRISE"
     backup_configuration {
       enabled                        = true
       point_in_time_recovery_enabled = true
