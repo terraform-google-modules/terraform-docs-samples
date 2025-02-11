@@ -32,7 +32,7 @@ resource "google_sql_database_instance" "default" {
   # Google Cloud level.
   deletion_protection = false
 }
-# [END cloud_sql_sqlserver_instance_pitr]
+# [END cloud_sql_sqlserver_instance_enterprise_plus_pitr]
 
 # [START cloud_sql_sqlserver_instance_enterprise_pitr]
 # Creates a SQL SERVER Enterprise edition instance with PITR enabled. Unless specified otherwise,
@@ -54,4 +54,4 @@ resource "google_sql_database_instance" "default" {
   # Google Cloud level.
   deletion_protection = false
 }
-# [END cloud_sql_sqlserver_instance_update_pitr]
+# [END cloud_sql_sqlserver_instance_enterprise_pitr]
