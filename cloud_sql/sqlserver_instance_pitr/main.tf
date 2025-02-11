@@ -16,7 +16,7 @@
 
 # [START cloud_sql_sqlserver_instance_enterprise_plus_pitr]
 # Creates a SQL SERVER Enterprise Plus edition instance. Unless specified otherwise, PITR is enabled by default.
-resource "google_sql_database_instance" "default" {
+resource "google_sql_database_instance" "enterprise_plus" {
   name             = "sqlserver-enterprise-plus-instance-pitr"
   region           = "asia-northeast1"
   database_version = "SQLSERVER_2019_ENTERPRISE"
@@ -37,7 +37,7 @@ resource "google_sql_database_instance" "default" {
 # [START cloud_sql_sqlserver_instance_enterprise_pitr]
 # Creates a SQL SERVER Enterprise edition instance with PITR enabled. Unless specified otherwise,
 # PITR is disabled by default.
-resource "google_sql_database_instance" "default" {
+resource "google_sql_database_instance" "enterprise" {
   name             = "sqlserver-enterprise-instance-pitr"
   region           = "asia-northeast1"
   database_version = "SQLSERVER_2019_ENTERPRISE"
