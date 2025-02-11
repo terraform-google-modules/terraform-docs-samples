@@ -22,7 +22,7 @@ resource "google_sql_database_instance" "enterprise_plus" {
   database_version = "SQLSERVER_2019_ENTERPRISE"
   settings {
     tier    = "db-perf-optimized-N-2"
-    edition = "ENTERPRISE_PLUS"
+    edition = "ENTERPRISE"
     backup_configuration {
       enabled = true
     }
