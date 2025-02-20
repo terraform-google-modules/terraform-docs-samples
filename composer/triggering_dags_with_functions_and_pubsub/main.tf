@@ -177,7 +177,7 @@ resource "google_pubsub_topic" "trigger" {
 resource "google_cloudfunctions_function" "pubsub_function" {
   project = data.google_project.project.project_id
   name    = "pubsub-publisher"
-  runtime = "python310"
+  runtime = "python312"
   region  = "us-central1"
 
   available_memory_mb   = 128
