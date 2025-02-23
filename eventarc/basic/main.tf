@@ -93,6 +93,8 @@ resource "google_cloud_run_v2_service" "default" {
   name     = "hello-events"
   location = "us-central1"
 
+  deletion_protection = false # set to "true" in production
+
   template {
     containers {
       # This container will log received events

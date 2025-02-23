@@ -54,6 +54,7 @@ resource "google_project_iam_member" "gatewayeditor" {
 }
 # [END gke_quickstart_multitenant_teams]
 # [START gke_quickstart_multitenant_fleet]
+# [START gke_enterprise_policycontroller_fleet]
 resource "google_gke_hub_feature" "policycontroller" {
   name     = "policycontroller"
   location = "global"
@@ -75,6 +76,7 @@ resource "google_gke_hub_feature" "policycontroller" {
     }
   }
 }
+# [END gke_enterprise_policycontroller_fleet]
 
 resource "google_gke_hub_scope" "default" {
   for_each = local.teams
@@ -175,6 +177,8 @@ resource "google_project_iam_member" "cloudsql" {
   project = data.google_project.default.project_id
   role    = "roles/cloudsql.client"
   member  = "serviceAccount:${data.google_project.default.project_id}.svc.id.goog[${each.value}-team/default]"
+
+  depends_on = [google_container_cluster.default]
 }
 
 data "google_client_config" "default" {}

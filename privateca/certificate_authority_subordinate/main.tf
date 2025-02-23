@@ -16,6 +16,8 @@
 
 # [START privateca_create_subordinateca]
 resource "google_privateca_certificate_authority" "root_ca" {
+  // This example assumes this pool already exists.
+  // Pools cannot be deleted in normal test circumstances, so we depend on static pools
   pool                                   = "my-pool"
   certificate_authority_id               = "my-certificate-authority-root"
   location                               = "us-central1"
@@ -24,11 +26,8 @@ resource "google_privateca_certificate_authority" "root_ca" {
   config {
     subject_config {
       subject {
-        organization = "HashiCorp"
+        organization = "ACME"
         common_name  = "my-certificate-authority"
-      }
-      subject_alt_name {
-        dns_names = ["hashicorp.com"]
       }
     }
     x509_config {
@@ -43,7 +42,6 @@ resource "google_privateca_certificate_authority" "root_ca" {
           crl_sign  = true
         }
         extended_key_usage {
-          server_auth = false
         }
       }
     }
@@ -51,12 +49,14 @@ resource "google_privateca_certificate_authority" "root_ca" {
   key_spec {
     algorithm = "RSA_PKCS1_4096_SHA256"
   }
+  // valid for 10 years
+  lifetime = "${10 * 365 * 24 * 3600}s"
 }
 
-resource "google_privateca_certificate_authority" "default" {
+resource "google_privateca_certificate_authority" "sub_ca" {
   // This example assumes this pool already exists.
   // Pools cannot be deleted in normal test circumstances, so we depend on static pools
-  pool                     = "my-pool"
+  pool                     = "my-sub-pool"
   certificate_authority_id = "my-certificate-authority-sub"
   location                 = "us-central1"
   deletion_protection      = false # set to true to prevent destruction of the resource
@@ -66,43 +66,33 @@ resource "google_privateca_certificate_authority" "default" {
   config {
     subject_config {
       subject {
-        organization = "HashiCorp"
+        organization = "ACME"
         common_name  = "my-subordinate-authority"
-      }
-      subject_alt_name {
-        dns_names = ["hashicorp.com"]
       }
     }
     x509_config {
       ca_options {
         is_ca = true
-        # Force the sub CA to only issue leaf certs
-        max_issuer_path_length = 0
+        # Force the sub CA to only issue leaf certs.
+        # Use e.g.
+        #    max_issuer_path_length = 1
+        # if you need to chain more subordinates.
+        zero_max_issuer_path_length = true
       }
       key_usage {
         base_key_usage {
-          digital_signature  = true
-          content_commitment = true
-          key_encipherment   = false
-          data_encipherment  = true
-          key_agreement      = true
-          cert_sign          = true
-          crl_sign           = true
-          decipher_only      = true
+          cert_sign = true
+          crl_sign  = true
         }
         extended_key_usage {
-          server_auth      = true
-          client_auth      = false
-          email_protection = true
-          code_signing     = true
-          time_stamping    = true
         }
       }
     }
   }
-  lifetime = "86400s"
+  // valid for 5 years
+  lifetime = "${5 * 365 * 24 * 3600}s"
   key_spec {
-    algorithm = "RSA_PKCS1_4096_SHA256"
+    algorithm = "RSA_PKCS1_2048_SHA256"
   }
   type = "SUBORDINATE"
 }

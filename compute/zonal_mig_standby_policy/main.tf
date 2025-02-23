@@ -14,11 +14,22 @@
  * limitations under the License.
  */
 /** Made to resemble
- * gcloud beta compute instance-groups managed update standby-mig \
+ * gcloud compute instance-groups managed update standby-mig \
  * --standby-policy-mode=scale-out-pool \
  * --standby-policy-initial-delay=50 \
+ * --target-size=3\
  * --zone=us-central1-f
  */
+
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 6.16.0"
+    }
+  }
+}
+
 # [START compute_zonal_instance_group_manager_standby_policy_parent_tag]
 resource "google_compute_instance_template" "default" {
   name         = "an-instance-template"
@@ -35,7 +46,6 @@ resource "google_compute_instance_template" "default" {
 
 # [START compute_zonal_instance_group_manager_standby_policy_tag]
 resource "google_compute_instance_group_manager" "default" {
-  provider           = google-beta
   name               = "standby-mig"
   base_instance_name = "test"
   target_size        = 3

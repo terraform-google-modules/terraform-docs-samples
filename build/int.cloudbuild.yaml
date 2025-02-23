@@ -28,27 +28,40 @@ steps:
       fi
 
       git fetch --unshallow
-      git diff origin/${_BASE_BRANCH} --name-only > _changed_files
-      sed 's/\/.*/\//' _changed_files > _changed_folders
+      git diff origin/main --name-only > _changed_files
+      sed 's:[^/]*$::' _changed_files > _changed_folders
+      sort -u -o _changed_folders{,}
+      echo "Folders with changes:"
+      cat _changed_folders
 
       # Do not prune if changing tests themselves
-      _INFRA_FOLDERS="build test .github"
-      for d in _changed_folders; do
-        if [[ "${_INFRA_FOLDERS}" =~ "$d" ]]; then
-          echo "Infrastructure folders have changed; no tests will be pruned."
+      while read d; do
+        if [[ "build test .github" =~ "${d%/}" ]]; then
+          echo "Infrastructure folder ${d%/} has changed; no tests will be pruned."
           exit 0 # do not prune
         fi
-      done
+      done < _changed_folders
 
-      for d in */; do
-          if ! grep -q "^$d" _changed_folders && [[ "$d" != "test/" ]]; then
+      # Remove base folders without changes
+      for d in *; do
+          if ! (grep -q "^$d" _changed_folders || [[ "test _changed_folders" =~ "$d" ]]); then
             rm -rf $d;
           fi
       done
 
+      # Remove leaf folders without changes or non-tf resources
+      for d in `find . -type d -name 'test' -prune -o -links 2 -printf '%P\n'`; do
+          if ! grep -q "^$d" _changed_folders && ! [ -n "$(find $d -maxdepth 1 -not -name '*.tf' -and -not -name 'test.yaml' -type f -print -quit)" ]; then
+            rm -rf $d
+          fi
+      done
+
+      # Remove any empty folders
+      find . -empty -type d -delete
+
       # Report remaining folders
-      echo Folders in scope for tests:
-      for d in */; do echo $d; done
+      echo -n "Folders in scope for tests:"
+      find . -type d -printf '%P\n'
 
 - id: prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
@@ -92,4 +105,4 @@ tags:
 - 'integration'
 substitutions:
   _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
-  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.21'
+  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.23'
