@@ -79,4 +79,4 @@ resource "google_sql_database_instance" "dr-replica" {
   # Optional. Add more settings.
 }
 
-# [END cloud_sql_mysql_instance_switchover_invoke]
+# [END cloud_sql_mysql_instance_switchover_begin]
