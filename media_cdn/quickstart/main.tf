@@ -49,8 +49,8 @@ resource "google_network_services_edge_cache_service" "default" {
     path_matcher {
       name = "routes"
       route_rule {
-        description = "a route rule to match against"
-        priority    = 1
+        description = "a simple route rule, priority=10 (low)"
+        priority    = 10
         match_rule {
           prefix_match = "/"
         }
@@ -60,6 +60,35 @@ resource "google_network_services_edge_cache_service" "default" {
             cache_mode  = "CACHE_ALL_STATIC"
             default_ttl = "3600s"
           }
+        }
+        header_action {
+          response_header_to_add {
+            header_name  = "x-cache-status"
+            header_value = "{cdn_cache_status}"
+          }
+        }
+      }
+      // for other advanced features examples see:
+      // https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/network_services_edge_cache_service
+      route_rule {
+        description = "an advanced route rule, priority=1 (high)"
+        priority    = 1
+        match_rule {
+          prefix_match = "/advanced"
+        }
+        origin = google_network_services_edge_cache_origin.default.name
+        route_action {
+          cdn_policy {
+            cache_mode  = "CACHE_ALL_STATIC"
+            default_ttl = "3600s"
+          }
+          url_rewrite {
+            path_prefix_rewrite = "/"
+          }
+          compression_mode = "AUTOMATIC"
+        }
+        route_methods {
+          allowed_methods = ["GET", "HEAD", "PUT", "POST", "DELETE"]
         }
         header_action {
           response_header_to_add {
