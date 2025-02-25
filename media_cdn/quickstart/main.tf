@@ -68,7 +68,7 @@ resource "google_network_services_edge_cache_service" "default" {
           }
         }
       }
-      // for other advanced features examples see:
+      // For examples of other advanced features see:
       // https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/network_services_edge_cache_service
       route_rule {
         description = "an advanced route rule, priority=1 (high)"
@@ -79,8 +79,8 @@ resource "google_network_services_edge_cache_service" "default" {
         origin = google_network_services_edge_cache_origin.default.name
         route_action {
           cdn_policy {
-            cache_mode  = "CACHE_ALL_STATIC"
-            default_ttl = "3600s"
+            cache_mode = "FORCE_CACHE_ALL"
+            client_ttl = "300s"
           }
           url_rewrite {
             path_prefix_rewrite = "/"
