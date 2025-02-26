@@ -19,8 +19,7 @@ data "google_project" "default" {
 }
 
 resource "google_sql_database_instance" "original-primary" {
-  name = "mysql-original-primary-instance"
-  # You can specify any region.
+  name   = "mysql-original-primary-instance"
   region = "us-east1"
   # Specify a database version that supports Cloud SQL Enterprise Plus edition.
   database_version = "MYSQL_8_0"

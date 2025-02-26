@@ -17,7 +17,7 @@
 
 # [START cloud_sql_postgres_instance_switchover_dr_replica_create]
 resource "google_sql_database_instance" "original-primary" {
-  name = "postgres-original-primary-instance"
+  name   = "postgres-original-primary-instance"
   region = "us-east1"
   # Specify a database version that supports Cloud SQL Enterprise Plus edition.
   database_version = "POSTGRES_12"

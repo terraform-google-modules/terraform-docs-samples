@@ -17,7 +17,7 @@
 
 # [START cloud_sql_mysql_instance_switchover_dr_replica_create]
 resource "google_sql_database_instance" "original-primary" {
-  name = "mysql-original-primary-instance"
+  name   = "mysql-original-primary-instance"
   region = "us-east1"
   # Specify a database version that supports Cloud SQL Enterprise Plus edition.
   database_version = "MYSQL_8_0"
