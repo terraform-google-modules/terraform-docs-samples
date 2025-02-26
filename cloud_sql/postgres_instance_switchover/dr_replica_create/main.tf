@@ -18,7 +18,6 @@
 # [START cloud_sql_postgres_instance_switchover_dr_replica_create]
 resource "google_sql_database_instance" "original-primary" {
   name = "postgres-original-primary-instance"
-  # You can specify any region.
   region = "us-east1"
   # Specify a database version that supports Cloud SQL Enterprise Plus edition.
   database_version = "POSTGRES_12"
@@ -38,7 +37,6 @@ resource "google_sql_database_instance" "original-primary" {
   # delete this instance by use of Terraform whereas
   # `deletion_protection_enabled` flag protects this instance at the Google Cloud level.
   deletion_protection = false
-  # Optional. Add more settings.
 }
 
 resource "google_sql_database_instance" "dr-replica" {
@@ -61,6 +59,5 @@ resource "google_sql_database_instance" "dr-replica" {
   # delete this instance by use of Terraform whereas
   # `deletion_protection_enabled` flag protects this instance at the Google Cloud level.
   deletion_protection = false
-  # Optional. Add more settings.
 }
 # [END cloud_sql_postgres_instance_switchover_dr_replica_create]
