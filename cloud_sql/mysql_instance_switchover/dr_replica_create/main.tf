@@ -59,6 +59,5 @@ resource "google_sql_database_instance" "dr-replica" {
   # delete this instance by use of Terraform whereas
   # `deletion_protection_enabled` flag protects this instance at the Google Cloud level.
   deletion_protection = false
-  # Optional. Add more settings.
 }
 # [END cloud_sql_mysql_instance_switchover_dr_replica_create]
