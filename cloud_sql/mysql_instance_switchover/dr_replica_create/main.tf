@@ -18,7 +18,6 @@
 # [START cloud_sql_mysql_instance_switchover_dr_replica_create]
 resource "google_sql_database_instance" "original-primary" {
   name = "mysql-original-primary-instance"
-  # You can specify any region.
   region = "us-east1"
   # Specify a database version that supports Cloud SQL Enterprise Plus edition.
   database_version = "MYSQL_8_0"
@@ -38,7 +37,6 @@ resource "google_sql_database_instance" "original-primary" {
   # delete this instance by use of Terraform whereas
   # `deletion_protection_enabled` flag protects this instance at the Google Cloud level.
   deletion_protection = false
-  # Optional. Add more settings.
 }
 
 resource "google_sql_database_instance" "dr-replica" {
