@@ -2,7 +2,7 @@ module github.com/terraform-google-modules/terraform-docs-samples/test/integrati
 
 go 1.23.0
 
-toolchain go1.23.5
+toolchain go1.23.6
 
 require (
 	github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.17.5
