@@ -21,7 +21,7 @@
 #
 # "No changes. Your infrastructure matches the configuration.
 #
-# Terraform has compared your real infrastructure against your configuration and found no differences, 
+# Terraform has compared your real infrastructure against your configuration and found no differences,
 # so no changes are needed.
 #
 # Apply complete! Resources: 0 added, 0 changed, 0 destroyed."
@@ -36,9 +36,9 @@ resource "google_sql_database_instance" "original-primary" {
   instance_type = "READ_REPLICA_INSTANCE"
   # Set master_instance_name to the the new primary instance, the old DR replica.
   master_instance_name = "postgres-dr-replica-instance"
-  # replica_names = [] # If you previously defined a replica_names field in your template, then delete the DR replica 
-  # (new primary) from the list of replicas.  Don't delete the entire replica_names field. 
-  # Instead set the field to an empty string. For example, replica_names = [""]. 
+  # replica_names = [] # If you previously defined a replica_names field in your template, then delete the DR replica
+  # (new primary) from the list of replicas.  Don't delete the entire replica_names field.
+  # Instead set the field to an empty string. For example, replica_names = [""].
 
   replication_cluster {
     # This instance no longer requires a designated DR replica since it's a replica.
