@@ -19,7 +19,7 @@
 #   1. https://cloud.google.com/media-cdn/docs/quickstart#create-service
 #   2. https://cloud.google.com/media-cdn/docs/origins#cloud-storage-origins
 
-# [START mediacdn_quickstart_parent_tag]
+# [START mediacdn_dynamic_compression_parent_tag]
 resource "random_id" "unique_suffix" {
   byte_length = 8
 }
@@ -31,14 +31,11 @@ resource "google_storage_bucket" "default" {
   uniform_bucket_level_access = true
 }
 
-# [START mediacdn_edge_cache_origin]
 resource "google_network_services_edge_cache_origin" "default" {
   name           = "cloud-storage-origin"
   origin_address = "gs://my-bucket-${random_id.unique_suffix.hex}"
 }
-# [END mediacdn_edge_cache_origin]
 
-# [START mediacdn_edge_cache_service]
 resource "google_network_services_edge_cache_service" "default" {
   name = "cloud-media-service"
   routing {
@@ -68,8 +65,33 @@ resource "google_network_services_edge_cache_service" "default" {
           }
         }
       }
+      # [START mediacdn_dynamic_compression_route]
+      route_rule {
+        description = "a route rule with dynamic compression, priority=2 (high)"
+        priority    = 2
+        match_rule {
+          path_template_match = "/**.m3u8" # HLS playlists
+        }
+        match_rule {
+          path_template_match = "/**.mpd" # DASH manifests
+        }
+        origin = google_network_services_edge_cache_origin.default.name
+        route_action {
+          cdn_policy {
+            cache_mode = "FORCE_CACHE_ALL"
+            client_ttl = "300s"
+          }
+          compression_mode = "AUTOMATIC"
+        }
+        header_action {
+          response_header_to_add {
+            header_name  = "x-cache-status"
+            header_value = "{cdn_cache_status}"
+          }
+        }
+      }
+      # [END mediacdn_dynamic_compression_route]
     }
   }
 }
-# [END mediacdn_edge_cache_service]
-# [END mediacdn_quickstart_parent_tag]
+# [END mediacdn_dynamic_compression_parent_tag]

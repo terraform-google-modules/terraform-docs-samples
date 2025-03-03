@@ -25,7 +25,7 @@ locals {
 module "projects" {
   count   = local.num_projects
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 17.0"
+  version = "~> 18.0"
 
   name                     = "ci-tf-samples-${count.index}"
   random_project_id        = true
@@ -65,6 +65,7 @@ module "projects" {
     "looker.googleapis.com",
     "networkconnectivity.googleapis.com",
     "networkmanagement.googleapis.com",
+    "networksecurity.googleapis.com",
     "notebooks.googleapis.com",
     "privateca.googleapis.com",
     "pubsub.googleapis.com",

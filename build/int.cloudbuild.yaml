@@ -31,7 +31,7 @@ steps:
       git diff origin/main --name-only > _changed_files
       sed 's:[^/]*$::' _changed_files > _changed_folders
       sort -u -o _changed_folders{,}
-      echo Folders with changes:
+      echo "Folders with changes:"
       cat _changed_folders
 
       # Do not prune if changing tests themselves
@@ -44,7 +44,7 @@ steps:
 
       # Remove base folders without changes
       for d in *; do
-          if ! grep -q "^$d$" _changed_folders && [[ "$d" != "test" ]]; then
+          if ! (grep -q "^$d" _changed_folders || [[ "test _changed_folders" =~ "$d" ]]); then
             rm -rf $d;
           fi
       done
@@ -60,7 +60,7 @@ steps:
       find . -empty -type d -delete
 
       # Report remaining folders
-      echo Folders in scope for tests:
+      echo -n "Folders in scope for tests:"
       find . -type d -printf '%P\n'
 
 - id: prepare
@@ -105,4 +105,4 @@ tags:
 - 'integration'
 substitutions:
   _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
-  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.22'
+  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.23'
