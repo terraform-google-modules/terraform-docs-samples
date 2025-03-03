@@ -51,7 +51,7 @@ resource "google_cloudfunctions2_function" "default" {
   description = "a new function"
 
   build_config {
-    runtime     = "nodejs16"
+    runtime     = "nodejs22"
     entry_point = "helloHttp" # Set the entry point
     source {
       storage_source {
