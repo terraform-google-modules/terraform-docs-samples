@@ -14,6 +14,9 @@
 * limitations under the License.
 */
 
+# NOTE: Locations are different in these examples to satisfy the tests.
+# These are intended to represent sequential steps on the same cluster. 
+
 # [START gke_standard_release_channel_none]
 resource "google_container_cluster" "rc_none" {
   name     = "cluster-zonal-example-none-to-rc"
@@ -32,7 +35,7 @@ resource "google_container_cluster" "rc_none" {
 }
 
 resource "google_container_node_pool" "rc_none" {
-  name    = "cluster-zonal-example-none-to-rc-node-pool"
+  name    = "cluster-zonal-example-none-to-rc-np"
   cluster = google_container_cluster.rc_none.name
 
   node_count = 2
@@ -47,7 +50,7 @@ resource "google_container_node_pool" "rc_none" {
 # [START gke_standard_release_channel_no_upgrade]
 resource "google_container_cluster" "no_upgrade" {
   name     = "cluster-zonal-example-none-to-rc"
-  location = "us-central1-a"
+  location = "us-central1-b"
 
   release_channel {
     channel = "UNSPECIFIED"
@@ -80,7 +83,7 @@ resource "google_container_cluster" "no_upgrade" {
 }
 
 resource "google_container_node_pool" "no_upgrade" {
-  name    = "cluster-zonal-example-none-to-rc-node-pool"
+  name    = "cluster-zonal-example-none-to-rc-np"
   cluster = google_container_cluster.no_upgrade.name
 
   node_count = 2
@@ -95,7 +98,7 @@ resource "google_container_node_pool" "no_upgrade" {
 # [START gke_standard_release_channel_rc_regular]
 resource "google_container_cluster" "rc_regular" {
   name     = "cluster-zonal-example-none-to-rc"
-  location = "us-central1-a"
+  location = "us-central1-c"
 
   release_channel {
     channel = "REGULAR"
@@ -126,7 +129,7 @@ resource "google_container_cluster" "rc_regular" {
 }
 
 resource "google_container_node_pool" "rc_regular" {
-  name    = "cluster-zonal-example-none-to-rc-node-pool"
+  name    = "cluster-zonal-example-none-to-rc-np"
   cluster = google_container_cluster.rc_regular.name
 
   node_count = 2
@@ -143,7 +146,7 @@ resource "google_container_node_pool" "rc_regular" {
 # [START gke_standard_release_channel_no_minor_or_node_upgrade]
 resource "google_container_cluster" "no_minor_or_node_upgrade" {
   name     = "cluster-zonal-example-none-to-rc"
-  location = "us-central1-a"
+  location = "us-central1-d"
 
   release_channel {
     channel = "REGULAR"
@@ -175,7 +178,7 @@ resource "google_container_cluster" "no_minor_or_node_upgrade" {
 }
 
 resource "google_container_node_pool" "no_minor_or_node_upgrade" {
-  name    = "cluster-zonal-example-none-to-rc-node-pool"
+  name    = "cluster-zonal-example-none-to-rc-np"
   cluster = google_container_cluster.no_minor_or_node_upgrade.name
 
   node_count = 2
