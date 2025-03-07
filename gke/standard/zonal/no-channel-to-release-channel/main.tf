@@ -1,4 +1,20 @@
-[START gke_standard_release_channel_none]
+/**
+* Copyright 2025 Google LLC
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+# [START gke_standard_release_channel_none]
 resource "google_container_cluster" "rc_none" {
   name     = "cluster-zonal-example-none-to-rc"
   location = "us-central1-a"
@@ -26,9 +42,9 @@ resource "google_container_node_pool" "rc_none" {
     auto_upgrade = false
   }
 }
-[END gke_standard_release_channel_none]
+# [END gke_standard_release_channel_none]
 
-[START gke_standard_release_channel_no_upgrade]
+# [START gke_standard_release_channel_no_upgrade]
 resource "google_container_cluster" "no_upgrade" {
   name     = "cluster-zonal-example-none-to-rc"
   location = "us-central1-a"
@@ -65,7 +81,7 @@ resource "google_container_cluster" "no_upgrade" {
 
 resource "google_container_node_pool" "no_upgrade" {
   name    = "cluster-zonal-example-none-to-rc-node-pool"
-  cluster  = google_container_cluster.no_upgrade.name
+  cluster = google_container_cluster.no_upgrade.name
 
   node_count = 2
 
@@ -74,9 +90,9 @@ resource "google_container_node_pool" "no_upgrade" {
     auto_upgrade = false
   }
 }
-[END gke_standard_release_channel_no_upgrade]
+# [END gke_standard_release_channel_no_upgrade]
 
-[START gke_standard_release_channel_rc_regular]
+# [START gke_standard_release_channel_rc_regular]
 resource "google_container_cluster" "rc_regular" {
   name     = "cluster-zonal-example-none-to-rc"
   location = "us-central1-a"
@@ -111,7 +127,7 @@ resource "google_container_cluster" "rc_regular" {
 
 resource "google_container_node_pool" "rc_regular" {
   name    = "cluster-zonal-example-none-to-rc-node-pool"
-  cluster  = google_container_cluster.rc_regular.name
+  cluster = google_container_cluster.rc_regular.name
 
   node_count = 2
 
@@ -122,9 +138,9 @@ resource "google_container_node_pool" "rc_regular" {
     auto_upgrade = true
   }
 }
-[END gke_standard_release_channel_rc_regular]
+# [END gke_standard_release_channel_rc_regular]
 
-[START gke_standard_release_channel_no_minor_or_node_upgrade]
+# [START gke_standard_release_channel_no_minor_or_node_upgrade]
 resource "google_container_cluster" "no_minor_or_node_upgrade" {
   name     = "cluster-zonal-example-none-to-rc"
   location = "us-central1-a"
@@ -160,7 +176,7 @@ resource "google_container_cluster" "no_minor_or_node_upgrade" {
 
 resource "google_container_node_pool" "no_minor_or_node_upgrade" {
   name    = "cluster-zonal-example-none-to-rc-node-pool"
-  cluster  = google_container_cluster.no_minor_or_node_upgrade.name
+  cluster = google_container_cluster.no_minor_or_node_upgrade.name
 
   node_count = 2
 
@@ -169,5 +185,4 @@ resource "google_container_node_pool" "no_minor_or_node_upgrade" {
     auto_upgrade = true
   }
 }
-[END gke_standard_release_channel_no_minor_or_node_upgrade]
-
+# [END gke_standard_release_channel_no_minor_or_node_upgrade]
