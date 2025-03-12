@@ -130,7 +130,7 @@ resource "google_container_cluster" "rc_regular" {
 
 resource "google_container_node_pool" "rc_regular" {
   name    = "cluster-zonal-example-none-to-rc-np"
-  cluster = google_container_cluster.rc_regular.name
+  cluster = google_container_cluster.rc_regular.id
 
   node_count = 2
 
