@@ -15,7 +15,7 @@
 */
 
 # NOTE: Locations are different in these examples to satisfy the tests.
-# These are intended to represent sequential steps on the same cluster. 
+# These are intended to represent sequential steps on the same cluster.
 
 # [START gke_standard_release_channel_none]
 resource "google_container_cluster" "rc_none" {
