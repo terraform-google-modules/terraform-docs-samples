@@ -36,7 +36,7 @@ resource "google_container_cluster" "rc_none" {
 
 resource "google_container_node_pool" "rc_none" {
   name    = "cluster-zonal-example-none-to-rc-np"
-  cluster = google_container_cluster.rc_none.name
+  cluster = google_container_cluster.rc_none.id
 
   node_count = 2
 
@@ -84,7 +84,7 @@ resource "google_container_cluster" "no_upgrade" {
 
 resource "google_container_node_pool" "no_upgrade" {
   name    = "cluster-zonal-example-none-to-rc-np"
-  cluster = google_container_cluster.no_upgrade.name
+  cluster = google_container_cluster.no_upgrade.id
 
   node_count = 2
 
@@ -179,7 +179,7 @@ resource "google_container_cluster" "no_minor_or_node_upgrade" {
 
 resource "google_container_node_pool" "no_minor_or_node_upgrade" {
   name    = "cluster-zonal-example-none-to-rc-np"
-  cluster = google_container_cluster.no_minor_or_node_upgrade.name
+  cluster = google_container_cluster.no_minor_or_node_upgrade.id
 
   node_count = 2
 
