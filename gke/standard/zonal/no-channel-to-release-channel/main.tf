@@ -146,7 +146,7 @@ resource "google_container_node_pool" "rc_regular" {
 # [START gke_standard_release_channel_no_minor_or_node_upgrade]
 resource "google_container_cluster" "no_minor_or_node_upgrade" {
   name     = "cluster-zonal-example-none-to-rc"
-  location = "us-central1-d"
+  location = "us-central1-f"
 
   release_channel {
     channel = "REGULAR"
