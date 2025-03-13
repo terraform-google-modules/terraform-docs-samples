@@ -65,6 +65,9 @@ resource "google_container_cluster" "no_upgrade" {
     }
     maintenance_exclusion {
       exclusion_name = "no_upgrades_exclusion"
+      # NOTE: Pick an interval for your exclusion with an end_time in the future 
+      # otherwise the exclusion will have no effect.
+      # This example assumes that the exclusion is set on 2025-02-11.
       start_time     = "2025-02-11T23:16:39Z"
       # NO_UPGRADES exclusions are limited to 30 days.
       end_time = "2025-03-11T23:16:39Z"
@@ -112,6 +115,9 @@ resource "google_container_cluster" "rc_regular" {
     }
     maintenance_exclusion {
       exclusion_name = "no_upgrades_exclusion"
+      # NOTE: Pick an interval for your exclusion with an end_time in the future 
+      # otherwise the exclusion will have no effect.
+      # This example assumes that the exclusion is set on 2025-02-11.
       start_time     = "2025-02-11T23:16:39Z"
       end_time       = "2025-03-11T23:16:39Z"
       exclusion_options {
