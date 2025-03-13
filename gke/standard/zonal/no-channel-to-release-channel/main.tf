@@ -166,6 +166,9 @@ resource "google_container_cluster" "no_minor_or_node_upgrade" {
     }
     maintenance_exclusion {
       exclusion_name = "no_minor_or_node_upgrades_exclusion"
+      # NOTE: Pick an interval for your exclusion with an end_time in the future 
+      # otherwise the exclusion will have no effect.
+      # This example assumes that the exclusion is set on 2025-02-11.
       start_time     = "2025-02-11T23:16:39Z"
       # This the end of standard support for 1.31.
       end_time = "2025-12-22T00:00:00Z"
