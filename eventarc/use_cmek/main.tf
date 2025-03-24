@@ -64,7 +64,7 @@ resource "google_kms_crypto_key" "default" {
 resource "google_kms_crypto_key_iam_member" "default" {
   crypto_key_id = google_kms_crypto_key.default.id
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-  member        = google_project_service_identity.eventarc_sa.member
+  member        = "serviceAccount:${google_project_service_identity.eventarc_sa.email}"
 }
 # [END eventarc_terraform_cmek_role]
 
