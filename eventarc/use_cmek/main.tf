@@ -32,6 +32,14 @@ resource "google_project_service" "eventarc" {
 data "google_project" "default" {
 }
 
+# [START eventarc_terraform_service_agent]
+resource "google_project_service_identity" "eventarc_sa" {
+  provider = google-beta
+  project  = data.google_project.default.project_id
+  service  = "eventarc.googleapis.com"
+}
+# [END eventarc_terraform_service_agent]
+
 # [START eventarc_terraform_cmek_key]
 resource "random_id" "default" {
   byte_length = 8
@@ -51,14 +59,14 @@ resource "google_kms_crypto_key" "default" {
 }
 # [END eventarc_terraform_cmek_key]
 
-# [START eventarc_terraform_cmek_service_agent]
+# [START eventarc_terraform_cmek_role]
 # Grant service account access to Cloud KMS key
 resource "google_kms_crypto_key_iam_member" "default" {
   crypto_key_id = google_kms_crypto_key.default.id
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-  member        = "serviceAccount:service-${data.google_project.default.number}@gcp-sa-eventarc.iam.gserviceaccount.com"
+  member        = google_project_service_identity.eventarc_sa.member
 }
-# [END eventarc_terraform_cmek_service_agent]
+# [END eventarc_terraform_cmek_role]
 
 # [START eventarc_terraform_cmek_google_channel]
 # Specify a CMEK key for the `GoogleChannelConfig` resource
