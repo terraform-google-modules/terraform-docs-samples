@@ -70,9 +70,9 @@ resource "google_backup_dr_backup_vault" "default" {
     annotations2 = "baz1"
   }
 
-  force_update                 = "true"
-  ignore_inactive_datasources  = "true"
-  allow_missing                = "true"
+  force_update                = "true"
+  ignore_inactive_datasources = "true"
+  allow_missing               = "true"
 }
 
 resource "google_backup_dr_backup_plan" "default" {
