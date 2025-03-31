@@ -19,8 +19,11 @@ resource "google_container_cluster" "default" {
   name               = "default"
   location           = "us-central1-a"
   initial_node_count = 1
-  # Set `min_master_version` because secondary_boot_disks require GKE 1.28.3-gke.106700 or later.
-  min_master_version = "1.28"
+
+  # secondary_boot_disks require GKE 1.28.3-gke.106700 or later, which should
+  # be true for all release channels apart from EXTENDED.
+  # If required, Use `release_channel = "EXTENDED"` and set `min_master_version`.
+
   # Setting `deletion_protection` to `true` would prevent
   # accidental deletion of this instance using Terraform.
   deletion_protection = false
