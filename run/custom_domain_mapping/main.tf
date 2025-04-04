@@ -17,14 +17,14 @@
 # [START cloudrun_custom_domain_mapping_parent_tag]
 # [START cloudrun_custom_domain_mapping_run_service]
 resource "google_cloud_run_v2_service" "default" {
-  name     = "your-service-name" # Replace with your desired service
+  name     = "custom-domain" # Replace with your service name
   location = "us-central1"
 
   deletion_protection = false # set to true to prevent destruction of the resource
 
   template {
     containers {
-      image = "REGION-docker.pkg.dev/PROJECT_ID/REPOSITORY/IMAGE" # Replace with your container image path
+      image = "us-docker.pkg.dev/cloudrun/container/hello" # Replace with your container image
     }
   }
 }
