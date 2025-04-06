@@ -17,7 +17,6 @@
 # [START networksecurity_mirroring_basic_consumer]
 # [START networksecurity_mirroring_create_producer_network_tf]
 resource "google_compute_network" "producer_network" {
-  provider                = google-beta
   name                    = "producer-network"
   auto_create_subnetworks = false
 }
@@ -25,7 +24,6 @@ resource "google_compute_network" "producer_network" {
 
 # [START networksecurity_mirroring_create_consumer_network_tf]
 resource "google_compute_network" "consumer_network" {
-  provider                = google-beta
   name                    = "consumer-network"
   auto_create_subnetworks = false
 }
@@ -33,7 +31,6 @@ resource "google_compute_network" "consumer_network" {
 
 # [START networksecurity_mirroring_create_producer_deployment_group_tf]
 resource "google_network_security_mirroring_deployment_group" "default" {
-  provider                      = google-beta
   mirroring_deployment_group_id = "mirroring-deployment-group"
   location                      = "global"
   network                       = google_compute_network.producer_network.id
@@ -42,7 +39,6 @@ resource "google_network_security_mirroring_deployment_group" "default" {
 
 # [START networksecurity_mirroring_create_endpoint_group_tf]
 resource "google_network_security_mirroring_endpoint_group" "default" {
-  provider                    = google-beta
   mirroring_endpoint_group_id = "mirroring-endpoint-group"
   location                    = "global"
   mirroring_deployment_group  = google_network_security_mirroring_deployment_group.default.id
@@ -51,7 +47,6 @@ resource "google_network_security_mirroring_endpoint_group" "default" {
 
 # [START networksecurity_mirroring_create_endpoint_group_association_tf]
 resource "google_network_security_mirroring_endpoint_group_association" "default" {
-  provider                                = google-beta
   mirroring_endpoint_group_association_id = "mirroring-endpoint-group-association"
   location                                = "global"
   network                                 = google_compute_network.consumer_network.id
