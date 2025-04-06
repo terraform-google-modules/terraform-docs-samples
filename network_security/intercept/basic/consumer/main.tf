@@ -31,6 +31,16 @@ resource "google_compute_network" "consumer_network" {
 }
 # [END networksecurity_intercept_create_consumer_network_tf]
 
+# [START networksecurity_intercept_create_consumer_subnetwork_tf]
+resource "google_compute_subnetwork" "consumer_subnet" {
+  provider      = google-beta
+  name          = "consumer-subnet"
+  region        = "us-central1"
+  ip_cidr_range = "10.10.0.0/16"
+  network       = google_compute_network.consumer_network.name
+}
+# [END networksecurity_intercept_create_consumer_subnetwork_tf]
+
 # [START networksecurity_intercept_create_producer_deployment_group_tf]
 resource "google_network_security_intercept_deployment_group" "default" {
   provider                      = google-beta
@@ -58,4 +68,68 @@ resource "google_network_security_intercept_endpoint_group_association" "default
   intercept_endpoint_group                = google_network_security_intercept_endpoint_group.default.id
 }
 # [END networksecurity_intercept_create_endpoint_group_association_tf]
+
+data "google_project" "default" {}
+
+data "google_organization" "default" {
+  organization = data.google_project.default.org_id
+}
+
+# [START networksecurity_intercept_create_security_profile_tf]
+resource "google_network_security_security_profile" "default" {
+  provider = google-beta
+  name     = "security-profile"
+  type     = "CUSTOM_INTERCEPT"
+  parent   = "organizations/${data.google_organization.default.org_id}"
+  location = "global"
+
+  custom_intercept_profile {
+    intercept_endpoint_group = google_network_security_intercept_endpoint_group.default.id
+  }
+}
+# [END networksecurity_intercept_create_security_profile_tf]
+
+# [START networksecurity_intercept_create_security_profile_group_tf]
+resource "google_network_security_security_profile_group" "default" {
+  provider                 = google-beta
+  name                     = "security-profile-group"
+  parent                   = "organizations/${data.google_organization.default.org_id}"
+  location                 = "global"
+  custom_intercept_profile = google_network_security_security_profile.default.id
+}
+# [END networksecurity_intercept_create_security_profile_group_tf]
+
+# [START networksecurity_intercept_create_firewall_policy_tf]
+resource "google_compute_network_firewall_policy" "default" {
+  provider = google-beta
+  name     = "firewall-policy"
+}
+# [END networksecurity_intercept_create_firewall_policy_tf]
+
+# [START networksecurity_intercept_create_firewall_policy_rule_tf]
+resource "google_compute_network_firewall_policy_rule" "default" {
+  provider               = google-beta
+  firewall_policy        = google_compute_network_firewall_policy.default.name
+  priority               = 1000
+  action                 = "apply_security_profile_group"
+  direction              = "INGRESS"
+  security_profile_group = "//networksecurity.googleapis.com/${google_network_security_security_profile_group.default.id}"
+
+  match {
+    layer4_configs {
+      ip_protocol = "tcp"
+      ports       = ["80"]
+    }
+    src_ip_ranges = ["10.10.0.0/16"]
+  }
+}
+# [END networksecurity_intercept_create_firewall_policy_rule_tf]
+
+# [START networksecurity_intercept_create_firewall_policy_association_tf]
+resource "google_compute_network_firewall_policy_association" "default" {
+  name              = "firewall-policy-assoc"
+  attachment_target = google_compute_network.consumer_network.id
+  firewall_policy   = google_compute_network_firewall_policy.default.name
+}
+# [END networksecurity_intercept_create_firewall_policy_association_tf]
 # [END networksecurity_intercept_basic_consumer]
