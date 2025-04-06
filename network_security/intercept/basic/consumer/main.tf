@@ -14,6 +14,22 @@
 * limitations under the License.
 */
 
+data "google_project" "default" {
+  provider = google-beta
+}
+
+# In case the project is in a folder, extract the organization ID from it.
+data "google_folder" "default" {
+  count               = data.google_project.default.folder_id != "" ? 1 : 0
+  folder              = data.google_project.default.folder_id
+  lookup_organization = true
+}
+
+data "google_organization" "default" {
+  provider     = google-beta
+  organization = data.google_project.default.org_id != "" ? data.google_project.default.org_id : data.google_folder.default[0].organization
+}
+
 # [START networksecurity_intercept_basic_consumer]
 # [START networksecurity_intercept_create_producer_network_tf]
 resource "google_compute_network" "producer_network" {
@@ -69,12 +85,6 @@ resource "google_network_security_intercept_endpoint_group_association" "default
 }
 # [END networksecurity_intercept_create_endpoint_group_association_tf]
 
-data "google_project" "default" {}
-
-data "google_organization" "default" {
-  organization = data.google_project.default.org_id
-}
-
 # [START networksecurity_intercept_create_security_profile_tf]
 resource "google_network_security_security_profile" "default" {
   provider = google-beta
@@ -113,7 +123,7 @@ resource "google_compute_network_firewall_policy_rule" "default" {
   priority               = 1000
   action                 = "apply_security_profile_group"
   direction              = "INGRESS"
-  security_profile_group = "//networksecurity.googleapis.com/${google_network_security_security_profile_group.default.id}"
+  security_profile_group = google_network_security_security_profile_group.default.id
 
   match {
     layer4_configs {
@@ -127,6 +137,7 @@ resource "google_compute_network_firewall_policy_rule" "default" {
 
 # [START networksecurity_intercept_create_firewall_policy_association_tf]
 resource "google_compute_network_firewall_policy_association" "default" {
+  provider          = google-beta
   name              = "firewall-policy-assoc"
   attachment_target = google_compute_network.consumer_network.id
   firewall_policy   = google_compute_network_firewall_policy.default.name
