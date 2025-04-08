@@ -37,7 +37,7 @@ resource "google_storage_bucket" "default" {
 data "archive_file" "default" {
   type        = "zip"
   output_path = "/tmp/function-source.zip"
-  source_dir  = "functions/hello-world/"
+  source_dir  = "./helloworld/helloworldHttp"
 }
 resource "google_storage_bucket_object" "object" {
   name   = "function-source.zip"
