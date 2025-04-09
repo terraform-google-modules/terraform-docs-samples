@@ -20,6 +20,7 @@ data "google_project" "default" {
 
 # In case the project is in a folder, extract the organization ID from it.
 data "google_folder" "default" {
+  provider            = google-beta
   count               = data.google_project.default.folder_id != "" ? 1 : 0
   folder              = data.google_project.default.folder_id
   lookup_organization = true
