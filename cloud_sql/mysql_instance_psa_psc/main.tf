@@ -91,3 +91,28 @@ resource "google_compute_forwarding_rule" "default" {
 
 # [END cloud_sql_mysql_instance_psa_psc_parent_tag]
 
+// Configure a Cloud SQL MySQL instance with Private Service Connect disabled.
+# [START cloud_sql_mysql_instance_disable_psc_instance]
+resource "google_sql_database_instance" "disable_psc_example" {
+  name             = "mysql-disable-psc-example"
+  region           = "us-central1"
+  database_version = "MYSQL_8_0"
+
+  depends_on = [google_service_networking_connection.default]
+
+  settings {
+    tier = "db-f1-micro"
+    ip_configuration {
+      psc_config {
+        psc_enabled               = false
+        allowed_consumer_projects = [] # clear consumer projects
+      }
+      ipv4_enabled    = false
+      private_network = google_compute_network.peering_network.id
+    }
+  }
+  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
+  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
+  deletion_protection = false
+}
+# [END cloud_sql_mysql_instance_disable_psc_instance]
