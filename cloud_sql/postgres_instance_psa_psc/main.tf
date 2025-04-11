@@ -94,3 +94,33 @@ resource "google_compute_forwarding_rule" "default" {
 }
 
 # [END cloud_sql_postgres_instance_psa_psc_parent_tag]
+
+// Configure a Cloud SQL Postgres instance with Private Service Connect disabled.
+# [START cloud_sql_postgres_instance_disable_psc_instance]
+resource "google_sql_database_instance" "disable_psc_example" {
+  name             = "postgres-disable-psc-example"
+  region           = "us-central1"
+  database_version = "POSTGRES_17"
+
+  depends_on = [google_service_networking_connection.default]
+
+  settings {
+    tier              = "db-custom-2-7680"
+    availability_type = "REGIONAL"
+    backup_configuration {
+      enabled = true
+    }
+    ip_configuration {
+      psc_config {
+        psc_enabled               = false
+        allowed_consumer_projects = [] # clear consumer projects
+      }
+      ipv4_enabled    = false
+      private_network = google_compute_network.peering_network.id
+    }
+  }
+  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
+  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
+  deletion_protection = false # Set to "true" to prevent destruction of the resource
+}
+# [END cloud_sql_postgres_instance_disable_psc_instance]
