@@ -23,7 +23,7 @@ resource "google_backup_dr_backup_vault" "default" {
   description                                = "This vault is created usingTerraform."
   backup_minimum_enforced_retention_duration = "100000s"
   force_update                               = "true"
-  force_delete                               = "true"
+  ignore_inactive_datasources                = "true"
   allow_missing                              = "true"
 }
 
