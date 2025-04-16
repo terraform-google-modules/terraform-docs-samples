@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,20 +15,18 @@
  */
 
 # [START cloud_sql_postgres_instance_google_managed_cas_ca]
-resource "google_sql_database_instance" "postgres_instance" {
+resource "google_sql_database_instance" "default" {
   name             = "postgres-instance"
   region           = "asia-northeast1"
-  database_version = "POSTGRES_14"
+  database_version = "POSTGRES_17"
   settings {
-    tier = "db-custom-2-7680"
+    tier = "db-f1-micro"
     ip_configuration {
       # The following server CA mode lets the instance use Google-managed CAS CA to issue server certificates.
       # https://cloud.google.com/sql/docs/postgres/admin-api/rest/v1beta4/instances#ipconfiguration
       server_ca_mode = "GOOGLE_MANAGED_CAS_CA"
     }
   }
-  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
-  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
-  deletion_protection = false
+  deletion_protection = false # set to "true" in production
 }
 # [END cloud_sql_postgres_instance_google_managed_cas_ca]

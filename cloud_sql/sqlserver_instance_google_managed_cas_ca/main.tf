@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
  */
 
 # [START cloud_sql_sqlserver_instance_require_ssl]
-resource "google_sql_database_instance" "sqlserver_instance" {
+resource "google_sql_database_instance" "default" {
   name             = "sqlserver-instance"
   region           = "asia-northeast1"
-  database_version = "SQLSERVER_2019_STANDARD"
+  database_version = "SQLSERVER_2022_STANDARD"
   root_password    = "INSERT-PASSWORD-HERE"
   settings {
     tier = "db-custom-2-7680"
@@ -28,8 +28,6 @@ resource "google_sql_database_instance" "sqlserver_instance" {
       server_ca_mode = "GOOGLE_MANAGED_CAS_CA"
     }
   }
-  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
-  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
-  deletion_protection = false
+  deletion_protection = false # set to "true" in production
 }
 # [END cloud_sql_sqlserver_instance_require_ssl]

@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
  */
 
 # [START cloud_sql_mysql_instance_google_managed_cas_ca]
-resource "google_sql_database_instance" "mysql_instance" {
+resource "google_sql_database_instance" "default" {
   name             = "mysql-instance"
   region           = "asia-northeast1"
-  database_version = "MYSQL_8_0"
+  database_version = "MYSQL_8_4"
   settings {
     tier = "db-f1-micro"
     ip_configuration {
@@ -27,8 +27,6 @@ resource "google_sql_database_instance" "mysql_instance" {
       server_ca_mode = "GOOGLE_MANAGED_CAS_CA"
     }
   }
-  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
-  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
-  deletion_protection = false
+  deletion_protection = false # set to "true" in production
 }
 # [END cloud_sql_mysql_instance_google_managed_cas_ca]

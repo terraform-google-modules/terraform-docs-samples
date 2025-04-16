@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 # [START cloud_sql_instance_service_identity]
-resource "google_project_service_identity" "gcp_sa_cloud_sql" {
+resource "google_project_service_identity" "default" {
   provider = google-beta
   service  = "sqladmin.googleapis.com"
 }
 # [END cloud_sql_instance_service_identity]
 
-# [START cloud_sql_postgres_instance_ca_pool]
-resource "google_privateca_ca_pool" "customer_ca_pool" {
-  name     = "tf-test-cap"
+# [START privateca_ca_pool_suffix]
+resource "random_string" "default" {
+  length  = 10
+  special = false
+  upper   = false
+}
+# [END privateca_ca_pool_suffix]
+
+# [START cloud_sql_mysql_instance_ca_pool]
+resource "google_privateca_ca_pool" "default" {
+  name     = "customer-ca-pool-${random_string.default.result}"
   location = "asia-northeast1"
   tier     = "DEVOPS"
   publishing_options {
@@ -30,23 +38,23 @@ resource "google_privateca_ca_pool" "customer_ca_pool" {
     publish_crl     = false
   }
 }
-# [END cloud_sql_postgres_instance_ca_pool]
+# [END cloud_sql_mysql_instance_ca_pool]
 
 # [START cloud_sql_postgres_instance_ca]
-resource "google_privateca_certificate_authority" "customer_ca" {
-  pool                                   = google_privateca_ca_pool.customer_ca_pool.name
-  certificate_authority_id               = "tf-test-ca"
+resource "google_privateca_certificate_authority" "default" {
+  pool                                   = google_privateca_ca_pool.default.name
+  certificate_authority_id               = "my-certificate-authority"
   location                               = "asia-northeast1"
   lifetime                               = "86400s"
   type                                   = "SELF_SIGNED"
-  deletion_protection                    = false
+  deletion_protection                    = false # set to "true" in production
   skip_grace_period                      = true
   ignore_active_certificates_on_deletion = true
   config {
     subject_config {
       subject {
-        organization = "Test LLC"
-        common_name  = "my-ca"
+        organization = "my organization"
+        common_name  = "my certificate authority name"
       }
     }
     x509_config {
@@ -71,31 +79,28 @@ resource "google_privateca_certificate_authority" "customer_ca" {
 # [END cloud_sql_postgres_instance_ca]
 
 # [START cloud_sql_postgres_instance_iam_granting]
-resource "google_privateca_ca_pool_iam_member" "granting" {
-  ca_pool = google_privateca_ca_pool.customer_ca_pool.id
+resource "google_privateca_ca_pool_iam_member" "default" {
+  ca_pool = google_privateca_ca_pool.default.id
   role    = "roles/privateca.certificateRequester"
 
-  member = "serviceAccount:${google_project_service_identity.gcp_sa_cloud_sql.email}"
+  member = "serviceAccount:${google_project_service_identity.default.email}"
 }
 # [END cloud_sql_postgres_instance_iam_granting]
 
 # [START cloud_sql_postgres_instance_google_managed_cas_ca]
-resource "google_sql_database_instance" "postgres_instance" {
+resource "google_sql_database_instance" "default" {
   name             = "postgres-instance"
   region           = "asia-northeast1"
-  database_version = "POSTGRES_14"
+  database_version = "POSTGRES_17"
   settings {
-    tier = "db-custom-2-7680"
+    tier = "db-f1-micro"
     ip_configuration {
       # The following server CA mode lets the instance use customer-managed CAS CA to issue server certificates.
       # https://cloud.google.com/sql/docs/postgres/admin-api/rest/v1beta4/instances#ipconfiguration
       server_ca_mode = "CUSTOMER_MANAGED_CAS_CA"
-      # This is the name of the customer-owned CAS CA pool.
-      server_ca_pool = google_privateca_ca_pool.customer_ca_pool.id
+      server_ca_pool = google_privateca_ca_pool.default.id
     }
   }
-  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
-  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
-  deletion_protection = false
+  deletion_protection = false # set to "true" in production
 }
 # [END cloud_sql_postgres_instance_google_managed_cas_ca]
