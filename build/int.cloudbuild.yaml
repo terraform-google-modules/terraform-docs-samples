@@ -63,6 +63,25 @@ steps:
       echo -n "Folders in scope for tests:"
       find . -type d -printf '%P\n'
 
+- id: resource specific fixups
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  entrypoint: bash
+  args:
+    - -c
+    - |
+      set -e
+      mkdir -p .hcledit-tmp
+      wget -P .hcledit-tmp/ https://github.com/minamijoyo/hcledit/releases/download/v0.2.17/hcledit_0.2.17_linux_amd64.tar.gz
+      checksum=$(sha256sum .hcledit-tmp/hcledit_0.2.17_linux_amd64.tar.gz | awk '{print $1}')
+      if [ "$checksum" != "5e085bd319c84c74e87b915ab2c1f95afccb2d4326be481fbe19c1d7a0eb5fee" ]; then
+        echo "Checksum verification failed!"
+        exit 1
+      fi
+      tar -xzf .hcledit-tmp/hcledit_0.2.17_linux_amd64.tar.gz -C .hcledit-tmp/
+
+      # Add `deletion_protection = false`` to  google_container_cluste.default resources
+      find . -name "*.tf" -print | xargs -t -I {} .hcledit-tmp/hcledit attribute append resource.google_container_cluster.default.deletion_protection 'false' -u -f {} || true
+
 - id: prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && prepare_environment']

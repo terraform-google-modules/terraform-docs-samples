@@ -24,9 +24,5 @@ resource "google_container_cluster" "default" {
   release_channel {
     channel = "REGULAR"
   }
-
-  # Set `deletion_protection` to `true` will ensure that one cannot
-  # accidentally delete this instance by use of Terraform.
-  deletion_protection = false
 }
 # [END gke_autopilot_release_channel]
