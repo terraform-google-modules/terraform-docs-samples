@@ -15,7 +15,7 @@
 */
 
 # [START gke_standard_regional_ray_operator]
-resource "google_container_cluster" "ray-cluster" {
+resource "google_container_cluster" "default" {
   name     = "gke-standard-regional-ray-operator"
   location = "us-west1"
 
@@ -36,9 +36,5 @@ resource "google_container_cluster" "ray-cluster" {
       }
     }
   }
-
-  # Set `deletion_protection` to `true` will ensure that one cannot
-  # accidentally delete this instance by use of Terraform.
-  deletion_protection = false
 }
 # [END gke_standard_regional_ray_operator]
