@@ -26,10 +26,6 @@ resource "google_container_cluster" "default" {
   }
 
   enable_autopilot = true
-
-  # Set `deletion_protection` to `true` will ensure that one cannot
-  # accidentally delete this instance by use of Terraform.
-  deletion_protection = false
 }
 
 resource "google_gke_hub_feature" "configmanagement_feature" {

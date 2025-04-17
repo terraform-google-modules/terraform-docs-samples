@@ -25,10 +25,6 @@ resource "google_container_cluster" "default" {
 
   initial_node_count       = 1
   remove_default_node_pool = true
-
-  # Set `deletion_protection` to `true` will ensure that one cannot
-  # accidentally delete this instance by use of Terraform.
-  deletion_protection = false
 }
 
 # [START gke_standard_regional_node_pool]
