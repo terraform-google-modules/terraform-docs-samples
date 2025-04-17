@@ -19,9 +19,5 @@ resource "google_container_cluster" "default" {
   name               = "gke-standard-zonal-single-zone"
   location           = "us-central1-a"
   initial_node_count = 1
-
-  # Set `deletion_protection` to `true` will ensure that one cannot
-  # accidentally delete this instance by use of Terraform.
-  deletion_protection = false
 }
 # [END gke_standard_zonal_single_zone]

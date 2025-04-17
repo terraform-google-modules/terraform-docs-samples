@@ -23,10 +23,6 @@ resource "google_container_cluster" "default" {
   # secondary_boot_disks require GKE 1.28.3-gke.106700 or later, which should
   # be true for all release channels apart from EXTENDED.
   # If required, Use `release_channel = "EXTENDED"` and set `min_master_version`.
-
-  # Setting `deletion_protection` to `true` would prevent
-  # accidental deletion of this instance using Terraform.
-  deletion_protection = false
 }
 # [END gke_standard_zonal_secondary_boot_disk_cluster]
 

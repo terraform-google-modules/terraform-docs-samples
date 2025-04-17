@@ -22,10 +22,6 @@ resource "google_container_cluster" "default" {
   initial_node_count = 1
 
   enable_l4_ilb_subsetting = true
-
-  # Set `deletion_protection` to `true` will ensure that one cannot
-  # accidentally delete this instance by use of Terraform.
-  deletion_protection = false
 }
 # [END gke_standard_regional_loadbalancer_cluster]
 
