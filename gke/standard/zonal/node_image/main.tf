@@ -22,9 +22,5 @@ resource "google_container_cluster" "default" {
   node_config {
     image_type = "cos_containerd"
   }
-
-  # Set `deletion_protection` to `true` will ensure that one cannot
-  # accidentally delete this instance by use of Terraform.
-  deletion_protection = false
 }
 # [END gke_standard_zonal_node_image]

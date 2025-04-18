@@ -42,10 +42,6 @@ resource "google_container_cluster" "default" {
       }
     }
   }
-
-  # Set `deletion_protection` to `true` will ensure that one cannot
-  # accidentally delete this instance by use of Terraform.
-  deletion_protection = false
 }
 # [END gke_standard_regional_node_system_config]
 
