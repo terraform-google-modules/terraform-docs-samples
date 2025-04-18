@@ -94,7 +94,7 @@ resource "google_sql_database_instance" "default" {
   database_version = "POSTGRES_17"
   settings {
     edition = "ENTERPRISE"
-    tier = "db-f1-micro"
+    tier    = "db-f1-micro"
     ip_configuration {
       # The following server CA mode lets the instance use customer-managed CAS CA to issue server certificates.
       # https://cloud.google.com/sql/docs/postgres/admin-api/rest/v1beta4/instances#ipconfiguration
