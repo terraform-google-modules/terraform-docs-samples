@@ -15,7 +15,7 @@
 */
 
 # [START gke_standard_regional_binauthz_enforce]
-resource "google_container_cluster" "enforce" {
+resource "google_container_cluster" "default" {
   name               = "gke-standard-regional-binauthz-enforce"
   location           = "us-west1"
   initial_node_count = 1
