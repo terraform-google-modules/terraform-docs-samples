@@ -102,6 +102,5 @@ resource "google_sql_database_instance" "default" {
       server_ca_pool = google_privateca_ca_pool.default.id
     }
   }
-  deletion_protection = false # set to "true" in production
 }
 # [END cloud_sql_mysql_instance_customer_managed_cas_ca]

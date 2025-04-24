@@ -102,6 +102,5 @@ resource "google_sql_database_instance" "default" {
       server_ca_pool = google_privateca_ca_pool.default.id
     }
   }
-  deletion_protection = false # set to "true" in production
 }
 # [END cloud_sql_sqlserver_instance_require_ssl]
