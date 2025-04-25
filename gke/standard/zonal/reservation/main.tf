@@ -120,8 +120,8 @@ resource "google_container_node_pool" "reservation_flex" {
     total_max_node_count = 1
   }
   node_config {
-    machine_type = "e2-medium"
-    flex_start = true
+    machine_type     = "e2-medium"
+    flex_start       = true
     max_run_duration = "604800s"
 
     reservation_affinity {
