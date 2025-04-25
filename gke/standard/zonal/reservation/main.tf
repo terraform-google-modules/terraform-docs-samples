@@ -121,7 +121,7 @@ resource "google_container_node_pool" "reservation_flex" {
   node_config {
     machine_type = "e2-medium"
     flex_start = true
-	  max_run_duration = "604800s"
+    max_run_duration = "604800s"
 
     reservation_affinity {
       consume_reservation_type = "NO_RESERVATION"
