@@ -16,11 +16,11 @@
 
 # [START gke_standard_zonal_dws_flex_cluster]
 
-  # DWS Flex currently require project allowlisting, please follow steps from here 
-  # https://cloud.google.com/kubernetes-engine/docs/concepts/dws
+# DWS Flex currently require project allowlisting, please follow steps from here 
+# https://cloud.google.com/kubernetes-engine/docs/concepts/dws
 resource "google_container_cluster" "default" {
-  name     = "gke-standard-zonal-flex-cluster"
-  location = "us-central1-a"
+  name               = "gke-standard-zonal-flex-cluster"
+  location           = "us-central1-a"
   initial_node_count = 1
 
   node_config {
@@ -45,8 +45,8 @@ resource "google_container_node_pool" "dws_non_q_flex" {
 
   # More details on usage https://cloud.google.com/kubernetes-engine/docs/how-to/dws-flex-start-training
   node_config {
-    machine_type     = "e2-medium"
-    flex_start       = true
+    machine_type = "e2-medium"
+    flex_start   = true
 
     reservation_affinity {
       consume_reservation_type = "NO_RESERVATION"
