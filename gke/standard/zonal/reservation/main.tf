@@ -109,6 +109,7 @@ resource "google_container_node_pool" "specific_node_pool" {
 
 # [START gke_standard_zonal_reservation_flex]
 resource "google_container_node_pool" "reservation_flex" {
+  provider = google-beta
   name     = "gke_standard_zonal_reservation_flex"
   cluster  = google_container_cluster.default.name
   location = google_container_cluster.default.location
