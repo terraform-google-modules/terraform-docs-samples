@@ -106,27 +106,3 @@ resource "google_container_node_pool" "specific_node_pool" {
   ]
 }
 # [END gke_standard_zonal_reservation_specific_node_pool]
-
-# [START gke_standard_zonal_reservation_flex]
-resource "google_container_node_pool" "reservation_flex" {
-  provider = google-beta
-  name     = "gke_standard_zonal_reservation_flex"
-  cluster  = google_container_cluster.default.name
-  location = google_container_cluster.default.location
-
-  initial_node_count = 0
-  autoscaling {
-    total_min_node_count = 0
-    total_max_node_count = 1
-  }
-  node_config {
-    machine_type     = "e2-medium"
-    flex_start       = true
-    max_run_duration = "604800s"
-
-    reservation_affinity {
-      consume_reservation_type = "NO_RESERVATION"
-    }
-  }
-}
-# [END gke_standard_zonal_reservation_flex]
