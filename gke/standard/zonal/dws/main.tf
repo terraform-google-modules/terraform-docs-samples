@@ -16,7 +16,7 @@
 
 # [START gke_standard_zonal_dws_flex_cluster]
 
-# DWS Flex currently require project allowlisting, please follow steps from here 
+# DWS Flex currently require project allowlisting, please follow steps from here
 # https://cloud.google.com/kubernetes-engine/docs/concepts/dws
 resource "google_container_cluster" "default" {
   name               = "gke-standard-zonal-flex-cluster"
