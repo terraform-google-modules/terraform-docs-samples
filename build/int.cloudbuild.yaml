@@ -75,6 +75,9 @@ steps:
       # Add `deletion_protection = false` to google_container_cluster.default resources
       find ./gke -name "*.tf" -print | xargs -t -I {} $$GOPATH/bin/hcledit attribute append resource.google_container_cluster.default.deletion_protection 'false' -u -f {} || true
 
+      # Add `deletion_protection = false` to google_sql_database_instance.default resources
+      find ./cloud_sql -name "*.tf" -print | xargs -t -I {} $$GOPATH/bin/hcledit attribute append resource.google_sql_database_instance.default.deletion_protection 'false' -u -f {} || true
+
 - id: prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && prepare_environment']

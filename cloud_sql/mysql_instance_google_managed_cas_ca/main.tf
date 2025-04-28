@@ -28,6 +28,5 @@ resource "google_sql_database_instance" "default" {
       server_ca_mode = "GOOGLE_MANAGED_CAS_CA"
     }
   }
-  deletion_protection = false # set to "true" in production
 }
 # [END cloud_sql_mysql_instance_google_managed_cas_ca]

@@ -26,10 +26,6 @@ resource "google_sql_database_instance" "default" {
       value = "on"
     }
   }
-  # set `deletion_protection` to true, will ensure that one cannot accidentally
-  # delete this instance by use of Terraform whereas
-  # `deletion_protection_enabled` flag protects this instance at the GCP level.
-  deletion_protection = false
 }
 
 # Specify the email address of the Cloud Identity group to add to the instance

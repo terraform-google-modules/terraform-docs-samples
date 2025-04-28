@@ -68,8 +68,5 @@ resource "google_sql_database_instance" "default" {
       start_time = "20:55"
     }
   }
-  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
-  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
-  deletion_protection = false
 }
 # [END cloud_sql_sqlserver_instance_ha]
