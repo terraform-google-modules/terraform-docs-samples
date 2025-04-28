@@ -34,7 +34,6 @@ resource "google_sql_database_instance" "default" {
       ipv4_enabled = false
     }
   }
-  deletion_protection = false # Set to "true" to prevent destruction of the resource
 }
 # [END cloud_sql_mysql_instance_psc]
 

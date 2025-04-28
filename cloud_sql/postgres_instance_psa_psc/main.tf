@@ -59,9 +59,6 @@ resource "google_sql_database_instance" "default" {
       private_network = google_compute_network.peering_network.id
     }
   }
-  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
-  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
-  deletion_protection = false # Set to "true" to prevent destruction of the resource
 }
 # [END cloud_sql_postgres_instance_psa_psc_instance]
 
