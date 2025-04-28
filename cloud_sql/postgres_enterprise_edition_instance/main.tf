@@ -23,6 +23,5 @@ resource "google_sql_database_instance" "default" {
   settings {
     tier = "db-g1-small"
   }
-  deletion_protection = "false"
 }
 # [END cloud_sql_enterprise_instance]
