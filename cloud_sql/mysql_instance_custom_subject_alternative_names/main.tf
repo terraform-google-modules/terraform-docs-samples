@@ -98,8 +98,8 @@ resource "google_sql_database_instance" "default" {
     ip_configuration {
       # The following server CA mode lets the instance use customer-managed CAS CA to issue server certificates.
       # https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1beta4/instances#ipconfiguration
-      server_ca_mode = "CUSTOMER_MANAGED_CAS_CA"
-      server_ca_pool = google_privateca_ca_pool.default.id
+      server_ca_mode                   = "CUSTOMER_MANAGED_CAS_CA"
+      server_ca_pool                   = google_privateca_ca_pool.default.id
       custom_subject_alternative_names = ["customSan.test.com"]
     }
   }
