@@ -20,13 +20,13 @@ resource "google_project_service_identity" "default" {
 }
 # [END cloud_sql_instance_service_identity]
 
-# [START privateca_ca_pool_suffix]
+# [START cloud_sql_privateca_ca_pool_suffix]
 resource "random_string" "default" {
   length  = 10
   special = false
   upper   = false
 }
-# [END privateca_ca_pool_suffix]
+# [END cloud_sql_privateca_ca_pool_suffix]
 
 # [START cloud_sql_mysql_instance_ca_pool]
 resource "google_privateca_ca_pool" "default" {
@@ -41,6 +41,7 @@ resource "google_privateca_ca_pool" "default" {
 # [END cloud_sql_mysql_instance_ca_pool]
 
 # [START cloud_sql_sqlserver_instance_ca]
+# This is required for setting up customer managed CAS (Certificate Authority Service) instances.
 resource "google_privateca_certificate_authority" "default" {
   pool                                   = google_privateca_ca_pool.default.name
   certificate_authority_id               = "my-certificate-authority"
