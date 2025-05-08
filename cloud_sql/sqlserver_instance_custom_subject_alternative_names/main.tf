@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-# [START cloud_sql_instance_service_identity]
+# [START cloud_sql_sqlserver_instance_service_identity]
 resource "google_project_service_identity" "default" {
   provider = google-beta
   service  = "sqladmin.googleapis.com"
 }
-# [END cloud_sql_instance_service_identity]
+# [END cloud_sql_sqlserver_instance_service_identity]
 
-# [START cloud_sql_privateca_ca_pool_suffix]
+# [START cloud_sql_sqlserver_privateca_ca_pool_suffix]
 resource "random_string" "default" {
   length  = 10
   special = false
   upper   = false
 }
-# [END cloud_sql_privateca_ca_pool_suffix]
+# [END cloud_sql_sqlserver_privateca_ca_pool_suffix]
 
-# [START cloud_sql_mysql_instance_ca_pool]
+# [START cloud_sql_sqlserver_instance_ca_pool]
 resource "google_privateca_ca_pool" "default" {
   name     = "customer-ca-pool-${random_string.default.result}"
   location = "asia-northeast1"
@@ -38,7 +38,7 @@ resource "google_privateca_ca_pool" "default" {
     publish_crl     = false
   }
 }
-# [END cloud_sql_mysql_instance_ca_pool]
+# [END cloud_sql_sqlserver_instance_ca_pool]
 
 # [START cloud_sql_sqlserver_instance_ca]
 # This is required for setting up customer managed CAS (Certificate Authority Service) instances.
