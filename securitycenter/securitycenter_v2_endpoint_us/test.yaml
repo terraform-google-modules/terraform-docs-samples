@@ -15,6 +15,6 @@
 apiVersion: blueprints.cloud.google.com/v1alpha1
 kind: BlueprintTest
 metadata:
-  name: security_center_v2_endpoint_us
+  name: securitycenter_v2_endpoint_us
 spec:
   skip: true

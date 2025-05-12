@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-# [START security_center_v2_endpoint_us]
+# [START securitycenter_v2_endpoint_us]
 provider "google" {
-  alias                              = "security_center_v2_endpoint_us"
+  alias                              = "securitycenter_v2_endpoint_us"
   security_center_v2_custom_endpoint = "https://securitycenter.us.rep.googleapis.com/v2/"
 }
-# [END security_center_v2_endpoint_us]
+# [END securitycenter_v2_endpoint_us]
