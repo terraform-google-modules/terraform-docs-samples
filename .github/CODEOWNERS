@@ -20,7 +20,7 @@
 /network_security/intercept/  @terraform-google-modules/pm2-team @terraform-google-modules/terraform-samples-reviewers
 /network_security/mirroring/  @terraform-google-modules/pm2-team @terraform-google-modules/terraform-samples-reviewers
 /privateca/                   @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
-/security_center_v2/          @terraform-google-modules/terraform-samples-reviewers
+/securitycenter/          @terraform-google-modules/terraform-samples-reviewers
 /storage/                     @terraform-google-modules/cloud-storage-dpe @terraform-google-modules/terraform-samples-reviewers
 /traffic_director/            @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /vpc/                         @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
