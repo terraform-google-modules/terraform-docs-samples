@@ -36,7 +36,7 @@ steps:
 
       # Do not prune if changing tests themselves
       set +e
-      _build_changes=$(git diff --quiet origin/main build test .github/workflows)
+      _build_changes=$(git diff origin/main build test .github/workflows)
       set -e
       if [[ -n "${_build_changes}" ]]; then
           echo "Infrastructure folders have changed; no tests will be pruned."
