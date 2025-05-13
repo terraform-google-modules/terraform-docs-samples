@@ -35,12 +35,13 @@ steps:
       cat _changed_folders
 
       # Do not prune if changing tests themselves
-      while read d; do
-        if [[ "build test .github/workflows" =~ "${d%/}" ]]; then
-          echo "Infrastructure folder ${d%/} has changed; no tests will be pruned."
+      set +e
+      _build_changes=$(git diff origin/main build test .github/workflows)
+      set -e
+      if [[ -n "${_build_changes}" ]]; then
+          echo "Infrastructure folders have changed; no tests will be pruned."
           exit 0 # do not prune
-        fi
-      done < _changed_folders
+      fi
 
       # Remove base folders without changes
       for d in *; do
