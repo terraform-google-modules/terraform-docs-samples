@@ -56,7 +56,7 @@ resource "google_compute_instance" "default" {
 resource "google_compute_disk" "default" {
   name = "disk-data"
   type = "pd-standard"
-  zone = "us-west1-a"
+  zone = "us-central1-a"
   size = "5"
 }
 
