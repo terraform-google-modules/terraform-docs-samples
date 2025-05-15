@@ -67,3 +67,32 @@ resource "google_backup_dr_backup_plan" "default" {
 }
 
 # [END backupdr_create_backupplan]
+
+# [START backupdr_create_backupplan_disk]
+
+# Before creating a backup plan, you need to create backup vault (google_backup_dr_backup_vault).
+resource "google_backup_dr_backup_plan" "disk_default" {
+  provider       = google-beta
+  location       = "us-central1"
+  backup_plan_id = "my-disk-bp"
+  resource_type  = "compute.googleapis.com/Disk"
+  backup_vault   = google_backup_dr_backup_vault.default.name
+
+  backup_rules {
+    rule_id               = "rule-1"
+    backup_retention_days = 5
+
+    standard_schedule {
+      recurrence_type  = "HOURLY"
+      hourly_frequency = 1
+      time_zone        = "UTC"
+
+      backup_window {
+        start_hour_of_day = 0
+        end_hour_of_day   = 6
+      }
+    }
+  }
+}
+
+# [END backupdr_create_backupplan_disk]
