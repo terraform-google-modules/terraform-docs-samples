@@ -57,7 +57,6 @@ resource "google_compute_disk" "default" {
   name = "disk-data"
   type = "pd-standard"
   zone = "us-central1-a"
-  size = "5"
 }
 
 resource "google_backup_dr_backup_vault" "default" {
