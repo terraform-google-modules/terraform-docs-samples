@@ -102,6 +102,16 @@ resource "google_certificate_manager_certificate_map_entry" "first_entry" {
   certificates = [google_certificate_manager_certificate.root_cert.id]
   hostname     = local.domain
 }
+resource "google_certificate_manager_certificate_map_entry" "first_wildcard_entry" {
+  name        = "${local.name}-first-wildcard-entry-${random_id.tf_prefix.hex}"
+  description = "example certificate map entry"
+  map         = google_certificate_manager_certificate_map.certificate_map.name
+  labels = {
+    "terraform" : true
+  }
+  certificates = [google_certificate_manager_certificate.root_cert.id]
+  hostname     = "*.${local.domain}"
+}
 # [END certificatemanager_dns_wildcard_map_entry_one]
 
 # [START certificatemanager_dns_wildcard_map_entry_two]
