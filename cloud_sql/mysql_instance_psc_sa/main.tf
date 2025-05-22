@@ -41,7 +41,7 @@ resource "google_sql_database_instance" "default" {
         psc_enabled               = true
         allowed_consumer_projects = [] # Add consumer project IDs here.
         psc_auto_connections {
-          consumer_network = google_compute_network.consumer_network.id
+          consumer_network            = google_compute_network.consumer_network.id
           consumer_service_project_id = data.google_project.project.project_id
         }
       }
