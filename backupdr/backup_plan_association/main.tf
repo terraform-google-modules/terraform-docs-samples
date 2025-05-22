@@ -148,7 +148,7 @@ resource "google_backup_dr_backup_plan_association" "default" {
 
 # Before creating a backup plan association, you need to create backup plan (google_backup_dr_backup_plan)
 # and compute disk (google_compute_disk or google_compute_region_disk).
-resource "google_backup_dr_backup_plan_association" "default" {
+resource "google_backup_dr_backup_plan_association" "disk_association" {
   provider                   = google-beta
   location                   = "us-central1"
   backup_plan_association_id = "my-disk-bpa"
