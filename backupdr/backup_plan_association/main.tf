@@ -53,6 +53,12 @@ resource "google_compute_instance" "default" {
   }
 }
 
+resource "google_compute_disk" "default" {
+  name = "disk-data"
+  type = "pd-standard"
+  zone = "us-central1-a"
+}
+
 resource "google_backup_dr_backup_vault" "default" {
   provider                                   = google-beta
   location                                   = "us-central1"
@@ -99,6 +105,30 @@ resource "google_backup_dr_backup_plan" "default" {
   }
 }
 
+resource "google_backup_dr_backup_plan" "disk_default" {
+  provider       = google-beta
+  location       = "us-central1"
+  backup_plan_id = "my-disk-bp"
+  resource_type  = "compute.googleapis.com/Disk"
+  backup_vault   = google_backup_dr_backup_vault.default.name
+
+  backup_rules {
+    rule_id               = "rule-1"
+    backup_retention_days = 5
+
+    standard_schedule {
+      recurrence_type  = "HOURLY"
+      hourly_frequency = 1
+      time_zone        = "UTC"
+
+      backup_window {
+        start_hour_of_day = 0
+        end_hour_of_day   = 6
+      }
+    }
+  }
+}
+
 # [START backupdr_create_backupplanassociation]
 
 # Before creating a backup plan association, you need to create backup plan (google_backup_dr_backup_plan)
@@ -113,3 +143,18 @@ resource "google_backup_dr_backup_plan_association" "default" {
 }
 
 # [END backupdr_create_backupplanassociation]
+
+# [START backupdr_create_backupplanassociation_disk]
+
+# Before creating a backup plan association, you need to create backup plan (google_backup_dr_backup_plan)
+# and compute disk (google_compute_disk or google_compute_region_disk).
+resource "google_backup_dr_backup_plan_association" "disk_association" {
+  provider                   = google-beta
+  location                   = "us-central1"
+  backup_plan_association_id = "my-disk-bpa"
+  resource                   = google_compute_disk.default.id
+  resource_type              = "compute.googleapis.com/Disk"
+  backup_plan                = google_backup_dr_backup_plan.disk_default.name
+}
+
+# [END backupdr_create_backupplanassociation_disk]
