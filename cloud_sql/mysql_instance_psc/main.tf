@@ -57,5 +57,21 @@ resource "google_compute_forwarding_rule" "default" {
   ip_address            = google_compute_address.default.self_link
   load_balancing_scheme = ""
   target                = data.google_sql_database_instance.default.psc_service_attachment_link
+  allow_psc_global_access = true
 }
 # [END cloud_sql_mysql_instance_psc_endpoint]
+
+# [START cloud_sql_mysql_instance_ipv6_psc_endpoint]
+resource "google_compute_forwarding_rule" "ipv6_ilb_example" {
+  name   = "ipv6-psc-forwarding-rule-${google_sql_database_instance.default.name}"
+  region = "us-central1"
+
+  load_balancing_scheme = ""
+  target                = data.google_sql_database_instance.default.psc_service_attachment_link
+  all_ports             = true
+  network               = "default" # Replace value with the name of the network here.
+  subnetwork            = "default" # Replace value with the name of the subnet here.
+  ip_version            = "IPV6"
+  allow_psc_global_access = true
+}
+# [END cloud_sql_mysql_instance_ipv6_psc_endpoint]
