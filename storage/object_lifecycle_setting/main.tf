@@ -23,7 +23,6 @@ resource "google_storage_bucket" "auto_expire" {
   provider                    = google-beta
   name                        = "${random_id.bucket_prefix.hex}-example-bucket"
   location                    = "US"
-  uniform_bucket_level_access = true
 
   lifecycle_rule {
     condition {
