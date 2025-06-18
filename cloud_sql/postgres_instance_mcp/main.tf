@@ -16,13 +16,13 @@
 
 # [START cloud_sql_postgres_instance_mcp_creation]
 resource "google_sql_database_instance" "postgres_mcp_creation" {
-  name             = "postgres-instance-mcp-creation"
-  region           = "us-central1"
-  database_version = "POSTGRES_16"
+  name                = "postgres-instance-mcp-creation"
+  region              = "us-central1"
+  database_version    = "POSTGRES_16"
   deletion_protection = false
 
   settings {
-    tier = "db-perf-optimized-N-2"
+    tier    = "db-perf-optimized-N-2"
     edition = "ENTERPRISE_PLUS"
     connection_pool_config {
       connection_pooling_enabled = true
@@ -33,13 +33,13 @@ resource "google_sql_database_instance" "postgres_mcp_creation" {
 
 # [START cloud_sql_postgres_instance_mcp_enable]
 resource "google_sql_database_instance" "postgres_mcp_enable" {
-  name             = "postgres-instance-mcp-enable"
-  region           = "us-central1"
-  database_version = "POSTGRES_16"
+  name                = "postgres-instance-mcp-enable"
+  region              = "us-central1"
+  database_version    = "POSTGRES_16"
   deletion_protection = false
 
   settings {
-    tier = "db-perf-optimized-N-2"
+    tier    = "db-perf-optimized-N-2"
     edition = "ENTERPRISE_PLUS"
     connection_pool_config {
       connection_pooling_enabled = true # Set to true here
@@ -50,19 +50,19 @@ resource "google_sql_database_instance" "postgres_mcp_enable" {
 
 # [START cloud_sql_postgres_instance_mcp_modify]
 resource "google_sql_database_instance" "postgres_mcp_modify" {
-  name             = "postgres-instance-mcp-modify"
-  region           = "us-central1"
-  database_version = "POSTGRES_16"
+  name                = "postgres-instance-mcp-modify"
+  region              = "us-central1"
+  database_version    = "POSTGRES_16"
   deletion_protection = false
 
   settings {
-    tier = "db-perf-optimized-N-2"
+    tier    = "db-perf-optimized-N-2"
     edition = "ENTERPRISE_PLUS"
     connection_pool_config {
       connection_pooling_enabled = true
       flags {
         name  = "max_pool_size" # Modify the value of an existing flag
-        value = "2000"
+        value = "10"
       }
     }
   }
@@ -71,13 +71,13 @@ resource "google_sql_database_instance" "postgres_mcp_modify" {
 
 # [START cloud_sql_postgres_instance_mcp_disable]
 resource "google_sql_database_instance" "postgres_mcp_disable" {
-  name             = "postgres-instance-mcp-disable"
-  region           = "us-central1"
-  database_version = "POSTGRES_16"
+  name                = "postgres-instance-mcp-disable"
+  region              = "us-central1"
+  database_version    = "POSTGRES_16"
   deletion_protection = false
 
   settings {
-    tier = "db-perf-optimized-N-2"
+    tier    = "db-perf-optimized-N-2"
     edition = "ENTERPRISE_PLUS"
     connection_pool_config {
       # Set to false to disable MCP. You can also remove the block entirely.

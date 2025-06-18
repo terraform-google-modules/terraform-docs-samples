@@ -16,13 +16,13 @@
 
 # [START cloud_sql_mysql_instance_mcp_creation]
 resource "google_sql_database_instance" "mysql_mcp_creation" {
-  name             = "mysql-instance-mcp-creation"
-  region           = "us-central1"
-  database_version = "MYSQL_8_0"
+  name                = "mysql-instance-mcp-creation"
+  region              = "us-central1"
+  database_version    = "MYSQL_8_0"
   deletion_protection = false
 
   settings {
-    tier = "db-perf-optimized-N-2"
+    tier    = "db-perf-optimized-N-2"
     edition = "ENTERPRISE_PLUS"
     connection_pool_config {
       connection_pooling_enabled = true
@@ -34,13 +34,13 @@ resource "google_sql_database_instance" "mysql_mcp_creation" {
 # [START cloud_sql_mysql_instance_mcp_enable]
 # This example shows creating an instance with MCP enabled and custom flags set.
 resource "google_sql_database_instance" "mysql_mcp_enable" {
-  name             = "mysql-instance-mcp-enable"
-  region           = "us-central1"
-  database_version = "MYSQL_8_0"
+  name                = "mysql-instance-mcp-enable"
+  region              = "us-central1"
+  database_version    = "MYSQL_8_0"
   deletion_protection = false
 
   settings {
-    tier = "db-perf-optimized-N-2"
+    tier    = "db-perf-optimized-N-2"
     edition = "ENTERPRISE_PLUS"
     connection_pool_config {
       connection_pooling_enabled = true
@@ -52,13 +52,13 @@ resource "google_sql_database_instance" "mysql_mcp_enable" {
 # [START cloud_sql_mysql_instance_mcp_modify]
 # This example shows modifying the flags of an existing MCP configuration.
 resource "google_sql_database_instance" "mysql_mcp_modify" {
-  name             = "mysql-instance-mcp-modify"
-  region           = "us-central1"
-  database_version = "MYSQL_8_0"
+  name                = "mysql-instance-mcp-modify"
+  region              = "us-central1"
+  database_version    = "MYSQL_8_0"
   deletion_protection = false
 
   settings {
-    tier = "db-perf-optimized-N-2"
+    tier    = "db-perf-optimized-N-2"
     edition = "ENTERPRISE_PLUS"
     connection_pool_config {
       connection_pooling_enabled = true
@@ -74,13 +74,13 @@ resource "google_sql_database_instance" "mysql_mcp_modify" {
 # [START cloud_sql_mysql_instance_mcp_disable]
 # This example shows disabling MCP on an existing instance.
 resource "google_sql_database_instance" "mysql_mcp_disable" {
-  name             = "mysql-instance-mcp-disable"
-  region           = "us-central1"
-  database_version = "MYSQL_8_0"
+  name                = "mysql-instance-mcp-disable"
+  region              = "us-central1"
+  database_version    = "MYSQL_8_0"
   deletion_protection = false
 
   settings {
-    tier = "db-perf-optimized-N-2"
+    tier    = "db-perf-optimized-N-2"
     edition = "ENTERPRISE_PLUS"
     connection_pool_config {
       # Set to false to disable MCP. You can also remove the block entirely.
