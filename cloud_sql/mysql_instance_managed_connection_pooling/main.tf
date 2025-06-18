@@ -70,7 +70,7 @@ resource "google_sql_database_instance" "mysql_managed_connection_pooling_modify
     }
   }
 }
-# [END cloud_sql_mysql_instance_managed_connection_pooing_modify]
+# [END cloud_sql_mysql_instance_managed_connection_pooling_modify]
 
 # [START cloud_sql_mysql_instance_managed_connection_pooling_disable]
 # This example shows disabling Managed Connection Pooling on an existing instance.
