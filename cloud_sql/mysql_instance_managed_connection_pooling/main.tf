@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-# [START cloud_sql_mysql_instance_mcp_creation]
-resource "google_sql_database_instance" "mysql_mcp_creation" {
-  name                = "mysql-instance-mcp-creation"
+# [START cloud_sql_mysql_instance_managed_connection_pooling_creation]
+# This example shows creating an instance with Managed Connection Pooling.
+resource "google_sql_database_instance" "mysql_managed_connection_pooling_creation" {
+  name                = "mysql-instance-managed-connection-pooling-creation"
   region              = "us-central1"
   database_version    = "MYSQL_8_0"
   deletion_protection = false
@@ -29,12 +30,12 @@ resource "google_sql_database_instance" "mysql_mcp_creation" {
     }
   }
 }
-# [END cloud_sql_mysql_instance_mcp_creation]
+# [END cloud_sql_mysql_instance_managed_connection_pooling_creation]
 
-# [START cloud_sql_mysql_instance_mcp_enable]
-# This example shows creating an instance with MCP enabled and custom flags set.
-resource "google_sql_database_instance" "mysql_mcp_enable" {
-  name                = "mysql-instance-mcp-enable"
+# [START cloud_sql_mysql_instance_managed_connection_pooling_enable]
+# This example shows creating an instance with Managed Connection Pooling enabled and custom flags set.
+resource "google_sql_database_instance" "mysql_managed_connection_pooling_enable" {
+  name                = "mysql-instance-managed-connection-pooling-enable"
   region              = "us-central1"
   database_version    = "MYSQL_8_0"
   deletion_protection = false
@@ -47,12 +48,12 @@ resource "google_sql_database_instance" "mysql_mcp_enable" {
     }
   }
 }
-# [END cloud_sql_mysql_instance_mcp_enable]
+# [END cloud_sql_mysql_instance_managed_connection_pooling_enable]
 
-# [START cloud_sql_mysql_instance_mcp_modify]
-# This example shows modifying the flags of an existing MCP configuration.
-resource "google_sql_database_instance" "mysql_mcp_modify" {
-  name                = "mysql-instance-mcp-modify"
+# [START cloud_sql_mysql_instance_managed_connection_pooling_modify]
+# This example shows modifying the flags of an existing Managed Connection Pooling configuration.
+resource "google_sql_database_instance" "mysql_managed_connection_pooling_modify" {
+  name                = "mysql-instance-managed-connection-pooling-modify"
   region              = "us-central1"
   database_version    = "MYSQL_8_0"
   deletion_protection = false
@@ -69,12 +70,12 @@ resource "google_sql_database_instance" "mysql_mcp_modify" {
     }
   }
 }
-# [END cloud_sql_mysql_instance_mcp_modify]
+# [END cloud_sql_mysql_instance_managed_connection_pooing_modify]
 
-# [START cloud_sql_mysql_instance_mcp_disable]
-# This example shows disabling MCP on an existing instance.
-resource "google_sql_database_instance" "mysql_mcp_disable" {
-  name                = "mysql-instance-mcp-disable"
+# [START cloud_sql_mysql_instance_managed_connection_pooling_disable]
+# This example shows disabling Managed Connection Pooling on an existing instance.
+resource "google_sql_database_instance" "mysql_managed_connection_pooling_disable" {
+  name                = "mysql-instance-managed-connection-pooling-disable"
   region              = "us-central1"
   database_version    = "MYSQL_8_0"
   deletion_protection = false
@@ -83,9 +84,9 @@ resource "google_sql_database_instance" "mysql_mcp_disable" {
     tier    = "db-perf-optimized-N-2"
     edition = "ENTERPRISE_PLUS"
     connection_pool_config {
-      # Set to false to disable MCP. You can also remove the block entirely.
+      # Set to false to disable Managed Connection Pooling. You can also remove the block entirely.
       connection_pooling_enabled = false
     }
   }
 }
-# [END cloud_sql_mysql_instance_mcp_disable]
+# [END cloud_sql_mysql_instance_managed_connection_pooling_disable]

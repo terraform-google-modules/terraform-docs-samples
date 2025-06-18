@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-# [START cloud_sql_postgres_instance_mcp_creation]
-resource "google_sql_database_instance" "postgres_mcp_creation" {
-  name                = "postgres-instance-mcp-creation"
+# [START cloud_sql_postgres_instance_managed_connection_pooling_creation]
+resource "google_sql_database_instance" "postgres_managed_connection_pooling_creation" {
+  name                = "postgres-instance-managed-connection-pooling-creation"
   region              = "us-central1"
   database_version    = "POSTGRES_16"
   deletion_protection = false
@@ -29,11 +29,11 @@ resource "google_sql_database_instance" "postgres_mcp_creation" {
     }
   }
 }
-# [END cloud_sql_postgres_instance_mcp_creation]
+# [END cloud_sql_postgres_instance_managed_connection_pooling_creation]
 
-# [START cloud_sql_postgres_instance_mcp_enable]
-resource "google_sql_database_instance" "postgres_mcp_enable" {
-  name                = "postgres-instance-mcp-enable"
+# [START cloud_sql_postgres_instance_managed_connection_pooling_enable]
+resource "google_sql_database_instance" "postgres_managed_connection_pooling_enable" {
+  name                = "postgres-instance-managed-connection-pooling-enable"
   region              = "us-central1"
   database_version    = "POSTGRES_16"
   deletion_protection = false
@@ -46,11 +46,11 @@ resource "google_sql_database_instance" "postgres_mcp_enable" {
     }
   }
 }
-# [END cloud_sql_postgres_instance_mcp_enable]
+# [END cloud_sql_postgres_instance_managed_connection_pooling_enable]
 
-# [START cloud_sql_postgres_instance_mcp_modify]
-resource "google_sql_database_instance" "postgres_mcp_modify" {
-  name                = "postgres-instance-mcp-modify"
+# [START cloud_sql_postgres_instance_managed_connection_pooling_modify]
+resource "google_sql_database_instance" "postgres_managed_connection_pooling_modify" {
+  name                = "postgres-instance-managed-connection-pooling-modify"
   region              = "us-central1"
   database_version    = "POSTGRES_16"
   deletion_protection = false
@@ -67,11 +67,11 @@ resource "google_sql_database_instance" "postgres_mcp_modify" {
     }
   }
 }
-# [END cloud_sql_postgres_instance_mcp_modify]
+# [END cloud_sql_postgres_instance_managed_connection_pooling_modify]
 
-# [START cloud_sql_postgres_instance_mcp_disable]
-resource "google_sql_database_instance" "postgres_mcp_disable" {
-  name                = "postgres-instance-mcp-disable"
+# [START cloud_sql_postgres_instance_managed_connection_pooling_disable]
+resource "google_sql_database_instance" "postgres_managed_connection_pooling_disable" {
+  name                = "postgres-instance-managed-connection-pooling-disable"
   region              = "us-central1"
   database_version    = "POSTGRES_16"
   deletion_protection = false
@@ -80,9 +80,9 @@ resource "google_sql_database_instance" "postgres_mcp_disable" {
     tier    = "db-perf-optimized-N-2"
     edition = "ENTERPRISE_PLUS"
     connection_pool_config {
-      # Set to false to disable MCP. You can also remove the block entirely.
+      # Set to false to disable Managed Connection Pooling. You can also remove the block entirely.
       connection_pooling_enabled = false
     }
   }
 }
-# [END cloud_sql_postgres_instance_mcp_disable]
+# [END cloud_sql_postgres_instance_managed_connection_pooling_disable]
