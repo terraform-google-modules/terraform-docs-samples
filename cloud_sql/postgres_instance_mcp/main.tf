@@ -19,9 +19,11 @@ resource "google_sql_database_instance" "postgres_mcp_creation" {
   name             = "postgres-instance-mcp-creation"
   region           = "us-central1"
   database_version = "POSTGRES_16"
+  deletion_protection = false
 
   settings {
     tier = "db-perf-optimized-N-2"
+    edition = "ENTERPRISE_PLUS"
     connection_pool_config {
       connection_pooling_enabled = true
     }
@@ -34,9 +36,11 @@ resource "google_sql_database_instance" "postgres_mcp_enable" {
   name             = "postgres-instance-mcp-enable"
   region           = "us-central1"
   database_version = "POSTGRES_16"
+  deletion_protection = false
 
   settings {
     tier = "db-perf-optimized-N-2"
+    edition = "ENTERPRISE_PLUS"
     connection_pool_config {
       connection_pooling_enabled = true # Set to true here
     }
@@ -49,13 +53,15 @@ resource "google_sql_database_instance" "postgres_mcp_modify" {
   name             = "postgres-instance-mcp-modify"
   region           = "us-central1"
   database_version = "POSTGRES_16"
+  deletion_protection = false
 
   settings {
     tier = "db-perf-optimized-N-2"
+    edition = "ENTERPRISE_PLUS"
     connection_pool_config {
       connection_pooling_enabled = true
       flags {
-        name = "max_client_connections" # Modify the value of an existing flag
+        name  = "max_pool_size" # Modify the value of an existing flag
         value = "2000"
       }
     }
@@ -68,9 +74,11 @@ resource "google_sql_database_instance" "postgres_mcp_disable" {
   name             = "postgres-instance-mcp-disable"
   region           = "us-central1"
   database_version = "POSTGRES_16"
+  deletion_protection = false
 
   settings {
     tier = "db-perf-optimized-N-2"
+    edition = "ENTERPRISE_PLUS"
     connection_pool_config {
       # Set to false to disable MCP. You can also remove the block entirely.
       connection_pooling_enabled = false
@@ -78,9 +86,3 @@ resource "google_sql_database_instance" "postgres_mcp_disable" {
   }
 }
 # [END cloud_sql_postgres_instance_mcp_disable]
-
-# [START cloud_sql_postgres_instance_mcp_view]
-# To view the current status, you can use the `terraform show` command after applying
-# your configuration. The `connection_pool_config` block will reflect the current state.
-terraform show
-# [END cloud_sql_postgres_instance_mcp_view]

@@ -19,9 +19,11 @@ resource "google_sql_database_instance" "mysql_mcp_creation" {
   name             = "mysql-instance-mcp-creation"
   region           = "us-central1"
   database_version = "MYSQL_8_0"
+  deletion_protection = false
 
   settings {
-    tier    = "db-perf-optimized-N-2"
+    tier = "db-perf-optimized-N-2"
+    edition = "ENTERPRISE_PLUS"
     connection_pool_config {
       connection_pooling_enabled = true
     }
@@ -35,9 +37,11 @@ resource "google_sql_database_instance" "mysql_mcp_enable" {
   name             = "mysql-instance-mcp-enable"
   region           = "us-central1"
   database_version = "MYSQL_8_0"
+  deletion_protection = false
 
   settings {
-    tier    = "db-perf-optimized-N-2"
+    tier = "db-perf-optimized-N-2"
+    edition = "ENTERPRISE_PLUS"
     connection_pool_config {
       connection_pooling_enabled = true
     }
@@ -51,14 +55,16 @@ resource "google_sql_database_instance" "mysql_mcp_modify" {
   name             = "mysql-instance-mcp-modify"
   region           = "us-central1"
   database_version = "MYSQL_8_0"
+  deletion_protection = false
 
   settings {
-    tier    = "db-perf-optimized-N-2"
+    tier = "db-perf-optimized-N-2"
+    edition = "ENTERPRISE_PLUS"
     connection_pool_config {
       connection_pooling_enabled = true
       flags {
-        name = "max_client_connections" # Modify or add the value of an flag
-        value = "1980"
+        name  = "max_pool_size" # Modify or add the name and value of an flag
+        value = "10"
       }
     }
   }
@@ -71,9 +77,11 @@ resource "google_sql_database_instance" "mysql_mcp_disable" {
   name             = "mysql-instance-mcp-disable"
   region           = "us-central1"
   database_version = "MYSQL_8_0"
+  deletion_protection = false
 
   settings {
-    tier    = "db-perf-optimized-N-2"
+    tier = "db-perf-optimized-N-2"
+    edition = "ENTERPRISE_PLUS"
     connection_pool_config {
       # Set to false to disable MCP. You can also remove the block entirely.
       connection_pooling_enabled = false
@@ -81,9 +89,3 @@ resource "google_sql_database_instance" "mysql_mcp_disable" {
   }
 }
 # [END cloud_sql_mysql_instance_mcp_disable]
-
-# [START cloud_sql_mysql_instance_mcp_view]
-# To view the current status, you can use the `terraform show` command after applying
-# your configuration. The `connection_pool_config` block will reflect the current state.
-terraform show
-# [END cloud_sql_mysql_instance_mcp_view]
