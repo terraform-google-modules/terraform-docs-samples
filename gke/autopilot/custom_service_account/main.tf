@@ -14,39 +14,38 @@
 * limitations under the License.
 */
 
-# [START gke_standard_regional_node_pool_custom_sa]
-resource "google_service_account" "default" {
-  account_id   = "service-account-id"
-  display_name = "Service Account"
-}
+# Create an Autopilot cluster with a custom IAM node service account 
 
+# [START gke_node_service_account_create]
+resource "google_service_account" "default" {
+  account_id   = "gke-node-service-account"
+  display_name = "GKE node service account"
+}
+# [END gke_node_service_account_create]
+
+# [START gke_node_service_account_role]
 data "google_project" "project" {
 }
 
-resource "google_project_iam_member" "default" {
+resource "google_project_iam_member" "project_role" {
   project = data.google_project.project.project_id
   role    = "roles/container.defaultNodeServiceAccount"
   member  = "serviceAccount:${google_service_account.default.email}"
 }
-# [END gke_standard_regional_node_pool_custom_sa]
+# [END gke_node_service_account_role]
 
-# [START gke_standard_regional_cluster]
-resource "google_container_cluster" "default" {
-  name     = "gke-standard-regional-cluster"
+
+# [START gke_autopilot_custom_service_account]
+resource "google_container_cluster" "autopilot_cluster" {
+  name     = "autopilot-custom-account"
   location = "us-central1"
 
-  initial_node_count       = 1
-  remove_default_node_pool = true
-}
-# [END gke_standard_regional_cluster]
+  enable_autopilot = true
 
-# [START gke_standard_regional_node_pool]
-resource "google_container_node_pool" "default" {
-  name    = "gke-standard-regional-node-pool"
-  cluster = google_container_cluster.default.name
-
-  node_config {
-    service_account = google_service_account.default.email
+  cluster_autoscaling {
+    auto_provisioning_defaults {
+      service_account = google_service_account.default.email
+    }
   }
 }
-# [END gke_standard_regional_node_pool]
+# [END gke_autopilot_custom_service_account]
