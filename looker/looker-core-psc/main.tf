@@ -15,7 +15,7 @@
  */
 # [START looker_google_looker_instance_psc]
 # Create an ENTERPRISE edition Looker (Google Cloud core) instance that has PSC enabled.
-resource "google_looker_instance" "main" {
+resource "google_looker_instance" "default" {
   name               = "my-instance"
   platform_edition   = "LOOKER_CORE_ENTERPRISE_ANNUAL"
   region             = "us-central1"
