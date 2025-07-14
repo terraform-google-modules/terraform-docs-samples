@@ -42,7 +42,7 @@ resource "google_bigquery_table" "default" {
   deletion_protection = false # set to "true" in production
 
   view {
-    query          = "SELECT item_id, avg(rating) FROM `chriscar9.movielens.movielens_1m` GROUP BY item_id ORDER BY item_id;"
+    query          = "SELECT item_id, avg(rating) FROM `myproject.movie_dataset.movie_ratings` GROUP BY item_id ORDER BY item_id;"
     use_legacy_sql = false
   }
   depends_on = [
@@ -55,8 +55,8 @@ Authorize the view to access the dataset that
 the query data originates from.
 */
 resource "google_bigquery_dataset_access" "default" {
-  project    = "chriscar9"
-  dataset_id = "movielens"
+  project    = "myproject"
+  dataset_id = "movie_dataset"
 
   view {
     project_id = google_bigquery_table.default.project
@@ -70,7 +70,7 @@ resource "google_bigquery_dataset_access" "default" {
 
 /*
 Set the IAM policy for principals that can access
-the authorized view. These users should already have the 
+the authorized view. These users should already have the
 roles/bigqueryUser role at the project level.
 */
 
@@ -78,7 +78,7 @@ data "google_iam_policy" "default" {
   binding {
     role = "roles/bigquery.dataViewer"
     members = [
-      "user:nbarn@google.com",
+      "group:analysts@altostrat.com",
     ]
   }
 }
