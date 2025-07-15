@@ -1,4 +1,4 @@
-/**
+ /**
  * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,8 +28,9 @@ resource "google_looker_instance" "default" {
   }
   psc_config {
     allowed_vpcs = ["projects/test-project/global/networks/test"]
-    # update only
-    # service_attachments = [{local_fqdn: "www.local-fqdn.com" target_service_attachment_uri: "projects/my-project/regions/us-east1/serviceAttachments/sa"}]
-  }
+    # (Optional) List of VPCs that are allowed ingress into the Looker instance.
+    service_attachments = [{local_fqdn: "www.local-fqdn.com" target_service_attachment_uri: "projects/my-project/regions/us-east1/serviceAttachments/sa"}]
+    # (Optional) List of egress service attachment configurations. local_fqdn is a fully qualified domain name that will be used in the private DNS record created for the service attachment. target_service_attachment_uri is the URI of the service attachment to connect to.
+   }
 }
 # [END looker_google_looker_instance_psc]
