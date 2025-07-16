@@ -27,10 +27,8 @@ resource "google_looker_instance" "default" {
     client_secret = "my-client-secret"
   }
   psc_config {
-    allowed_vpcs = ["projects/test-project/global/networks/test"]
-    # (Optional) List of VPCs that are allowed ingress into the Looker instance.
-    service_attachments = [{local_fqdn: "www.local-fqdn.com" target_service_attachment_uri: "projects/my-project/regions/us-east1/serviceAttachments/sa"}]
-    # (Optional) List of egress service attachment configurations. local_fqdn is a fully qualified domain name that will be used in the private DNS record created for the service attachment. target_service_attachment_uri is the URI of the service attachment to connect to.
+    # allowed_vpcs = ["projects/{project}/global/networks/{network}"]
+    # (Optional) List of VPCs that are allowed ingress into the Looker instance. Set an allowed VPC if you are creating an instance that uses only private IP.
    }
 }
 # [END looker_google_looker_instance_psc]
