@@ -28,7 +28,6 @@ resource "google_bigquery_dataset" "default" {
   dataset_id  = "authdataset"
   description = "Dataset for authorized view"
   location    = "us-west1"
-
 }
 
 /*
@@ -45,9 +44,6 @@ resource "google_bigquery_table" "default" {
     query          = "SELECT item_id, avg(rating) FROM `myproject.movie_dataset.movie_ratings` GROUP BY item_id ORDER BY item_id;"
     use_legacy_sql = false
   }
-  depends_on = [
-    google_bigquery_dataset.default
-  ]
 }
 
 /*
@@ -63,9 +59,6 @@ resource "google_bigquery_dataset_access" "default" {
     dataset_id = google_bigquery_table.default.dataset_id
     table_id   = google_bigquery_table.default.table_id
   }
-  depends_on = [
-    google_bigquery_dataset.default
-  ]
 }
 
 /*
@@ -88,8 +81,8 @@ Set the IAM policy on the authorized view.
 */
 resource "google_bigquery_table_iam_policy" "default" {
   project     = google_bigquery_table.default.project
-  dataset_id  = google_bigquery_dataset.default.dataset_id
-  table_id    = "authview"
+  dataset_id  = google_bigquery_table.default.dataset_id
+  table_id    = google_bigquery_table.default.table_id
   policy_data = data.google_iam_policy.default.policy_data
 }
 # [END bigquery_authorized_view_tutorial]
