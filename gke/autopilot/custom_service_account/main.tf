@@ -1,5 +1,5 @@
 /**
-* Copyright 2024 Google LLC
+* Copyright 2025 Google LLC
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,10 +14,17 @@
 * limitations under the License.
 */
 
-# [START gke_standard_regional_node_pool_custom_sa]
+/**
+* Create an Autopilot cluster that uses a custom IAM node service account
+* with the minimum role for GKE.
+* Before you run this sample, create a custom service account by following
+* https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_sa
+*/
+
+# [START gke_custom_node_service_account]
 resource "google_service_account" "default" {
-  account_id   = "service-account-id"
-  display_name = "Service Account"
+  account_id   = "gke-node-service-account"
+  display_name = "GKE node service account"
 }
 
 data "google_project" "project" {
@@ -28,25 +35,19 @@ resource "google_project_iam_member" "default" {
   role    = "roles/container.defaultNodeServiceAccount"
   member  = "serviceAccount:${google_service_account.default.email}"
 }
-# [END gke_standard_regional_node_pool_custom_sa]
+# [END gke_custom_node_service_account]
 
-# [START gke_standard_regional_cluster]
+# [START gke_autopilot_custom_service_account]
 resource "google_container_cluster" "default" {
-  name     = "gke-standard-regional-cluster"
+  name     = "autopilot-custom-account"
   location = "us-central1"
 
-  initial_node_count       = 1
-  remove_default_node_pool = true
-}
-# [END gke_standard_regional_cluster]
+  enable_autopilot = true
 
-# [START gke_standard_regional_node_pool]
-resource "google_container_node_pool" "default" {
-  name    = "gke-standard-regional-node-pool"
-  cluster = google_container_cluster.default.name
-
-  node_config {
-    service_account = google_service_account.default.email
+  cluster_autoscaling {
+    auto_provisioning_defaults {
+      service_account = google_service_account.default.email
+    }
   }
 }
-# [END gke_standard_regional_node_pool]
+# [END gke_autopilot_custom_service_account]
