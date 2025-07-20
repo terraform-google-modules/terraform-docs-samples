@@ -29,6 +29,6 @@ resource "google_looker_instance" "default" {
   psc_config {
     # allowed_vpcs = ["projects/{project}/global/networks/{network}"]
     # (Optional) List of VPCs that are allowed ingress into the Looker instance. Set an allowed VPC if you are creating an instance that uses only private IP.
-   }
+  }
 }
 # [END looker_google_looker_instance_psc]
