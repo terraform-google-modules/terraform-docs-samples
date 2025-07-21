@@ -16,73 +16,60 @@
 
 
 # [START bigquery_authorized_view_tutorial]
-/*
-Creates an authorized view.
-*/
+# Creates an authorized view.
 
-
-/*
-Create a dataset to contain the authorized view.
-*/
-resource "google_bigquery_dataset" "default" {
-  dataset_id  = "authdataset"
-  description = "Dataset for authorized view"
+# Create a dataset to contain the view.
+resource "google_bigquery_dataset" "view_dataset" {
+  dataset_id  = "view_dataset"
+  description = "Dataset that contains the view"
   location    = "us-west1"
 }
 
-/*
-Create the view to authorize.
-*/
-resource "google_bigquery_table" "default" {
-  project             = google_bigquery_dataset.default.project
-  dataset_id          = google_bigquery_dataset.default.dataset_id
-  table_id            = "authview"
-  description         = "View to authorize"
-  deletion_protection = false # set to "true" in production
+# Create the view to authorize.
+resource "google_bigquery_table" "movie_view" {
+  project     = google_bigquery_dataset.view_dataset.project
+  dataset_id  = google_bigquery_dataset.view_dataset.dataset_id
+  table_id    = "movie_view"
+  description = "View to authorize"
 
   view {
-    query          = "SELECT item_id, avg(rating) FROM `myproject.movie_dataset.movie_ratings` GROUP BY item_id ORDER BY item_id;"
+    query          = "SELECT item_id, avg(rating) FROM `chriscar9.movielens.movielens_1m` GROUP BY item_id ORDER BY item_id;"
     use_legacy_sql = false
   }
 }
 
-/*
-Authorize the view to access the dataset that
-the query data originates from.
-*/
-resource "google_bigquery_dataset_access" "default" {
-  project    = "myproject"
-  dataset_id = "movie_dataset"
+
+# Authorize the view to access the dataset
+# that the query data originates from.
+resource "google_bigquery_dataset_access" "view_authorization" {
+  project    = "chriscar9"
+  dataset_id = "movielens"
 
   view {
-    project_id = google_bigquery_table.default.project
-    dataset_id = google_bigquery_table.default.dataset_id
-    table_id   = google_bigquery_table.default.table_id
+    project_id = google_bigquery_table.movie_view.project
+    dataset_id = google_bigquery_table.movie_view.dataset_id
+    table_id   = google_bigquery_table.movie_view.table_id
   }
 }
 
-/*
-Set the IAM policy for principals that can access
-the authorized view. These users should already have the
-roles/bigqueryUser role at the project level.
-*/
-
-data "google_iam_policy" "default" {
+# Specify the IAM policy for principals that can access
+# the authorized view. These users should already
+# have the roles/bigqueryUser role at the project level.
+data "google_iam_policy" "principals_policy" {
   binding {
     role = "roles/bigquery.dataViewer"
     members = [
-      "group:analysts@altostrat.com",
+      "user:wsielicka@google.com",
+      "user:nbarn@google.com",
     ]
   }
 }
 
-/*
-Set the IAM policy on the authorized view.
-*/
-resource "google_bigquery_table_iam_policy" "default" {
-  project     = google_bigquery_table.default.project
-  dataset_id  = google_bigquery_table.default.dataset_id
-  table_id    = google_bigquery_table.default.table_id
-  policy_data = data.google_iam_policy.default.policy_data
+# Set the IAM policy on the authorized  view.
+resource "google_bigquery_table_iam_policy" "authorized_view_policy" {
+  project     = google_bigquery_table.movie_view.project
+  dataset_id  = google_bigquery_table.movie_view.dataset_id
+  table_id    = google_bigquery_table.movie_view.table_id
+  policy_data = data.google_iam_policy.principals_policy.policy_data
 }
 # [END bigquery_authorized_view_tutorial]
