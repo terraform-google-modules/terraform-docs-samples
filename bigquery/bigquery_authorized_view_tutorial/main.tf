@@ -33,7 +33,7 @@ resource "google_bigquery_table" "movie_view" {
   description = "View to authorize"
 
   view {
-    query          = "SELECT item_id, avg(rating) FROM `chriscar9.movielens.movielens_1m` GROUP BY item_id ORDER BY item_id;"
+    query          = "SELECT item_id, avg(rating) FROM `movie_project.movie_dataset.movie_ratings` GROUP BY item_id ORDER BY item_id;"
     use_legacy_sql = false
   }
 }
@@ -42,8 +42,8 @@ resource "google_bigquery_table" "movie_view" {
 # Authorize the view to access the dataset
 # that the query data originates from.
 resource "google_bigquery_dataset_access" "view_authorization" {
-  project    = "chriscar9"
-  dataset_id = "movielens"
+  project    = "movie_project"
+  dataset_id = "movie_dataset"
 
   view {
     project_id = google_bigquery_table.movie_view.project
@@ -59,8 +59,7 @@ data "google_iam_policy" "principals_policy" {
   binding {
     role = "roles/bigquery.dataViewer"
     members = [
-      "user:wsielicka@google.com",
-      "user:nbarn@google.com",
+      "group:example-group@example.com",
     ]
   }
 }
