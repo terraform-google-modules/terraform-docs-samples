@@ -50,9 +50,6 @@ resource "google_managed_kafka_connect_cluster" "example-kafka-connect-cluster" 
       }
     }
   }
-  depends_on = [
-    google_managed_kafka_cluster.example-kafka-cluster
-  ]
 }
 # [END managedkafkaconnect_create_cluster]
 
