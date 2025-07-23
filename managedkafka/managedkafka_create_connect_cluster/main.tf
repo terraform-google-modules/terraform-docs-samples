@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-# [START managedkafkaconnect_create_cluster_parent]
+# [START managedkafka_create_connect_cluster_parent]
 resource "google_managed_kafka_cluster" "example-kafka-cluster" {
   project    = data.google_project.default.project_id
   cluster_id = "my-cluster-id"
@@ -32,7 +32,7 @@ resource "google_managed_kafka_cluster" "example-kafka-cluster" {
   }
 }
 
-# [START managedkafkaconnect_create_cluster]
+# [START managedkafka_create_connect_cluster]
 resource "google_managed_kafka_connect_cluster" "example-kafka-connect-cluster" {
   provider           = google-beta
   project            = data.google_project.default.project_id # Replace this with your project ID in quotes
@@ -51,9 +51,9 @@ resource "google_managed_kafka_connect_cluster" "example-kafka-connect-cluster" 
     }
   }
 }
-# [END managedkafkaconnect_create_cluster]
+# [END managedkafka_create_connect_cluster]
 
 data "google_project" "default" {
   provider = google-beta
 }
-# [END managedkafkaconnect_create_cluster_parent]
+# [END managedkafka_create_connect_cluster_parent]
