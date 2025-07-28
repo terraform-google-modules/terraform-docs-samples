@@ -15,13 +15,13 @@
  */
 
 # [START managedkafka_create_connect_cluster_parent]
-resource "google_managed_kafka_cluster" "example-kafka-cluster" {
+resource "google_managed_kafka_cluster" "default" {
   project    = data.google_project.default.project_id
   cluster_id = "my-cluster-id"
   location   = "us-central1"
   capacity_config {
     vcpu_count   = 3
-    memory_bytes = 3221225472
+    memory_bytes = 3221225472 # 3 GiB
   }
   gcp_config {
     access_config {
@@ -35,13 +35,13 @@ resource "google_managed_kafka_cluster" "example-kafka-cluster" {
 # [START managedkafka_create_connect_cluster]
 resource "google_managed_kafka_connect_cluster" "example-kafka-connect-cluster" {
   provider           = google-beta
-  project            = data.google_project.default.project_id # Replace this with your project ID in quotes
+  project            = data.google_project.default.project_id
   connect_cluster_id = "my-connect-cluster-id"
   location           = "us-central1"
-  kafka_cluster      = google_managed_kafka_cluster.example-kafka-cluster.id # Replace this with the ID of the primary Managed Service for Apache Kafka cluster associated with your Connect cluster in quotes
+  kafka_cluster      = google_managed_kafka_cluster.example-kafka-cluster.id
   capacity_config {
-    vcpu_count   = 3
-    memory_bytes = 3221225472
+    vcpu_count   = 12
+    memory_bytes = 12884901888
   }
   gcp_config {
     access_config {
