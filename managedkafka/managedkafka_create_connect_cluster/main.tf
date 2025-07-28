@@ -33,12 +33,12 @@ resource "google_managed_kafka_cluster" "default" {
 }
 
 # [START managedkafka_create_connect_cluster]
-resource "google_managed_kafka_connect_cluster" "example-kafka-connect-cluster" {
+resource "google_managed_kafka_connect_cluster" "default" {
   provider           = google-beta
   project            = data.google_project.default.project_id
   connect_cluster_id = "my-connect-cluster-id"
   location           = "us-central1"
-  kafka_cluster      = google_managed_kafka_cluster.example-kafka-cluster.id
+  kafka_cluster      = google_managed_kafka_cluster.default.id
   capacity_config {
     vcpu_count   = 12
     memory_bytes = 12884901888 # 12 GiB
