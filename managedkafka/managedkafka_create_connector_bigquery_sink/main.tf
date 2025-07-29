@@ -54,7 +54,7 @@ resource "google_managed_kafka_connect_cluster" "default" {
     }
   }
 }
-# [END managedkafkaconnect_create_connector_bigquery_sink_parent]
+# [END managedkafka_create_connector_bigquery_sink_parent]
 
 # [START managedkafkaconnect_create_connector_bigquery_sink]
 resource "google_managed_kafka_connector" "example-bigquery-sink-connector" {
@@ -77,4 +77,4 @@ resource "google_managed_kafka_connector" "example-bigquery-sink-connector" {
 
   provider = google-beta
 }
-# [END managedkafkaconnect_create_connector_bigquery_sink]
+# [END managedkafka_create_connector_bigquery_sink]
