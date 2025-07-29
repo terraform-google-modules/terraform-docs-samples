@@ -59,22 +59,22 @@ resource "google_managed_kafka_connect_cluster" "default" {
 
 # [START managedkafkaconnect_create_connector_pubsub_source] 
 resource "google_managed_kafka_connector" "example-pubsub-source-connector" {
-  project            = data.google_project.default.project_id
+  project         = data.google_project.default.project_id
   connector_id    = "my-pubsub-source-connector"
   connect_cluster = google_managed_kafka_connect_cluster.default.connect_cluster_id
   location        = "us-central1"
 
   configs = {
-    "connector.class" = "com.google.pubsub.kafka.source.CloudPubSubSourceConnector"
-    "name" = "my-pubsub-source-connector"
-    "tasks.max" = "1"
-    "kafka.topic" = "GMK_TOPIC_ID"
+    "connector.class"  = "com.google.pubsub.kafka.source.CloudPubSubSourceConnector"
+    "name"             = "my-pubsub-source-connector"
+    "tasks.max"        = "1"
+    "kafka.topic"      = "GMK_TOPIC_ID"
     "cps.subscription" = "CPS_SUBSCRIPTION_ID"
-    "cps.project" = "GCP_PROJECT_ID"
-    "value.converter" = "org.apache.kafka.connect.converters.ByteArrayConverter"
-    "key.converter" = "org.apache.kafka.connect.storage.StringConverter"
+    "cps.project"      = "GCP_PROJECT_ID"
+    "value.converter"  = "org.apache.kafka.connect.converters.ByteArrayConverter"
+    "key.converter"    = "org.apache.kafka.connect.storage.StringConverter"
   }
-  
+
   provider = google-beta
 }
 # [END managedkafkaconnect_create_connector_pubsub_source] 

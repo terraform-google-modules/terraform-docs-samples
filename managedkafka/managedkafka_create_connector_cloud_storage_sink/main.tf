@@ -58,22 +58,22 @@ resource "google_managed_kafka_connect_cluster" "default" {
 
 # [START managedkafkaconnect_create_connector_cloud_storage_sink]
 resource "google_managed_kafka_connector" "example-cloud-storage-sink-connector" {
-  project            = data.google_project.default.project_id
+  project         = data.google_project.default.project_id
   connector_id    = "my-gcs-sink-connector"
   connect_cluster = google_managed_kafka_connect_cluster.default.connect_cluster_id
   location        = "us-central1"
 
   configs = {
-    "connector.class"               = "io.aiven.kafka.connect.gcs.GcsSinkConnector"
-    "tasks.max"                     = "1"
-    "topics"                        = "GMK_TOPIC_ID"
-    "gcs.bucket.name"               = "GCS_BUCKET_NAME"
-    "gcs.credentials.default"       = "true"
-    "format.output.type"            = "json"
-    "name"                          = "my-gcs-sink-connector"
-    "value.converter"               = "org.apache.kafka.connect.json.JsonConverter"
-    "value.converter.schemas.enable"= "false"
-    "key.converter"                 = "org.apache.kafka.connect.storage.StringConverter"
+    "connector.class"                = "io.aiven.kafka.connect.gcs.GcsSinkConnector"
+    "tasks.max"                      = "1"
+    "topics"                         = "GMK_TOPIC_ID"
+    "gcs.bucket.name"                = "GCS_BUCKET_NAME"
+    "gcs.credentials.default"        = "true"
+    "format.output.type"             = "json"
+    "name"                           = "my-gcs-sink-connector"
+    "value.converter"                = "org.apache.kafka.connect.json.JsonConverter"
+    "value.converter.schemas.enable" = "false"
+    "key.converter"                  = "org.apache.kafka.connect.storage.StringConverter"
   }
   provider = google-beta
 }

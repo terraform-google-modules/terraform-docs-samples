@@ -59,22 +59,22 @@ resource "google_managed_kafka_connect_cluster" "default" {
 
 # [START managedkafkaconnect_create_connector_pubsub_sink]
 resource "google_managed_kafka_connector" "example-pubsub-sink-connector" {
-  project            = data.google_project.default.project_id
+  project         = data.google_project.default.project_id
   connector_id    = "my-pubsub-sink-connector"
   connect_cluster = google_managed_kafka_connect_cluster.default.connect_cluster_id
   location        = "us-central1"
 
   configs = {
     "connector.class" = "com.google.pubsub.kafka.sink.CloudPubSubSinkConnector"
-    "name" = "my-pubsub-sink-connector"
-    "tasks.max" = "1"
-    "topics" = "TOPIC_NAME"
-    "cps.topic" = "CPS_TOPIC_NAME"
-    "cps.project" = "CPS_PROJECT_NAME"
+    "name"            = "my-pubsub-sink-connector"
+    "tasks.max"       = "1"
+    "topics"          = "TOPIC_NAME"
+    "cps.topic"       = "CPS_TOPIC_NAME"
+    "cps.project"     = "CPS_PROJECT_NAME"
     "value.converter" = "org.apache.kafka.connect.storage.StringConverter"
-    "key.converter" = "org.apache.kafka.connect.storage.StringConverter"
+    "key.converter"   = "org.apache.kafka.connect.storage.StringConverter"
   }
-  
+
   provider = google-beta
 }
 # [END managedkafkaconnect_create_connector_pubsub_sink]

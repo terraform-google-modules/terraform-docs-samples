@@ -58,21 +58,21 @@ resource "google_managed_kafka_connect_cluster" "default" {
 
 # [START managedkafkaconnect_create_connector_bigquery_sink]
 resource "google_managed_kafka_connector" "example-bigquery-sink-connector" {
-  project            = data.google_project.default.project_id
+  project         = data.google_project.default.project_id
   connector_id    = "my-bigquery-sink-connector"
   connect_cluster = google_managed_kafka_connect_cluster.default.connect_cluster_id
   location        = "us-central1"
 
   configs = {
-    "name"                          = "my-bigquery-sink-connector"
-    "project"                       = "GCP_PROJECT_ID"
-    "topics"                        = "GMK_TOPIC_ID"
-    "tasks.max"                     = "3"
-    "connector.class"               = "com.wepay.kafka.connect.bigquery.BigQuerySinkConnector"
-    "key.converter"                 = "org.apache.kafka.connect.storage.StringConverter"
-    "value.converter"               = "org.apache.kafka.connect.json.JsonConverter"
-    "value.converter.schemas.enable"= "false"
-    "defaultDataset"                = "BQ_DATASET_ID"
+    "name"                           = "my-bigquery-sink-connector"
+    "project"                        = "GCP_PROJECT_ID"
+    "topics"                         = "GMK_TOPIC_ID"
+    "tasks.max"                      = "3"
+    "connector.class"                = "com.wepay.kafka.connect.bigquery.BigQuerySinkConnector"
+    "key.converter"                  = "org.apache.kafka.connect.storage.StringConverter"
+    "value.converter"                = "org.apache.kafka.connect.json.JsonConverter"
+    "value.converter.schemas.enable" = "false"
+    "defaultDataset"                 = "BQ_DATASET_ID"
   }
 
   provider = google-beta
