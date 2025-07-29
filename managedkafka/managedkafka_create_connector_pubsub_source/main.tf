@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-# [START managedkafkaconnect_create_connector_pubsub_source_parent]
+# [START managedkafka_create_connector_pubsub_source_parent]
 data "google_project" "default" {
   provider = google-beta
 }
@@ -55,9 +55,9 @@ resource "google_managed_kafka_connect_cluster" "default" {
   }
 }
 
-# [END managedkafkaconnect_create_connector_pubsub_source_parent]
+# [END managedkafka_create_connector_pubsub_source_parent]
 
-# [START managedkafkaconnect_create_connector_pubsub_source]
+# [START managedkafka_create_connector_pubsub_source]
 resource "google_managed_kafka_connector" "example-pubsub-source-connector" {
   project         = data.google_project.default.project_id
   connector_id    = "my-pubsub-source-connector"
@@ -77,4 +77,4 @@ resource "google_managed_kafka_connector" "example-pubsub-source-connector" {
 
   provider = google-beta
 }
-# [END managedkafkaconnect_create_connector_pubsub_source]
+# [END managedkafka_create_connector_pubsub_source]

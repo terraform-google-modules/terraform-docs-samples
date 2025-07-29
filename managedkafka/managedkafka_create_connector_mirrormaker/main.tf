@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-# [START managedkafkaconnect_create_connector_mirrormaker_parent]
+# [START managedkafka_create_connector_mirrormaker_parent]
 data "google_project" "default" {
   provider = google-beta
 }
@@ -54,9 +54,9 @@ resource "google_managed_kafka_connect_cluster" "default" {
     }
   }
 }
-# [END managedkafkaconnect_create_connector_mirrormaker_parent]
+# [END managedkafka_create_connector_mirrormaker_parent]
 
-# [START managedkafkaconnect_create_connector_mirrormaker]
+# [START managedkafka_create_connector_mirrormaker]
 resource "google_managed_kafka_connector" "default" {
   project         = data.google_project.default.project_id
   connector_id    = "MM2_CONNECTOR_ID"
@@ -84,4 +84,4 @@ resource "google_managed_kafka_connector" "default" {
 
   provider = google-beta
 }
-# [END managedkafkaconnect_create_connector_mirrormaker]
+# [END managedkafka_create_connector_mirrormaker]

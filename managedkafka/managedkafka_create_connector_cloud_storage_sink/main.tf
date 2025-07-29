@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-# [START managedkafkaconnect_create_connector_cloud_storage_sink_parent]
+# [START managedkafka_create_connector_cloud_storage_sink_parent]
 data "google_project" "default" {
   provider = google-beta
 }
@@ -54,9 +54,9 @@ resource "google_managed_kafka_connect_cluster" "default" {
     }
   }
 }
-# [END managedkafkaconnect_create_connector_cloud_storage_sink_parent]
+# [END managedkafka_create_connector_cloud_storage_sink_parent]
 
-# [START managedkafkaconnect_create_connector_cloud_storage_sink]
+# [START managedkafka_create_connector_cloud_storage_sink]
 resource "google_managed_kafka_connector" "example-cloud-storage-sink-connector" {
   project         = data.google_project.default.project_id
   connector_id    = "my-gcs-sink-connector"
@@ -77,4 +77,4 @@ resource "google_managed_kafka_connector" "example-cloud-storage-sink-connector"
   }
   provider = google-beta
 }
-# [END managedkafkaconnect_create_connector_cloud_storage_sink]
+# [END managedkafka_create_connector_cloud_storage_sink]
