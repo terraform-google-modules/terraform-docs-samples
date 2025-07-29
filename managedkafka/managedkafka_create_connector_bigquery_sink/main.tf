@@ -44,7 +44,7 @@ resource "google_managed_kafka_connect_cluster" "default" {
   kafka_cluster      = google_managed_kafka_cluster.default.id
   capacity_config {
     vcpu_count   = 3
-    memory_bytes = 2884901888 # 12 GiB
+    memory_bytes = 12884901888 # 12 GiB
   }
   gcp_config {
     access_config {

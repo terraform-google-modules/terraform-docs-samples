@@ -44,7 +44,7 @@ resource "google_managed_kafka_connect_cluster" "default" {
   kafka_cluster      = google_managed_kafka_cluster.default.id
   capacity_config {
     vcpu_count   = 12
-    memory_bytes = 2884901888 # 12 GiB
+    memory_bytes = 12884901888 # 12 GiB
   }
   gcp_config {
     access_config {
@@ -72,7 +72,7 @@ resource "google_managed_kafka_connector" "example-pubsub-source-connector" {
     "cps.subscription" = "CPS_SUBSCRIPTION_ID"
     "cps.project" = "GCP_PROJECT_ID"
     "value.converter" = "org.apache.kafka.connect.converters.ByteArrayConverter"
-    "key.converter = "org.apache.kafka.connect.storage.StringConverter"
+    "key.converter" = "org.apache.kafka.connect.storage.StringConverter"
   }
   
   provider = google-beta
