@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-# [START managedkafka_create_connector_cloud_storage_sink_parent]
+# [START managedkafka_create_connector_pubsub_source_parent]
 
 resource "google_managed_kafka_cluster" "default" {
   project    = data.google_project.default.project_id
@@ -112,4 +112,4 @@ resource "google_managed_kafka_connector" "example-cloud-storage-sink-connector"
 data "google_project" "default" {
 }
 
-# [END managedkafka_create_connector_cloud_storage_sink_parent]
+# [END managedkafka_create_connector_pubsub_source_parent]
