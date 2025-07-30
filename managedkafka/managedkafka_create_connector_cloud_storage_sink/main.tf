@@ -15,9 +15,6 @@
  */
 
 # [START managedkafka_create_connector_cloud_storage_sink_parent]
-data "google_project" "default" {
-  provider = google-beta
-}
 
 resource "google_managed_kafka_cluster" "default" {
   project    = data.google_project.default.project_id
@@ -30,7 +27,7 @@ resource "google_managed_kafka_cluster" "default" {
   gcp_config {
     access_config {
       network_configs {
-        subnet = "projects/${data.google_project.default.number}/regions/us-central1/subnetworks/default"
+        subnet = google_compute_subnetwork.default.id
       }
     }
   }
@@ -49,12 +46,45 @@ resource "google_managed_kafka_connect_cluster" "default" {
   gcp_config {
     access_config {
       network_configs {
-        primary_subnet = "projects/${data.google_project.default.number}/regions/us-central1/subnetworks/default"
+        primary_subnet = google_compute_subnetwork.default.id
       }
     }
   }
 }
-# [END managedkafka_create_connector_cloud_storage_sink_parent]
+
+# [START managedkafka_subnetwork]
+resource "google_compute_subnetwork" "default" {
+  name          = "test-subnetwork"
+  ip_cidr_range = "10.2.0.0/16"
+  region        = "us-central1"
+  network       = google_compute_network.default.id
+
+  provisioner "local-exec" {
+    when        = destroy
+    command     = <<-EOT
+      set -e
+      gcloud compute network-attachments list \
+        --filter="subnetworks:https://www.googleapis.com/compute/v1/${self.id}" \
+        --format="value(name)" --project="${self.project}" |
+        while read -r na_name; do
+          [[ -z "$na_name" ]] && continue
+          for i in {1..5}; do
+            gcloud compute network-attachments delete "$na_name" \
+              --project="${self.project}" --region="${self.region}" --quiet && break
+            if [[ $i -eq 5 ]]; then exit 1; fi
+            sleep 30
+          done
+        done
+    EOT
+    interpreter = ["bash", "-c"]
+  }
+}
+
+resource "google_compute_network" "default" {
+  name                    = "test-network"
+  auto_create_subnetworks = false
+}
+# [END managedkafka_subnetwork]
 
 # [START managedkafka_create_connector_cloud_storage_sink]
 resource "google_managed_kafka_connector" "example-cloud-storage-sink-connector" {
@@ -78,3 +108,8 @@ resource "google_managed_kafka_connector" "example-cloud-storage-sink-connector"
   provider = google-beta
 }
 # [END managedkafka_create_connector_cloud_storage_sink]
+
+data "google_project" "default" {
+}
+
+# [END managedkafka_create_connector_cloud_storage_sink_parent]
