@@ -54,7 +54,7 @@ resource "google_managed_kafka_connect_cluster" "default" {
 # [END managedkafka_create_connect_cluster]
 
 # Note: Due to a known issue, network attachment resources may not be
-# properly deleted, which can cause 'terraform destroy' to hang. It is 
+# properly deleted, which can cause 'terraform destroy' to hang. It is
 # recommended to destroy network resources separately from the Kafka
 # Connect resources.
 # The documentation elaborates further on the recommended approach.
