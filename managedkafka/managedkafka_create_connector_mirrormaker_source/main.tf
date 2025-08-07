@@ -79,14 +79,14 @@ resource "google_managed_kafka_connector" "default" {
   location        = "us-central1"
 
   configs = {
-    "connector.class"                                  = "org.apache.kafka.connect.mirror.MirrorSourceConnector"
-    "name"                                             = "MM2_CONNECTOR_ID"
-    "tasks.max"                                        = "3"
-    "source.cluster.alias"                             = "source"
-    "target.cluster.alias"                             = "target"
-    "topics"                                           = "GMK_TOPIC_NAME"
-    "source.cluster.bootstrap.servers"                 = "GMK_SOURCE_CLUSTER_DNS"
-    "target.cluster.bootstrap.servers"                 = "GMK_TARGET_CLUSTER_DNS"
+    "connector.class"                  = "org.apache.kafka.connect.mirror.MirrorSourceConnector"
+    "name"                             = "MM2_CONNECTOR_ID"
+    "tasks.max"                        = "3"
+    "source.cluster.alias"             = "source"
+    "target.cluster.alias"             = "target"
+    "topics"                           = "GMK_TOPIC_NAME"
+    "source.cluster.bootstrap.servers" = "GMK_SOURCE_CLUSTER_DNS"
+    "target.cluster.bootstrap.servers" = "GMK_TARGET_CLUSTER_DNS"
   }
 
   provider = google-beta
