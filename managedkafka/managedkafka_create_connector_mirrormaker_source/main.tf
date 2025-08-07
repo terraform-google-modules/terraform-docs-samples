@@ -83,7 +83,7 @@ resource "google_managed_kafka_connector" "default" {
     "name"                             = "MM2_CONNECTOR_ID"
     "tasks.max"                        = "3"
     "source.cluster.alias"             = "source"
-    "target.cluster.alias"             = "target"
+    "target.cluster.alias"             = "target" # This is usually the primary cluster
     "topics"                           = "GMK_TOPIC_NAME"
     "source.cluster.bootstrap.servers" = "GMK_SOURCE_CLUSTER_DNS"
     "target.cluster.bootstrap.servers" = "GMK_TARGET_CLUSTER_DNS"
