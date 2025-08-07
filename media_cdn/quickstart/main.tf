@@ -49,8 +49,8 @@ resource "google_network_services_edge_cache_service" "default" {
     path_matcher {
       name = "routes"
       route_rule {
-        description = "a route rule to match against"
-        priority    = 1
+        description = "a default route rule, priority=10 (low)"
+        priority    = 10
         match_rule {
           prefix_match = "/"
         }

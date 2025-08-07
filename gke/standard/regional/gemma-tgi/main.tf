@@ -29,10 +29,6 @@ resource "google_container_cluster" "default" {
   workload_identity_config {
     workload_pool = "${data.google_project.default.project_id}.svc.id.goog"
   }
-
-  # Set `deletion_protection` to `true` will ensure that one cannot
-  # accidentally delete this instance by use of Terraform.
-  deletion_protection = false
 }
 
 resource "google_container_node_pool" "default" {

@@ -31,10 +31,6 @@ resource "google_container_cluster" "default" {
     machine_type    = "t2a-standard-1"
     service_account = google_service_account.default.email
   }
-
-  # Set `deletion_protection` to `true` will ensure that one cannot
-  # accidentally delete this instance by use of Terraform.
-  deletion_protection = false
 }
 # [END gke_standard_zonal_arm_cluster]
 

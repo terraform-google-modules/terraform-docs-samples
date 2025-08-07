@@ -23,6 +23,5 @@ resource "google_sql_database_instance" "default" {
     tier    = "db-perf-optimized-N-96"
     edition = "ENTERPRISE_PLUS"
   }
-  deletion_protection = false
 }
 # [END cloud_sql_enterprise_plus_instance]

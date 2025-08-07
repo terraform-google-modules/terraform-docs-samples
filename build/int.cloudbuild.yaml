@@ -35,12 +35,13 @@ steps:
       cat _changed_folders
 
       # Do not prune if changing tests themselves
-      while read d; do
-        if [[ "build test .github" =~ "${d%/}" ]]; then
-          echo "Infrastructure folder ${d%/} has changed; no tests will be pruned."
+      set +e
+      _build_changes=$(git diff origin/main build test .github/workflows)
+      set -e
+      if [[ -n "${_build_changes}" ]]; then
+          echo "Infrastructure folders have changed; no tests will be pruned."
           exit 0 # do not prune
-        fi
-      done < _changed_folders
+      fi
 
       # Remove base folders without changes
       for d in *; do
@@ -62,6 +63,21 @@ steps:
       # Report remaining folders
       echo -n "Folders in scope for tests:"
       find . -type d -printf '%P\n'
+
+- id: resource specific fixups
+  name: golang:1.23
+  entrypoint: bash
+  args:
+    - -c
+    - |
+      set -e
+      go install github.com/minamijoyo/hcledit@v0.2.17
+
+      # Add `deletion_protection = false` to google_container_cluster.default resources
+      find ./gke -name "*.tf" -print | xargs -t -I {} $$GOPATH/bin/hcledit attribute append resource.google_container_cluster.default.deletion_protection 'false' -u -f {} || true
+
+      # Add `deletion_protection = false` to google_sql_database_instance.default resources
+      find ./cloud_sql -name "*.tf" -print | xargs -t -I {} $$GOPATH/bin/hcledit attribute append resource.google_sql_database_instance.default.deletion_protection 'false' -u -f {} || true
 
 - id: prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
@@ -105,4 +121,4 @@ tags:
 - 'integration'
 substitutions:
   _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
-  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.23'
+  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.25'

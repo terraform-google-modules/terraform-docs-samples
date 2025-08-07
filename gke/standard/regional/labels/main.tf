@@ -24,10 +24,6 @@ resource "google_container_cluster" "default" {
   resource_labels = {
     foo = "bar"
   }
-
-  # Set `deletion_protection` to `true` will ensure that one cannot
-  # accidentally delete this instance by use of Terraform.
-  deletion_protection = false
 }
 # [END gke_standard_regional_labels_cluster]
 # [END gke_standard_regional_labels]
