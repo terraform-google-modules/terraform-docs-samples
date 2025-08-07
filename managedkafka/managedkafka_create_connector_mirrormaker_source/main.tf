@@ -81,20 +81,12 @@ resource "google_managed_kafka_connector" "default" {
   configs = {
     "connector.class"                                  = "org.apache.kafka.connect.mirror.MirrorSourceConnector"
     "name"                                             = "MM2_CONNECTOR_ID"
+    "tasks.max"                                        = "3"
     "source.cluster.alias"                             = "source"
     "target.cluster.alias"                             = "target"
     "topics"                                           = "GMK_TOPIC_NAME"
     "source.cluster.bootstrap.servers"                 = "GMK_SOURCE_CLUSTER_DNS"
     "target.cluster.bootstrap.servers"                 = "GMK_TARGET_CLUSTER_DNS"
-    "offset-syncs.topic.replication.factor"            = "1"
-    "source.cluster.security.protocol"                 = "SASL_SSL"
-    "source.cluster.sasl.mechanism"                    = "OAUTHBEARER"
-    "source.cluster.sasl.login.callback.handler.class" = "com.google.cloud.hosted.kafka.auth.GcpLoginCallbackHandler"
-    "source.cluster.sasl.jaas.config"                  = "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;"
-    "target.cluster.security.protocol"                 = "SASL_SSL"
-    "target.cluster.sasl.mechanism"                    = "OAUTHBEARER"
-    "target.cluster.sasl.login.callback.handler.class" = "com.google.cloud.hosted.kafka.auth.GcpLoginCallbackHandler"
-    "target.cluster.sasl.jaas.config"                  = "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;"
   }
 
   provider = google-beta

@@ -80,7 +80,7 @@ resource "google_managed_kafka_connector" "example-cloud-storage-sink-connector"
 
   configs = {
     "connector.class"                = "io.aiven.kafka.connect.gcs.GcsSinkConnector"
-    "tasks.max"                      = "1"
+    "tasks.max"                      = "3"
     "topics"                         = "GMK_TOPIC_ID"
     "gcs.bucket.name"                = "GCS_BUCKET_NAME"
     "gcs.credentials.default"        = "true"

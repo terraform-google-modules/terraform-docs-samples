@@ -81,7 +81,7 @@ resource "google_managed_kafka_connector" "example-pubsub-sink-connector" {
   configs = {
     "connector.class" = "com.google.pubsub.kafka.sink.CloudPubSubSinkConnector"
     "name"            = "my-pubsub-sink-connector"
-    "tasks.max"       = "1"
+    "tasks.max"       = "3"
     "topics"          = "TOPIC_NAME"
     "cps.topic"       = "CPS_TOPIC_NAME"
     "cps.project"     = "CPS_PROJECT_NAME"

@@ -81,7 +81,7 @@ resource "google_managed_kafka_connector" "example-pubsub-source-connector" {
   configs = {
     "connector.class"  = "com.google.pubsub.kafka.source.CloudPubSubSourceConnector"
     "name"             = "my-pubsub-source-connector"
-    "tasks.max"        = "1"
+    "tasks.max"        = "3"
     "kafka.topic"      = "GMK_TOPIC_ID"
     "cps.subscription" = "CPS_SUBSCRIPTION_ID"
     "cps.project"      = "GCP_PROJECT_ID"
