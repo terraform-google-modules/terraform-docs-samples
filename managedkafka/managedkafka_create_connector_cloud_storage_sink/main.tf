@@ -52,32 +52,17 @@ resource "google_managed_kafka_connect_cluster" "default" {
   }
 }
 
+# Note: Due to a known issue, network attachment resources may not be
+# properly deleted, which can cause 'terraform destroy' to hang. It is
+# recommended to destroy network resources separately from the Kafka
+# Connect resources.
+# The documentation elaborates further on the recommended approach.
 # [START managedkafka_subnetwork]
 resource "google_compute_subnetwork" "default" {
   name          = "test-subnetwork"
   ip_cidr_range = "10.2.0.0/16"
   region        = "us-central1"
   network       = google_compute_network.default.id
-
-  provisioner "local-exec" {
-    when        = destroy
-    command     = <<-EOT
-      set -e
-      gcloud compute network-attachments list \
-        --filter="subnetworks:https://www.googleapis.com/compute/v1/${self.id}" \
-        --format="value(name)" --project="${self.project}" |
-        while read -r na_name; do
-          [[ -z "$na_name" ]] && continue
-          for i in {1..5}; do
-            gcloud compute network-attachments delete "$na_name" \
-              --project="${self.project}" --region="${self.region}" --quiet && break
-            if [[ $i -eq 5 ]]; then exit 1; fi
-            sleep 30
-          done
-        done
-    EOT
-    interpreter = ["bash", "-c"]
-  }
 }
 
 resource "google_compute_network" "default" {
