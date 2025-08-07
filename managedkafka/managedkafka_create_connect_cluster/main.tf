@@ -26,7 +26,7 @@ resource "google_managed_kafka_cluster" "default" {
   gcp_config {
     access_config {
       network_configs {
-        subnet = "projects/${data.google_project.default.number}/regions/us-central1/subnetworks/default"
+        subnet = google_compute_subnetwork.default.id
       }
     }
   }
@@ -46,14 +46,32 @@ resource "google_managed_kafka_connect_cluster" "default" {
   gcp_config {
     access_config {
       network_configs {
-        primary_subnet = "projects/${data.google_project.default.number}/regions/us-central1/subnetworks/default"
+        primary_subnet = google_compute_subnetwork.default.id
       }
     }
   }
 }
 # [END managedkafka_create_connect_cluster]
 
+# Note: Due to a known issue, network attachment resources may not be
+# properly deleted, which can cause 'terraform destroy' to hang. It is
+# recommended to destroy network resources separately from the Kafka
+# Connect resources.
+# The documentation elaborates further on the recommended approach.
+# [START managedkafka_subnetwork]
+resource "google_compute_subnetwork" "default" {
+  name          = "test-subnetwork"
+  ip_cidr_range = "10.2.0.0/16"
+  region        = "us-central1"
+  network       = google_compute_network.default.id
+}
+
+resource "google_compute_network" "default" {
+  name                    = "test-network"
+  auto_create_subnetworks = false
+}
+# [END managedkafka_subnetwork]
+
 data "google_project" "default" {
-  provider = google-beta
 }
 # [END managedkafka_create_connect_cluster_parent]
