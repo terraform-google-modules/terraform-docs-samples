@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-
-# [START aiplatform_create_user_managed_notebooks_instance_sample]
-resource "google_notebooks_instance" "basic_instance" {
-  name         = "notebooks-instance-basic"
-  location     = "us-central1-a"
-  machine_type = "e2-medium"
-
-  vm_image {
-    project      = "deeplearning-platform-release"
-    image_family = "tf-ent-2-9-cu113-notebooks"
-  }
+# [START securitycenter_v2_endpoint_us]
+provider "google" {
+  alias                              = "securitycenter_v2_endpoint_us"
+  security_center_v2_custom_endpoint = "https://securitycenter.us.rep.googleapis.com/v2/"
 }
-# [END aiplatform_create_user_managed_notebooks_instance_sample]
+# [END securitycenter_v2_endpoint_us]

@@ -14,22 +14,31 @@
 * limitations under the License.
 */
 
+# [START gke_standard_regional_node_pool_custom_sa]
 resource "google_service_account" "default" {
   account_id   = "service-account-id"
   display_name = "Service Account"
 }
 
+data "google_project" "project" {
+}
+
+resource "google_project_iam_member" "default" {
+  project = data.google_project.project.project_id
+  role    = "roles/container.defaultNodeServiceAccount"
+  member  = "serviceAccount:${google_service_account.default.email}"
+}
+# [END gke_standard_regional_node_pool_custom_sa]
+
+# [START gke_standard_regional_cluster]
 resource "google_container_cluster" "default" {
   name     = "gke-standard-regional-cluster"
   location = "us-central1"
 
   initial_node_count       = 1
   remove_default_node_pool = true
-
-  # Set `deletion_protection` to `true` will ensure that one cannot
-  # accidentally delete this instance by use of Terraform.
-  deletion_protection = false
 }
+# [END gke_standard_regional_cluster]
 
 # [START gke_standard_regional_node_pool]
 resource "google_container_node_pool" "default" {

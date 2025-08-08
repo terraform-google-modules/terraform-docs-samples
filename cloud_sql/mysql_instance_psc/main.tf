@@ -34,7 +34,6 @@ resource "google_sql_database_instance" "default" {
       ipv4_enabled = false
     }
   }
-  deletion_protection = false # Set to "true" to prevent destruction of the resource
 }
 # [END cloud_sql_mysql_instance_psc]
 
@@ -52,11 +51,49 @@ data "google_sql_database_instance" "default" {
 }
 
 resource "google_compute_forwarding_rule" "default" {
-  name                  = "psc-forwarding-rule-${google_sql_database_instance.default.name}"
-  region                = "us-central1"
-  network               = "default"
-  ip_address            = google_compute_address.default.self_link
-  load_balancing_scheme = ""
-  target                = data.google_sql_database_instance.default.psc_service_attachment_link
+  name                    = "psc-forwarding-rule-${google_sql_database_instance.default.name}"
+  region                  = "us-central1"
+  network                 = "default"
+  ip_address              = google_compute_address.default.self_link
+  load_balancing_scheme   = ""
+  target                  = data.google_sql_database_instance.default.psc_service_attachment_link
+  allow_psc_global_access = true
 }
 # [END cloud_sql_mysql_instance_psc_endpoint]
+
+# [START cloud_sql_mysql_instance_ipv6_psc_endpoint]
+resource "google_compute_network" "ipv6_default" {
+  name                     = "net-ipv6"
+  auto_create_subnetworks  = false
+  enable_ula_internal_ipv6 = true
+}
+
+resource "google_compute_subnetwork" "ipv6_default" {
+  name             = "subnet-internal-ipv6"
+  ip_cidr_range    = "10.0.0.0/16"
+  region           = "us-central1"
+  stack_type       = "IPV4_IPV6"
+  ipv6_access_type = "INTERNAL"
+  network          = google_compute_network.ipv6_default.id
+}
+
+resource "google_compute_address" "ipv6_default" {
+  name         = "psc-compute-ipv6-address-${google_sql_database_instance.default.name}"
+  region       = "us-central1"
+  address_type = "INTERNAL"
+  subnetwork   = google_compute_subnetwork.ipv6_default.name
+  ip_version   = "IPV6"
+}
+
+resource "google_compute_forwarding_rule" "ipv6_ilb_example" {
+  name   = "ipv6-psc-forwarding-rule-${google_sql_database_instance.default.name}"
+  region = "us-central1"
+
+  load_balancing_scheme   = ""
+  target                  = data.google_sql_database_instance.default.psc_service_attachment_link
+  network                 = google_compute_network.ipv6_default.name
+  subnetwork              = google_compute_subnetwork.ipv6_default.name
+  ip_address              = google_compute_address.ipv6_default.id
+  allow_psc_global_access = true
+}
+# [END cloud_sql_mysql_instance_ipv6_psc_endpoint]

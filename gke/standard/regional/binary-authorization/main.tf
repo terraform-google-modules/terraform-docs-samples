@@ -15,7 +15,7 @@
 */
 
 # [START gke_standard_regional_binauthz_enforce]
-resource "google_container_cluster" "enforce" {
+resource "google_container_cluster" "default" {
   name               = "gke-standard-regional-binauthz-enforce"
   location           = "us-west1"
   initial_node_count = 1
@@ -23,9 +23,5 @@ resource "google_container_cluster" "enforce" {
   binary_authorization {
     evaluation_mode = "PROJECT_SINGLETON_POLICY_ENFORCE"
   }
-
-  # Set `deletion_protection` to `true` will ensure that one cannot
-  # accidentally delete this instance by use of Terraform.
-  deletion_protection = false
 }
 # [END gke_standard_regional_binauthz_enforce]
