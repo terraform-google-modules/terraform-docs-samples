@@ -101,7 +101,7 @@ resource "google_managed_kafka_connector" "default" {
 
   configs = {
     "connector.class"                  = "org.apache.kafka.connect.mirror.MirrorSourceConnector"
-    "name"                             = "mm2-source-to-target-connector"
+    "name"                             = "mm2-source-to-target-connector-id"
     "tasks.max"                        = "3"
     "source.cluster.alias"             = "source"
     "target.cluster.alias"             = "target"
