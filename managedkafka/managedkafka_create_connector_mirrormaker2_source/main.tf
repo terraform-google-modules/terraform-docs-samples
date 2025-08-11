@@ -106,8 +106,8 @@ resource "google_managed_kafka_connector" "default" {
     "source.cluster.alias"             = "source"
     "target.cluster.alias"             = "target"
     "topics"                           = ".*" # Replicate all topics from the source
-    "source.cluster.bootstrap.servers" = google_managed_kafka_cluster.source.bootstrap_servers
-    "target.cluster.bootstrap.servers" = google_managed_kafka_cluster.target.bootstrap_servers
+    "source.cluster.bootstrap.servers" = google_managed_kafka_cluster.source.gcp_config[0].access_config[0].network_configs[0].bootstrap_servers
+    "target.cluster.bootstrap.servers" = google_managed_kafka_cluster.target.gcp_config[0].access_config[0].network_configs[0].bootstrap_servers
     # Using a replication policy is a good practice to identify mirrored topics.
     # It prefixes the topic name with the source alias (e.g., "source.my-topic").
     "replication.policy.class" = "org.apache.kafka.connect.mirror.DefaultReplicationPolicy"
