@@ -100,12 +100,12 @@ resource "google_managed_kafka_connector" "default" {
   location        = "us-central1"
 
   configs = {
-    "connector.class"                  = "org.apache.kafka.connect.mirror.MirrorSourceConnector"
-    "name"                             = "mm2-source-to-target-connector-id"
-    "tasks.max"                        = "3"
-    "source.cluster.alias"             = "source"
-    "target.cluster.alias"             = "target"
-    "topics"                           = ".*" # Replicate all topics from the source
+    "connector.class"      = "org.apache.kafka.connect.mirror.MirrorSourceConnector"
+    "name"                 = "mm2-source-to-target-connector-id"
+    "tasks.max"            = "3"
+    "source.cluster.alias" = "source"
+    "target.cluster.alias" = "target"
+    "topics"               = ".*" # Replicate all topics from the source
     # The value for bootstrap.servers is a comma-separated list of hostname:port pairs for one
     # or more Kafka brokers in the source/target cluster.
     "source.cluster.bootstrap.servers" = "source_cluster_dns"
