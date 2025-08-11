@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-# [START cloud_sql_sqlserver_instance_switchover_switchover_begin]
+# [START cloud_sql_sqlserver_instance_switchover_begin]
 resource "google_sql_database_instance" "original-primary" {
   name             = "sqlserver-primary-instance-name"
   region           = "us-east1"
@@ -58,4 +58,4 @@ resource "google_sql_database_instance" "dr_replica" {
   # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
   deletion_protection = false
 }
-# [END cloud_sql_sqlserver_instance_switchover_switchover_begin]
+# [END cloud_sql_sqlserver_instance_switchover_begin]
