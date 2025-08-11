@@ -14,11 +14,30 @@
  * limitations under the License.
  */
 
-# [START managedkafka_create_connector_mirrormaker_source_parent]
+# [START managedkafka_create_connector_mirrormaker2_source_parent]
 
-resource "google_managed_kafka_cluster" "default" {
+# Define the target Kafka cluster. This is where data will be replicated to.
+resource "google_managed_kafka_cluster" "target" {
   project    = data.google_project.default.project_id
-  cluster_id = "my-cluster-id"
+  cluster_id = "mm2-target-cluster-id"
+  location   = "us-central1"
+  capacity_config {
+    vcpu_count   = 3
+    memory_bytes = 3221225472 # 3 GiB
+  }
+  gcp_config {
+    access_config {
+      network_configs {
+        subnet = google_compute_subnetwork.default.id
+      }
+    }
+  }
+}
+
+# Define the source Kafka cluster.
+resource "google_managed_kafka_cluster" "source" {
+  project    = data.google_project.default.project_id
+  cluster_id = "mm2-source-cluster-id"
   location   = "us-central1"
   capacity_config {
     vcpu_count   = 3
@@ -38,7 +57,8 @@ resource "google_managed_kafka_connect_cluster" "default" {
   project            = data.google_project.default.project_id
   connect_cluster_id = "my-connect-cluster-id"
   location           = "us-central1"
-  kafka_cluster      = google_managed_kafka_cluster.default.id
+  # The Connect cluster is usually co-located with the target Kafka cluster.
+  kafka_cluster = google_managed_kafka_cluster.target.id
   capacity_config {
     vcpu_count   = 12
     memory_bytes = 12884901888 # 12 GiB
@@ -71,29 +91,33 @@ resource "google_compute_network" "default" {
 }
 # [END managedkafka_subnetwork]
 
-# [START managedkafka_create_connector_mirrormaker_source]
+# [START managedkafka_create_connector_mirrormaker2_source]
+# A single MirrorMaker 2 Source Connector to replicate from one source to one target.
 resource "google_managed_kafka_connector" "default" {
   project         = data.google_project.default.project_id
-  connector_id    = "MM2_CONNECTOR_ID"
+  connector_id    = "mm2-source-to-target-connector-id"
   connect_cluster = google_managed_kafka_connect_cluster.default.connect_cluster_id
   location        = "us-central1"
 
   configs = {
     "connector.class"                  = "org.apache.kafka.connect.mirror.MirrorSourceConnector"
-    "name"                             = "MM2_CONNECTOR_ID"
+    "name"                             = "mm2-source-to-target-connector"
     "tasks.max"                        = "3"
     "source.cluster.alias"             = "source"
-    "target.cluster.alias"             = "target" # This is usually the primary cluster
-    "topics"                           = "GMK_TOPIC_NAME"
-    "source.cluster.bootstrap.servers" = "GMK_SOURCE_CLUSTER_DNS"
-    "target.cluster.bootstrap.servers" = "GMK_TARGET_CLUSTER_DNS"
+    "target.cluster.alias"             = "target"
+    "topics"                           = ".*" # Replicate all topics from the source
+    "source.cluster.bootstrap.servers" = google_managed_kafka_cluster.source.bootstrap_servers
+    "target.cluster.bootstrap.servers" = google_managed_kafka_cluster.target.bootstrap_servers
+    # Using a replication policy is a good practice to identify mirrored topics.
+    # It prefixes the topic name with the source alias (e.g., "source.my-topic").
+    "replication.policy.class" = "org.apache.kafka.connect.mirror.DefaultReplicationPolicy"
   }
 
   provider = google-beta
 }
-# [END managedkafka_create_connector_mirrormaker_source]
+# [END managedkafka_create_connector_mirrormaker2_source]
 
 data "google_project" "default" {
 }
 
-# [END managedkafka_create_connector_mirrormaker_source_parent]
+# [END managedkafka_create_connector_mirrormaker2_source_parent]

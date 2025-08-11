@@ -15,7 +15,7 @@
 apiVersion: blueprints.cloud.google.com/v1alpha1
 kind: BlueprintTest
 metadata:
-  name: managedkafka_create_connector_mirrormaker_source
+  name: managedkafka_create_connector_mirrormaker2_source
 spec:
   # This test is being skipped due to a known issue with leaking Network
   # Attachment resources which prevents `terraform destroy` from completing
