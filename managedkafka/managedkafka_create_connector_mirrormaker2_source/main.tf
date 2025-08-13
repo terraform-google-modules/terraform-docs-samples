@@ -67,6 +67,15 @@ resource "google_managed_kafka_connect_cluster" "default" {
     access_config {
       network_configs {
         primary_subnet = google_compute_subnetwork.default.id
+        # As part of the configuration, ensure the Connect cluster has necessary access
+        # to all MM2 source/target Kafka clusters. For more information on providing access,
+        # see the documentation.
+        # As an example, we enable network access to Kafka Clusters below using DNS domain names.
+        # The format for DNS name should be:
+        # "GMK_CLUSTER_ID.REGION.managedkafka.PROJECT_ID.cloud.goog.*"
+        # Please note that we do NOT need to add the DNS name of the primary Kafka cluster to the
+        # `dns_domain_names` list, as our Connect cluster is already connected to that.
+        dns_domain_names = ["DNS_DOMAIN_NAME"]
       }
     }
   }
@@ -106,13 +115,13 @@ resource "google_managed_kafka_connector" "default" {
     "source.cluster.alias" = "source"
     "target.cluster.alias" = "target"
     "topics"               = ".*" # Replicate all topics from the source
-    # The value for bootstrap.servers is a comma-separated list of hostname:port pairs for one
-    # or more Kafka brokers in the source/target cluster.
+    # The value for bootstrap.servers is a comma-separated list of hostname:port pairs
+    # for one or more Kafka brokers in the source/target cluster.
     "source.cluster.bootstrap.servers" = "source_cluster_dns"
     "target.cluster.bootstrap.servers" = "target_cluster_dns"
-    # Using a replication policy is a good practice to identify mirrored topics.
-    # It prefixes the topic name with the source alias (e.g., "source.my-topic").
-    "replication.policy.class" = "org.apache.kafka.connect.mirror.DefaultReplicationPolicy"
+    # You can define an exclusion policy for topics as follows:
+    # To exclude internal MirrorMaker 2 topics, internal topics and replicated topics,.
+    "topics.exclude"               = "mm2.*\\.internal,.*\\.replica,__.*"
   }
 
   provider = google-beta
