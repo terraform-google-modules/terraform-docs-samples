@@ -121,7 +121,7 @@ resource "google_managed_kafka_connector" "default" {
     "target.cluster.bootstrap.servers" = "target_cluster_dns"
     # You can define an exclusion policy for topics as follows:
     # To exclude internal MirrorMaker 2 topics, internal topics and replicated topics,.
-    "topics.exclude"               = "mm2.*\\.internal,.*\\.replica,__.*"
+    "topics.exclude" = "mm2.*\\.internal,.*\\.replica,__.*"
   }
 
   provider = google-beta
