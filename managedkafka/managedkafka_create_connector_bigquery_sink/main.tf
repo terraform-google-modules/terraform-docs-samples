@@ -80,7 +80,7 @@ resource "google_managed_kafka_connector" "example-bigquery-sink-connector" {
 
   configs = {
     "name"                           = "my-bigquery-sink-connector"
-    "project"                        = "GCP_PROJECT_ID"
+    "project"                        = data.google_project.default.project_id
     "topics"                         = "GMK_TOPIC_ID"
     "tasks.max"                      = "3"
     "connector.class"                = "com.wepay.kafka.connect.bigquery.BigQuerySinkConnector"
