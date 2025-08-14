@@ -84,7 +84,7 @@ resource "google_managed_kafka_connector" "example-pubsub-source-connector" {
     "tasks.max"        = "3"
     "kafka.topic"      = "GMK_TOPIC_ID"
     "cps.subscription" = "CPS_SUBSCRIPTION_ID"
-    "cps.project"      = "GCP_PROJECT_ID"
+    "cps.project"      = data.google_project.default.project_id
     "value.converter"  = "org.apache.kafka.connect.converters.ByteArrayConverter"
     "key.converter"    = "org.apache.kafka.connect.storage.StringConverter"
   }
