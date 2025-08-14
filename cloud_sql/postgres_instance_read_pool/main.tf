@@ -18,7 +18,7 @@
 
 resource "google_sql_database_instance" "primary" {
   name             = "postgres-primary"
-  database_version = "POSTGRES_15"
+  database_version = "POSTGRES_17"
   region           = "europe-west4"
 
   instance_type = "CLOUD_SQL_INSTANCE"
@@ -39,7 +39,7 @@ resource "google_sql_database_instance" "primary" {
 
 resource "google_sql_database_instance" "replica" {
   name             = "postgres-replica"
-  database_version = "POSTGRES_15"
+  database_version = "POSTGRES_17"
   region           = "europe-west4"
 
   master_instance_name = google_sql_database_instance.primary.name

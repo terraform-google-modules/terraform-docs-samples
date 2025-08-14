@@ -18,7 +18,7 @@
 
 resource "google_sql_database_instance" "primary" {
   name             = "mysql-primary"
-  database_version = "MYSQL_8_0"
+  database_version = "MYSQL_8_4"
   region           = "europe-west4"
 
   instance_type = "CLOUD_SQL_INSTANCE"
@@ -40,7 +40,7 @@ resource "google_sql_database_instance" "primary" {
 
 resource "google_sql_database_instance" "replica" {
   name             = "mysql-replica"
-  database_version = "MYSQL_8_0"
+  database_version = "MYSQL_8_4"
   region           = "europe-west4"
 
   master_instance_name = google_sql_database_instance.primary.name
