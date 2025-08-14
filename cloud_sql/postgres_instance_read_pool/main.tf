@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-# [START cloud_sql_postgres_create_read_pool]
+# [START cloud_sql_postgres_read_pool]
 
 resource "google_sql_database_instance" "primary" {
   name             = "postgres-primary"
@@ -66,4 +66,4 @@ resource "google_sql_database_instance" "replica" {
   }
 }
 
-# [END cloud_sql_postgres_create_read_pool]
+# [END cloud_sql_postgres_read_pool]
