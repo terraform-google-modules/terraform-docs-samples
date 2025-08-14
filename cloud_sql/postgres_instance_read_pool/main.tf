@@ -29,8 +29,8 @@ resource "google_sql_database_instance" "primary" {
   deletion_protection = false
 
   settings {
-    tier              = "db-perf-optimized-N-2"
-    edition           = "ENTERPRISE_PLUS"
+    tier    = "db-perf-optimized-N-2"
+    edition = "ENTERPRISE_PLUS"
 
     backup_configuration {
       enabled = true
@@ -57,8 +57,8 @@ resource "google_sql_database_instance" "replica" {
   deletion_protection = false
 
   settings {
-    tier              = "db-perf-optimized-N-2"
-    edition           = "ENTERPRISE_PLUS"
+    tier    = "db-perf-optimized-N-2"
+    edition = "ENTERPRISE_PLUS"
 
     ip_configuration {
       ipv4_enabled = true
