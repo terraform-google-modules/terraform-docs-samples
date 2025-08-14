@@ -23,11 +23,6 @@ resource "google_sql_database_instance" "primary" {
 
   instance_type = "CLOUD_SQL_INSTANCE"
 
-  # If you wish to, set deletion_protection to true to prevent
-  # accidental deletion of this instance as a result of removing the
-  # Terraform resource.
-  deletion_protection = false
-
   settings {
     tier    = "db-perf-optimized-N-2"
     edition = "ENTERPRISE_PLUS"
@@ -50,11 +45,6 @@ resource "google_sql_database_instance" "replica" {
   master_instance_name = google_sql_database_instance.primary.name
   instance_type        = "READ_POOL_INSTANCE"
   node_count           = 2
-
-  # If you wish to, set deletion_protection to true to prevent
-  # accidental deletion of this instance as a result of removing the
-  # Terraform resource.
-  deletion_protection = false
 
   settings {
     tier    = "db-perf-optimized-N-2"
