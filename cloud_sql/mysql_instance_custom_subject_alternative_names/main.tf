@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-# [START cloud_sql_mysql_mysql_instance_custom_subject_alternative_names_create]
+# [START cloud_sql_mysql_instance_custom_subject_alternative_names_create]
 # [START cloud_sql_mysql_instance_service_identity]
 resource "google_project_service_identity" "default" {
   provider = google-beta
