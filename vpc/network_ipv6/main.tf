@@ -22,7 +22,7 @@ resource "google_compute_network" "default" {
 }
 # [END vpc_ipv6_internal]
 
-# [START subnet_dual_stack]
+# [START vpc_subnet_dual_stack]
 resource "google_compute_subnetwork" "subnet_dual_stack" {
   name             = "subnet-dual-stack"
   ip_cidr_range    = "10.0.0.0/22"
@@ -31,9 +31,9 @@ resource "google_compute_subnetwork" "subnet_dual_stack" {
   ipv6_access_type = "INTERNAL"
   network          = google_compute_network.default.id
 }
-# [END subnet_dual_stack]
+# [END vpc_subnet_dual_stack]
 
-# [START subnet_ipv6_only]
+# [START vpc_subnet_ipv6_only]
 resource "google_compute_subnetwork" "subnet_ipv6_only" {
   name             = "subnet-ipv6-only"
   region           = "us-central1"
@@ -41,4 +41,4 @@ resource "google_compute_subnetwork" "subnet_ipv6_only" {
   stack_type       = "IPV6_ONLY"
   ipv6_access_type = "INTERNAL"
 }
-# [END subnet_ipv6_only]
+# [END vpc_subnet_ipv6_only]
