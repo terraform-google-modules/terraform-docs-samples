@@ -15,7 +15,7 @@
  */
 
 # [START vpc_ipv6_internal]
-resource "google_compute_network" "default" {
+resource "google_compute_network" "vpc_network_ipv6" {
   name                     = "vpc-network-ipv6"
   auto_create_subnetworks  = false
   enable_ula_internal_ipv6 = true
@@ -29,7 +29,7 @@ resource "google_compute_subnetwork" "subnet_dual_stack" {
   region           = "us-west2"
   stack_type       = "IPV4_IPV6"
   ipv6_access_type = "INTERNAL"
-  network          = google_compute_network.default.id
+  network          = google_compute_network.vpc_network_ipv6.id
 }
 # [END vpc_subnet_dual_stack]
 
@@ -37,7 +37,7 @@ resource "google_compute_subnetwork" "subnet_dual_stack" {
 resource "google_compute_subnetwork" "subnet_ipv6_only" {
   name             = "subnet-ipv6-only"
   region           = "us-central1"
-  network          = google_compute_network.default.id
+  network          = google_compute_network.vpc_network_ipv6.id
   stack_type       = "IPV6_ONLY"
   ipv6_access_type = "INTERNAL"
 }
