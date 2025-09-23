@@ -1,5 +1,4 @@
 data "google_backup_dr_data_source_references" "my_sql_references" {
-  provider      = google-beta
   location      = "us-central1"
   resource_type = "sqladmin.googleapis.com/Instance"
 }
