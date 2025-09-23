@@ -1,8 +1,8 @@
-data "google_backup_dr_data_source_references" "my_sql_references" {
+data "google_backup_dr_data_source_references" "all_csql_data_source_references" {
   location      = "us-central1"
   resource_type = "sqladmin.googleapis.com/Instance"
 }
 
-output "first_sql_reference_name" {
-  value = data.google_backup_dr_data_source_references.my_sql_references.data_source_references[0].name
+output "csql_data_source_references" {
+  value = data.google_backup_dr_data_source_references.all_csql_data_source_references.data_source_references
 }
