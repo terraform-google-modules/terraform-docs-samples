@@ -20,5 +20,5 @@ data "google_backup_dr_backup_plan_associations" "csql_instance_associations" {
 }
 
 output "all_csql_backup_plan_associations" {
-  value = google_backup_dr_backup_plan_associations.csql_instance_associations
+  value = data.google_backup_dr_backup_plan_associations.csql_instance_associations
 }
