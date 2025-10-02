@@ -17,14 +17,14 @@
 # discovered service block
 data "google_apphub_discovered_service" "cloudrun-service" {
   location    = "us-central1"
-  project      = "my-project"
+  project     = "my-project"
   service_uri = "//run.googleapis.com/projects/my-project/locations/us-central1/services/helloworld"
 }
 
 # service block
 resource "google_apphub_service" "cloudrun-service" {
   location       = "global"
-  project      = "management-project"
+  project        = "management-project"
   application_id = "apphub-tutorial-global"
   service_id     = "service-id"
   attributes {
