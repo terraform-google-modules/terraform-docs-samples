@@ -41,6 +41,7 @@ module "projects" {
     "aiplatform.googleapis.com",
     "anthos.googleapis.com",
     "anthospolicycontroller.googleapis.com",
+    "apphub.googleapis.com",
     "artifactregistry.googleapis.com",
     "backupdr.googleapis.com",
     "biglake.googleapis.com",
