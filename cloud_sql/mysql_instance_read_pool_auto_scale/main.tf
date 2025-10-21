@@ -69,4 +69,4 @@ resource "google_sql_database_instance" "replica" {
   }
 }
 
-# [END cloud_sql_mysql_read_pool]
+# [END cloud_sql_mysql_read_pool_auto_scale]
