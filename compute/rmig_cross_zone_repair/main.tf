@@ -1,18 +1,18 @@
 /**
-* Copyright 2024 Google LLC
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Copyright 2025 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 /**
 * Made to resemble:
@@ -50,8 +50,9 @@ resource "google_compute_instance_template" "default" {
 
 # [START compute_rmig_cross_zone_repair]
 resource "google_compute_region_instance_group_manager" "default" {
-  name               = "czr-rmig"
-  base_instance_name = "tf-test-czr-rmig"
+  provider           = google-beta
+  name               = "example-rmig"
+  base_instance_name = "example-rmig-instance"
   region             = "us-central1"
 
   target_size                      = 3
@@ -65,7 +66,7 @@ resource "google_compute_region_instance_group_manager" "default" {
     default_action_on_failure = "REPAIR"
     force_update_on_repair    = "YES"
     on_repair {
-        allow_changing_zone   = "YES"
+      allow_changing_zone = "YES"
     }
   }
 
