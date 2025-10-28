@@ -16,7 +16,7 @@
 
 # [START compute_preview_feature_enable]
 
-resource "google_compute_preview_feature" "gce_preview_feature" {
+resource "google_compute_preview_feature" "default" {
   name              = "alpha-api-access"
   activation_status = "ENABLED"
   rollout_operation {
