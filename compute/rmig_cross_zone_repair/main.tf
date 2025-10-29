@@ -26,7 +26,7 @@
 * --on-repair-allow-changing-zone=YES \
 * --force-update-on-repair
 */
-
+# [START compute_rmig_cross_zone_repair_parent_tag]
 terraform {
   required_providers {
     google = {
@@ -36,7 +36,6 @@ terraform {
   }
 }
 
-# [START compute_rmig_cross_zone_repair_parent_tag]
 resource "google_compute_instance_template" "default" {
   name         = "example-template"
   machine_type = "n2-standard-2"
