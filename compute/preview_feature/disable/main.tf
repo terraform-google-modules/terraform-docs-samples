@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-# [START compute_preview_feature_enable]
+# [START compute_preview_feature_disable]
 
 resource "google_compute_preview_feature" "default" {
   name              = "alpha-api-access"
@@ -26,4 +26,4 @@ resource "google_compute_preview_feature" "default" {
   }
 }
 
-# [END compute_preview_feature_enable]
+# [END compute_preview_feature_disable]
