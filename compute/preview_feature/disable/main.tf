@@ -18,7 +18,7 @@
 
 resource "google_compute_preview_feature" "default" {
   name              = "alpha-api-access"
-  activation_status = "ACTIVATION_STATUS_UNSPECIFIED"
+  activation_status = "ACTIVATION_STATE_UNSPECIFIED"
   rollout_operation {
     rollout_input {
       predefined_rollout_plan = "ROLLOUT_PLAN_FAST_ROLLOUT"
