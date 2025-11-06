@@ -158,3 +158,18 @@ resource "google_backup_dr_backup_plan_association" "disk_association" {
 }
 
 # [END backupdr_create_backupplanassociation_disk]
+
+# [START backupdr_create_backupplanassociation_csql]
+
+# Before creating a backup plan association, you need to create backup plan (google_backup_dr_backup_plan)
+# and Cloud SQL Instance (google_sql_database_instance).
+resource "google_backup_dr_backup_plan_association" "csql_association" {
+  provider                   = google-beta
+  location                   = "us-central1"
+  backup_plan_association_id = "my-csql-bpa"
+  resource                   = "projects/${google_sql_database_instance.default.project}/instances/${google_sql_database_instance.default.name}"
+  resource_type              = "sqladmin.googleapis.com/Instance"
+  backup_plan                = google_backup_dr_backup_plan.default.name
+}
+
+# [END backupdr_create_backupplanassociation_csql]
