@@ -60,21 +60,21 @@ resource "google_compute_disk" "default" {
 }
 
 resource "google_sql_database_instance" "default" {
-   name                = "instance-test"
-   database_version    = "MYSQL_8_0_41"
-   region              = "us-central1"
-   settings {
-       tier = "db-f1-micro"
-       backup_configuration {
-           enabled = true
-       }
-   }
-   lifecycle {
-       ignore_changes = [
-         settings[0].backup_configuration[0].enabled,
-       ]
-   }
-   deletion_protection = false
+  name             = "instance-test"
+  database_version = "MYSQL_8_0_41"
+  region           = "us-central1"
+  settings {
+    tier = "db-f1-micro"
+    backup_configuration {
+      enabled = true
+    }
+  }
+  lifecycle {
+    ignore_changes = [
+      settings[0].backup_configuration[0].enabled,
+    ]
+  }
+  deletion_protection = false
 }
 
 resource "google_backup_dr_backup_vault" "default" {
