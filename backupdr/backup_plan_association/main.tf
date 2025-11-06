@@ -147,6 +147,31 @@ resource "google_backup_dr_backup_plan" "disk_default" {
   }
 }
 
+resource "google_backup_dr_backup_plan" "csql_default" {
+  provider       = google-beta
+  location       = "us-central1"
+  backup_plan_id = "my-csql-bp"
+  resource_type  = "sqladmin.googleapis.com/Instance"
+  backup_vault   = google_backup_dr_backup_vault.default.name
+  log_retention_days = 2
+
+  backup_rules {
+    rule_id               = "rule-1"
+    backup_retention_days = 5
+
+    standard_schedule {
+      recurrence_type  = "HOURLY"
+      hourly_frequency = 1
+      time_zone        = "UTC"
+
+      backup_window {
+        start_hour_of_day = 0
+        end_hour_of_day   = 6
+      }
+    }
+  }
+}
+
 # [START backupdr_create_backupplanassociation]
 
 # Before creating a backup plan association, you need to create backup plan (google_backup_dr_backup_plan)
@@ -187,7 +212,7 @@ resource "google_backup_dr_backup_plan_association" "csql_association" {
   backup_plan_association_id = "my-csql-bpa"
   resource                   = "projects/${google_sql_database_instance.default.project}/instances/${google_sql_database_instance.default.name}"
   resource_type              = "sqladmin.googleapis.com/Instance"
-  backup_plan                = google_backup_dr_backup_plan.default.name
+  backup_plan                = google_backup_dr_backup_plan.csql_default.name
 }
 
 # [END backupdr_create_backupplanassociation_csql]
