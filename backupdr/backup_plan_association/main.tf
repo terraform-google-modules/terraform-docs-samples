@@ -148,11 +148,11 @@ resource "google_backup_dr_backup_plan" "disk_default" {
 }
 
 resource "google_backup_dr_backup_plan" "csql_default" {
-  provider       = google-beta
-  location       = "us-central1"
-  backup_plan_id = "my-csql-bp"
-  resource_type  = "sqladmin.googleapis.com/Instance"
-  backup_vault   = google_backup_dr_backup_vault.default.name
+  provider           = google-beta
+  location           = "us-central1"
+  backup_plan_id     = "my-csql-bp"
+  resource_type      = "sqladmin.googleapis.com/Instance"
+  backup_vault       = google_backup_dr_backup_vault.default.name
   log_retention_days = 2
 
   backup_rules {
