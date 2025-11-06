@@ -157,16 +157,16 @@ resource "google_backup_dr_backup_plan" "csql_default" {
 
   backup_rules {
     rule_id               = "rule-1"
-    backup_retention_days = 5
+    backup_retention_days = 7
 
     standard_schedule {
       recurrence_type  = "HOURLY"
-      hourly_frequency = 1
+      hourly_frequency = 6
       time_zone        = "UTC"
 
       backup_window {
         start_hour_of_day = 0
-        end_hour_of_day   = 6
+        end_hour_of_day   = 23
       }
     }
   }
