@@ -16,6 +16,7 @@
 
 # [START bigquery_query]
 
+# Generate a unique job ID.
 resource "random_string" "job_id" {
   lower   = true
   length  = 16
@@ -26,7 +27,7 @@ resource "random_string" "job_id" {
   }
 }
 
-# Create a query.
+# Create a query using the generated job ID.
 resource "google_bigquery_job" "my_query_job" {
   job_id = random_string.job_id.id
 
