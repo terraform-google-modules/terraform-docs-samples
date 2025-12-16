@@ -14,13 +14,25 @@
 * limitations under the License.
 */
 
-
 # [START bigquery_query]
-resource "google_bigquery_job" "my_query_job" {
-  job_id = "my_query_job"
 
-  query {
-    query = "SELECT name, SUM(number) AS total FROM `bigquery-public-data.usa_names.usa_1910_2013` GROUP BY name ORDER BY total DESC LIMIT 10;"
+resource "random_string" "job_id" {
+  lower   = true
+  length  = 16
+  special = false
+
+  keepers = {
+    uuid = uuid()
   }
 }
+
+# Create a query.
+resource "google_bigquery_job" "my_query_job" {
+  job_id = random_string.job_id.id
+
+  query {
+    query = "SELECT name, SUM(number) AS total FROM `bigquery-public-data.usa_names.usa_1910_2013` GROUP BY name ORDER BY total DESC LIMIT 100;"
+  }
+}
+
 # [END bigquery_query]
