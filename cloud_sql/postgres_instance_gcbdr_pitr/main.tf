@@ -27,8 +27,8 @@ resource "google_sql_database_instance" "default" {
     }
   }
   point_in_time_restore_context {
-    datasource = "project/<project-id>/locations/us-central1/backupVaults/<backup-vault-id>/dataSources/<data-source-id>"
-    point_in_time = "INSERT-ISO-8601-TIMESTAMP-HERE"
+    datasource      = "project/<project-id>/locations/us-central1/backupVaults/<backup-vault-id>/dataSources/<data-source-id>"
+    point_in_time   = "INSERT-ISO-8601-TIMESTAMP-HERE"
     target_instance = "project-id:postgres-instance-backup-pitr"
   }
 }
