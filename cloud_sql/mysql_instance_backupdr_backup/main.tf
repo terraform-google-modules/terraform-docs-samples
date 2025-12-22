@@ -13,6 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+# [START cloud_sql_mysql_instance_backupdr_backup_setup]
+ data "google_backup_dr_backup" "sql_backups" {
+  project          = "VAULT-PROJECT-ID"
+  location         = "asia-northeast1"
+  backup_vault_id  = "BACKUP-VAULT-ID"
+  data_source_id   = "DATA-SOURCE-ID"
+}
+# [END cloud_sql_mysql_instance_backupdr_backup_setup]
 
 # [START cloud_sql_mysql_instance_backupdr_backup]
 resource "google_sql_database_instance" "instance" {
@@ -27,9 +35,6 @@ resource "google_sql_database_instance" "instance" {
       start_time         = "20:55"
     }
   }
-  backupdr_backup = "projects/<project-id>/locations/asia-northeast1/backupVaults/<backup-vault-id>/dataSources/<data-source-id>/backups/<backup-id>"
-  # set `deletion_protection` to true, will ensure that one cannot accidentally delete this instance by
-  # use of Terraform whereas `deletion_protection_enabled` flag protects this instance at the GCP level.
-  deletion_protection = false
+  backupdr_backup = data.google_backup_dr_backup.sql_backups.backups[0].name
 }
 # [END cloud_sql_mysql_instance_backupdr_backup]

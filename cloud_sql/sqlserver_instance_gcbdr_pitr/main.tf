@@ -18,19 +18,19 @@
 resource "google_sql_database_instance" "default" {
   name             = "sqlserver-instance-backup-pitr"
   region           = "us-central1"
-  database_version = "SQLSERVER_2019_STANDARD"
+  database_version = "SQLSERVER_2022_STANDARD"
   root_password    = "INSERT-PASSWORD-HERE"
   settings {
-    tier = "db-custom-2-7680"
+    tier = "db-f1-micro"
     backup_configuration {
       enabled    = true
       start_time = "20:55"
     }
   }
   point_in_time_restore_context {
-    datasource      = "project/<project-id>/locations/us-central1/backupVaults/<backup-vault-id>/dataSources/<data-source-id>"
-    point_in_time   = "INSERT-ISO-8601-TIMESTAMP-HERE"
-    target_instance = "project-id:sqlserver-instance-backup-pitr"
+    datasource      = google_backup_dr_backup_plan_association.default_association.data_source
+    point_in_time   = "2025-12-22T08:51:50Z"
+    target_instance = "${google_project.project.project_id}:sqlserver-instance-backup-pitr"
   }
 }
 # [END cloud_sql_sqlserver_instance_gcbdr_pitr]
