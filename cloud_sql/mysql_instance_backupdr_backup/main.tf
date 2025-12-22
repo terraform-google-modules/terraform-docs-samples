@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 # [START cloud_sql_mysql_instance_backupdr_backup_setup]
- data "google_backup_dr_backup" "sql_backups" {
+data "google_backup_dr_backup" "sql_backups" {
   project          = "VAULT-PROJECT-ID"
   location         = "asia-northeast1"
   backup_vault_id  = "BACKUP-VAULT-ID"

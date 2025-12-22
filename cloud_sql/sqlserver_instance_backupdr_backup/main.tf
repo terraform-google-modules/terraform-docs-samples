@@ -15,7 +15,7 @@
  */
 
 # [START cloud_sql_mysql_instance_backupdr_backup_setup]
- data "google_backup_dr_backup" "sql_backups" {
+data "google_backup_dr_backup" "sql_backups" {
   project          = "VAULT-PROJECT-ID"
   location         = "us-central1"
   backup_vault_id  = "BACKUP-VAULT-ID"
