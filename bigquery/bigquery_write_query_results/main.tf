@@ -33,7 +33,6 @@ resource "google_bigquery_table" "results_table" {
   table_id            = "results_table"
   description         = "Table that contains the query results"
   dataset_id          = google_bigquery_dataset.my_dataset.dataset_id
-  deletion_protection = false # set to "true" in production
 
   schema = <<EOF
 [
