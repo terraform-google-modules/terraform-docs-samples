@@ -29,7 +29,7 @@ resource "google_bigquery_dataset" "my_dataset" {
 }
 
 # Create a table to contain the query results.
-resource "google_bigquery_table" "results_table" {
+resource "google_bigquery_table" "default" {
   table_id            = "results_table"
   description         = "Table that contains the query results"
   dataset_id          = google_bigquery_dataset.my_dataset.dataset_id
@@ -72,7 +72,7 @@ resource "google_bigquery_job" "my_query_job" {
     destination_table {
       project_id = data.google_project.default.project_id
       dataset_id = google_bigquery_dataset.my_dataset.dataset_id
-      table_id   = google_bigquery_table.results_table.table_id
+      table_id   = google_bigquery_table.default.table_id
     }
   }
 }
