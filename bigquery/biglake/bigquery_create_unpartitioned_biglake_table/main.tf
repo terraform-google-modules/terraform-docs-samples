@@ -105,8 +105,6 @@ resource "google_bigquery_table" "default" {
   # This sets the maximum staleness of the metadata cache to 10 hours.
   max_staleness = "0-0 0 10:0:0"
 
-  deletion_protection = false
-
   depends_on = [time_sleep.default]
 }
 # [END bigquery_create_biglake_unpartitioned_table]

@@ -54,7 +54,6 @@ resource "google_bigquery_table" "default" {
   dataset_id          = google_bigquery_dataset.default.dataset_id
   table_id            = "mytable"
   description         = "table description"
-  deletion_protection = false # set to "true" in production
 
   # Attach tags to the table
   resource_tags = {
