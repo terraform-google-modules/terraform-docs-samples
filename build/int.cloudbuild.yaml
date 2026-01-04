@@ -79,6 +79,10 @@ steps:
       # Add `deletion_protection = false` to google_sql_database_instance.default resources
       find ./cloud_sql -name "*.tf" -print | xargs -t -I {} $$GOPATH/bin/hcledit attribute append resource.google_sql_database_instance.default.deletion_protection 'false' -u -f {} || true
 
+      # Add `deletion_protection = false` to google_bigquery_table.default resources
+      find ./bigquery -name "*.tf" -print | xargs -t -I {} $$GOPATH/bin/hcledit attribute append resource.google_bigquery_table.default.deletion_protection 'false' -u -f {} || true
+
+
 - id: prepare
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && prepare_environment']
