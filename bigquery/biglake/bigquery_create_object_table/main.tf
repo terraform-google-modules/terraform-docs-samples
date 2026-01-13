@@ -60,7 +60,6 @@ resource "google_storage_bucket" "default" {
 
 # This defines a BigQuery object table with manual metadata caching.
 resource "google_bigquery_table" "default" {
-  deletion_protection = false
   table_id            = "my-table-id"
   dataset_id          = google_bigquery_dataset.default.dataset_id
   external_data_configuration {

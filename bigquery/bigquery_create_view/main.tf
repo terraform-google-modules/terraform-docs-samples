@@ -32,7 +32,6 @@ resource "google_bigquery_dataset" "default" {
 resource "google_bigquery_table" "default" {
   dataset_id          = google_bigquery_dataset.default.dataset_id
   table_id            = "myview"
-  deletion_protection = false # set to "true" in production
 
   view {
     query          = "SELECT global_id, faa_identifier, name, latitude, longitude FROM `bigquery-public-data.faa.us_airports`"
