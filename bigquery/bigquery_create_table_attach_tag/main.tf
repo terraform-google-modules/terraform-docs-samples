@@ -51,9 +51,9 @@ resource "google_bigquery_dataset" "default" {
 
 # Create a table
 resource "google_bigquery_table" "default" {
-  dataset_id          = google_bigquery_dataset.default.dataset_id
-  table_id            = "mytable"
-  description         = "table description"
+  dataset_id  = google_bigquery_dataset.default.dataset_id
+  table_id    = "mytable"
+  description = "table description"
 
   # Attach tags to the table
   resource_tags = {
