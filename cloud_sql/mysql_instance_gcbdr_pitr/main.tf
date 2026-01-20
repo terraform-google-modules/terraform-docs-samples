@@ -19,7 +19,6 @@ data "google_backup_dr_backup_plan_association" "association" {
   project                    = "PROJECT-ID"
   location                   = "us-central1"
   backup_plan_association_id = "BACKUP-PLAN-ASSOCIATION-ID"
-  resource                   = "INSTANCE-FULL-PATH"
   backup_plan                = "BACKUP-PLAN-ID"
 }
 # [END cloud_sql_mysql_instance_backupdr_backup_plan_association_setup]
