@@ -29,7 +29,7 @@ resource "google_sql_database_instance" "default" {
   }
   point_in_time_restore_context {
     datasource      = google_backup_dr_backup_plan_association.default_association.data_source
-    point_in_time   = "2025-12-22T08:51:50Z"
+    point_in_time   = "2025-12-22T08:51:50Z" # Replace with the point in time to restore to. 
     target_instance = "${google_project.project.project_id}:sqlserver-instance-backup-pitr"
   }
 }

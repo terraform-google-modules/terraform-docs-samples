@@ -16,12 +16,13 @@
 
 # [START cloud_sql_mysql_instance_backupdr_backup_setup]
 data "google_backup_dr_backup" "sql_backups" {
+  # Replace placeholders to reflect the existing SQL backups in the identified project
   project         = "VAULT-PROJECT-ID"
   location        = "us-central1"
   backup_vault_id = "BACKUP-VAULT-ID"
   data_source_id  = "DATA-SOURCE-ID"
 }
-# [END cloud_sql_mysql_instance_backupdr_backup_setup]\
+# [END cloud_sql_mysql_instance_backupdr_backup_setup]
 
 # [START cloud_sql_postgres_instance_backupdr_backup]
 resource "google_sql_database_instance" "instance" {
