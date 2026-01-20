@@ -30,9 +30,8 @@ resource "google_bigquery_dataset" "default" {
 }
 
 resource "google_bigquery_table" "default" {
-  dataset_id          = google_bigquery_dataset.default.dataset_id
-  table_id            = "my_materialized_view"
-  deletion_protection = false # set to "true" in production
+  dataset_id = google_bigquery_dataset.default.dataset_id
+  table_id   = "my_materialized_view"
 
   materialized_view {
     query                            = "SELECT ID, description, date_created FROM `myproject.orders.items`"
