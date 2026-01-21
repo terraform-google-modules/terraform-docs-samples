@@ -76,8 +76,8 @@ resource "google_cloud_run_v2_service" "default" {
 # [START eventarc_terraform_advanced_bus]
 # Create an Eventarc Advanced bus
 resource "google_eventarc_message_bus" "default" {
-  location        = "us-central1"
-  message_bus_id  = "example-bus"
+  location       = "us-central1"
+  message_bus_id = "example-bus"
 }
 # [END eventarc_terraform_advanced_bus]
 
