@@ -44,13 +44,13 @@ resource "google_service_account" "eventarc" {
   account_id   = "eventarc-trigger-sa"
   display_name = "Eventarc trigger service account"
 }
+# [END eventarc_basic_pubsub_iam]
 
 # [START eventarc_basic_pubsub_topic]
 # Create a Pub/Sub topic
 resource "google_pubsub_topic" "default" {
   name = "pubsub_topic"
 }
-# [END eventarc_basic_pubsub_topic]
 
 # Grant permission to publish messages to a Pub/Sub topic
 resource "google_pubsub_topic_iam_member" "pubsubpublisher" {
@@ -60,7 +60,7 @@ resource "google_pubsub_topic_iam_member" "pubsubpublisher" {
   role       = "roles/pubsub.publisher"
   depends_on = [google_pubsub_topic.default]
 }
-# [END eventarc_basic_pubsub_iam]
+# [END eventarc_basic_pubsub_topic]
 
 # [START eventarc_basic_pubsub_deploy_cloud_run]
 # Deploy a Cloud Run service
@@ -80,7 +80,6 @@ resource "google_cloud_run_v2_service" "default" {
 
   depends_on = [google_project_service.run]
 }
-# [END eventarc_basic_pubsub_deploy_cloud_run]
 
 # Grant permission to invoke Cloud Run services
 resource "google_cloud_run_v2_service_iam_member" "runinvoker" {
@@ -91,6 +90,7 @@ resource "google_cloud_run_v2_service_iam_member" "runinvoker" {
   member     = "serviceAccount:${google_service_account.eventarc.email}"
   depends_on = [google_cloud_run_v2_service.default]
 }
+# [END eventarc_basic_pubsub_deploy_cloud_run]
 
 # [START eventarc_basic_pubsub_trigger]
 # Create an Eventarc trigger, routing Pub/Sub events to Cloud Run
