@@ -54,7 +54,7 @@ resource "google_pubsub_topic" "default" {
 
 # Grant permission to publish messages to a Pub/Sub topic
 resource "google_pubsub_topic_iam_member" "pubsubpublisher" {
-  project    = data.google_project.project.id
+  project    = google_pubsub_topic.default.project
   topic      = google_pubsub_topic.default.name
   member     = "serviceAccount:${google_service_account.eventarc.email}"
   role       = "roles/pubsub.publisher"
@@ -84,7 +84,8 @@ resource "google_cloud_run_v2_service" "default" {
 
 # Grant permission to invoke Cloud Run services
 resource "google_cloud_run_v2_service_iam_member" "runinvoker" {
-  project    = data.google_project.project.id
+  project = google_cloud_run_v2_service.default.project
+  location   = google_cloud_run_v2_service.default.location
   name       = google_cloud_run_v2_service.default.name
   role       = "roles/run.invoker"
   member     = "serviceAccount:${google_service_account.eventarc.email}"
