@@ -36,29 +36,28 @@ resource "google_project_service" "pubsub" {
 # [END eventarc_basic_pubsub_enableapis]
 
 # [START eventarc_basic_pubsub_iam]
-# Used to retrieve project information later
-data "google_project" "project" {}
-
 # Create a dedicated service account
 resource "google_service_account" "eventarc" {
   account_id   = "eventarc-trigger-sa"
   display_name = "Eventarc trigger service account"
 }
+# [END eventarc_basic_pubsub_iam]
 
-# Grant permission to invoke Cloud Run services
-resource "google_project_iam_member" "runinvoker" {
-  project = data.google_project.project.id
-  role    = "roles/run.invoker"
-  member  = "serviceAccount:${google_service_account.eventarc.email}"
+# [START eventarc_basic_pubsub_topic]
+# Create a Pub/Sub topic
+resource "google_pubsub_topic" "default" {
+  name = "pubsub_topic"
 }
 
 # Grant permission to publish messages to a Pub/Sub topic
-resource "google_project_iam_member" "pubsubpublisher" {
-  project = data.google_project.project.id
-  member  = "serviceAccount:${google_service_account.eventarc.email}"
-  role    = "roles/pubsub.publisher"
+resource "google_pubsub_topic_iam_member" "pubsubpublisher" {
+  project    = google_pubsub_topic.default.project
+  topic      = google_pubsub_topic.default.name
+  member     = "serviceAccount:${google_service_account.eventarc.email}"
+  role       = "roles/pubsub.publisher"
+  depends_on = [google_pubsub_topic.default]
 }
-# [END eventarc_basic_pubsub_iam]
+# [END eventarc_basic_pubsub_topic]
 
 # [START eventarc_basic_pubsub_deploy_cloud_run]
 # Deploy a Cloud Run service
@@ -70,7 +69,7 @@ resource "google_cloud_run_v2_service" "default" {
 
   template {
     containers {
-      # This container will log received events
+      # This sample container listens to HTTP requests and logs received events
       image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
     service_account = google_service_account.eventarc.email
@@ -78,14 +77,17 @@ resource "google_cloud_run_v2_service" "default" {
 
   depends_on = [google_project_service.run]
 }
-# [END eventarc_basic_pubsub_deploy_cloud_run]
 
-# [START eventarc_basic_pubsub_topic]
-# Create a Pub/Sub topic
-resource "google_pubsub_topic" "default" {
-  name = "pubsub_topic"
+# Grant permission to invoke Cloud Run services
+resource "google_cloud_run_v2_service_iam_member" "runinvoker" {
+  project    = google_cloud_run_v2_service.default.project
+  location   = google_cloud_run_v2_service.default.location
+  name       = google_cloud_run_v2_service.default.name
+  role       = "roles/run.invoker"
+  member     = "serviceAccount:${google_service_account.eventarc.email}"
+  depends_on = [google_cloud_run_v2_service.default]
 }
-# [END eventarc_basic_pubsub_topic]
+# [END eventarc_basic_pubsub_deploy_cloud_run]
 
 # [START eventarc_basic_pubsub_trigger]
 # Create an Eventarc trigger, routing Pub/Sub events to Cloud Run
@@ -116,7 +118,7 @@ resource "google_eventarc_trigger" "default" {
   service_account = google_service_account.eventarc.email
   depends_on = [
     google_project_service.eventarc,
-    google_project_iam_member.pubsubpublisher
+    google_pubsub_topic_iam_member.pubsubpublisher
   ]
 }
 # [END eventarc_basic_pubsub_trigger]
