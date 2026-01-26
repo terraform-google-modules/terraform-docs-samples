@@ -69,7 +69,7 @@ resource "google_cloud_run_v2_service" "default" {
 
   template {
     containers {
-      # This container will log received events
+      # This sample container listens to HTTP requests and logs received events
       image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
     service_account = google_service_account.eventarc.email
