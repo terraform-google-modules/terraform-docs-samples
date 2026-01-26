@@ -1,5 +1,5 @@
 /**
- * Copyright 2026 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,9 +36,6 @@ resource "google_project_service" "pubsub" {
 # [END eventarc_basic_pubsub_enableapis]
 
 # [START eventarc_basic_pubsub_iam]
-# Used to retrieve project information later
-data "google_project" "project" {}
-
 # Create a dedicated service account
 resource "google_service_account" "eventarc" {
   account_id   = "eventarc-trigger-sa"
