@@ -15,7 +15,7 @@
  */
 
 # [START eventarc_advanced_parent_tag]
-# [START eventarc_terraform_advanced_enableapis]
+# [START eventarc_advanced_terraform_enableapis]
 # Enable APIs
 resource "google_project_service" "apis" {
   for_each = toset([
@@ -26,14 +26,14 @@ resource "google_project_service" "apis" {
   service            = each.key
   disable_on_destroy = false
 }
-# [END eventarc_terraform_advanced_enableapis]
+# [END eventarc_advanced_terraform_enableapis]
 
-# [START eventarc_terraform_advanced_iam]
+# [START eventarc_advanced_terraform_iam]
 # Used to retrieve project information later
 data "google_project" "project" {}
 
 # Create a dedicated service account
-resource "google_service_account" "eventarc" {
+resource "google_service_account" "default" {
   account_id   = "eventarc-advanced-sa"
   display_name = "Eventarc Advanced quickstart service account"
 }
@@ -42,18 +42,18 @@ resource "google_service_account" "eventarc" {
 resource "google_project_iam_member" "eventreceiver" {
   project = data.google_project.project.id
   role    = "roles/eventarc.eventReceiver"
-  member  = "serviceAccount:${google_service_account.eventarc.email}"
+  member  = "serviceAccount:${google_service_account.default.email}"
 }
 
 # Grant permission to invoke Cloud Run services
 resource "google_project_iam_member" "runinvoker" {
   project = data.google_project.project.id
   role    = "roles/run.invoker"
-  member  = "serviceAccount:${google_service_account.eventarc.email}"
+  member  = "serviceAccount:${google_service_account.default.email}"
 }
-# [END eventarc_terraform_advanced_iam]
+# [END eventarc_advanced_terraform_iam]
 
-# [START eventarc_terraform_advanced_deploy_run]
+# [START eventarc_advanced_terraform_deploy_run]
 # Deploy Cloud Run service
 resource "google_cloud_run_v2_service" "default" {
   name     = "example-service"
@@ -63,34 +63,34 @@ resource "google_cloud_run_v2_service" "default" {
 
   template {
     containers {
-      # This container will log received events
+      # This sample container listens to HTTP requests and logs received events
       image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
-    service_account = google_service_account.eventarc.email
+    service_account = google_service_account.default.email
   }
 
   depends_on = [google_project_service.apis]
 }
-# [END eventarc_terraform_advanced_deploy_run]
+# [END eventarc_advanced_terraform_deploy_run]
 
-# [START eventarc_terraform_advanced_bus]
+# [START eventarc_advanced_terraform_bus]
 # Create an Eventarc Advanced bus
 resource "google_eventarc_message_bus" "default" {
   location       = "us-central1"
   message_bus_id = "example-bus"
 }
-# [END eventarc_terraform_advanced_bus]
+# [END eventarc_advanced_terraform_bus]
 
-# [START eventarc_terraform_advanced_google_source]
+# [START eventarc_advanced_terraform_google_source]
 # Enable events from Google API sources
 resource "google_eventarc_google_api_source" "default" {
   location             = "us-central1"
   google_api_source_id = "example-google-api-source"
   destination          = google_eventarc_message_bus.default.id
 }
-# [END eventarc_terraform_advanced_google_source]
+# [END eventarc_advanced_terraform_google_source]
 
-# [START eventarc_terraform_advanced_pipeline]
+# [START eventarc_advanced_terraform_pipeline]
 # Create an Eventarc Advanced pipeline
 resource "google_eventarc_pipeline" "default" {
   location    = "us-central1"
@@ -101,14 +101,14 @@ resource "google_eventarc_pipeline" "default" {
     }
     authentication_config {
       google_oidc {
-        service_account = google_service_account.eventarc.email
+        service_account = google_service_account.default.email
       }
     }
   }
 }
-# [END eventarc_terraform_advanced_pipeline]
+# [END eventarc_advanced_terraform_pipeline]
 
-# [START eventarc_terraform_advanced_enrollment]
+# [START eventarc_advanced_terraform_enrollment]
 # Create an Eventarc Advanced enrollment
 resource "google_eventarc_enrollment" "default" {
   location      = "us-central1"
@@ -117,5 +117,5 @@ resource "google_eventarc_enrollment" "default" {
   destination   = google_eventarc_pipeline.default.id
   cel_match     = "message.type == 'google.cloud.workflows.workflow.v1.created'"
 }
-# [END eventarc_terraform_advanced_enrollment]
+# [END eventarc_advanced_terraform_enrollment]
 # [END eventarc_advanced_parent_tag]
