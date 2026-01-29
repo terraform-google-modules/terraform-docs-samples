@@ -22,11 +22,11 @@ resource "google_network_connectivity_multicloud_data_transfer_config" "default"
 }
 
 resource "google_network_connectivity_destination" "default" {
-  name        = "destination"
-  location    = "europe-west1"
+  name                            = "destination"
+  location                        = "europe-west1"
   multicloud_data_transfer_config = google_network_connectivity_multicloud_data_transfer_config.default.name
-  description = "A basic destination"
-  ip_prefix   = "10.0.0.0/8"
+  description                     = "A basic destination"
+  ip_prefix                       = "10.0.0.0/8"
   endpoints {
     asn = "14618"
     csp = "AWS"
