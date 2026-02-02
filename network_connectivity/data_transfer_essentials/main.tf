@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+# [START datatransferessentials_parent]
 # [START datatransferessentials_multicloud_data_transfer_config]
 resource "google_network_connectivity_multicloud_data_transfer_config" "default" {
   name        = "config"
@@ -27,3 +28,18 @@ resource "google_network_connectivity_multicloud_data_transfer_config" "default"
   }
 }
 # [END datatransferessentials_multicloud_data_transfer_config]
+
+# [START datatransferessentials_destination]
+resource "google_network_connectivity_destination" "default" {
+  name                            = "destination"
+  location                        = "europe-west1"
+  multicloud_data_transfer_config = google_network_connectivity_multicloud_data_transfer_config.default.name
+  description                     = "A basic destination"
+  ip_prefix                       = "10.0.0.0/8"
+  endpoints {
+    asn = "14618"
+    csp = "AWS"
+  }
+}
+# [END datatransferessentials_destination]
+# [END datatransferessentials_parent]
