@@ -132,6 +132,11 @@ resource "google_eventarc_trigger" "default" {
     }
   }
 
+  # Specify a single delivery attempt with no retries
+  retry_policy {
+    max_attempts = 1
+  }
+
   service_account = google_service_account.eventarc.email
   depends_on = [
     google_project_service.eventarc,
