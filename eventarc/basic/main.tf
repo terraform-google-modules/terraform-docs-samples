@@ -140,6 +140,7 @@ resource "google_eventarc_trigger" "default" {
   service_account = google_service_account.default.email
   depends_on = [
     google_project_service.eventarc,
+    google_storage_bucket.default,
     google_project_iam_member.pubsubpublisher
   ]
 }
