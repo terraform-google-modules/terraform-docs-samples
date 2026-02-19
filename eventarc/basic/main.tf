@@ -41,7 +41,7 @@ resource "google_project_service" "pubsub" {
 data "google_project" "project" {}
 
 # Create a dedicated service account
-resource "google_service_account" "eventarc" {
+resource "google_service_account" "default" {
   account_id   = "eventarc-trigger-sa"
   display_name = "Eventarc Trigger Service Account"
 }
@@ -50,14 +50,14 @@ resource "google_service_account" "eventarc" {
 resource "google_project_iam_member" "eventreceiver" {
   project = data.google_project.project.id
   role    = "roles/eventarc.eventReceiver"
-  member  = "serviceAccount:${google_service_account.eventarc.email}"
+  member  = "serviceAccount:${google_service_account.default.email}"
 }
 
 # Grant permission to invoke Cloud Run services
 resource "google_project_iam_member" "runinvoker" {
   project = data.google_project.project.id
   role    = "roles/run.invoker"
-  member  = "serviceAccount:${google_service_account.eventarc.email}"
+  member  = "serviceAccount:${google_service_account.default.email}"
 }
 # [END eventarc_terraform_basic_iam]
 
@@ -83,6 +83,8 @@ resource "google_project_iam_member" "pubsubpublisher" {
   project = data.google_project.project.id
   role    = "roles/pubsub.publisher"
   member  = "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"
+
+  depends_on = [data.google_storage_project_service_account.gcs_account]
 }
 # [END storage_terraform_eventarc_cloudrun]
 
@@ -100,7 +102,7 @@ resource "google_cloud_run_v2_service" "default" {
       # This container will log received events
       image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
-    service_account = google_service_account.eventarc.email
+    service_account = google_service_account.default.email
   }
 
   depends_on = [google_project_service.run]
@@ -132,9 +134,15 @@ resource "google_eventarc_trigger" "default" {
     }
   }
 
-  service_account = google_service_account.eventarc.email
+  # Specify a single delivery attempt with no retries
+  retry_policy {
+    max_attempts = 1
+  }
+
+  service_account = google_service_account.default.email
   depends_on = [
     google_project_service.eventarc,
+    google_storage_bucket.default,
     google_project_iam_member.pubsubpublisher
   ]
 }
