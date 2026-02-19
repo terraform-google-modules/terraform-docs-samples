@@ -83,7 +83,7 @@ resource "google_project_iam_member" "pubsubpublisher" {
   project = data.google_project.project.id
   role    = "roles/pubsub.publisher"
   member  = "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"
-  
+
   depends_on = [data.google_storage_project_service_account.gcs_account.email_address]
 }
 # [END storage_terraform_eventarc_cloudrun]
