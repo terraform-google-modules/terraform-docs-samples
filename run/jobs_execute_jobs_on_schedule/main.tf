@@ -109,7 +109,7 @@ resource "google_cloud_scheduler_job" "job" {
 
   http_target {
     http_method = "POST"
-    uri         = "https://run.googleapis.com/v2/projects/${data.google_project.project_id}/locations/${google_cloud_run_v2_job.default.location}/jobs/${google_cloud_run_v2_job.default.name}:run"
+    uri         = "https://run.googleapis.com/v2/projects/${data.google_project.project.project_id}/locations/${google_cloud_run_v2_job.default.location}/jobs/${google_cloud_run_v2_job.default.name}:run"
     oauth_token {
       service_account_email = google_service_account.cloud_run_invoker_sa.email
     }
