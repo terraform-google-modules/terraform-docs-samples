@@ -48,6 +48,7 @@ resource "google_backup_dr_backup_plan" "default" {
   backup_plan_id = "my-bp"
   resource_type  = "compute.googleapis.com/Instance"
   backup_vault   = google_backup_dr_backup_vault.default.name
+  # log_retention_days = 2 # Only applicable for Cloud SQL
 
   backup_rules {
     rule_id               = "rule-1"
