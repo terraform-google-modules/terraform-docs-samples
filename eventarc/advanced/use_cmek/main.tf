@@ -73,6 +73,7 @@ resource "google_cloud_run_v2_service" "default" {
 data "google_project" "project" {}
 
 # [START eventarc_advanced_terraform_service_agent]
+# Generate service identity for Eventarc service
 resource "google_project_service_identity" "eventarc_sa" {
   provider = google-beta
   project  = data.google_project.project.project_id
