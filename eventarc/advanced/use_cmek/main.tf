@@ -145,5 +145,6 @@ resource "google_eventarc_pipeline" "default" {
     }
   }
   crypto_key_name = google_kms_crypto_key.default.id
+  depends_on      = [google_kms_crypto_key_iam_member.default]
 }
 # [END eventarc_advanced_terraform_cmek_pipeline]
