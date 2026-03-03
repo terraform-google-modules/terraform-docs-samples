@@ -75,9 +75,9 @@ data "google_project" "project" {}
 # [START eventarc_advanced_terraform_service_agent]
 # Generate service identity for Eventarc service
 resource "google_project_service_identity" "eventarc_sa" {
-  provider = google-beta
-  project  = data.google_project.project.project_id
-  service  = "eventarc.googleapis.com"
+  provider   = google-beta
+  project    = data.google_project.project.project_id
+  service    = "eventarc.googleapis.com"
   depends_on = [google_project_service.apis]
 }
 # [END eventarc_advanced_terraform_service_agent]
