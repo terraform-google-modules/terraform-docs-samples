@@ -19,8 +19,6 @@ data "google_backup_dr_backup_plan_association" "association" {
   project                    = "PROJECT-ID"
   location                   = "us-central1"
   backup_plan_association_id = "BACKUP-PLAN-ASSOCIATION-ID"
-  resource                   = "INSTANCE-FULL-PATH"
-  backup_plan                = "BACKUP-PLAN-ID"
 }
 # [END cloud_sql_mysql_instance_backupdr_backup_plan_association_setup]
 
@@ -42,8 +40,8 @@ resource "google_sql_database_instance" "default" {
   }
   point_in_time_restore_context {
     datasource      = data.google_backup_dr_backup_plan_association.association.data_source
-    point_in_time   = "2025-12-22T08:51:50Z" # Replace with the point in time to restore to. 
-    target_instance = "${google_project.project.project_id}:sqlserver-instance-backup-pitr"
+    point_in_time   = "2025-12-22T08:51:50Z" # Replace with the point in time to restore to.
+    target_instance = "${data.google_project.project.project_id}:sqlserver-instance-backup-pitr"
   }
 }
 # [END cloud_sql_sqlserver_instance_gcbdr_pitr]
