@@ -74,7 +74,7 @@ data "google_project" "project" {}
 
 # [START eventarc_advanced_terraform_service_agent]
 # Generate service identity for Eventarc service
-resource "google_project_service_identity" "eventarc_sa" {
+resource "google_project_service_identity" "default" {
   provider   = google-beta
   project    = data.google_project.project.project_id
   service    = "eventarc.googleapis.com"
@@ -104,7 +104,7 @@ resource "google_kms_crypto_key" "default" {
 # Add a delay to allow for service agent propagation
 resource "time_sleep" "wait_for_eventarc_sa" {
   create_duration = "30s"
-  depends_on      = [google_project_service_identity.eventarc_sa]
+  depends_on      = [google_project_service_identity.default]
 }
 
 # [START eventarc_advanced_terraform_cmek_role]
@@ -112,7 +112,7 @@ resource "time_sleep" "wait_for_eventarc_sa" {
 resource "google_kms_crypto_key_iam_member" "default" {
   crypto_key_id = google_kms_crypto_key.default.id
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
-  member        = "serviceAccount:${google_project_service_identity.eventarc_sa.email}"
+  member        = "serviceAccount:${google_project_service_identity.default.email}"
   depends_on    = [time_sleep.wait_for_eventarc_sa]
 }
 # [END eventarc_advanced_terraform_cmek_role]
