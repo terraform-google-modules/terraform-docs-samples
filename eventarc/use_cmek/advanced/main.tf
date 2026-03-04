@@ -101,9 +101,9 @@ resource "google_kms_crypto_key" "default" {
 }
 # [END eventarc_advanced_terraform_cmek_key]
 
-# Add a delay to allow for service agent propagation
-resource "time_sleep" "wait_for_eventarc_sa" {
-  create_duration = "30s"
+# Add a delay to allow for service agent and IAM permissions propagation
+resource "time_sleep" "default" {
+  create_duration = "7m"
   depends_on      = [google_project_service_identity.default]
 }
 
@@ -113,7 +113,7 @@ resource "google_kms_crypto_key_iam_member" "default" {
   crypto_key_id = google_kms_crypto_key.default.id
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   member        = "serviceAccount:${google_project_service_identity.default.email}"
-  depends_on    = [time_sleep.wait_for_eventarc_sa]
+  depends_on    = [time_sleep.default]
 }
 # [END eventarc_advanced_terraform_cmek_role]
 
