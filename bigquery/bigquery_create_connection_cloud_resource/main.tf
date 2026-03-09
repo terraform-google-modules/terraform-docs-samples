@@ -33,7 +33,7 @@ resource "google_bigquery_connection" "default" {
 ## This grants IAM role access to the service account of the connection created in the previous step.
 resource "google_project_iam_member" "connectionPermissionGrant" {
   project = data.google_project.default.project_id
-  role    = "roles/storage.objectViewer"
+  role    = "roles/aiplatform.user"
   member  = "serviceAccount:${google_bigquery_connection.default.cloud_resource[0].service_account_id}"
 }
 # [END bigquery_create_connection_cloud_resource_iam]
