@@ -44,6 +44,17 @@ resource "google_project_service" "cloudscheduler_api" {
   project            = data.google_project.project.project_id
 }
 
+# Add sleep to ensure IAM propogates and locks released
+resource "time_sleep" "wait_for_scheduler_api" {
+  create_duration = "90s"
+
+  depends_on = [
+    google_cloud_scheduler_job.job,
+    google_project_iam_binding.run_invoker_binding,
+    google_project_iam_binding.token_creator_binding
+  ]
+}
+
 # Cloud Run Invoker Service Account
 resource "google_service_account" "cloud_run_invoker_sa" {
   account_id   = "cloud-run-invoker"
@@ -118,13 +129,13 @@ resource "google_cloud_scheduler_job" "job" {
       service_account_email = google_service_account.cloud_run_invoker_sa.email
     }
   }
-  
-  timeouts {
-    delete = "5m" 
-    update = "5m"
-  }
 
   depends_on = [resource.google_project_service.cloudscheduler_api, resource.google_cloud_run_v2_job.default, resource.google_cloud_run_v2_job_iam_binding.binding]
 }
+
 #[END cloudrun_jobs_execute_jobs_on_schedule]
 # [END cloudrun_jobs_execute_jobs_on_schedule_parent_tag]
+
+resource "null_resource" "test_sync_anchor" {
+  depends_on = [time_sleep.wait_for_scheduler_api]
+}
