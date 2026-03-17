@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-provider "google-beta" {
+provider "google" {
   region = "us-central1"
 }
 
@@ -48,14 +48,13 @@ resource "google_project_service" "cloudscheduler_api" {
 resource "google_service_account" "cloud_run_invoker_sa" {
   account_id   = "cloud-run-invoker"
   display_name = "Cloud Run Invoker"
-  provider     = google-beta
   project      = data.google_project.project.project_id
 }
 
-# Project IAM binding
+# Gives service account necessary privs to start job
 resource "google_project_iam_binding" "run_invoker_binding" {
   project = data.google_project.project.project_id
-  role    = "roles/run.invoker"
+  role    = "roles/run.developer"
   members = ["serviceAccount:${google_service_account.cloud_run_invoker_sa.email}"]
 }
 
@@ -95,7 +94,6 @@ resource "google_cloud_run_v2_job_iam_binding" "binding" {
 
 #[START cloudrun_jobs_execute_jobs_on_schedule]
 resource "google_cloud_scheduler_job" "job" {
-  provider         = google-beta
   name             = "schedule-job"
   description      = "test http job"
   schedule         = "*/8 * * * *"
@@ -110,6 +108,7 @@ resource "google_cloud_scheduler_job" "job" {
   http_target {
     http_method = "POST"
     uri         = "https://run.googleapis.com/v2/projects/${data.google_project.project.project_id}/locations/${google_cloud_run_v2_job.default.location}/jobs/${google_cloud_run_v2_job.default.name}:run"
+    body        = base64encode("{}")
     oauth_token {
       service_account_email = google_service_account.cloud_run_invoker_sa.email
     }
