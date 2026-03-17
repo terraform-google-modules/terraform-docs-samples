@@ -113,6 +113,11 @@ resource "google_cloud_scheduler_job" "job" {
       service_account_email = google_service_account.cloud_run_invoker_sa.email
     }
   }
+  
+  timeouts {
+    delete = "5m" 
+    update = "5m"
+  }
 
   depends_on = [resource.google_project_service.cloudscheduler_api, resource.google_cloud_run_v2_job.default, resource.google_cloud_run_v2_job_iam_binding.binding]
 }
