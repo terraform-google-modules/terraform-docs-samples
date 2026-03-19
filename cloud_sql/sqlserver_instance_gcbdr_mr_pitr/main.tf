@@ -15,10 +15,9 @@
  */
 # [START cloud_sql_mysql_instance_backupdr_backup_plan_association_setup]
 data "google_backup_dr_backup_plan_association" "association" {
-  # Replace placeholders to reflect the existing backup plan association in the identified project
-  project                    = "PROJECT-ID"
+  project                    = data.google_project.project.project_id
   location                   = "us-central1"
-  backup_plan_association_id = "BACKUP-PLAN-ASSOCIATION-ID"
+  backup_plan_association_id = "my-backup-plan-association"
 }
 # [END cloud_sql_mysql_instance_backupdr_backup_plan_association_setup]
 
