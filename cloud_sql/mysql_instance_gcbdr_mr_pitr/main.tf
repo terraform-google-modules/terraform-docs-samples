@@ -15,7 +15,7 @@
  */
 # [START cloud_sql_mysql_instance_backupdr_backup_plan_association_setup]
 data "google_backup_dr_backup_plan_association" "association" {
-  project                    = "data.google_project.project.project_id"
+  project                    = data.google_project.project.project_id
   location                   = "us-central1"
   backup_plan_association_id = "my-backup-plan-association"
 }
