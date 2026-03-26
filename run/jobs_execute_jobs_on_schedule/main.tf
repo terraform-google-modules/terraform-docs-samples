@@ -44,8 +44,6 @@ resource "google_project_service" "cloudscheduler_api" {
   project            = data.google_project.project.project_id
 }
 
-
-
 # Cloud Run Invoker Service Account
 resource "google_service_account" "cloud_run_invoker_sa" {
   account_id   = "cloud-run-invoker"
