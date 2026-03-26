@@ -128,7 +128,7 @@ resource "google_cloud_scheduler_job" "job" {
 # [END cloudrun_jobs_execute_jobs_on_schedule_parent_tag]
 
 # Cloud Scheduler invokes the job, but then the job runs asynchronously
-# We cannot delete the running job 
+# We cannot delete the running job
 # Wait 5 minutes before completing the 'apply' step
 
 resource "time_sleep" "wait_for_scheduler_api" {
