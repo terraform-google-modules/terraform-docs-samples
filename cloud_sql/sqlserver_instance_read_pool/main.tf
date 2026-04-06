@@ -16,11 +16,32 @@
 
 # [START cloud_sql_sqlserver_read_pool]
 
+resource "google_compute_network" "peering_network" {
+  name                    = "private-network"
+  auto_create_subnetworks = "false"
+}
+
+resource "google_compute_global_address" "private_ip_address" {
+  name          = "private-ip-address"
+  purpose       = "VPC_PEERING"
+  address_type  = "INTERNAL"
+  prefix_length = 16
+  network       = google_compute_network.peering_network.id
+}
+
+resource "google_service_networking_connection" "default" {
+  network                 = google_compute_network.peering_network.id
+  service                 = "servicenetworking.googleapis.com"
+  reserved_peering_ranges = [google_compute_global_address.private_ip_address.name]
+}
+
 resource "google_sql_database_instance" "primary" {
   name             = "sqlserver-primary"
-  database_version = "SQLSERVER_2019_ENTERPRISE"
+  database_version = "SQLSERVER_2022_ENTERPRISE"
   region           = "europe-west4"
   root_password    = "INSERT-PASSWORD-HERE"
+
+  depends_on = [google_service_networking_connection.default]
 
   instance_type = "CLOUD_SQL_INSTANCE"
 
@@ -29,19 +50,19 @@ resource "google_sql_database_instance" "primary" {
     edition = "ENTERPRISE_PLUS"
 
     backup_configuration {
-      enabled            = true
-      binary_log_enabled = true
+      enabled = true
     }
 
     ip_configuration {
-      ipv4_enabled = true
+      ipv4_enabled    = false
+      private_network = google_compute_network.peering_network.id
     }
   }
 }
 
 resource "google_sql_database_instance" "replica" {
   name             = "sqlserver-replica"
-  database_version = "SQLSERVER_2019_ENTERPRISE"
+  database_version = "SQLSERVER_2022_ENTERPRISE"
   region           = "europe-west4"
 
   master_instance_name = google_sql_database_instance.primary.name
@@ -52,8 +73,10 @@ resource "google_sql_database_instance" "replica" {
     tier    = "db-perf-optimized-N-2"
     edition = "ENTERPRISE_PLUS"
 
+
     ip_configuration {
-      ipv4_enabled = true
+      ipv4_enabled    = false
+      private_network = google_compute_network.peering_network.id
     }
   }
 }
