@@ -16,7 +16,7 @@
 
 # [START bigquery_create_reservation_group]
 resource "google_bigquery_reservation_group" "default" {
-  name              = "my-reservation-group"
-  location          = "us-central1"
+  name     = "my-reservation-group"
+  location = "us-central1"
 }
 # [END bigquery_create_reservation_group]
