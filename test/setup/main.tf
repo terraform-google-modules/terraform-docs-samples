@@ -36,7 +36,6 @@ module "projects" {
   default_service_account  = "keep"
   // flask_google_cloud_quickstart, instance_virtual_display_enabled etc requires default network
   auto_create_network = true
-  enable_reservation_based_fairness = true
 
   activate_apis = [
     "aiplatform.googleapis.com",
