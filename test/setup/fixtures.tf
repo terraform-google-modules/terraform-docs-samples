@@ -42,3 +42,24 @@ resource "google_privateca_ca_pool" "subpool" {
     publish_crl     = true
   }
 }
+
+# enable bigquery reservation fairness
+# https://docs.cloud.google.com/bigquery/docs/reservations-tasks#fairness
+resource "google_bigquery_job" "query_job" {
+  count = local.num_projects
+
+  project  = local.project_ids[count.index]
+
+  job_id   = "res_fairness"
+  location = "us-central1" # reservations must be made in this region 
+
+  query {
+    query          = <<-EOT
+      ALTER PROJECT `${local.project_ids[count.index]}`
+      SET OPTIONS (
+        `region-us-central1.enable_reservation_based_fairness`= true
+      );
+      EOT
+    use_legacy_sql = false
+  }
+}
