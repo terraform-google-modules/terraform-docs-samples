@@ -59,6 +59,7 @@ module "projects" {
     "dns.googleapis.com",
     "eventarc.googleapis.com",
     "gkehub.googleapis.com",
+    "hypercomputecluster.googleapis.com",
     "iam.googleapis.com",
     "integrations.googleapis.com",
     "looker.googleapis.com",
