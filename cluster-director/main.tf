@@ -119,4 +119,4 @@ resource "google_hypercomputecluster_cluster" "default" {
   }
 }
 
-# [END hypercomputecluster_v1_clusterservice_cluster_create_slurm]
+# [END hypercomputecluster_v1_cluster_create]
