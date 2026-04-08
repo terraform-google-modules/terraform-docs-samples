@@ -16,7 +16,7 @@
 
 # [START hypercomputecluster_v1_clusterservice_cluster_create_slurm]
 
- resource "google_hypercomputecluster_cluster" "default" {
+resource "google_hypercomputecluster_cluster" "default" {
   cluster_id = "cluster001"
   location   = "europe-west1"
 
