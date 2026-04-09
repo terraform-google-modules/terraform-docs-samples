@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-# [START hypercomputecluster_v1_clusterservice_cluster_create_slurm]
+# [START hypercomputecluster_v1_clusterservice_cluster_create]
 
 resource "google_hypercomputecluster_cluster" "default" {
   cluster_id = "cluster001"
@@ -119,4 +119,4 @@ resource "google_hypercomputecluster_cluster" "default" {
   }
 }
 
-# [END hypercomputecluster_v1_cluster_create]
+# [END hypercomputecluster_v1_clusterservice_cluster_create]
