@@ -11,6 +11,7 @@
 /cloudvpn/                    @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /composer/                    @terraform-google-modules/cloud-dpes-composer @terraform-google-modules/terraform-samples-reviewers
 /compute/                     @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
+/hypercomputecluster/            @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /data_transfer_essentials/    @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /dns/                         @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
 /gke/                         @terraform-google-modules/eks-team @terraform-google-modules/terraform-samples-reviewers
