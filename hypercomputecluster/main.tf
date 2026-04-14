@@ -48,7 +48,6 @@ resource "google_hypercomputecluster_cluster" "default" {
     }
   }
 
-
   orchestrator {
     slurm {
       default_partition = "part1"
