@@ -14,18 +14,14 @@ resource "google_workload_identity_service_agent" "primary" {
 # [END iam_create_project_level_service_agent]
 
 # [START iam_grant_roles_to_service_agents]
-locals {
-  service_agent_bindings = {
+# Grant roles to BigQuery service agents
+resource "google_project_iam_member" "service_agents" {
+  for_each = {
     for agent in google_workload_identity_service_agent.primary.service_agents :
     agent.role => agent.principal... if try(agent.role, null) != null
   }
-}
-
-# Grant roles to BigQuery service agents
-resource "google_project_iam_member" "service_agents" {
-  for_each = local.service_agent_bindings
-  project  = data.google_project.default.project_id
-  role     = each.key
+  project = data.google_project.default.project_id
+  role    = each.key
   member  = each.value
 }
 # [END iam_grant_roles_to_service_agents]
