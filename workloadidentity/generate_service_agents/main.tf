@@ -10,7 +10,7 @@ data "google_project" "default" {
 # Create all project-level aiplatform.googleapis.com service agents
 
 resource "google_workload_identity_service_agent" "primary" {
-  parent   = "projects/${data.google_project.default.number}/locations/global/serviceProducers/aiplatform.googleapis.com"
+  parent = "projects/${data.google_project.default.number}/locations/global/serviceProducers/aiplatform.googleapis.com"
 }
 # [END iam_create_project_level_service_agent]
 
