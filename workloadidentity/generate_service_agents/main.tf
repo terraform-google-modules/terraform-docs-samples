@@ -26,6 +26,6 @@ resource "google_project_iam_member" "service_agents" {
   for_each = local.service_agent_bindings
   project  = data.google_project.default.project_id
   role     = each.key
-  members  = each.value
+  member  = each.value
 }
 # [END iam_grant_roles_to_service_agents]
