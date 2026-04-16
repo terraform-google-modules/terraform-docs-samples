@@ -16,6 +16,7 @@
 
 # [START bigquery_create_reservation_with_scaling_mode]
 resource "google_bigquery_reservation" "default" {
+  provider          = google-beta
   name              = "my-reservation"
   location          = "us-central1"
   slot_capacity     = 100
