@@ -22,7 +22,7 @@ resource "google_bigquery_reservation" "default" {
   slot_capacity     = 100
   edition           = "ENTERPRISE"
   ignore_idle_slots = true
-  concurrency       = 0     # Automatically adjust query concurrency based on available resources
+  concurrency       = 0 # Automatically adjust query concurrency based on available resources
   max_slots         = 300
   scaling_mode      = "AUTOSCALE_ONLY"
 }
