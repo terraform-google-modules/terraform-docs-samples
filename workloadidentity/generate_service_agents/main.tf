@@ -19,7 +19,7 @@ Create all service agents for aiplatform.googleapis.com for
 the `default` project, then grant roles to the service agents.
 */
 
-#[START workloadidentity_bigquery_service_agents]
+#[START iam_workloadidentity_bigquery_service_agents]
 data "google_project" "default" {
 }
 
@@ -27,9 +27,9 @@ data "google_project" "default" {
 resource "google_workload_identity_service_agent" "primary" {
   parent = "projects/${data.google_project.default.number}/locations/global/serviceProducers/bigquery.googleapis.com"
 }
-#[END workloadidentity_bigquery_service_agents]
+#[END iam_workloadidentity_bigquery_service_agents]
 
-#[START workloadidentity_bigquery_iam_member]
+#[START iam_workloadidentity_bigquery_iam_member]
 #Grant roles to BigQuery service agents for project
 resource "google_project_iam_member" "service_agents" {
   for_each = {
@@ -40,4 +40,4 @@ resource "google_project_iam_member" "service_agents" {
   role    = each.value.role
   member  = each.value.principal
 }
-#[END workloadidentity_bigquery_iam_member]
+#[END iam_workloadidentity_bigquery_iam_member]
