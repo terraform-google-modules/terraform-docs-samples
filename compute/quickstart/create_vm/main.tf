@@ -1,5 +1,5 @@
 /**
- * Copyright 2023 Google LLC
+ * Copyright 2026 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,27 @@
  */
 
 # [START compute_instances_quickstart]
+# Define a custom VPC network
+resource "google_compute_network" "my_network" {
+  name                    = "my-custom-network"
+  auto_create_subnetworks = false # Recommended to have more control
+  project                 = "my-host-project" # Replace with your project
+}
+
+# Define a subnetwork within the custom VPC
+resource "google_compute_subnetwork" "my_subnet" {
+  name          = "my-custom-subnet"
+  ip_cidr_range = "10.0.1.0/24"
+  region        = "us-central1" # Match the region of your VM zone
+  network       = google_compute_network.my_network.id
+  project       = "my-host-project"
+}
+
 resource "google_compute_instance" "default" {
   name         = "my-vm"
   machine_type = "n1-standard-1"
   zone         = "us-central1-a"
+  project      = "my-host-project"
 
   boot_disk {
     initialize_params {
@@ -27,7 +44,7 @@ resource "google_compute_instance" "default" {
   }
 
   network_interface {
-    network = "default"
+    subnetwork = google_compute_subnetwork.my_subnet.id
     access_config {}
   }
 }
