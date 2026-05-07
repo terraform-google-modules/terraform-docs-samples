@@ -1,5 +1,5 @@
 /**
- * Copyright 2026 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,14 @@
 
 # [START compute_instances_quickstart]
 
-# Fetch the current project
 data "google_project" "default" {}
 
-# Define a custom VPC network
 resource "google_compute_network" "default" {
   name                    = "my-custom-network"
   project                 = data.google_project.default.project_id
   auto_create_subnetworks = false # Recommended to have more control
 }
 
-# Define a subnetwork within the custom VPC
 resource "google_compute_subnetwork" "default" {
   name          = "my-custom-subnet"
   project       = data.google_project.default.project_id
