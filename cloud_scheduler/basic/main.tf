@@ -53,7 +53,7 @@ resource "google_cloud_scheduler_job" "default" {
   name        = "test-job"
   description = "test job"
   schedule    = "30 16 * * 7"
-  region      = "us-central1"
+  region      = "us-east1"
 
   pubsub_target {
     topic_name = google_pubsub_topic.default.id
@@ -61,3 +61,20 @@ resource "google_cloud_scheduler_job" "default" {
   }
 }
 # [END cloudscheduler_terraform_basic_job]
+
+# Cloud Scheduler invokes the job, but then the job runs asynchronously
+# We cannot delete the running job
+# Wait 5 minutes before completing the 'apply' step
+
+resource "time_sleep" "wait_for_scheduler_api" {
+  create_duration = "300s"
+
+  depends_on = [
+    google_cloud_scheduler_job.default,
+    google_pubsub_subscription.default,
+  ]
+}
+
+resource "null_resource" "test_sync_anchor" {
+  depends_on = [time_sleep.wait_for_scheduler_api]
+}
