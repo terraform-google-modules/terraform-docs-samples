@@ -28,12 +28,11 @@ resource "google_tags_tag_value" "env_tag_value" {
   short_name = "prod"
 }
 
-
 resource "google_bigtable_instance" "instance" {
   name                = "my-bigtable-instance"
   deletion_protection = false
   tags = {
-     (google_tags_tag_key.env_tag_key.namespaced_name) : google_tags_tag_value.env_tag_value.short_name
+    (google_tags_tag_key.env_tag_key.namespaced_name) : google_tags_tag_value.env_tag_value.short_name
   }
 
   cluster {
