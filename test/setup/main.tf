@@ -81,6 +81,7 @@ module "projects" {
     "osconfig.googleapis.com",
     "connectors.googleapis.com",
     "bigqueryreservation.googleapis.com",
-    "managedkafka.googleapis.com"
+    "managedkafka.googleapis.com",
+    "bigtableadmin.googleapis.com"
   ]
 }
