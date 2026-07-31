@@ -19,14 +19,14 @@
 data "google_project" "default" {}
 
 resource "google_tags_tag_key" "env_tag_key" {
-  parent     = "projects/${data.google_project.default.project_id}"
-  short_name = "env"
+  parent          = "projects/${data.google_project.default.project_id}"
+  short_name      = "env"
   deletion_policy = "ABANDON"
 }
 
 resource "google_tags_tag_value" "env_tag_value" {
-  parent     = "tagKeys/${google_tags_tag_key.env_tag_key.name}"
-  short_name = "prod"
+  parent          = "tagKeys/${google_tags_tag_key.env_tag_key.name}"
+  short_name      = "prod"
   deletion_policy = "ABANDON"
 }
 
