@@ -60,7 +60,7 @@ resource "google_secret_manager_regional_secret" "secret" {
 # [START cloud_sql_provision_script_secret_version]
 
 resource "google_secret_manager_regional_secret_version" "secret_version" {
-  secret = google_secret_manager_regional_secret.secret.id
+  secret      = google_secret_manager_regional_secret.secret.id
   secret_data = "changeme"
 }
 
@@ -84,12 +84,12 @@ resource "google_sql_provision_script" "table" {
   # make the script idempotent with patterns like `create if not exists ...` or
   # `if not exists (select ...) then ... end if`. If it's not possible to make a
   # statement idempotent, you can run it once and then remove it from the script.
-  script  = "CREATE TABLE IF NOT EXISTS table1 ( col VARCHAR(16) NOT NULL );"
+  script = "CREATE TABLE IF NOT EXISTS table1 ( col VARCHAR(16) NOT NULL );"
 
-  instance = google_sql_database_instance.instance.name
-  database = google_sql_database.database.name
+  instance    = google_sql_database_instance.instance.name
+  database    = google_sql_database.database.name
   description = "sql script to create tables"
-  user = google_sql_user.built_in_user.name
+  user        = google_sql_user.built_in_user.name
 
   # The location should be the same as the Cloud SQL instance's location.
   password_secret_version = "projects/my-project/locations/us-central1/secrets/db-password/versions/latest"

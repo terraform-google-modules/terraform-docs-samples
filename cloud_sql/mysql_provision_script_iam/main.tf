@@ -62,10 +62,10 @@ resource "google_sql_provision_script" "script" {
   # make the script idempotent with patterns like `create if not exists ...` or
   # `if not exists (select ...) then ... end if`. If it's not possible to make a
   # statement idempotent, you can run it once and then remove it from the script.
-  script  = file("${path.module}/script.sql")
+  script = file("${path.module}/script.sql")
 
   description = "sql script to create DBs and tables"
-  instance = google_sql_database_instance.instance.name
+  instance    = google_sql_database_instance.instance.name
 
   # Some of your queries may require a database. You can create and use a
   # database inside the script, or explicitly reference a google_sql_database
