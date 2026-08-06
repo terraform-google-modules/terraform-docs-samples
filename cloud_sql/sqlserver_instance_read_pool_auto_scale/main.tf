@@ -18,8 +18,9 @@
 
 resource "google_sql_database_instance" "primary" {
   name             = "sqlserver-primary"
-  database_version = "SQLSERVER_2022_ENTERPRISE"
+  database_version = "SQLSERVER_2019_ENTERPRISE"
   region           = "europe-west4"
+  root_password    = "INSERT-PASSWORD-HERE"
   instance_type    = "CLOUD_SQL_INSTANCE"
 
   settings {
@@ -35,13 +36,11 @@ resource "google_sql_database_instance" "primary" {
       ipv4_enabled = true
     }
   }
-
-  deletion_protection = false
 }
 
 resource "google_sql_database_instance" "read_pool" {
   name                 = "sqlserver-read-pool"
-  database_version     = "SQLSERVER_2022_ENTERPRISE"
+  database_version     = "SQLSERVER_2019_ENTERPRISE"
   region               = "europe-west4"
   master_instance_name = google_sql_database_instance.primary.name
   instance_type        = "READ_POOL_INSTANCE"
@@ -69,8 +68,6 @@ resource "google_sql_database_instance" "read_pool" {
       }
     }
   }
-
-  deletion_protection = false
 }
 
 # [END cloud_sql_sqlserver_read_pool_auto_scale]
