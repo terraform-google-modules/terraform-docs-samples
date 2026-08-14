@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,12 +15,19 @@
  */
 
 # [START securitycenter_vpc_sc_notification_ingress]
+locals {
+  access_policy_id    = "123456789012"
+  perimeter_name      = "my_service_perimeter"
+  project_number      = "123456789012"
+  scc_service_account = "<REDACTED_PII>"
+}
+
 resource "google_access_context_manager_service_perimeter_ingress_policy" "scc_notification_ingress" {
-  perimeter = "accessPolicies/POLICY_ID/servicePerimeters/PERIMETER_NAME"
+  perimeter = "accessPolicies/${local.access_policy_id}/servicePerimeters/${local.perimeter_name}"
 
   ingress_from {
     identities = [
-      "serviceAccount:<REDACTED_PII>"
+      "serviceAccount:${local.scc_service_account}"
     ]
     sources {
       access_level = "*"
@@ -29,14 +36,16 @@ resource "google_access_context_manager_service_perimeter_ingress_policy" "scc_n
 
   ingress_to {
     resources = [
-      "projects/PROJECT_ID"
+      "projects/${local.project_number}"
     ]
     operations {
       service_name = "pubsub.googleapis.com"
       method_selectors {
-        method = "*"
+        # Limit to publishing messages rather than allowing topic deletion
+        method = "google.pubsub.v1.Publisher.Publish"
       }
     }
   }
 }
 # [END securitycenter_vpc_sc_notification_ingress]
+
