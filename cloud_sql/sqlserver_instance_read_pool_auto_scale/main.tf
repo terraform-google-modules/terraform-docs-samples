@@ -16,11 +16,16 @@
 
 # [START cloud_sql_sqlserver_read_pool_auto_scale]
 
+resource "random_password" "root_password" {
+  length  = 24
+  special = true
+}
+
 resource "google_sql_database_instance" "primary" {
   name             = "sqlserver-primary"
   database_version = "SQLSERVER_2019_ENTERPRISE"
   region           = "europe-west4"
-  root_password    = "INSERT-PASSWORD-HERE"
+  root_password    = random_password.root_password.result
   instance_type    = "CLOUD_SQL_INSTANCE"
 
   settings {
