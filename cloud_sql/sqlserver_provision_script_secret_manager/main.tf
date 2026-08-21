@@ -16,51 +16,45 @@
 
 # [START cloud_sql_provision_script_instance]
 
+resource "random_password" "pwd" {
+  length = 16
+}
+
 resource "google_sql_database_instance" "instance" {
   name             = "my-instance"
   database_version = "SQLSERVER_2025_ENTERPRISE"
+  region           = "us-central1"
 
   settings {
     tier            = "db-perf-optimized-N-2"
     data_api_access = "ALLOW_DATA_API"
   }
-  root_password = "changeme"
+  root_password = random_password.pwd.result
 }
 
 # [END cloud_sql_provision_script_instance]
 
-# [START cloud_sql_provision_script_builtin_user]
-
-resource "google_sql_user" "built_in_user" {
-  name     = "tf-user"
-  instance = google_sql_database_instance.instance.name
-  password = "changeme"
-  type     = "BUILT_IN"
-}
-
-# [END cloud_sql_provision_script_builtin_user]
-
 # [START cloud_sql_provision_script_secret]
 
-# Create a regional secret. Global secrets are not supported even if
-# located in one region only.
 resource "google_secret_manager_regional_secret" "secret" {
   secret_id = "db-password"
-
-  # Use the same region as the Cloud SQL instance.
-  location = "us-central1"
+  location  = "us-central1"
 }
-
-# [END cloud_sql_provision_script_secret]
-
-# [START cloud_sql_provision_script_secret_version]
 
 resource "google_secret_manager_regional_secret_version" "secret_version" {
   secret      = google_secret_manager_regional_secret.secret.id
-  secret_data = "changeme"
+  secret_data = random_password.pwd.result
 }
 
-# [END cloud_sql_provision_script_secret_version]
+data "google_project" "project" {}
+
+resource "google_project_iam_member" "secret_accessor" {
+  project = data.google_project.project.id
+  role    = "roles/secretmanager.secretAccessor"
+  member  = "user:account-used-to-apply-this-config@example.com"
+}
+
+# [END cloud_sql_provision_script_secret]
 
 # [START cloud_sql_provision_script_database]
 
@@ -74,25 +68,13 @@ resource "google_sql_database" "database" {
 # [START cloud_sql_provision_script_script]
 
 resource "google_sql_provision_script" "script" {
-  # You can inline the script or import from a file like
-  # `script  = file("${path.module}/script.sql")`
-  # When modified, the whole script will be executed again. It's recommended to
-  # make the script idempotent with patterns like `create if not exists ...` or
-  # `if not exists (select ...) then ... end if`. If it's not possible to make a
-  # statement idempotent, you can run it once and then remove it from the script.
-  script = file("${path.module}/script.sql")
+  script                  = file("${path.module}/script.sql")
+  instance                = google_sql_database_instance.instance.name
+  database                = google_sql_database.database.name
+  description             = "sql script to create tables, create roles, and grant privileges"
+  user                    = 'sqlserver'
+  password_secret_version = "projects/${data.google_project.project.id}/locations/us-central1/secrets/db-password/versions/latest"
 
-  instance    = google_sql_database_instance.instance.name
-  database    = google_sql_database.database.name
-  description = "sql script to create tables, create roles, and grant privileges"
-  user        = google_sql_user.built_in_user.name
-
-  # The location should be the same as the Cloud SQL instance's location.
-  password_secret_version = "projects/my-project/locations/us-central1/secrets/db-password/versions/latest"
-
-  # The built-in database user and password secret version must be created
-  # first. Cloud SQL will retrieve password from Secret Manager
-  # and connect to this user account to execute your script.
   depends_on = [
     google_sql_user.built_in_user,
     google_secret_manager_regional_secret_version.secret_version
