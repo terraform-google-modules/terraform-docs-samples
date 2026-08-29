@@ -60,6 +60,14 @@ resource "google_sql_database" "database" {
 
 # [START cloud_sql_provision_script_script]
 
+data "google_project" "project" {}
+
+resource "google_project_iam_member" "executesql_iam" {
+  project = data.google_project.project.id
+  role    = "roles/cloudsql.studioUser"
+  member  = "user:account-used-to-apply-this-config@example.com"
+}
+
 resource "google_sql_provision_script" "script" {
   script      = file("${path.module}/script.sql")
   description = "sql script to create DBs and tables"

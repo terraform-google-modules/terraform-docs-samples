@@ -86,6 +86,12 @@ resource "google_sql_database" "database" {
 
 # [START cloud_sql_provision_script_script]
 
+resource "google_project_iam_member" "executesql_iam" {
+  project = data.google_project.project.id
+  role    = "roles/cloudsql.studioUser"
+  member  = "user:account-used-to-apply-this-config@example.com"
+}
+
 resource "google_sql_provision_script" "table" {
   script                  = "CREATE TABLE IF NOT EXISTS table1 ( col VARCHAR(16) NOT NULL );"
   instance                = google_sql_database_instance.instance.name
