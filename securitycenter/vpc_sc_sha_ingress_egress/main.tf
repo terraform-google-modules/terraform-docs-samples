@@ -19,7 +19,7 @@ locals {
   access_policy_id    = "123456789012"
   perimeter_name      = "my_service_perimeter"
   project_number      = "123456789012"
-  sha_service_account = "<REDACTED_PII>"
+  sha_service_account = "service-{project_number}@gcp-sa-scc.iam.gserviceaccount.com"
 }
 
 resource "google_access_context_manager_service_perimeter_ingress_policy" "scc_sha_ingress" {
