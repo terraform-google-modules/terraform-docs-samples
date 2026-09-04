@@ -42,7 +42,7 @@ resource "google_access_context_manager_service_perimeter_ingress_policy" "scc_s
     operations {
       service_name = "compute.googleapis.com"
       method_selectors {
-        # Least privilege is recommended. For broad scanning, broad access might be retained, 
+        # Least privilege is recommended. For broad scanning, broad access might be retained,
         # but consider replacing "*" with specific read methods (e.g., compute.v1.InstancesService.Get)
         method = "*"
       }
