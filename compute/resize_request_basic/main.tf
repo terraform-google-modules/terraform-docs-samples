@@ -16,40 +16,62 @@
 /**
  * Made to resemble:
  * gcloud compute instance-groups managed resize-requests create igm \
- *    --resize-request=rr \
+ *    --resize-request=a3-gpu-rr \
  *    --resize-by=3 \
  *    --requested-run-duration=1800 \
- *    --zone=europe-west4-a
+ *    --zone=us-central1-a
  */
 
 # [START compute_resize_request_basic_parent_tag]
 resource "google_compute_instance_template" "default" {
-  machine_type = "a2-ultragpu-8g"
+  description          = "Instance template compatible with Dynamic Workload Scheduler (DWS) resize requests."
+  instance_description = "A3 GPU"
+  machine_type         = "a3-highgpu-8g"
+  region               = "us-central1"
 
   disk {
-    source_image = "debian-cloud/debian-11"
+    source_image = "cos-cloud/cos-121-lts"
+    auto_delete  = true
+    boot         = true
+    disk_type    = "pd-ssd"
+    disk_size_gb = 960
+    mode         = "READ_WRITE"
+  }
+
+  guest_accelerator {
+    type  = "nvidia-h100-80gb"
+    count = 8
+  }
+
+  scheduling {
+    provisioning_model          = "FLEX_START"
+    on_host_maintenance         = "TERMINATE"
+    instance_termination_action = "DELETE"
+    max_run_duration {
+      seconds = 3600
+      nanos   = 0
+    }
+  }
+
+  reservation_affinity {
+    type = "NO_RESERVATION"
   }
 
   network_interface {
     network = "default"
   }
-  scheduling {
-    on_host_maintenance = "TERMINATE"
-  }
-  reservation_affinity {
-    type = "NO_RESERVATION"
-  }
 }
 
 resource "google_compute_instance_group_manager" "default" {
-  name               = "igm"
-  base_instance_name = "test"
-  zone               = "europe-west4-a"
+  name               = "a3-gpu-igm"
+  base_instance_name = "a3-gpu-instance"
+  zone               = "us-central1-a"
 
   version {
     instance_template = google_compute_instance_template.default.id
     name              = "primary"
   }
+
   instance_lifecycle_policy {
     default_action_on_failure = "DO_NOTHING"
   }
@@ -57,10 +79,9 @@ resource "google_compute_instance_group_manager" "default" {
 
 # [START compute_resize_request_basic_tag]
 resource "google_compute_resize_request" "default" {
-  provider               = google-beta
   instance_group_manager = google_compute_instance_group_manager.default.name
   zone                   = google_compute_instance_group_manager.default.zone
-  name                   = "rr"
+  name                   = "a3-gpu-rr"
   resize_by              = 3
   requested_run_duration {
     seconds = 1800
