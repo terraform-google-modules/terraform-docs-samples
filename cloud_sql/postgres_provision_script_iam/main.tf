@@ -1,0 +1,80 @@
+/**
+ * Copyright 2026 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+# [START cloud_sql_provision_script_instance]
+
+resource "random_password" "pwd" {
+  length = 16
+}
+
+resource "google_sql_database_instance" "instance" {
+  name             = "my-instance"
+  database_version = "POSTGRES_17"
+  region           = "us-central1"
+
+  settings {
+    tier            = "db-perf-optimized-N-2"
+    data_api_access = "ALLOW_DATA_API"
+    database_flags {
+      name  = "cloudsql.iam_authentication"
+      value = "on"
+    }
+  }
+  root_password = random_password.pwd.result
+}
+
+# [END cloud_sql_provision_script_instance]
+
+# [START cloud_sql_provision_script_iam_user]
+
+resource "google_sql_user" "iam_user" {
+  name     = "account-used-to-apply-this-config@example.com"
+  instance = google_sql_database_instance.instance.name
+  type     = "CLOUD_IAM_USER" 
+  database_roles = ["cloudsqlsuperuser"]
+}
+
+# [END cloud_sql_provision_script_iam_user]
+
+# [START cloud_sql_provision_script_database]
+
+resource "google_sql_database" "database" {
+  name     = "my-database"
+  instance = google_sql_database_instance.instance.name
+}
+
+# [END cloud_sql_provision_script_database]
+
+# [START cloud_sql_provision_script_script]
+
+data "google_project" "project" {}
+
+resource "google_project_iam_member" "executesql_iam" {
+  project = data.google_project.project.id
+  role    = "roles/cloudsql.studioUser"
+  member  = "user:account-used-to-apply-this-config@example.com"
+}
+
+resource "google_sql_provision_script" "table" {
+  script      = "CREATE TABLE IF NOT EXISTS table1 ( col VARCHAR(16) NOT NULL );"
+  instance    = google_sql_database_instance.instance.name
+  database    = google_sql_database.database.name
+  description = "sql script to create tables"
+
+  depends_on = [google_sql_user.iam_user]
+}
+
+# [END cloud_sql_provision_script_script]
