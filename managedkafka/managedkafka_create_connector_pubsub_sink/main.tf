@@ -85,8 +85,8 @@ resource "google_managed_kafka_connector" "example-pubsub-sink-connector" {
     "topics"          = "TOPIC_NAME"
     "cps.topic"       = "CPS_TOPIC_NAME"
     "cps.project"     = "CPS_PROJECT_NAME"
-    "value.converter" = "org.apache.kafka.connect.storage.StringConverter"
-    "key.converter"   = "org.apache.kafka.connect.storage.StringConverter"
+    "value.converter" = "org.apache.kafka.connect.converters.ByteArrayConverter"
+    "key.converter"   = "org.apache.kafka.connect.converters.ByteArrayConverter"
   }
 
   provider = google-beta
