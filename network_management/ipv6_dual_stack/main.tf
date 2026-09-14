@@ -31,7 +31,7 @@ resource "google_network_management_connectivity_test" "conn_test_instances" {
 }
 
 data "google_compute_image" "default" {
-  family  = "debian-11"
+  family  = "debian-13"
   project = "debian-cloud"
 }
 
