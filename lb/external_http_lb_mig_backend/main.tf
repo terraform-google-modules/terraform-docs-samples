@@ -25,7 +25,7 @@ resource "google_compute_instance_template" "default" {
     boot         = true
     device_name  = "persistent-disk-0"
     mode         = "READ_WRITE"
-    source_image = "projects/debian-cloud/global/images/family/debian-11"
+    source_image = "projects/debian-cloud/global/images/family/debian-13"
     type         = "PERSISTENT"
   }
   labels = {
@@ -80,7 +80,7 @@ resource "google_compute_firewall" "default" {
   direction     = "INGRESS"
   network       = "global/networks/default"
   priority      = 1000
-  source_ranges = ["130.211.0.0/22", "35.191.0.0/16"]
+  source_ranges = ["35.191.0.0/16"]
   target_tags   = ["allow-health-check"]
   allow {
     ports    = ["80"]
