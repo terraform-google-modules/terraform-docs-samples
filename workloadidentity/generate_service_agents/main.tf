@@ -15,7 +15,7 @@
  */
 
 /*
-Create all service agents for aiplatform.googleapis.com for
+Create all service agents for bigquery.googleapis.com for
 the `default` project, then grant roles to the service agents.
 */
 
