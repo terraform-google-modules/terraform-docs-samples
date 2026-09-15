@@ -18,7 +18,7 @@
 
 resource "google_compute_reservation" "default" {
   name = "gce-reservation-local"
-  zone = "us-central1-a"
+  zone = "us-central1-b"
 
   /**
    * To specify a single-project reservation, omit the share_settings block
@@ -31,7 +31,7 @@ resource "google_compute_reservation" "default" {
   specific_reservation {
     count = 1
     instance_properties {
-      machine_type = "n2-standard-2"
+      machine_type = "e2-micro"
     }
   }
 

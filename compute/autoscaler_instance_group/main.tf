@@ -79,7 +79,7 @@ resource "google_compute_instance_group_manager" "default" {
 
 data "google_compute_image" "debian_11" {
 
-  family  = "debian-11"
+  family  = "debian-13"
   project = "debian-cloud"
 }
 # [END compute_autoscaler_instance_group_parent_tag]
