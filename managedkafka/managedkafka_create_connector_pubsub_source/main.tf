@@ -79,14 +79,15 @@ resource "google_managed_kafka_connector" "example-pubsub-source-connector" {
   location        = "us-central1"
 
   configs = {
-    "connector.class"  = "com.google.pubsub.kafka.source.CloudPubSubSourceConnector"
-    "name"             = "my-pubsub-source-connector"
-    "tasks.max"        = "3"
-    "kafka.topic"      = "GMK_TOPIC_ID"
-    "cps.subscription" = "CPS_SUBSCRIPTION_ID"
-    "cps.project"      = data.google_project.default.project_id
-    "value.converter"  = "org.apache.kafka.connect.converters.ByteArrayConverter"
-    "key.converter"    = "org.apache.kafka.connect.storage.StringConverter"
+    "connector.class"          = "com.google.pubsub.kafka.source.CloudPubSubSourceConnector"
+    "name"                     = "my-pubsub-source-connector"
+    "tasks.max"                = "3"
+    "kafka.topic"              = "GMK_TOPIC_ID"
+    "cps.subscription"         = "CPS_SUBSCRIPTION_ID"
+    "cps.project"              = data.google_project.default.project_id
+    "cps.streamingPull.enable" = "true"
+    "value.converter"          = "org.apache.kafka.connect.converters.ByteArrayConverter"
+    "key.converter"            = "org.apache.kafka.connect.storage.StringConverter"
   }
 
   provider = google-beta
