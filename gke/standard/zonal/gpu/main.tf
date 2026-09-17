@@ -22,13 +22,14 @@ resource "google_container_cluster" "default" {
 
   node_config {
     guest_accelerator {
-      type  = "nvidia-tesla-t4"
-      count = 1
+      type               = "nvidia-tesla-a100"
+      count              = 1
+      gpu_partition_size = "1g.5gb"
       gpu_driver_installation_config {
         gpu_driver_version = "LATEST"
       }
     }
-    machine_type = "n1-standard-2"
+    machine_type = "a2-highgpu-1g"
   }
 }
 # [END gke_standard_zonal_gpu]

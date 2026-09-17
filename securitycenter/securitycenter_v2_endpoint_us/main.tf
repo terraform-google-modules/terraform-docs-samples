@@ -1,3 +1,4 @@
+# tflint-ignore-file: terraform_unused_declarations
 /**
  * Copyright 2025 Google LLC
  *
