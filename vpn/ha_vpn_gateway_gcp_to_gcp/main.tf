@@ -15,18 +15,7 @@
  */
 
 # [START cloudvpn_ha_gcp_to_gcp]
-resource "google_compute_ha_vpn_gateway" "ha_gateway1" {
-  region  = "us-central1"
-  name    = "ha-vpn-1"
-  network = google_compute_network.network1.id
-}
-
-resource "google_compute_ha_vpn_gateway" "ha_gateway2" {
-  region  = "us-central1"
-  name    = "ha-vpn-2"
-  network = google_compute_network.network2.id
-}
-
+# [START cloudvpn_ha_gcp_prereqs]
 resource "google_compute_network" "network1" {
   name                    = "network1"
   routing_mode            = "GLOBAL"
@@ -66,7 +55,23 @@ resource "google_compute_subnetwork" "network2_subnet2" {
   region        = "us-east1"
   network       = google_compute_network.network2.id
 }
+# [END cloudvpn_ha_gcp_prereqs]
 
+# [START cloudvpn_ha_gcp_gateways_setup]
+resource "google_compute_ha_vpn_gateway" "ha_gateway1" {
+  region  = "us-central1"
+  name    = "ha-vpn-1"
+  network = google_compute_network.network1.id
+}
+
+resource "google_compute_ha_vpn_gateway" "ha_gateway2" {
+  region  = "us-central1"
+  name    = "ha-vpn-2"
+  network = google_compute_network.network2.id
+}
+# [END cloudvpn_ha_gcp_gateways_setup]
+
+# [START cloudvpn_ha_vpn_routers_setup]
 resource "google_compute_router" "router1" {
   name    = "ha-vpn-router1"
   region  = "us-central1"
@@ -84,7 +89,9 @@ resource "google_compute_router" "router2" {
     asn = 64515
   }
 }
+# [END cloudvpn_ha_vpn_routers_setup]
 
+# [START cloudvpn_ha_vpn_tunnels_setup]
 resource "google_compute_vpn_tunnel" "tunnel1" {
   name                  = "ha-vpn-tunnel1"
   region                = "us-central1"
@@ -124,7 +131,9 @@ resource "google_compute_vpn_tunnel" "tunnel4" {
   router                = google_compute_router.router2.id
   vpn_gateway_interface = 1
 }
+# [END cloudvpn_ha_vpn_tunnels_setup]
 
+# [START cloudvpn_ha_vpn_bgp_setup]
 resource "google_compute_router_interface" "router1_interface1" {
   name       = "router1-interface1"
   router     = google_compute_router.router1.name
@@ -196,4 +205,5 @@ resource "google_compute_router_peer" "router2_peer2" {
   advertised_route_priority = 100
   interface                 = google_compute_router_interface.router2_interface2.name
 }
+# [END cloudvpn_ha_vpn_bgp_setup]
 # [END cloudvpn_ha_gcp_to_gcp]
