@@ -48,7 +48,7 @@ resource "google_secret_manager_regional_secret_version" "secret_version" {
 
 data "google_project" "project" {}
 
-resource "google_project_iam_member" "secret_accessor" {
+resource "google_project_iam_member" "secret_access_iam" {
   project = data.google_project.project.id
   role    = "roles/secretmanager.secretAccessor"
   member  = "user:account-used-to-apply-this-config@example.com"
@@ -78,12 +78,14 @@ resource "google_sql_provision_script" "script" {
   instance                = google_sql_database_instance.instance.name
   database                = google_sql_database.database.name
   description             = "sql script to create tables, create roles, and grant privileges"
-  user                    = 'sqlserver'
+  user                    = "sqlserver"
   password_secret_version = "projects/${data.google_project.project.id}/locations/us-central1/secrets/db-password/versions/latest"
 
   depends_on = [
     google_sql_user.built_in_user,
-    google_secret_manager_regional_secret_version.secret_version
+    google_secret_manager_regional_secret_version.secret_version,
+    google_project_iam_member.executesql_iam,
+    google_project_iam_member.secret_access_iam
   ]
 }
 

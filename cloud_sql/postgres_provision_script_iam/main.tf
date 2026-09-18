@@ -41,9 +41,9 @@ resource "google_sql_database_instance" "instance" {
 # [START cloud_sql_provision_script_iam_user]
 
 resource "google_sql_user" "iam_user" {
-  name     = "account-used-to-apply-this-config@example.com"
-  instance = google_sql_database_instance.instance.name
-  type     = "CLOUD_IAM_USER" 
+  name           = "account-used-to-apply-this-config@example.com"
+  instance       = google_sql_database_instance.instance.name
+  type           = "CLOUD_IAM_USER"
   database_roles = ["cloudsqlsuperuser"]
 }
 
@@ -74,7 +74,7 @@ resource "google_sql_provision_script" "table" {
   database    = google_sql_database.database.name
   description = "sql script to create tables"
 
-  depends_on = [google_sql_user.iam_user]
+  depends_on = [google_sql_user.iam_user, google_project_iam_member.executesql_iam]
 }
 
 # [END cloud_sql_provision_script_script]
