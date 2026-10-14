@@ -15,19 +15,38 @@
  */
 
 # [START compute_instances_quickstart]
+
+data "google_project" "default" {}
+
+resource "google_compute_network" "default" {
+  name                    = "my-custom-network"
+  project                 = data.google_project.default.project_id
+  auto_create_subnetworks = false # Recommended to have more control
+}
+
+resource "google_compute_subnetwork" "default" {
+  name          = "my-custom-subnet"
+  project       = data.google_project.default.project_id
+  ip_cidr_range = "10.0.1.0/24"
+  region        = "us-central1" # Match the region of your VM zone
+  network       = google_compute_network.default.id
+}
+
 resource "google_compute_instance" "default" {
   name         = "my-vm"
-  machine_type = "n1-standard-1"
+  project      = data.google_project.default.project_id
+  machine_type = "e2-medium"
   zone         = "us-central1-a"
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-minimal-2210-kinetic-amd64-v20230126"
+      image = "debian-cloud/debian-11" # Using a common Debian image
     }
   }
 
   network_interface {
-    network = "default"
+    subnetwork = google_compute_subnetwork.default.id
+    # Add an access config to assign an ephemeral public IP
     access_config {}
   }
 }
