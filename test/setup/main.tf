@@ -44,6 +44,7 @@ module "projects" {
     "artifactregistry.googleapis.com",
     "backupdr.googleapis.com",
     "biglake.googleapis.com",
+    "bigtableadmin.googleapis.com",
     "bigquery.googleapis.com",
     "bigqueryconnection.googleapis.com",
     "certificatemanager.googleapis.com",
