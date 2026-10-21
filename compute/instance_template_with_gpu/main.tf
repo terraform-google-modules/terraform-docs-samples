@@ -18,7 +18,7 @@
  * gcloud compute instance-templates create gpu-template \
  * --machine-type n1-standard-2 \
  * --accelerator type=nvidia-tesla-t4,count=1 \
- * --image-family debian-11 \
+ * --image-family debian-13 \
  * --image-project debian-cloud \
  * --maintenance-policy TERMINATE
 */
@@ -29,7 +29,7 @@ resource "google_compute_instance_template" "default" {
   machine_type = "n1-standard-2"
 
   disk {
-    source_image = "debian-cloud/debian-11"
+    source_image = "debian-cloud/debian-13"
   }
 
   network_interface {

@@ -26,7 +26,7 @@ resource "google_compute_instance" "default" {
   }
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-11"
+      image = "debian-cloud/debian-13"
     }
   }
   network_interface {
@@ -51,7 +51,7 @@ resource "google_compute_instance" "shutdown_content_from_file" {
   }
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-11"
+      image = "debian-cloud/debian-13"
     }
   }
   network_interface {

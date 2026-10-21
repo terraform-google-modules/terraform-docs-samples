@@ -24,7 +24,7 @@ resource "google_compute_instance_template" "default" {
   name         = "preemptible-template"
   machine_type = "n1-standard-1"
   disk {
-    source_image = "debian-cloud/debian-11"
+    source_image = "debian-cloud/debian-13"
   }
   network_interface {
     network = "default"

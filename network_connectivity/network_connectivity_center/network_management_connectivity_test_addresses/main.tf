@@ -114,7 +114,7 @@ resource "google_compute_instance" "destination" {
 }
 
 data "google_compute_image" "default" {
-  family  = "debian-11"
+  family  = "debian-13"
   project = "debian-cloud"
 }
 # [END networkmanagement_test_addresses]
