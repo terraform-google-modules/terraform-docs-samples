@@ -18,7 +18,7 @@
 
 resource "google_compute_reservation" "gce_reservation_local" {
   name = "gce-reservation-local"
-  zone = "us-central1-c"
+  zone = "us-central1-f"
 
   share_settings {
     share_type = "LOCAL"
@@ -27,7 +27,7 @@ resource "google_compute_reservation" "gce_reservation_local" {
   specific_reservation {
     count = 1
     instance_properties {
-      machine_type = "n2-standard-2"
+      machine_type = "e2-micro"
     }
   }
 }

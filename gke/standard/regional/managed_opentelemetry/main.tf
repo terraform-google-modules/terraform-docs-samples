@@ -24,16 +24,15 @@ before running the code snippet.
 # [START gke_standard_regional_with_managed_otel]
 terraform {
   required_providers {
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = ">= 7.17.0"
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 8.8.0"
     }
   }
 }
 
 resource "google_container_cluster" "default" {
   name     = "gke-standard-regional-with-managed-otel"
-  provider = google-beta
   location = "us-west1"
 
   initial_node_count = 1

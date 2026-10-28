@@ -37,7 +37,7 @@ resource "google_compute_instance_template" "foobar" {
   machine_type = "e2-standard-4"
 
   disk {
-    source_image = "debian-cloud/debian-11"
+    source_image = "debian-cloud/debian-13"
     disk_size_gb = 250
   }
 

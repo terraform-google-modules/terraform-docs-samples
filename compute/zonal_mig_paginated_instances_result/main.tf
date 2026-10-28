@@ -26,7 +26,7 @@ resource "google_compute_instance_template" "default" {
   name         = "my-template"
   machine_type = "e2-medium"
   disk {
-    source_image = "debian-cloud/debian-11"
+    source_image = "debian-cloud/debian-13"
   }
   network_interface {
     network = "default"
