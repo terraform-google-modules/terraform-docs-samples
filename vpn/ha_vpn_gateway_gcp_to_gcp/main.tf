@@ -59,14 +59,14 @@ resource "google_compute_subnetwork" "network2_subnet2" {
 
 # [START cloudvpn_ha_gcp_gateways_setup]
 resource "google_compute_ha_vpn_gateway" "ha_gateway1" {
-  region  = "us-central1"
   name    = "ha-vpn-1"
+  region  = "us-central1"
   network = google_compute_network.network1.id
 }
 
 resource "google_compute_ha_vpn_gateway" "ha_gateway2" {
-  region  = "us-central1"
   name    = "ha-vpn-2"
+  region  = "us-central1"
   network = google_compute_network.network2.id
 }
 # [END cloudvpn_ha_gcp_gateways_setup]
