@@ -54,7 +54,7 @@ resource "google_os_config_v2_policy_orchestrator" "default" {
             id = "example-file-resource"
 
             file {
-              path    = "/tmp/example-config.txt"
+              path    = "/etc/debian_version"
               state   = "PRESENT"
               content = "example-configuration-content"
             }
