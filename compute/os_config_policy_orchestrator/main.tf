@@ -15,12 +15,12 @@
  */
 
 # [START osconfig_policy_orchestrator]
+data "google_project" "project" {}
 resource "google_os_config_v2_policy_orchestrator" "default" {
   policy_orchestrator_id = "example-policy-orchestrator"
   action                 = "UPSERT"
   state                  = "ACTIVE"
   description            = "Policy orchestrator targeting specific projects and Compute Engine zones."
-
   orchestration_scope {
     # Define each selector type in a separate selectors block because each
     # selectors block accepts only one selector type. Multiple selectors blocks
@@ -28,7 +28,7 @@ resource "google_os_config_v2_policy_orchestrator" "default" {
     selectors {
       resource_hierarchy_selector {
         # Specify project numbers prefixed with "projects/".
-        included_projects = ["projects/123456789012"]
+        included_projects = ["projects/${data.google_project.project.number}"]
       }
     }
 
@@ -54,6 +54,8 @@ resource "google_os_config_v2_policy_orchestrator" "default" {
             id = "example-file-resource"
 
             file {
+              # Setting state to "PRESENT" checks only whether the file exists.
+              # The content field is required by the API schema when state is not "ABSENT".
               path    = "/etc/debian_version"
               state   = "PRESENT"
               content = "example-configuration-content"
@@ -79,4 +81,3 @@ resource "google_os_config_v2_policy_orchestrator" "default" {
   }
 }
 # [END osconfig_policy_orchestrator]
-EOF
