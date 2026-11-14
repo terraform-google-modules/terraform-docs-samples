@@ -6,6 +6,7 @@
 /test/                        @terraform-google-modules/terraform-samples-git-admins @terraform-google-modules/cft-admins @terraform-google-modules/cloud-samples-infra
 /build/                       @terraform-google-modules/terraform-samples-git-admins @terraform-google-modules/cft-admins @terraform-google-modules/cloud-samples-infra
 
+/bigtable/                    @terraform-google-modules/bigtable-terraform-swe @terraform-google-modules/terraform-samples-reviewers
 /bigquery/                    @terraform-google-modules/bigquery-terraform-swe @terraform-google-modules/terraform-samples-reviewers
 /cloud_sql/                   @terraform-google-modules/cloudsql-connectivity @terraform-google-modules/terraform-samples-reviewers
 /cloudvpn/                    @terraform-google-modules/dee-infra @terraform-google-modules/terraform-samples-reviewers
