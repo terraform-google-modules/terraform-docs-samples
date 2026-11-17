@@ -47,6 +47,7 @@ module "projects" {
     "bigtableadmin.googleapis.com",
     "bigquery.googleapis.com",
     "bigqueryconnection.googleapis.com",
+    "bigquerydatapolicy.googleapis.com",
     "certificatemanager.googleapis.com",
     "compute.googleapis.com",
     "cloudbuild.googleapis.com",
