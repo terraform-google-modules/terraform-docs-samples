@@ -96,7 +96,7 @@ resource "google_compute_region_disk" "regional_disk" {
   physical_block_size_bytes = 4096
   size                      = 10
   replica_zones             = ["us-central1-a", "us-central1-b"]
-  image                     = data.google_compute_image.debian_13.self_link
+  image                     = data.google_compute_image.debian_13.id
 }
 
 resource "google_compute_instance" "vm" {
@@ -134,7 +134,7 @@ resource "google_compute_instance" "vm" {
 
   boot_disk {
     auto_delete = false
-    source      = google_compute_region_disk.regional_disk.self_link
+    source      = google_compute_region_disk.regional_disk.id
   }
 
   network_interface {
