@@ -106,3 +106,56 @@ resource "google_container_node_pool" "specific_node_pool" {
   ]
 }
 # [END gke_standard_zonal_reservation_specific_node_pool]
+
+# [START gke_standard_zonal_reservation_any_then_fail_reservation]
+resource "google_compute_reservation" "any_then_fail_reservation" {
+  name = "any-then-fail-reservation"
+  zone = "us-central1-a"
+
+  specific_reservation {
+    count = 3
+
+    instance_properties {
+      machine_type = "e2-medium"
+    }
+  }
+}
+# [END gke_standard_zonal_reservation_any_then_fail_reservation]
+
+# [START gke_standard_zonal_reservation_any_then_fail_cluster]
+resource "google_container_cluster" "any_then_fail_cluster" {
+  name     = "gke-standard-zonal-any-then-fail-cluster"
+  location = "us-central1-a"
+
+  initial_node_count = 1
+
+  node_config {
+    machine_type = "e2-medium"
+
+    reservation_affinity {
+      consume_reservation_type = "ANY_RESERVATION_THEN_FAIL"
+    }
+  }
+
+  depends_on = [
+    google_compute_reservation.any_then_fail_reservation
+  ]
+}
+# [END gke_standard_zonal_reservation_any_then_fail_cluster]
+
+# [START gke_standard_zonal_reservation_any_then_fail_node_pool]
+resource "google_container_node_pool" "any_then_fail_node_pool" {
+  name     = "gke-any-then-fail-node-pool"
+  cluster  = google_container_cluster.any_then_fail_cluster.name
+  location = google_container_cluster.any_then_fail_cluster.location
+
+  initial_node_count = 3
+  node_config {
+    machine_type = "e2-medium"
+
+    reservation_affinity {
+      consume_reservation_type = "ANY_RESERVATION_THEN_FAIL"
+    }
+  }
+}
+# [END gke_standard_zonal_reservation_any_then_fail_node_pool]
